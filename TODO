@@ -71,9 +71,6 @@ General
   config file in a different directory
 [? priority]
 
-- Come up with a new name
-[top priority]
-
 - What should the installer look like (should it have the Tor logo)?
   We need to be clear in the documentation about the difference between
   the installer and the actual bundle
@@ -90,46 +87,7 @@ General
 
 - Add ToaST-like bootstrap mode
 
-Questions to ask
-----------------
-
-- Is looking like IE (as ToaST does) good for security
-
-  IBB's answer: browser frames are small and subtle compared to
-  the page that's actually being displayed. They'll ask some people,
-  but until they say to worry about it, don't worry about it.
-
-- Is having a splash screen likely to attract unwanted attention
-
-  IBB's answer: Yes; don't do that. Even the Vidalia control panel
-  will become recognizable over time. We should help users learn that
-  they can hide it on subsequent runs. Hopefully the onion in the
-  system tray will be both a) adequate for knowing Tor's status, and
-  b) not very recognizable.
-
-  [SJM - OK, I've disabled the splash screen. There is now a few
-   second pause between the green onion and the browser window.
-   Hopefully this will be OK.]
-
-- How big can USB Tor be on disk/when downloaded
-
-  IBB's answer: 128 meg usb keys are the default these days. So a 20-30
-  meg download is fine. More than that is bad.
-
-  [SJM - Currently we are at a 12 MB download and it's 48 MB on disk]
-
-- Should we cache directory information on the USB device/hard disk
-
-  IBB's answer: if Tor's already on the media, then putting more stuff
-  there isn't a problem. But don't put it on the hard drive if Tor is
-  on the USB key. Roger told them it would be a big win for startup
-  time.
-
-- How much of a worry is wearing out the flash
-
-  IBB's answer: don't worry about it. We should continue to improve
-  features like Tor's AvoidDiskWrites if there turns out to be an
-  issue either with read/write speed or with wearing out.
+- Make a web page for bundle
 
 Done
 ====
@@ -227,4 +185,9 @@ portable bundle ]
   For example, if the user turned off Torbutton.
   We should accumulate other examples here.
 [mid priority]
+
+[ Done 2007-12-25 -- it's the "Tor Browser Bundle" ]
+
+- Come up with a new name
+[top priority]
 
