@@ -1,0 +1,14 @@
+# If non-zero, try to write to disk less frequently than we would otherwise.
+AvoidDiskWrites 1
+# If set, Tor will accept connections from the same machine (localhost only)
+# on this port, and allow those connections to control the Tor process using
+# the Tor Control Protocol (described incontrol-spec.txt).
+ControlPort 9051
+# Store working data, state, keys, and caches here.
+DataDirectory .\Data\Tor
+# Where to send logging messages.  Format is minSeverity[-maxSeverity]
+# (stderr|stdout|syslog|file FILENAME).
+Log notice stdout
+# Bind to this address to listen to connections from SOCKS-speaking
+# applications.
+SocksListenAddress 127.0.0.1

@@ -1,0 +1,94 @@
+MSYS configuration for QT
+-------------------------
+
+Add the following to /etc/profile:
+ export QTDIR="C:\Qt\4.3.2"
+ export PATH=$PATH:/c/Qt/4.3.2/bin
+ export QMAKESPEC=win32-g++
+
+This will allow the MSYS bash command line interface to be used,
+rather than the Qt provided cmd.exe environment.
+
+Building Vidalia
+----------------
+
+[from http://trac.vidalia-project.net/wiki/InstallSource]
+
+$ lrelease Vidalia.pro
+$ qmake
+$ mingw32-make 
+
+Cmake:
+- If using the MSYS shell, invoke 'cmake -G "MSYS Makefiles"'
+  Attempting -G "MinGW Makefiles" will fail because sh.exe is in the
+  %PATH%
+- If using Mingw32, invoke 'cmake -G "MinGW Makefiles"'
+  Qt and CMake must be in the %PATH%. An easy way to do this is to copy
+  qtvars.bat and add the path to CMake. Then, copy the shortcut from
+  the Start menu, and edit the path to point to the altered qtvars.bat 
+
+Altering FirefoxPortable
+------------------------
+
+The .ini file needs to have "WaitForFirefox=true" set, since otherwise
+the launcher will exit immediately after starting Firefox. Currently
+we rely on detecting Firefox closing for when to shut down Tor.
+
+Building Firefox
+----------------
+
+I am currently using MSVC 7.1 (Visual Studio .NET 2003) to build Firefox. Visual
+Studio 2005 (and 2008) cannot build Firefox 2. This should be fixed with the
+eventual release of Firefox 3. MinGW32 is reported to work, but is not supported
+and has limitations. I was not able to get cross compiling working. There is
+discussion of building Firefox 2 with MSVC 8 at:
+ http://georgedexter.wordpress.com/2007/03/03/building-firefox-2002-on-windows/
+
+For more information see:
+ http://developer.mozilla.org/en/docs/Windows_Build_Prerequisites
+ http://developer.mozilla.org/en/docs/Build_and_Install
+
+Instructions:
+
+- Install MSVC 7 (Visual Studio .NET 2003) and upgrade using Microsoft Update
+
+- Download Platform SDK from
+  http://www.microsoft.com/downloads/details.aspx?familyid=0baf2b35-c656-4969-ace8-e4c0c0716adb
+
+- Install MozillaBuild from
+  http://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/MozillaBuildSetup-1.1.exe
+
+- Run e:\mozilla-build\start-msvc8.bat
+
+$ cd "e:\mozilla\build"
+$ tar -xjvf ../firefox-2.0.0.9-source.tar.bz2
+$ cd mozilla
+  [ dot_mozconfg is in docs/ ]
+$ cp ../dot_mozconfig .mozconfig
+$ make -f client.mk build
+
+- Copy msvcp71.dll and msvcr71.dll from "Microsot Visual Studio .NET 2003\Visual
+  Studio .NET Professional 2003 - English" to obj-i686-pc-mingw32\dist\bin
+
+- Add "msvcp71.dll" and "msvcr71.dll" to browser/installer/windows/packages-static
+
+$ make -C obj-i686-pc-mingw32/browser/installer
+
+
+OpenSSL, zlib, libevent and Tor
+-------------------------------
+
+Instructions in:
+ https://tor-svn.freehaven.net/svn/tor/trunk/doc/tor-win32-mingw-creation.txt
+
+Uncompressing OpenSSL shows a number of errors concerning symlinks.
+These do not appear to have caused a problem.
+
+For zlib, I used the first option (zlib.a)
+
+For libevent, I used 1.3e, as suggested by the document above.
+libevent 1.4.0 is newer but untested.
+
+It is tor-resolve, not tor_resolve.exe
+
+Autoconf 2.56 appears to work fine (2.59 is mentioned in the instructions)

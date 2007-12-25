@@ -1,0 +1,73 @@
+Tor USB project
+===============
+
+Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217/>
+
+Contents
+--------
+
+build-scripts: Code for building and customizing a Tor USB bundle
+  \___ README: Further documentation
+
+docs: Documentation for project
+  \___ TODO: Pending tasks and commentary
+  |___ ToaST-startup: Rough description of ToaST startup procedure
+  |___ build-instructions.txt: Notes on building Vidalia and other
+                               bundle components
+
+src: Source code
+  \___ processtest: Qt project for starting Firefox and detecting
+  |                 termination behaviour (see included README for
+  |                 build instructions)
+  |___ old: Previous work from Shishir Nagaraja
+
+Status
+------
+
+Using build-scripts/Makefile it is possible to create a working USB
+Tor bundle. It's limitations include:
+ - It uses the PortableTor and FirefoxPortable binaries
+ - The starting program doesn't have a pretty icon
+ - Polipo is not included, instead Firefox connects directly to Tor
+
+Further issues are discussed in docs/TODO.
+
+Included applications
+---------------------
+
+Vidalia (svn trunk revision 2213)
+Tor 0.2.0.12-alpha (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8g) 
+FirefoxPortable 2.0.0.11
+ \_ Firefox 2.0.0.11
+    \_ Torbutton 1.1.12-alpha
+
+Usage
+-----
+
+Tor Browser.exe is a 7zip self extracting archive. To extract the bundle, run
+this and point it to the install location. It will create a folder called "Tor
+Browser". This may be the hard disk, but is more likely the currently mounted
+USB drive. The install process needs only be performed once.
+
+Once the bundle is extracted, open the newly created folder and click "Tor
+Browser.bat" (may appear as simply "Tor Browser"). This will start Vidalia. Once
+Tor has successfully opened a circuit, Firefox will automatically be opened.
+
+To exit, close Firefox. Vidalia will automatically clean up and exit.
+
+Changelog
+---------
+
+0.0.1: Initial revision (2007-12-11)
+0.0.2: Update Vidalia to r2213 (2007-12-13)
+       Update Tor to 0.2.0.12-alpha
+       Add license files
+       Remove Portable Tor dependency
+       Add bookmarks to Tor, Torcheck and the hidden wiki
+0.0.3: Move build infrastructure to GNU Make (2007-12-16)
+       Install Torbutton
+0.0.4: Add internationalization for fa-IR and zh-CN
+       Add Makefile rule for installing Quick Locale Switcher, but
+       don't enable this by default
+0.0.5: Disable FirefoxPortable splash screen (2007-12-24)
+       New prefs.js to disable some undesirable features

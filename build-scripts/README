@@ -1,0 +1,39 @@
+Building Tor Browser.exe
+========================
+
+To build Tor Browser.exe, you need to have built:
+ Vidalia and Tor (in /c/build/vidalia and /c/build/tor-<version> by default)
+ FirefoxPortable (in ./FirefoxPortable/ by default)
+
+Vidalia needs to have the BrowserExecutable option enabled (currently in
+trunk).
+
+FirefoxPortable can be downloaded from:
+ http://portableapps.com/apps/internet/firefox_portable
+
+7zip can be downloaded from:
+ http://www.7-zip.org/download.html
+
+Customization
+-------------
+
+The locations of Qt, MinGW32, the Vidalia/Tor build directory, 7zip,
+FirefoxPortable can be altered in Makefile.
+
+Building the bundle
+-------------------
+
+Firefox must not be running while you are building the bundle
+
+Run "make bundle"
+
+To specify a different language configuration, set $LANGCODE,
+e.g. "LANGCODE=fa make bundle" or "LANGCODE=zh-cn make bundle"
+
+To compress it, run "make compress-bundle"
+
+Archived code
+-------------
+
+The patch to Vidalia can be found in archive/. This has now been
+applied to the Vidalia trunk, so is no longer needed.

@@ -1,0 +1,230 @@
+###
+### Plans for USB Tor bundle
+### Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217/>
+###
+
+Vidalia modifications
+---------------------
+
+- Make Vidalia start and stop Polipo too
+[high priority]
+
+- Make Vidalia show some evidence of activity while it is starting Tor
+[mid priority -- what do you have in mind here?]
+
+- Prevent user from starting Firefox manually while Tor is still
+  starting up
+[mid priority]
+
+- Also make Vidalia show what percentage progress Tor has made in
+  building a circuit (needs Tor to send events while startup is proceeding)
+  - Tor should send out more status_event messages based on various
+    milestones towards its circuit-establishment phase.
+  - Vidalia should recognize these and either change the text for
+    "Tor is starting up", or have a status bar, or something.
+[high priority]
+
+- Make Vidalia kill Firefox when it exits. Currently Vidalia
+  terminates the process, but killing FirefoxPortable does not end Firefox.
+  Either we could kill firefox.exe directly, or wait until Vidalia
+  launches Firefox.
+  Let's wait until Vidalia launches Firefox directly. -RD
+
+Firefox modifications
+---------------------
+
+- Produce new branding so we don't infringe on the Mozilla trademarks
+[mid priority]
+
+- Get FirefoxPortable building
+[mid priority]
+
+- Eventually try to remove NSIS dependency for FirefoxPortable and
+  move any necessary code into Vidalia. See docs/ToaST-startup.txt
+  for what we will want to do.
+[low priority]
+
+- Tailor error messages so are more appropriate to Tor (e.g. point out
+  dangers when submitting forms to non-HTTPS URLs)
+[low priority]
+
+- Check if Torbutton behaves as intended if pre-configures by prefs.js
+
+General
+-------
+
+- Use process monitor to watch filesystem activity:
+  http://www.microsoft.com/technet/sysinternals/utilities/processmonitor.mspx
+
+  [ Vidalia doesn't appear to alter the registry other than the RNG
+    seed and MountPoints2. Tor does this too, so can it be stopped? 
+    Firefox/FirefoxPortable alters other keys (Audio Compression
+    Manager, Tcpip\Parameters, Shell Folders, Internet Settings) ]
+[low priority]
+
+- If we can't make a static build of Vidalia, produce a small
+  executable to launch Vidalia (so the top level folder doesn't have
+  random DLLs lying around)
+[mid priority]
+
+- If we can make a static build of Vidalia, make it look for the
+  config file in a different directory
+[? priority]
+
+- Come up with a new name
+[top priority]
+
+- What should the installer look like (should it have the Tor logo)?
+  We need to be clear in the documentation about the difference between
+  the installer and the actual bundle
+[mid priority]
+
+- Modify Torbutton to prevent user from disabling Tor (easily)
+[mid priority]
+
+- Ensure Firefox update works securely
+[low priority]
+
+- Investigate updating Tor automatically
+[low priority]
+
+- Add ToaST-like bootstrap mode
+
+Questions to ask
+----------------
+
+- Is looking like IE (as ToaST does) good for security
+
+  IBB's answer: browser frames are small and subtle compared to
+  the page that's actually being displayed. They'll ask some people,
+  but until they say to worry about it, don't worry about it.
+
+- Is having a splash screen likely to attract unwanted attention
+
+  IBB's answer: Yes; don't do that. Even the Vidalia control panel
+  will become recognizable over time. We should help users learn that
+  they can hide it on subsequent runs. Hopefully the onion in the
+  system tray will be both a) adequate for knowing Tor's status, and
+  b) not very recognizable.
+
+  [SJM - OK, I've disabled the splash screen. There is now a few
+   second pause between the green onion and the browser window.
+   Hopefully this will be OK.]
+
+- How big can USB Tor be on disk/when downloaded
+
+  IBB's answer: 128 meg usb keys are the default these days. So a 20-30
+  meg download is fine. More than that is bad.
+
+  [SJM - Currently we are at a 12 MB download and it's 48 MB on disk]
+
+- Should we cache directory information on the USB device/hard disk
+
+  IBB's answer: if Tor's already on the media, then putting more stuff
+  there isn't a problem. But don't put it on the hard drive if Tor is
+  on the USB key. Roger told them it would be a big win for startup
+  time.
+
+- How much of a worry is wearing out the flash
+
+  IBB's answer: don't worry about it. We should continue to improve
+  features like Tor's AvoidDiskWrites if there turns out to be an
+  issue either with read/write speed or with wearing out.
+
+Done
+====
+
+[ Done: 2007-12-12 ]
+- Add bookmarks that will help people understand tor better
+  - The Tor frontpage
+  - A hidden service of some sort?
+  - A "check if your Tor is leaking" page
+[low priority]
+
+[ Done: 2007-12-12 ]
+- Build Tor myself
+[high priority]
+
+[ Done: 2007-12-12 ]
+- Add version numbers to builds
+[mid priority]
+
+[ Done: 2007-12-13 -- I think users should be able to stop (and
+  restart Tor) without exiting Firefox. I've added the code to kill
+  the browser when Vidalia exits but this won't work until
+  PortableFirefox is replaced with Vidalia. ]
+- What to do when user clicks "Stop Tor" or exits Vidalia: Don't let them do it?
+  Kill Firefox? Show a helpful message?
+  We could make Vidalia change its button labels when it has launched Firefox
+  for us, to make it clearer what clicking "stop tor" and "exit" will do.
+
+[ Done: 2007-12-19 -- it does guess, but this isn't good for a
+portable bundle ]
+- Check whether Vidalia auto-detects language if not specified. If
+  this is likely to guess right, then maybe we should not specify in
+  the config file.
+[high priority]
+
+[ Done: 2007-12-19 -- as of r12876 ]
+- Let us build a Simplified-Chinese and Farsi version. These
+  would have Vidalia and Firefox configured to use these languages
+  by default.
+[top priority]
+
+  * We need a better Farsi translation in that case
+  Once we have it working reasonably well, we should bug our Farsi-speaking
+  friends (for example, our friends at IBB) for help.
+
+[ Done: 2007-12-20 ]
+- Investigate how to programmatically add extensions and modify
+  preference files (partially complete).
+  Adding them to user.js will override user modifications (sometimes
+  not good).
+  Adding them to all.js is better, but entries must be sorted (are
+  there other constraints?)
+
+  http://forums.mozillazine.org/viewtopic.php?p=1270157&sid=4fe009726e77cb0ae2a07dcf1e179fe6
+
+   [ Sorting them didn't work -- there is more magic here ]
+
+   Extensions we want:
+    Torbutton [important]
+     https://addons.mozilla.org/en-US/firefox/addon/2275
+     [We should use the latest dev version of this -RD]
+
+   Extensions we might want (from xB Browser and ToaST):
+    Adblock Plus
+     https://addons.mozilla.org/en-US/firefox/addon/1865
+    ChatZilla
+     https://addons.mozilla.org/en-US/firefox/addon/16
+    PrefBar
+     http://prefbar.mozdev.org/
+    Quick Locale Switcher
+     https://addons.mozilla.org/en-US/firefox/addon/1333
+    Firesomething
+     https://addons.mozilla.org/en-US/firefox/addon/31
+    Restart Firefox
+     https://addons.mozilla.org/en-US/firefox/addon/1249
+    Window Styles
+     http://www.bamm.gabriana.com/ [inaccessible 2007-12-13]
+
+   Extensions we don't want (from xB Browser and ToaST):
+    ErrorZilla Mod
+     https://addons.mozilla.org/en-US/firefox/addon/3336
+     [Once we have polipo, it will be the one providing error
+      messages. Does that make this extension moot? I think so. -RD]
+    Flush Tor Circuit [superseded by Vidalia]
+     ?
+    NoScript [probably superseded by Torbutton]
+     https://addons.mozilla.org/en-US/firefox/addon/722
+[high priority]
+
+- Decide what preferences to set and what extensions to pre-install
+  [ xB use this: http://archives.seul.org/or/talk/Nov-2007/msg00227.html ]
+[high priority]
+
+- Restore some/all Firefox settings on exit
+  For example, if the user turned off Torbutton.
+  We should accumulate other examples here.
+[mid priority]
+
