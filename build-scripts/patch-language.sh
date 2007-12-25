@@ -1,9 +1,13 @@
 #!/bin/sh
 
-##
-## Set language code in Vidalia config file
-## Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217>
-##
+###
+### Set language code in Vidalia config file
+###
+### Copyright 2007 Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217/>
+### See LICENSE for licensing information
+###
+### $Id$
+###
 
 ## Parse command line
 FILENAME=$1
