@@ -116,10 +116,6 @@ For zlib, use the first option (zlib.a)
 For libevent, use 1.3e, as suggested by the document above.
 libevent 1.4.0 is newer but untested.
 
-It is tor-resolve, not tor_resolve.exe
-
-Autoconf 2.56 appears to work fine (2.59 is mentioned in the instructions)
-
 
 Building Firefox
 ================
