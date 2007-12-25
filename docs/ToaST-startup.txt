@@ -2,19 +2,21 @@
 ### Rough description of ToaST startup procedure
 ### Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217/>
 ###
+### $Id:$
+###
 
 Create TorparkMutex
 if <ToaST already running>
  if <User requests ToST should exit>
   UnloadTorParkandFirefox()
 
-If PreserverTorCacheMode swtich:
+If PreserveTorCacheMode switch:
  PreserveTorCache = 1
 If DebugMode:
  DeugOn = 1
-If DebugModeSlident
+If DebugModeSilent
  DebugOn =
-If DebugModeSlident
+If DebugModeSilent
  DebugOn = 2
 
 Load INI file
@@ -38,7 +40,7 @@ If profile directory not writable:
  exit
 
 Ask if user wants to exit:
- UnloadTorparkandFirefox
+ UnloadTorparkAndFirefox
  exit
 
 Patch chrome\chrome.rdf (jar:/// and file:///)
@@ -50,12 +52,12 @@ false))
 
 Delete compreg.dat
 
-If ALLOWMULTIPLAEINSTANCES, set enviroment variable "MOZ_NO_REMOTE"
+If ALLOWMULTIPLEINSTANCES, set environment variable "MOZ_NO_REMOTE"
 
-SET MOZ_PLAUGINPATH=PLUGINSDIRECTORY
+SET MOZ_PLUGINPATH=PLUGINSDIRECTORY
 SET USERPROFILE=USERPROFILEDIRECTORY
 
-Repeatedly call "Checkforbadfirefox"
+Repeatedly call "CheckForBadFirefox"
 
 Start progress bar
 
@@ -65,7 +67,7 @@ While Tor not running:
 While 1:
  If user clicks cancel, exit
 
- If Tor is dead, restart it ^
+ If Tor is dead, restart it
 
  Wait for a Tor event or timeout
 
@@ -76,13 +78,13 @@ While 1:
  else:
   break
 
-Start polipo
-Start firefox
+Start Polipo
+Start Firefox
 Wait until Firefox has started
 
 Wait for Firefox to exit
 
-Kill polipo and Tor
+Kill Polipo and Tor
 
-function Checkforbadfirefox():
- If firefox is running, show a error and kill Firefox
+function CheckForBadFirefox():
+ If Firefox is running, show a error and kill Firefox

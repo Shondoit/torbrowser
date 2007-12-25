@@ -97,7 +97,7 @@ longer needs to be applied manually:
  http://trac.vidalia-project.net/changeset/2207
 
 A patch to close the Browser when Vidalia exits is in:
- ../src/vidalia-killbrowser.patch
+ ../src/current-patches/vidalia-killbrowser.patch
 This is not yet useful, since killing FirefoxPortable does not cause
 Firefox to exit. This patch has not yet been applied to Vidalia.
 
