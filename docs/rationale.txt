@@ -1,0 +1,15 @@
+###
+### Rationale for Tor Browser Bundle configuration choices
+###
+### Copyright 2007 Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217/>
+### See LICENSE for licensing information
+###
+### $Id$
+###
+
+Altering FirefoxPortable
+------------------------
+
+The .ini file needs to have "WaitForFirefox=true" set, since otherwise
+the launcher will exit immediately after starting Firefox. Currently
+we rely on detecting Firefox closing for when to shut down Tor.

@@ -1,0 +1,173 @@
+###
+### Instructions for building Tor Browser Bundle components
+###
+### Copyright 2007 Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217/>
+### See LICENSE for licensing information
+###
+### $Id$
+###
+
+Contents
+========
+
+- Building Tor Browser Bundle
+- Building Vidalia
+- Building OpenSSL, zlib, libevent and Tor
+- Building Firefox
+
+
+Building Tor Browser Bundle
+===========================
+
+To build Tor Browser Bundle, you need to have built:
+ Vidalia (in /c/build/vidalia by default)
+ Tor (in /c/build/tor-<version> by default)
+and have uncompressed Firefox Portable
+ FirefoxPortable (in ./FirefoxPortable/ by default)
+
+Instructions for building Vidalia and Tor are included below.
+
+To compress the bundle and build the self-extracting executable you
+need to have installed 7zip.
+
+Vidalia needs to have the BrowserExecutable functionality. Currently
+this is only available in the Vidalia trunk.
+
+FirefoxPortable can be downloaded from:
+ http://portableapps.com/apps/internet/firefox_portable
+
+7zip is needed to compress the bundle can be downloaded from:
+ http://www.7-zip.org/download.html
+
+Customization
+-------------
+
+The locations of Qt, MinGW32, the Vidalia/Tor build directory, 7zip,
+FirefoxPortable can be altered in Makefile.
+
+Building the bundle
+-------------------
+
+Firefox must not be running while you are building the bundle.
+
+Run "make bundle"
+
+To specify a different language configuration, set $LANGCODE,
+e.g. "LANGCODE=fa make bundle" or "LANGCODE=zh-cn make bundle"
+
+To compress it, run "make compress-bundle"
+
+
+Building Vidalia
+================
+
+Full instructions are in the Vidalia INSTALL file.
+
+Building under MSYS
+-------------------
+
+Add the following to /etc/profile:
+ export QTDIR="C:\Qt\4.3.2"
+ export PATH=$PATH:/c/Qt/4.3.2/bin
+ export QMAKESPEC=win32-g++
+
+Then run:
+ $ cmake -G "MSYS Makefiles" .
+ $ make
+
+Building under MinGW32
+----------------------
+
+Qt and CMake must be in the %PATH%. An easy way to do this is to
+copy qtvars.bat and add the path to CMake. Then, copy the shortcut
+from the Start menu, and edit the path to point to the altered
+qtvars.bat
+
+Then run:
+ > cmake -G "MinGW Makefiles" .
+ > mingw32-make
+
+Patches
+-------
+
+The patch to add the BrowserExecutable option is in:
+ ../src/archived-patches/vidalia-startbrowser.patch
+As of Vidalia revision 2207, this patch is now integrated and so no
+longer needs to be applied manually:
+ http://trac.vidalia-project.net/changeset/2207
+
+A patch to close the Browser when Vidalia exits is in:
+ ../src/vidalia-killbrowser.patch
+This is not yet useful, since killing FirefoxPortable does not cause
+Firefox to exit. This patch has not yet been applied to Vidalia.
+
+
+Building OpenSSL, zlib, libevent and Tor
+========================================
+
+Full instructions in:
+ https://tor-svn.freehaven.net/svn/tor/trunk/doc/tor-win32-mingw-creation.txt
+
+Uncompressing OpenSSL shows a number of errors concerning symlinks.
+These do not appear to have caused a problem.
+
+For zlib, use the first option (zlib.a)
+
+For libevent, use 1.3e, as suggested by the document above.
+libevent 1.4.0 is newer but untested.
+
+It is tor-resolve, not tor_resolve.exe
+
+Autoconf 2.56 appears to work fine (2.59 is mentioned in the instructions)
+
+
+Building Firefox
+================
+
+Currently the Tor Browser Bundle uses FirefoxPortable binaries.
+Eventually it should use a custom build of Firefox. 
+
+Tested compilers
+----------------
+
+MinGW32 cross compile under Linux:
+ Failed to work (unsupported by Mozilla)
+MSVC 8 (Visual Studio .NET 2005):
+ Failed to work (unsupported by Mozilla for Firefox 2, but should work
+ for Firefox >=3)
+ With some patches it may be possible to build Firefox 2:
+  http://georgedexter.wordpress.com/2007/03/03/building-firefox-2002-on-windows/
+MSVC 7.1 (Visual Studio .NET 2003):
+ Works, provided  msvcp71.dll and msvcr71.dll are copied
+
+For more information see:
+ http://developer.mozilla.org/en/docs/Windows_Build_Prerequisites
+ http://developer.mozilla.org/en/docs/Build_and_Install
+
+Instructions for MSVC 7.1
+-------------------------
+
+- Install MSVC 7.1 (Visual Studio .NET 2003) and upgrade using Microsoft Update
+
+- Download Platform SDK from
+  http://www.microsoft.com/downloads/details.aspx?familyid=0baf2b35-c656-4969-ace8-e4c0c0716adb
+
+- Install MozillaBuild from
+  http://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/MozillaBuildSetup-1.1.exe
+
+- Run e:\mozilla-build\start-msvc8.bat
+
+  $ cd "e:\mozilla\build"
+  $ tar -xjvf ../firefox-2.0.0.9-source.tar.bz2
+  $ cd mozilla
+  [ dot_mozconfg is in config/ ]
+  $ cp ../dot_mozconfig .mozconfig
+  $ make -f client.mk build
+
+- Copy msvcp71.dll and msvcr71.dll from "Microsot Visual Studio .NET 2003\Visual
+  Studio .NET Professional 2003 - English" to obj-i686-pc-mingw32\dist\bin
+
+- Add "msvcp71.dll" and "msvcr71.dll" to browser/installer/windows/packages-static
+
+$ make -C obj-i686-pc-mingw32/browser/installer
+
