@@ -30,6 +30,9 @@ Vidalia modifications
   launches Firefox.
   Let's wait until Vidalia launches Firefox directly. -RD
 
+- Implement UPNP
+  Perhaps based on this library http://search.cpan.org/src/SKONNO/Net-UPnP-1.2.1/
+
 Firefox modifications
 ---------------------
 
