@@ -74,4 +74,15 @@ Changelog
        Add Makefile rule for installing Quick Locale Switcher, but
        don't enable this by default
 0.0.5: Disable FirefoxPortable splash screen (2007-12-24)
-       New prefs.js to disable some undesirable features
+       New prefs.js:
+        - Disable history storage
+        - Disable <a ping> handling
+        - Disable session storage (crash recovery)
+        - Disable logging of CSS errors
+        - Disable persistent cookies
+        - Disable IPv6
+        - Disable external protocol handlers
+        - Disable failover to a secondary proxy
+        - Sanitize cookies and passwords on shutdown
+        - Prevent scripts calling plugins
+        - Empty add-on installation whitelist
