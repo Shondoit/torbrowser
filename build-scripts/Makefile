@@ -149,3 +149,15 @@ clean:
 	rm -f *~
 	rm -fr $(DEST) $(BINARIES) $(DOCS)
 	rm -f "Tor Browser.exe"
+
+## Export the source code of the bundle
+SRCVERSION=0.0.5
+SRCNAME=torbrowser-$(SRCVERSION)
+SRCDEST=/tmp
+SRCDESTPATH=$(SRCDEST)/$(SRCNAME)
+srcdist:
+	rm -fr $(SRCDESTPATH)
+	svn export https://tor-svn.freehaven.net/svn/torbrowser/trunk/ \
+                   $(SRCDESTPATH)
+	cd $(SRCDEST); tar --exclude www --exclude src -czvf \
+                       $(SRCNAME)-src.tar.gz $(SRCNAME) 
