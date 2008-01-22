@@ -152,7 +152,7 @@ clean:
 
 ## Export the source code of the bundle
 SRCVERSION=0.0.5
-SRCNAME=torbrowser-$(SRCVERSION)
+SRCNAME=tor-browser-$(SRCVERSION)
 SRCDEST=/tmp
 SRCDESTPATH=$(SRCDEST)/$(SRCNAME)
 srcdist:
