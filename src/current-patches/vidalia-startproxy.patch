@@ -1,0 +1,429 @@
+Index: src/vidalia/browserprocess.cpp
+===================================================================
+--- src/vidalia/browserprocess.cpp	(revision 2320)
++++ src/vidalia/browserprocess.cpp	(working copy)
+@@ -1,63 +0,0 @@
+-/****************************************************************
+- *  This file was originally written by Steven J. Murdoch, and 
+- *  modified by Matt Edman. It is distributed under the following
+- *  license:
+- *
+- *  Copyright (C) 2007, Matt Edman
+- *  Copyright (C) 2007, Steven J. Murdoch 
+- *                      <http://www.cl.cam.ac.uk/users/sjm217/>
+- *
+- *  This program is free software; you can redistribute it and/or
+- *  modify it under the terms of the GNU General Public License
+- *  as published by the Free Software Foundation; either version 2
+- *  of the License, or (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *  GNU General Public License for more details.
+- *
+- *  You should have received a copy of the GNU General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, 
+- *  Boston, MA  02110-1301, USA.
+- ****************************************************************/
+-
+-/**
+- * \file browserprocess.cpp
+- * \version $Id$
+- * \brief Invokes a web browser process (originally by Steven. J. Murdoch)
+- */
+-
+-#include <QString>
+-  
+-#include "browserprocess.h"
+-
+-
+-/** Default constructor */
+-BrowserProcess::BrowserProcess(QObject *parent)
+-: QProcess(parent)
+-{
+-  // Call error handling routine on errors
+-  QObject::connect(this, SIGNAL(error(QProcess::ProcessError)),
+-                   this, SLOT(onError(QProcess::ProcessError)));
+-}
+-
+-/** Start the specified application. */
+-void
+-BrowserProcess::start(const QString &app, const QStringList &args) 
+-{
+-  // Start the specified application
+-  QProcess::start(app, args, QIODevice::ReadOnly | QIODevice::Text);
+-}
+-
+-/** Invoked when underlying QProcess fails. */
+-void
+-BrowserProcess::onError(QProcess::ProcessError error)
+-{
+-  // Pass up error messages on startup, but ignore the rest
+-  if (error == QProcess::FailedToStart) {
+-    emit startFailed(errorString());
+-  }
+-}
+-
+Index: src/vidalia/browserprocess.h
+===================================================================
+--- src/vidalia/browserprocess.h	(revision 2320)
++++ src/vidalia/browserprocess.h	(working copy)
+@@ -1,57 +0,0 @@
+-/****************************************************************
+- *  This file was originally written by Steven J. Murdoch, and 
+- *  modified by Matt Edman. It is distributed under the following
+- *  license:
+- * 
+- *  Copyright (C) 2007, Matt Edman
+- *  Copyright (C) 2007, Steven J. Murdoch 
+- *                      <http://www.cl.cam.ac.uk/users/sjm217/>
+- *
+- *  This program is free software; you can redistribute it and/or
+- *  modify it under the terms of the GNU General Public License
+- *  as published by the Free Software Foundation; either version 2
+- *  of the License, or (at your option) any later version.
+- *
+- *  This program is distributed in the hope that it will be useful,
+- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- *  GNU General Public License for more details.
+- *
+- *  You should have received a copy of the GNU General Public License
+- *  along with this program; if not, write to the Free Software
+- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, 
+- *  Boston, MA  02110-1301, USA.
+- ****************************************************************/
+-
+-/**
+- * \file browserprocess.cpp
+- * \version $Id$ 
+- * \brief Invokes a web browser process (originally by Steven. J. Murdoch)
+- */
+-
+-#ifndef _BROWSERPROCESS_H
+-#define _BROWSERPROCESS_H
+-
+-#include <QProcess>
+-
+-
+-class BrowserProcess : public QProcess
+-{
+-  Q_OBJECT
+-
+-public:
+-  /** Default constructor */
+-  BrowserProcess(QObject *parent = 0);
+-  /** Start the specified application. */
+-  void start(const QString &app, const QStringList &args);
+-
+-private slots:
+-  /** Invoked when underlying QProcess fails. */
+-  void onError(QProcess::ProcessError error);
+-
+-signals:
+-  /** Invoked when start() fails. */
+-  void startFailed(const QString &errorMessage);
+-};
+-
+-#endif
+Index: src/vidalia/CMakeLists.txt
+===================================================================
+--- src/vidalia/CMakeLists.txt	(revision 2320)
++++ src/vidalia/CMakeLists.txt	(working copy)
+@@ -182,7 +182,7 @@
+   vclicklabel.cpp
+   vidaliawindow.cpp
+   vmessagebox.cpp
+-  browserprocess.cpp
++  helperprocess.cpp
+ )
+ qt4_wrap_cpp(vidalia_SRCS
+   vidalia.h
+@@ -191,7 +191,7 @@
+   vclicklabel.h
+   vidaliawindow.h
+   vmessagebox.h
+-  browserprocess.h
++  helperprocess.h
+ )
+ 
+ ## Specify all the Qt Designer .ui files
+@@ -288,3 +288,4 @@
+   install(FILES vidalia.desktop DESTINATION share/applications)
+ endif(NOT WIN32 AND NOT APPLE)
+ 
++
+Index: src/vidalia/config/vidaliasettings.cpp
+===================================================================
+--- src/vidalia/config/vidaliasettings.cpp	(revision 2320)
++++ src/vidalia/config/vidaliasettings.cpp	(working copy)
+@@ -43,6 +43,7 @@
+ #define SETTING_DATA_DIRECTORY      "DataDirectory"
+ #define SETTING_SHOW_MAINWINDOW_AT_START  "ShowMainWindowAtStart"
+ #define SETTING_BROWSER_EXECUTABLE  "BrowserExecutable"
++#define SETTING_PROXY_EXECUTABLE  "ProxyExecutable"
+ 
+ #if defined(Q_OS_WIN32)
+ #define STARTUP_REG_KEY        "Software\\Microsoft\\Windows\\CurrentVersion\\Run"
+@@ -74,6 +75,7 @@
+   setDefault(SETTING_RUN_TOR_AT_START, true);
+   setDefault(SETTING_SHOW_MAINWINDOW_AT_START, true);
+   setDefault(SETTING_BROWSER_EXECUTABLE, "");
++  setDefault(SETTING_PROXY_EXECUTABLE, "");
+ }
+ 
+ /** Gets the currently preferred language code for Vidalia. */
+@@ -186,3 +188,18 @@
+   setValue(SETTING_BROWSER_EXECUTABLE, browserExecutable);
+ }
+ 
++/** Returns a fully-qualified path to the proxy server, including the
++ * executable name. */
++QString
++VidaliaSettings::getProxyExecutable() const
++{
++  return QDir::convertSeparators(value(SETTING_PROXY_EXECUTABLE).toString());
++}
++
++/** Sets the location and name of the proxy server executable to the given string.
++ * If set to the empty string, the proxy will not be started. */
++void
++VidaliaSettings::setProxyExecutable(const QString &proxyExecutable)
++{
++  setValue(SETTING_PROXY_EXECUTABLE, proxyExecutable);
++}
+Index: src/vidalia/config/vidaliasettings.h
+===================================================================
+--- src/vidalia/config/vidaliasettings.h	(revision 2320)
++++ src/vidalia/config/vidaliasettings.h	(working copy)
+@@ -78,6 +78,14 @@
+   /** Sets the location and name of the web browser executable to the given string.
+    * If set to the empty string, the browser will not be started. */
+   void setBrowserExecutable(const QString &browserExecutable);
++
++  /** Returns a fully-qualified path to the proxy server, including the
++   * executable name. */
++  QString getProxyExecutable() const;
++
++  /** Sets the location and name of the proxy server executable to the given string.
++   * If set to the empty string, the proxy will not be started. */
++  void setProxyExecutable(const QString &proxyExecutable);
+ };
+ 
+ #endif
+Index: src/vidalia/helperprocess.cpp
+===================================================================
+--- src/vidalia/helperprocess.cpp	(revision 2320)
++++ src/vidalia/helperprocess.cpp	(working copy)
+@@ -24,18 +24,18 @@
+  ****************************************************************/
+ 
+ /**
+- * \file browserprocess.cpp
++ * \file helperprocess.cpp
+  * \version $Id$
+  * \brief Invokes a web browser process (originally by Steven. J. Murdoch)
+  */
+ 
+ #include <QString>
+   
+-#include "browserprocess.h"
++#include "helperprocess.h"
+ 
+ 
+ /** Default constructor */
+-BrowserProcess::BrowserProcess(QObject *parent)
++HelperProcess::HelperProcess(QObject *parent)
+ : QProcess(parent)
+ {
+   // Call error handling routine on errors
+@@ -45,7 +45,7 @@
+ 
+ /** Start the specified application. */
+ void
+-BrowserProcess::start(const QString &app, const QStringList &args) 
++HelperProcess::start(const QString &app, const QStringList &args) 
+ {
+   // Start the specified application
+   QProcess::start(app, args, QIODevice::ReadOnly | QIODevice::Text);
+@@ -53,7 +53,7 @@
+ 
+ /** Invoked when underlying QProcess fails. */
+ void
+-BrowserProcess::onError(QProcess::ProcessError error)
++HelperProcess::onError(QProcess::ProcessError error)
+ {
+   // Pass up error messages on startup, but ignore the rest
+   if (error == QProcess::FailedToStart) {
+@@ -61,3 +61,4 @@
+   }
+ }
+ 
++
+Index: src/vidalia/helperprocess.h
+===================================================================
+--- src/vidalia/helperprocess.h	(revision 2320)
++++ src/vidalia/helperprocess.h	(working copy)
+@@ -24,24 +24,24 @@
+  ****************************************************************/
+ 
+ /**
+- * \file browserprocess.cpp
++ * \file helperprocess.cpp
+  * \version $Id$ 
+  * \brief Invokes a web browser process (originally by Steven. J. Murdoch)
+  */
+ 
+-#ifndef _BROWSERPROCESS_H
+-#define _BROWSERPROCESS_H
++#ifndef _HELPERPROCESS_H
++#define _HELPERPROCESS_H
+ 
+ #include <QProcess>
+ 
+ 
+-class BrowserProcess : public QProcess
++class HelperProcess : public QProcess
+ {
+   Q_OBJECT
+ 
+ public:
+   /** Default constructor */
+-  BrowserProcess(QObject *parent = 0);
++  HelperProcess(QObject *parent = 0);
+   /** Start the specified application. */
+   void start(const QString &app, const QStringList &args);
+ 
+Index: src/vidalia/mainwindow.cpp
+===================================================================
+--- src/vidalia/mainwindow.cpp	(revision 2320)
++++ src/vidalia/mainwindow.cpp	(working copy)
+@@ -147,13 +147,18 @@
+   _torControl->setEvent(TorEvents::ClientStatus,  this, true);
+   _torControl->setEvent(TorEvents::GeneralStatus, this, true);
+ 
+-  /* Create a new BrowserProcess object, used to start the web browser */
+-  _browserProcess = new BrowserProcess(this);
++  /* Create a new HelperProcess object, used to start the web browser */
++  _browserProcess = new HelperProcess(this);
+   connect(_browserProcess, SIGNAL(finished(int, QProcess::ExitStatus)),
+            this, SLOT(onBrowserFinished(int, QProcess::ExitStatus)));
+   connect(_browserProcess, SIGNAL(startFailed(QString)),
+            this, SLOT(onBrowserFailed(QString)));
+ 
++  /* Create a new HelperProcess object, used to start the proxy server */
++  _proxyProcess = new HelperProcess(this);
++  connect(_proxyProcess, SIGNAL(startFailed(QString)),
++           this, SLOT(onProxyFailed(QString)));
++
+   /* Catch signals when the application is running or shutting down */
+   connect(vApp, SIGNAL(running()), this, SLOT(running()));
+   connect(vApp, SIGNAL(shutdown()), this, SLOT(shutdown()));
+@@ -226,6 +231,9 @@
+     /* If we're supposed to start Tor when Vidalia starts, then do it now */
+     start();
+   }
++
++  /* Start the proxy server, if configured */
++  startProxy();
+ }
+ 
+ /** Terminate the Tor process if it is being run under Vidalia, disconnect all
+@@ -238,6 +246,11 @@
+     _torControl->stop();
+   }
+ 
++  if (_proxyProcess->state() != QProcess::NotRunning) {
++    /* Close the proxy server (Polipo ignores the WM_CLOSE event sent by terminate() so we have to kill() it) */
++    _proxyProcess->kill();
++  }
++
+   /* Disconnect all of the TorControl object's signals */
+   QObject::disconnect(_torControl, 0, 0, 0);
+ 
+@@ -438,6 +451,29 @@
+               VMessageBox::Ok|VMessageBox::Default|VMessageBox::Escape);
+ }
+ 
++/** Starts the proxy server, if appropriately configured */
++void MainWindow::startProxy()
++{
++  VidaliaSettings settings;
++  QString executable = settings.getProxyExecutable();
++  
++  if (!executable.isEmpty())
++    _proxyProcess->start(executable, QStringList());
++}
++
++/** Called when the proxy server fails to start, for example, because
++ * the path specified didn't lead to an executable. */
++void
++MainWindow::onProxyFailed(QString errmsg)
++{
++  Q_UNUSED(errmsg);
++ 
++  /* Display an error message and see if the user wants some help */
++  VMessageBox::warning(this, tr("Error starting proxy server"),
++              tr("Vidalia was unable to start the configured proxy server"),
++              VMessageBox::Ok|VMessageBox::Default|VMessageBox::Escape);
++}
++
+ /** Updates the UI to reflect Tor's current <b>status</b>. Returns the
+  * previously set TorStatus value.*/
+ MainWindow::TorStatus
+@@ -1151,3 +1187,4 @@
+   return "Unknown";
+ }
+ 
++
+Index: src/vidalia/mainwindow.h
+===================================================================
+--- src/vidalia/mainwindow.h	(revision 2320)
++++ src/vidalia/mainwindow.h	(working copy)
+@@ -40,7 +40,7 @@
+ #include "help/browser/helpbrowser.h"
+ #include "network/netviewer.h"
+ #include "ui_mainwindow.h"
+-#include "browserprocess.h"
++#include "helperprocess.h"
+ 
+ 
+ class MainWindow : public VidaliaWindow
+@@ -112,6 +112,8 @@
+   void onBrowserFinished(int exitCode, QProcess::ExitStatus exitStatus);
+   /** Called web the web browser failed to start */
+   void onBrowserFailed(QString errmsg);
++  /** Called when the proxy server fails to start */
++  void onProxyFailed(QString errmsg);
+   
+ private:
+   enum TorStatus {
+@@ -138,6 +140,8 @@
+   TorStatus updateTorStatus(TorStatus status);
+   /** Starts the web browser, if appropriately configured */
+   void startBrowser();
++  /** Starts the proxy server, if appropriately configured */
++  void startProxy();
+   /** Converts a TorStatus enum value to a string for debug logging purposes. */
+   QString toString(TorStatus status);
+   /** Authenticates Vidalia to Tor's control port. */
+@@ -175,8 +179,10 @@
+   ConfigDialog* _configDialog;
+   /** A TorControl object that handles communication with Tor */
+   TorControl* _torControl;
+-  /** A BrowserProcess object that manages the web browser */
+-  BrowserProcess* _browserProcess;
++  /** A HelperProcess object that manages the web browser */
++  HelperProcess* _browserProcess;
++  /** A HelperProcess object that manages the proxy server */
++  HelperProcess* _proxyProcess;
+   /** Remembers the control password between when we start Tor with a hash of
+    * the password and when we need to provide the password itself. */
+   QString _controlPassword;
+@@ -200,3 +206,4 @@
+ 
+ #endif
+ 
++
