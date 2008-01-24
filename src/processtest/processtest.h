@@ -56,6 +56,8 @@ private:
     BrowserProcess *_browser;
     // Command line to start
     QString _cmd;
+    // Is the application running
+    bool _isRunning;
 };
 
 #endif

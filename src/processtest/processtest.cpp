@@ -48,6 +48,7 @@ ProcessTest::ProcessTest(QWidget *parent)
 
     // Initialize the process handler
     _browser = new BrowserProcess();
+    _isRunning = false;
  
     // Connect up the button
     QObject::connect(_button, SIGNAL(clicked()), this, SLOT(onClicked()));
@@ -60,25 +61,37 @@ ProcessTest::ProcessTest(QWidget *parent)
 
 void ProcessTest::onClicked()
 {
-    // Start the application
-    _button->setText(tr("Starting...") + _cmd);
-    _browser->start(_cmd, QStringList());
+    if (isRunning)
+    {
+        // Application is running: kill it
+        _button->setText(tr("Terminating..."));
+        _browser->terminate();
+    }
+    else
+    {
+        // Application is not running: start it
+        _button->setText(tr("Starting...") + _cmd);
+        _browser->start(_cmd, QStringList());
+    }
 }
 
 void ProcessTest::onStarted()
 {
     // Application has started
     _button->setText(tr("Running..."));
+    _isRunning = true;
 }
 
 void ProcessTest::onFinished()
 {
     // Application has finished
     _button->setText(tr("Stopped"));
+    _isRunning = false;
 }
 
 void ProcessTest::onFailed()
 {
     // Application failed to start
     _button->setText(tr("Failed"));
+    _isRunning = false;
 }
