@@ -50,6 +50,13 @@ private slots:
     // Button was clicked
     void onClicked();
 private:
+    // What state is the application in
+    enum AppStateEnum {
+      Stopped,
+      Started,
+      Terminating
+    };
+
     // The push button
     QPushButton *_button;
     // Process handler
@@ -57,7 +64,7 @@ private:
     // Command line to start
     QString _cmd;
     // Is the application running
-    bool _isRunning;
+    AppStateEnum _appState;
 };
 
 #endif
