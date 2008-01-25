@@ -54,7 +54,7 @@ $(TORBUTTON):
 bundle: package-files install-torbutton patch-language launcher
 
 launcher:
-	echo 'start /b .\\App\\vidalia.exe --datadir .\\Data\\Vidalia\\' > $(DEST)/"Tor Browser.bat"
+	echo 'start /b .\\App\\vidalia.exe --datadir .\\Data\\Vidalia\\' > $(DEST)/"Start Tor Browser.bat"
 
 ## This dummy profile is created just for installing extensions, otherwise Firefox
 ## will output files in the default one
