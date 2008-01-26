@@ -89,3 +89,4 @@ Changelog
         - Empty add-on installation whitelist
 0.0.6: Released 2008-01-xx
        Rename start file "Start Tor Browser" so as to be easier to explain
+       Location of wget is now a configurable parameter

@@ -12,6 +12,7 @@ QT=/c/Qt/4.3.2/bin
 VIDALIA=/c/build/vidalia
 TOR=/c/build/tor-0.2.0.12-alpha
 SEVENZIP="/c/Program Files/7-Zip/7z.exe"
+WGET=wget
 
 FIREFOX_SRC="FirefoxPortable"
 CONFIG_SRC=config
@@ -49,7 +50,7 @@ install-docs:
 
 TORBUTTON=torbutton-1.1.12-alpha.xpi
 $(TORBUTTON):
-	wget http://torbutton.torproject.org/dev/releases/$(TORBUTTON)
+	$(WGET) http://torbutton.torproject.org/dev/releases/$(TORBUTTON)
 
 bundle: package-files install-torbutton patch-language launcher
 
@@ -104,14 +105,14 @@ install-qls: quick_locale_switcher.xpi
 
 ## Download language packs
 langpack_fa.xpi:
-	wget -O $@ https://addons.mozilla.org/en-US/firefox/downloads/file/18157/persian_language_pack-2.0.0.6-fx.xpi
+	$(WGET) -O $@ https://addons.mozilla.org/en-US/firefox/downloads/file/18157/persian_language_pack-2.0.0.6-fx.xpi
 
 langpack_zh-cn.xpi:
-	wget -O $@ http://releases.mozilla.org/pub/mozilla.org/firefox/releases/2.0.0.11/win32/xpi/zh-CN.xpi
+	$(WGET) -O $@ http://releases.mozilla.org/pub/mozilla.org/firefox/releases/2.0.0.11/win32/xpi/zh-CN.xpi
 
 ## Download Quick Locale Switcher
 quick_locale_switcher.xpi:
-	wget -O $@ https://addons.mozilla.org/en-US/firefox/downloads/file/20672/quick_locale_switcher-1.6.3.7-fx+mz+tb+sb+nvu+ns+sm+fl.xpi
+	$(WGET) -O $@ https://addons.mozilla.org/en-US/firefox/downloads/file/20672/quick_locale_switcher-1.6.3.7-fx+mz+tb+sb+nvu+ns+sm+fl.xpi
 
 ## Set the language for Vidalia and Firefox
 ## Currently supported: en: English; fa: Farsi; zh-cn: Chinese simplified
