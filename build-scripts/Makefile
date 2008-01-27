@@ -7,19 +7,28 @@
 ### $Id$
 ###
 
+## Location of required libraries
 MING=/c/MinGW/bin
 QT=/c/Qt/4.3.2/bin
+
+## Location of bundle components
 VIDALIA=/c/build/vidalia
 TOR=/c/build/tor-0.2.0.12-alpha
-SEVENZIP="/c/Program Files/7-Zip/7z.exe"
-WGET=wget
-
+POLIPO=/c/build/polipo-1.0.4
 FIREFOX_SRC="FirefoxPortable"
+
+## Location of utility applications
+SEVENZIP="/c/Program Files/7-Zip/7z.exe"
+WGET="/c/Python25/python.exe /c/build/torbrowser/build-scripts/pyget.py"
+
+## Location of config files
 CONFIG_SRC=config
 
+## Destination directories for binaries and documentation
 BINARIES=binaries
 DOCS=docs
 
+## Destination for bundle
 DEST="Tor Browser"
 
 all:
@@ -34,6 +43,7 @@ install-binaries:
 	cp $(QT)/QtCore4.dll $(QT)/QtGui4.dll \
            $(QT)/QtNetwork4.dll $(QT)/QtXml4.dll $(BINARIES) 
 	cp $(VIDALIA)/src/vidalia/vidalia.exe $(BINARIES)
+	cp $(POLIPO)/polipo.exe $(BINARIES)
 	cp $(TOR)/src/or/tor.exe $(TOR)/src/tools/tor-resolve.exe $(BINARIES)
 
 ## Collect up license files
@@ -43,10 +53,12 @@ install-docs:
 	mkdir -p $(DOCS)/tor
 	mkdir -p $(DOCS)/qt
 	mkdir -p $(DOCS)/mingw
+	mkdir -p $(DOCS)/polipo
 	cp $(VIDALIA)/LICENSE $(VIDALIA)/COPYING $(VIDALIA)/AUTHORS $(QT)/../LICENSE.GPL $(DOCS)/vidalia
 	cp $(TOR)/LICENSE $(TOR)/AUTHORS $(DOCS)/tor
 	cp $(QT)/../LICENSE.GPL $(DOCS)/qt
 	cp $(MING)/../COPYING $(DOCS)/mingw
+	cp $(POLIPO)/COPYING  $(POLIPO)/README $(DOCS)/polipo
 
 TORBUTTON=torbutton-1.1.12-alpha.xpi
 $(TORBUTTON):
@@ -67,6 +79,7 @@ package-files: install-binaries install-docs $(TORBUTTON)
 	mkdir -p $(DEST)/App
 	mkdir -p $(DEST)/Data/Tor
 	mkdir -p $(DEST)/Data/Vidalia
+	mkdir -p $(DEST)/Data/Polipo
 	mkdir -p $(DEST)/Docs
 	## Copy over Firefox Portable
 	cp -R $(FIREFOX_SRC) $(DEST)/FirefoxPortable
@@ -78,9 +91,11 @@ package-files: install-binaries install-docs $(TORBUTTON)
 	cp $(CONFIG_SRC)/FirefoxPortable.ini $(DEST)/FirefoxPortable
 	## Configure Vidalia
 	cp $(CONFIG_SRC)/vidalia.conf $(DEST)/Data/Vidalia
+	## Configure Polipo
+	cp $(CONFIG_SRC)/polipo.conf $(DEST)/Data/Polipo/polipo.conf
 	## Configure Tor
 	cp $(CONFIG_SRC)/torrc $(DEST)/Data/Tor
-	## Copy over Vidalia and Tor
+	## Copy over Vidalia, Tor and Polipo
 	cp -R $(BINARIES)/* $(DEST)/App
 	## Copy over documentation
 	cp -R $(DOCS)/* $(DEST)/Docs

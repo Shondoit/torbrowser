@@ -12,6 +12,7 @@ Contents
 
 - Building Tor Browser Bundle
 - Building Vidalia
+- Building Polipo
 - Building OpenSSL, zlib, libevent and Tor
 - Building Firefox
 
@@ -22,16 +23,18 @@ Building Tor Browser Bundle
 To build Tor Browser Bundle, you need to have built:
  Vidalia (in /c/build/vidalia by default)
  Tor (in /c/build/tor-<version> by default)
+ Polipo (in /c/build/polipo-<version> by default)
 and have uncompressed Firefox Portable
  FirefoxPortable (in ./FirefoxPortable/ by default)
 
-Instructions for building Vidalia and Tor are included below.
+Instructions for building Vidalia, Polipo and Tor are included below.
 
 To compress the bundle and build the self-extracting executable you
 need to have installed 7zip.
 
-Vidalia needs to have the BrowserExecutable functionality. Currently
-this is only available in the Vidalia trunk.
+Vidalia needs to have the BrowserExecutable and ProxyExecutable
+options. Currently this is only available in the Vidalia trunk
+revision 2324 and later.
 
 FirefoxPortable can be downloaded from:
  http://portableapps.com/apps/internet/firefox_portable
@@ -39,11 +42,21 @@ FirefoxPortable can be downloaded from:
 7zip is needed to compress the bundle can be downloaded from:
  http://www.7-zip.org/download.html
 
+Python or wget are needed to download required Firefox
+extensions. Python can be downloaded from:
+ http://python.org/download/
+Instructions for downloading, compiling and installing wget for MSYS
+can be found at:
+ http://www.mingw.org/MinGWiki/index.php/mingwPORT
+
+
 Customization
 -------------
 
 The locations of Qt, MinGW32, the Vidalia/Tor build directory, 7zip,
-FirefoxPortable can be altered in Makefile.
+FirefoxPortable can be altered in Makefile. The WGET variable should
+be either set to the location of a wget binary, or a command line for
+executing pyget.py under the installed Python interpreter.
 
 Building the bundle
 -------------------
@@ -60,8 +73,6 @@ To compress it, run "make compress-bundle"
 
 Building Vidalia
 ================
-
-Full instructions are in the Vidalia INSTALL file.
 
 Building under MSYS
 -------------------
@@ -90,16 +101,30 @@ Then run:
 Patches
 -------
 
-The patch to add the BrowserExecutable option is in:
- ../src/archived-patches/vidalia-startbrowser.patch
-As of Vidalia revision 2207, this patch is now integrated and so no
-longer needs to be applied manually:
- http://trac.vidalia-project.net/changeset/2207
-
 A patch to close the Browser when Vidalia exits is in:
  ../src/current-patches/vidalia-killbrowser.patch
 This is not yet useful, since killing FirefoxPortable does not cause
 Firefox to exit. This patch has not yet been applied to Vidalia.
+
+Further information
+-------------------
+
+Full instructions are in the Vidalia INSTALL file.
+
+
+Building Polipo
+===============
+
+Overwrite the Makefile that comes with Polipo with:
+ https://tor-svn.freehaven.net/svn/tor/trunk/contrib/polipo/Makefile.mingw
+
+Run "make"
+
+Further information
+-------------------
+
+Full instructions in:
+ https://tor-svn.freehaven.net/svn/tor/trunk/contrib/polipo/README
 
 
 Building OpenSSL, zlib, libevent and Tor
