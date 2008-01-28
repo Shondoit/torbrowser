@@ -91,7 +91,7 @@ General
 
 - Add ToaST-like bootstrap mode
 
-- Make a web page for bundle
+- Move "installer" to something more usable (NSIS?)
 
 Questions
 =========
@@ -101,6 +101,9 @@ our target audience?
 
 Done
 ====
+
+[ Done: 2008-01-22 ]
+- Make a web page for bundle
 
 [ Done: 2007-12-12 ]
 - Add bookmarks that will help people understand tor better
