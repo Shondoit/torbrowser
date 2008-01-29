@@ -89,9 +89,12 @@ General
 - Investigate updating Tor automatically
 [low priority]
 
-- Add ToaST-like bootstrap mode
+- Add ToaST-like bootstrap mode/other pre-caching/disk-caching
+  performance improvements (and understand the bottleneck)
 
 - Move "installer" to something more usable (NSIS?)
+
+- Make it easier to include optional Firefox extensions
 
 Questions
 =========
