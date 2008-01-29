@@ -13,13 +13,13 @@ QT=/c/Qt/4.3.2/bin
 
 ## Location of bundle components
 VIDALIA=/c/build/vidalia
-TOR=/c/build/tor-0.2.0.12-alpha
+TOR=/c/build/tor-0.2.0.18-alpha
 POLIPO=/c/build/polipo-1.0.4
 FIREFOX_SRC="FirefoxPortable"
 
 ## Location of utility applications
 SEVENZIP="/c/Program Files/7-Zip/7z.exe"
-WGET="/c/Python25/python.exe /c/build/torbrowser/build-scripts/pyget.py"
+WGET=/c/Python25/python.exe /c/build/torbrowser/build-scripts/pyget.py
 
 ## Location of config files
 CONFIG_SRC=config
@@ -55,7 +55,7 @@ install-docs:
 	mkdir -p $(DOCS)/mingw
 	mkdir -p $(DOCS)/polipo
 	cp $(VIDALIA)/LICENSE $(VIDALIA)/COPYING $(VIDALIA)/AUTHORS $(QT)/../LICENSE.GPL $(DOCS)/vidalia
-	cp $(TOR)/LICENSE $(TOR)/AUTHORS $(DOCS)/tor
+	cp $(TOR)/LICENSE $(TOR)/AUTHORS $(TOR)/README $(DOCS)/tor
 	cp $(QT)/../LICENSE.GPL $(DOCS)/qt
 	cp $(MING)/../COPYING $(DOCS)/mingw
 	cp $(POLIPO)/COPYING  $(POLIPO)/README $(DOCS)/polipo
@@ -167,7 +167,7 @@ clean:
 	rm -f "Tor Browser.exe"
 
 ## Export the source code of the bundle
-SRCVERSION=0.0.5
+SRCVERSION=0.0.6
 SRCNAME=tor-browser-$(SRCVERSION)
 SRCDEST=/tmp
 SRCDESTPATH=$(SRCDEST)/$(SRCNAME)

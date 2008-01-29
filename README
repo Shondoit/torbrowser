@@ -39,8 +39,8 @@ Further issues are discussed in TODO.
 Included applications
 ---------------------
 
-Vidalia (svn trunk revision 2213)
-Tor 0.2.0.12-alpha (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8g) 
+Vidalia (svn trunk revision 2337)
+Tor 0.2.0.18-alpha (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8g) 
 FirefoxPortable 2.0.0.11
  \_ Firefox 2.0.0.11
     \_ Torbutton 1.1.12-alpha
@@ -87,6 +87,10 @@ Changelog
         - Sanitize cookies and passwords on shutdown
         - Prevent scripts calling plugins
         - Empty add-on installation whitelist
-0.0.6: Released 2008-01-xx
+0.0.6: Released 2008-01-29
        Rename start file "Start Tor Browser" so as to be easier to explain
        Location of wget is now a configurable parameter
+       Vidalia updated to r2337 (for ProxyExecutable(Arguments) options
+       Tor updated to 0.2.0.18-alpha
+       Polipo 1.0.4 now included in bundle and Firefox configured
+       Firefox now configured to use proxies at 127.0.0.1 to prevent IPv6 attempt
