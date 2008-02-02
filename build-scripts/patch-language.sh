@@ -11,7 +11,19 @@
 
 ## Parse command line
 FILENAME=$1
-LANGCODE=$2
+MOZLANG=$2
+
+## Handle exceptions where Mozilla language definition doesn't equal Vidalia's
+case "$MOZLANG" in
+    'es-ES') LANGCODE='es'
+    ;;
+    'pt-PT') LANGCODE='pt'
+    ;;
+    'zh-CN') LANGCODE='zh-cn'
+    ;;
+    *) LANGCODE="$MOZLANG"
+    ;;
+esac
 
 ## Backup original file
 ORIGFILENAME=$FILENAME.orig
