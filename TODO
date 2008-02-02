@@ -6,9 +6,6 @@
 Vidalia modifications
 ---------------------
 
-- Make Vidalia start and stop Polipo too
-[high priority]
-
 - Make Vidalia show some evidence of activity while it is starting Tor
 [mid priority -- what do you have in mind here?]
 
@@ -109,6 +106,10 @@ our target audience?
 
 Done
 ====
+
+[ Done: 2008-01-30 ]
+- Make Vidalia start and stop Polipo too
+[high priority]
 
 [ Done: 2008-01-22 ]
 - Make a web page for bundle
