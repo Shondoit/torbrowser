@@ -14,6 +14,8 @@ Vidalia modifications
 
 - Prevent user from starting Firefox manually while Tor is still
   starting up
+  OR (preferably)
+- Allow normal Firefox and Tor Browser to co-exist safely
 [mid priority]
 
 - Also make Vidalia show what percentage progress Tor has made in
@@ -95,6 +97,9 @@ General
 - Move "installer" to something more usable (NSIS?)
 
 - Make it easier to include optional Firefox extensions
+
+- Split archive or make auto-downloader to help people who cannot
+  download large files in one go
 
 Questions
 =========
