@@ -115,6 +115,16 @@ Full instructions are in the Vidalia INSTALL file.
 Building Polipo
 ===============
 
+In order to enable the forbiddenFile functionality, the GNU Regex
+library is required. Download the -bin and -dev tarballs from:
+
+ http://sourceforge.net/project/showfiles.php?group_id=2435&package_id=73286&release_id=140957
+
+Extract them both into you MinGW directory, e.g.
+
+ $ tar -C /c/MinGW -xzvf mingw-libgnurx-2.5.1-bin.tar.gz 
+ $ tar -C /c/MinGW -xzvf mingw-libgnurx-2.5.1-dev.tar.gz 
+
 Overwrite the Makefile that comes with Polipo with:
  https://tor-svn.freehaven.net/svn/tor/trunk/contrib/polipo/Makefile.mingw
 
