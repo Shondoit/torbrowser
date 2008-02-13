@@ -25,7 +25,7 @@ To build Tor Browser Bundle, you need to have built:
  Tor (in /c/build/tor-<version> by default)
  Polipo (in /c/build/polipo-<version> by default)
 and have uncompressed Firefox Portable
- FirefoxPortable (in ./FirefoxPortable/ by default)
+ FirefoxPortable (in /c/build/FirefoxPortable by default)
 
 Instructions for building Vidalia, Polipo and Tor are included below.
 

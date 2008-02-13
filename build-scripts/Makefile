@@ -19,11 +19,11 @@ QT=/c/Qt/4.3.2/bin
 VIDALIA=/c/build/vidalia
 TOR=/c/build/tor-0.2.0.18-alpha
 POLIPO=/c/build/polipo-1.0.4
-FIREFOX_SRC="FirefoxPortable"
+FIREFOX_SRC=/c/build/FirefoxPortable
 
 ## Location of utility applications
 SEVENZIP="/c/Program Files/7-Zip/7z.exe"
-WGET=/c/Python25/python.exe /c/build/torbrowser/build-scripts/pyget.py
+WGET:=/c/Python25/python.exe $(shell pwd)/pyget.py
 
 ## Location of config files
 CONFIG_SRC=config
@@ -36,6 +36,9 @@ NAME="Tor Browser"
 
 ## Extensions to install by default
 DEFAULT_EXTENSIONS=torbutton.xpi
+
+## Where to download Torbutton from
+TORBUTTON=http://torbutton.torproject.org/dev/torbutton-current-alpha.xpi
 
 ## Put more extensions here
 EXTENSIONS_DIR=extensions
@@ -133,9 +136,8 @@ launcher:
 ##
 
 ## Torbutton development version
-TORBUTTON=torbutton-1.1.12-alpha.xpi
 torbutton.xpi:
-	$(WGET) -O $@ http://torbutton.torproject.org/dev/releases/$(TORBUTTON)
+	$(WGET) -O $@ $(TORBUTTON)
 
 ## Generic language pack rule
 langpack_%.xpi:
@@ -157,7 +159,7 @@ quick_locale_switcher.xpi:
 
 bundle_%:
 	LANGCODE=$* make bundle
-	
+
 bundle: copy-base install-extensions patch-vidalia-language patch-firefox-config
 
 compress-bundle:
