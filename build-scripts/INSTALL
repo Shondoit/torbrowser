@@ -71,47 +71,6 @@ e.g. "LANGCODE=fa make bundle" or "LANGCODE=zh-cn make bundle"
 To compress it, run "make compress-bundle"
 
 
-Building Vidalia
-================
-
-Building under MSYS
--------------------
-
-Add the following to /etc/profile:
- export QTDIR="C:\Qt\4.3.2"
- export PATH=$PATH:/c/Qt/4.3.2/bin
- export QMAKESPEC=win32-g++
-
-Then run:
- $ cmake -G "MSYS Makefiles" .
- $ make
-
-Building under MinGW32
-----------------------
-
-Qt and CMake must be in the %PATH%. An easy way to do this is to
-copy qtvars.bat and add the path to CMake. Then, copy the shortcut
-from the Start menu, and edit the path to point to the altered
-qtvars.bat
-
-Then run:
- > cmake -G "MinGW Makefiles" .
- > mingw32-make
-
-Patches
--------
-
-A patch to close the Browser when Vidalia exits is in:
- ../src/current-patches/vidalia-killbrowser.patch
-This is not yet useful, since killing FirefoxPortable does not cause
-Firefox to exit. This patch has not yet been applied to Vidalia.
-
-Further information
--------------------
-
-Full instructions are in the Vidalia INSTALL file.
-
-
 Building Polipo
 ===============
 
@@ -150,6 +109,50 @@ For zlib, use the first option (zlib.a)
 
 For libevent, use 1.3e, as suggested by the document above.
 libevent 1.4.0 is newer but untested.
+
+
+Building Vidalia
+================
+
+To use QSslSocket for GeoIP lookups, install OpenSSL before building
+Vidalia (see above).
+
+Building under MSYS
+-------------------
+
+Add the following to /etc/profile:
+ export QTDIR="C:\Qt\4.3.2"
+ export PATH=$PATH:/c/Qt/4.3.2/bin
+ export QMAKESPEC=win32-g++
+
+Then run:
+ $ cmake -G "MSYS Makefiles" .
+ $ make
+
+Building under MinGW32
+----------------------
+
+Qt and CMake must be in the %PATH%. An easy way to do this is to
+copy qtvars.bat and add the path to CMake. Then, copy the shortcut
+from the Start menu, and edit the path to point to the altered
+qtvars.bat
+
+Then run:
+ > cmake -G "MinGW Makefiles" .
+ > mingw32-make
+
+Patches
+-------
+
+A patch to close the Browser when Vidalia exits is in:
+ ../src/current-patches/vidalia-killbrowser.patch
+This is not yet useful, since killing FirefoxPortable does not cause
+Firefox to exit. This patch has not yet been applied to Vidalia.
+
+Further information
+-------------------
+
+Full instructions are in the Vidalia INSTALL file.
 
 
 Building Firefox
