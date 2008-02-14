@@ -61,7 +61,7 @@ all-bundles: bundle_en bundle_de bundle_es-ES bundle_fr bundle_nl \
 ##
 
 clean:
-	rm -fr $(DEST)
+	rm -fr $(DEST) generic-bundle.stamp
 	rm -f *~
 	rm -fr $(DEST) $(BINARIES) $(DOCS)
 	rm -f "Tor Browser.exe"
@@ -71,7 +71,8 @@ clean:
 ##
 
 ## Install binaries, documentation, FirefoxPortable and launcher into $(DEST)
-$(DEST): directory-structure install-binaries install-docs install-firefoxportable configure-apps launcher
+generic-bundle.stamp: directory-structure install-binaries install-docs install-firefoxportable configure-apps launcher
+	touch generic-bundle.stamp
 
 APPDIR=$(DEST)/App
 DOCSDIR=$(DEST)/Docs
@@ -90,6 +91,7 @@ directory-structure:
 ## Filenames extracted using Dependency Walker <http://www.dependencywalker.com/>
 install-binaries: 
 	cp $(MING)/mingwm10.dll $(APPDIR)
+	cp $(MING)/libgnurx-0.dll $(APPDIR)
 	cp $(QT)/QtCore4.dll $(QT)/QtGui4.dll \
            $(QT)/QtNetwork4.dll $(QT)/QtXml4.dll $(APPDIR) 
 	cp $(VIDALIA)/src/vidalia/vidalia.exe $(APPDIR)
@@ -160,7 +162,7 @@ quick_locale_switcher.xpi:
 bundle_%:
 	LANGCODE=$* make bundle
 
-bundle: copy-base install-extensions patch-vidalia-language patch-firefox-config
+bundle: generic-bundle.stamp copy-base install-extensions patch-vidalia-language patch-firefox-config
 
 compress-bundle:
 	cd $(NAME)_$(LANGCODE); $(SEVENZIP) a -sfx7z.sfx $(NAME)_$(LANGCODE).exe $(NAME)
