@@ -190,7 +190,7 @@ install-extensions: $(DEFAULT_EXTENSIONS) langpack_$(LANGCODE).xpi
 ## Set the language for Vidalia
 patch-vidalia-language:
 	## Patch Vidalia
-	./patch-language.sh $(BUNDLE)/Data/Vidalia/vidalia.conf $(LANGCODE)
+	./patch-vidalia-language.sh $(BUNDLE)/Data/Vidalia/vidalia.conf $(LANGCODE)
 
 patch-firefox-language:
 	## Patch Firefox prefs.js

@@ -19,3 +19,6 @@ mv "$FILENAME" "$ORIGFILENAME"
 
 ## Replace LanguageCode value with $LANGCODE
 sed -c "s/BUNDLELOCALE/$LANGCODE/" "$ORIGFILENAME" > "$FILENAME"
+
+## Remove backup
+rm -f "$ORIGFILENAME"

@@ -33,3 +33,6 @@ mv "$FILENAME" "$ORIGFILENAME"
 
 ## Replace LanguageCode value with $LANGCODE
 sed -c "s/\\(LanguageCode=\\).*/\\1$LANGCODE/" "$ORIGFILENAME" > "$FILENAME"
+
+## Remove backup
+rm -f "$ORIGFILENAME"
