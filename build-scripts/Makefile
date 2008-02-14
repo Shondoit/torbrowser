@@ -71,7 +71,9 @@ clean:
 ##
 
 ## Install binaries, documentation, FirefoxPortable and launcher into $(DEST)
-generic-bundle.stamp: directory-structure install-binaries install-docs install-firefoxportable configure-apps launcher
+generic-bundle.stamp:
+	make generic-bundle
+generic-bundle: directory-structure install-binaries install-docs install-firefoxportable configure-apps launcher
 	touch generic-bundle.stamp
 
 APPDIR=$(DEST)/App
