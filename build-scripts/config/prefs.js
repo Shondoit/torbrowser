@@ -61,6 +61,7 @@ user_pref("extensions.update.notifyUser", false);
 user_pref("general.appname.override", "Netscape");
 user_pref("general.appversion.override", "5.0 (Windows; en-US)");
 user_pref("general.platform.override", "Win32");
+user_pref("general.useragent.locale", "BUNDLELOCALE");
 user_pref("general.useragent.override", "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.7) Gecko/20070914 Firefox/2.0.0.7");
 user_pref("general.useragent.vendor", "");
 user_pref("general.useragent.vendorSub", "");

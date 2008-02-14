@@ -17,6 +17,8 @@ MOZLANG=$2
 case "$MOZLANG" in
     'es-ES') LANGCODE='es'
     ;;
+    'fa-IR') LANGCODE='fa'
+    ;;
     'pt-PT') LANGCODE='pt'
     ;;
     'zh-CN') LANGCODE='zh-cn'

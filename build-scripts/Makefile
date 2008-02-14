@@ -51,10 +51,10 @@ EXTENSIONS_DIR=extensions
 ## Default rule
 ##
 
-bundle: bundle_en
+bundle: bundle_en-US
 
-all-bundles: bundle_en bundle_de bundle_es-ES bundle_fr bundle_nl \
-             bundle_pt-PT bundle_ru bundle zh-CN
+all-bundles: bundle_en-US bundle_de bundle_es-ES bundle_fa-IR \
+             bundle_fr bundle_nl bundle_pt-PT bundle_ru bundle_zh-CN
 
 ##
 ## Cleanup
@@ -63,7 +63,7 @@ all-bundles: bundle_en bundle_de bundle_es-ES bundle_fr bundle_nl \
 clean:
 	rm -fr $(DEST) generic-bundle.stamp
 	rm -f *~
-	rm -fr $(DEST) $(BINARIES) $(DOCS)
+	rm -fr *.xpi
 	rm -f "Tor Browser.exe"
 
 ##
@@ -143,12 +143,12 @@ torbutton.xpi:
 
 ## Generic language pack rule
 langpack_%.xpi:
-	$(WGET) -O $@ http://releases.mozilla.org/pub/mozilla.org/firefox/releases/2.0.0.11/win32/xpi/%.xpi
+	$(WGET) -O $@ http://releases.mozilla.org/pub/mozilla.org/firefox/releases/2.0.0.11/win32/xpi/$*.xpi
 ## Persian isn't a supported language by Firefox yet
-langpack_fa.xpi:
+langpack_fa-IR.xpi:
 	$(WGET) -O $@ https://addons.mozilla.org/en-US/firefox/downloads/file/18157/persian_language_pack-2.0.0.6-fx.xpi
 ## English comes as default
-langpack_en.xpi:
+langpack_en-US.xpi:
 	touch $@
 
 ## Download Quick Locale Switcher
@@ -160,9 +160,9 @@ quick_locale_switcher.xpi:
 ##
 
 bundle_%:
-	LANGCODE=$* make bundle
+	LANGCODE=$* make bundle-localized
 
-bundle: generic-bundle.stamp copy-base install-extensions patch-vidalia-language patch-firefox-config
+bundle-localized: generic-bundle.stamp copy-base install-extensions patch-vidalia-language patch-firefox-language
 
 compress-bundle:
 	cd $(NAME)_$(LANGCODE); $(SEVENZIP) a -sfx7z.sfx $(NAME)_$(LANGCODE).exe $(NAME)
@@ -173,10 +173,11 @@ copy-base:
 
 BUNDLE=$(NAME)_$(LANGCODE)/$(NAME)
 DUMMYPROFILE=$(BUNDLE)/FirefoxPortable/App/DummyProfile
-install-extensions:
+install-extensions: $(DEFAULT_EXTENSIONS) langpack_$(LANGCODE).xpi
 	## Make a dummy profile to stop Firefox creating some large files
 	cp -R $(BUNDLE)/FirefoxPortable/App/DefaultData $(DUMMYPROFILE)
-	for extension in $(DEFAULT_EXTENSIONS) $(EXTENSIONS_DIR)/*; \
+	## Install default extensions and everything from extensions directory
+	for extension in langpack_$(LANGCODE).xpi $(DEFAULT_EXTENSIONS) $(EXTENSIONS_DIR)/*.xpi; \
 	  do $(BUNDLE)/FirefoxPortable/App/firefox/firefox.exe \
              -profile $(DUMMYPROFILE) \
              -install-global-extension $$extension; \
@@ -187,10 +188,11 @@ install-extensions:
 ## Set the language for Vidalia
 patch-vidalia-language:
 	## Patch Vidalia
-	./patch-language.sh $(DEST)/Data/Vidalia/vidalia.conf $(LANGCODE)
+	./patch-language.sh $(BUNDLE)/Data/Vidalia/vidalia.conf $(LANGCODE)
 
-patch-firefox-config:
-	## TODO
+patch-firefox-language:
+	## Patch Firefox prefs.js
+	./patch-firefox-language.sh $(BUNDLE)/FirefoxPortable/App/DefaultData/profile/prefs.js $(LANGCODE)
 
 ###
 ### Utilities
