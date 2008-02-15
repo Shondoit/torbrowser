@@ -58,18 +58,37 @@ FirefoxPortable can be altered in Makefile. The WGET variable should
 be either set to the location of a wget binary, or a command line for
 executing pyget.py under the installed Python interpreter.
 
+To install additional Firefox extensions, place the .xpi file in the
+build-scripts/extensions directory before building the bundle.
+
 Building the bundle
 -------------------
 
 Firefox must not be running while you are building the bundle.
 
-Run "make bundle"
+Run "make bundle_LANGUAGE", e.g. "make bundle_en-US".
 
-To specify a different language configuration, set $LANGCODE,
-e.g. "LANGCODE=fa make bundle" or "LANGCODE=zh-cn make bundle"
+Alternatively, to build a compressed executable version, run "make
+compressed-bundle_LANGUAGE", e.g. "make compressed-bundle_de".
 
-To compress it, run "make compress-bundle"
+Currently supported language codes are:
+ - ar
+ - en-US
+ - de
+ - es-ES
+ - fa-IR
+ - fr
+ - nl
+ - pt-PT
+ - ru
+ - zh-CN
 
+New languages can be added by finding out the appropriate Mozilla
+language pack code from:
+ http://releases.mozilla.org/pub/mozilla.org/firefox/releases/2.0.0.12/win32/xpi
+
+If the Mozilla code differs from the Vidalia one, update
+patch-vidalia-language.sh accordingly.
 
 Building Polipo
 ===============

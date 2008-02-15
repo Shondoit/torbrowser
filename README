@@ -39,12 +39,12 @@ Further issues are discussed in TODO.
 Included applications
 ---------------------
 
-Vidalia (svn trunk revision 2337)
-Tor 0.2.0.18-alpha (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8g) 
+Vidalia (svn trunk revision 2346)
+Tor 0.2.0.19-alpha (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8g) 
 Polipo 1.0.4
 FirefoxPortable 2.0.0.11
  \_ Firefox 2.0.0.11
-    \_ Torbutton 1.1.12-alpha
+    \_ Torbutton 1.1.13-alpha
 
 Usage
 -----
@@ -95,3 +95,13 @@ Changelog
        Tor updated to 0.2.0.18-alpha
        Polipo 1.0.4 now included in bundle and Firefox configured
        Firefox now configured to use proxies at 127.0.0.1 to prevent IPv6 attempt
+0.0.7: Released 2008-02-08
+       Security update of FirefoxPortable to v2.0.12 (see
+        http://www.mozilla.org/projects/security/known-vulnerabilities.html#Firefox)
+0.0.8: Released 2008-02-15
+       Security update of Torbutton to v1.1.13 (see
+        http://torbutton.torproject.org/dev/CHANGELOG)
+       Automate generation of internationalized bundles
+       Allow optional extensions to be placed in build-scripts/extensions
+       Build Polipo with regular expression support, activating forbiddenFile option
+       Update Polipo configuration based on Incognito suggestions
