@@ -15,6 +15,8 @@ MOZLANG=$2
 
 ## Handle exceptions where Mozilla language definition doesn't equal Vidalia's
 case "$MOZLANG" in
+    'en-US') LANGCODE='en'
+    ;;
     'es-ES') LANGCODE='es'
     ;;
     'fa-IR') LANGCODE='fa'

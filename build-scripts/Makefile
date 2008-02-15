@@ -34,11 +34,18 @@ DEST="Generic Bundle"
 ## Name of the bundle"
 NAME="Tor Browser"
 
+## Version and name of the compressed bundle (also used for source)
+VERSION=0.0.8
+COMPRESSED_NAME=tor-browser-$(VERSION)
+
 ## Extensions to install by default
 DEFAULT_EXTENSIONS=torbutton.xpi
 
 ## Where to download Torbutton from
 TORBUTTON=http://torbutton.torproject.org/dev/torbutton-current-alpha.xpi
+
+## Where to download Mozilla language packs
+MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/2.0.0.12/win32/xpi
 
 ## Put more extensions here
 EXTENSIONS_DIR=extensions
@@ -53,8 +60,16 @@ EXTENSIONS_DIR=extensions
 
 bundle: bundle_en-US
 
-all-bundles: bundle_en-US bundle_de bundle_es-ES bundle_fa-IR \
-             bundle_fr bundle_nl bundle_pt-PT bundle_ru bundle_zh-CN
+all-bundles: compressed-bundle_ar \
+	compressed-bundle_en-US \
+	compressed-bundle_de \
+	compressed-bundle_es-ES \
+	compressed-bundle_fa-IR \
+	compressed-bundle_fr \
+	compressed-bundle_nl \
+	compressed-bundle_pt-PT \
+	compressed-bundle_ru \
+	compressed-bundle_zh-CN
 
 ##
 ## Cleanup
@@ -65,6 +80,8 @@ clean:
 	rm -f *~
 	rm -fr *.xpi
 	rm -f "Tor Browser.exe"
+	rm -fr $(NAME)_*
+	rm -fr $(COMPRESSED_NAME)_*.exe
 
 ##
 ## Generate a non-localized bundle and put in $(DEST)
@@ -145,7 +162,7 @@ torbutton.xpi:
 
 ## Generic language pack rule
 langpack_%.xpi:
-	$(WGET) -O $@ http://releases.mozilla.org/pub/mozilla.org/firefox/releases/2.0.0.11/win32/xpi/$*.xpi
+	$(WGET) -O $@ $(MOZILLA_LANGUAGE)/$*.xpi
 ## Persian isn't a supported language by Firefox yet
 langpack_fa-IR.xpi:
 	$(WGET) -O $@ https://addons.mozilla.org/en-US/firefox/downloads/file/18157/persian_language_pack-2.0.0.6-fx.xpi
@@ -163,11 +180,13 @@ quick_locale_switcher.xpi:
 
 bundle_%:
 	LANGCODE=$* make bundle-localized
+compressed-bundle_%:
+	LANGCODE=$* make compressed-bundle-localized
 
 bundle-localized: generic-bundle.stamp copy-base install-extensions patch-vidalia-language patch-firefox-language
 
-compress-bundle:
-	cd $(NAME)_$(LANGCODE); $(SEVENZIP) a -sfx7z.sfx $(NAME)_$(LANGCODE).exe $(NAME)
+compressed-bundle-localized: bundle-localized
+	cd $(NAME)_$(LANGCODE); $(SEVENZIP) a -sfx7z.sfx ../$(COMPRESSED_NAME)_$(LANGCODE).exe $(NAME)
 
 copy-base:
 	mkdir $(NAME)_$(LANGCODE)
@@ -205,8 +224,7 @@ apply-prefs:
 	cp $(DEST)/FirefoxPortable/Data/profile/prefs.js $(CONFIG_SRC)
 
 ## Export the source code of the bundle
-SRCVERSION=0.0.6
-SRCNAME=tor-browser-$(SRCVERSION)
+SRCNAME=$(COMPRESSED_NAME)
 SRCDEST=/tmp
 SRCDESTPATH=$(SRCDEST)/$(SRCNAME)
 srcdist:
