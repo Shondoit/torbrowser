@@ -185,6 +185,7 @@ compressed-bundle_%:
 
 bundle-localized: generic-bundle.stamp copy-base install-extensions patch-vidalia-language patch-firefox-language
 
+## TODO: don't rebuild bundle if it's already there
 compressed-bundle-localized: bundle-localized
 	cd $(NAME)_$(LANGCODE); $(SEVENZIP) a -sfx7z.sfx ../$(COMPRESSED_NAME)_$(LANGCODE).exe $(NAME)
 
