@@ -11,3 +11,4 @@ Implementations:
  http://miniupnp.free.fr/
  http://search.cpan.org/~skonno/Net-UPnP-1.2.1/
  http://miniupnp.free.fr/libnatpmp.html
+ libktupnp from http://ktorrent.org/
