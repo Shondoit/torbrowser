@@ -1,0 +1,13 @@
+Useful links
+============
+
+Port forwarding protocol:
+ http://en.wikipedia.org/wiki/Internet_Gateway_Device
+
+Alternatives:
+ http://en.wikipedia.org/wiki/NAT_Port_Mapping_Protocol (Apple products)
+
+Implementations:
+ http://miniupnp.free.fr/
+ http://search.cpan.org/~skonno/Net-UPnP-1.2.1/
+ http://miniupnp.free.fr/libnatpmp.html
