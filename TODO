@@ -92,6 +92,9 @@ General
   performance improvements (and understand the bottleneck)
 
 - Move "installer" to something more usable (NSIS?)
+  - Set default extraction location the Desktop
+  - Allow it to be translated
+  - Make the directory selector clearer (not "...")
 
 - Make it easier to include optional Firefox extensions
 
