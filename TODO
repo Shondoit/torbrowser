@@ -96,8 +96,6 @@ General
   - Allow it to be translated
   - Make the directory selector clearer (not "...")
 
-- Make it easier to include optional Firefox extensions
-
 - Split archive or make auto-downloader to help people who cannot
   download large files in one go
 
@@ -109,6 +107,10 @@ our target audience?
 
 Done
 ====
+
+[ Done: 2008-02-15 ]
+
+- Make it easier to include optional Firefox extensions
 
 [ Done: 2008-01-30 ]
 - Make Vidalia start and stop Polipo too
