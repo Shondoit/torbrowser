@@ -124,7 +124,7 @@ install-docs:
 	mkdir -p $(DOCSDIR)/Qt
 	mkdir -p $(DOCSDIR)/MinGW
 	mkdir -p $(DOCSDIR)/Polipo
-	cp $(VIDALIA)/LICENSE $(VIDALIA)/COPYING $(VIDALIA)/AUTHORS $(QT)/../LICENSE.GPL $(DOCSDIR)/Vidalia
+	cp $(VIDALIA)/LICENSE* $(VIDALIA)/CREDITS $(QT)/../LICENSE.GPL $(DOCSDIR)/Vidalia
 	cp $(TOR)/LICENSE $(TOR)/AUTHORS $(TOR)/README $(DOCSDIR)/Tor
 	cp $(QT)/../LICENSE.GPL $(DOCSDIR)/Qt
 	cp $(MING)/../COPYING $(DOCSDIR)/MinGW
