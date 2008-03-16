@@ -27,7 +27,7 @@ user_pref("browser.search.update", false);
 user_pref("browser.send_pings", false);
 user_pref("browser.sessionstore.enabled", false);
 user_pref("browser.shell.checkDefaultBrowser", false);
-user_pref("browser.startup.homepage", "http://check.torproject.org/");
+user_pref("browser.startup.homepage", "https://check.torproject.org/?lang=BUNDLELOCALE");
 user_pref("browser.startup.homepage_override.mstone", "rv:1.8.1.12");
 user_pref("dom.storage.enabled", false);
 user_pref("extensions.lastAppVersion", "2.0.0.12");
