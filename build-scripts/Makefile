@@ -190,6 +190,7 @@ compressed-bundle-localized: bundle-localized
 	cd $(NAME)_$(LANGCODE); $(SEVENZIP) a -sfx7z.sfx ../$(COMPRESSED_NAME)_$(LANGCODE).exe $(NAME)
 
 copy-base:
+	rm -fr $(NAME)_$(LANGCODE)
 	mkdir $(NAME)_$(LANGCODE)
 	cp -R $(DEST) $(NAME)_$(LANGCODE)/$(NAME)
 
