@@ -17,7 +17,7 @@ QT=/c/Qt/4.3.2/bin
 
 ## Location of bundle components
 VIDALIA=/c/build/vidalia
-TOR=/c/build/tor-0.2.0.19-alpha
+TOR=/c/build/tor-0.2.0.22-rc
 POLIPO=/c/build/polipo-1.0.4
 FIREFOX_SRC=/c/build/FirefoxPortable
 
@@ -35,7 +35,7 @@ DEST="Generic Bundle"
 NAME="Tor Browser"
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=0.0.8
+VERSION=1.0.0
 COMPRESSED_NAME=tor-browser-$(VERSION)
 
 ## Extensions to install by default

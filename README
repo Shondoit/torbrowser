@@ -32,19 +32,18 @@ Using build-scripts/Makefile it is possible to create a working USB
 Tor bundle. It's limitations include:
  - It uses the FirefoxPortable binaries
  - The starting program doesn't have a pretty icon
- - Polipo is not included, instead Firefox connects directly to Tor
 
 Further issues are discussed in TODO.
 
 Included applications
 ---------------------
 
-Vidalia (svn trunk revision 2346)
-Tor 0.2.0.19-alpha (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8g) 
+Vidalia (svn trunk revision 2423)
+Tor 0.2.0.22-rc (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8g) 
 Polipo 1.0.4
-FirefoxPortable 2.0.0.11
- \_ Firefox 2.0.0.11
-    \_ Torbutton 1.1.13-alpha
+FirefoxPortable 2.0.0.12
+ \_ Firefox 2.0.0.12
+    \_ Torbutton 1.1.17-alpha
 
 Usage
 -----
@@ -105,3 +104,13 @@ Changelog
        Allow optional extensions to be placed in build-scripts/extensions
        Build Polipo with regular expression support, activating forbiddenFile option
        Update Polipo configuration based on Incognito suggestions
+1.0.0: Released 2008-03-20
+       Fix parse errors in polipo.conf (Phillip)
+       Move to HTTPS and specify language in homepage URL (check.torproject.org)
+       Update Vidalia license
+       Fix Makefile error when re-building the bundle
+       Update of Tor to 0.2.0.22-rc
+       Update of Torbutton to v1.1.17 (see
+        http://torbutton.torproject.org/dev/CHANGELOG)
+       Update of Vidalia to revision 2424
+       Supress warning on viewing an encrypted page

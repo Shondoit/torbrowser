@@ -93,6 +93,7 @@ user_pref("privacy.sanitize.didShutdownSanitize", true);
 user_pref("privacy.sanitize.promptOnSanitize", false);
 user_pref("privacy.sanitize.sanitizeOnShutdown", true);
 user_pref("security.enable_java", false);
+user_pref("security.warn_entering_secure", false);
 user_pref("security.xpconnect.plugin.unrestricted", false);
 user_pref("signon.rememberSignons", false);
 user_pref("urlclassifier.tableversion.goog-black-enchash", "1.40619");
