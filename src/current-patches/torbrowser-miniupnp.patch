@@ -1,0 +1,28 @@
+Index: build-scripts/INSTALL
+===================================================================
+--- build-scripts/INSTALL	(revision 14128)
++++ build-scripts/INSTALL	(working copy)
+@@ -129,7 +129,23 @@
+ For libevent, use 1.3e, as suggested by the document above.
+ libevent 1.4.0 is newer but untested.
+ 
++Building miniupnp
++=================
+ 
++mingw32-make.exe -f Makefile.mingw
++INSTALL=install
++INSTALLPREFIX=/usr/local
++INSTALLDIRINC=$INSTALLPREFIX/include/miniupnpc
++INSTALLDIRLIB=$INSTALLPREFIX/lib
++HEADERS="miniupnpc.h miniwget.h upnpcommands.h igd_desc_parse.h upnpreplyparse.h upnperrors.h"
++LIBRARY=libminiupnpc.a
++APIVERSION=2
++SONAME=$SHAREDLIBRARY.$APIVERSION
++$INSTALL -d $INSTALLDIRINC
++$INSTALL --mode=644 $HEADERS $INSTALLDIRINC
++$INSTALL -d $INSTALLDIRLIB
++$INSTALL --mode=644 $LIBRARY $INSTALLDIRLIB
++
+ Building Vidalia
+ ================
+ 

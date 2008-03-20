@@ -1,0 +1,21 @@
+Index: src/vidalia/CMakeLists.txt
+===================================================================
+--- src/vidalia/CMakeLists.txt	(revision 2423)
++++ src/vidalia/CMakeLists.txt	(working copy)
+@@ -238,9 +238,16 @@
+ endif(APPLE)
+ add_dependencies(${vidalia_BIN} translations)
+ 
++## Link in miniupnpc
++find_library(MINIUPNPC
++    NAMES miniupnpc
++    PATHS ${MINIUPNPC_LIBRARY_DIR}
++)
++
+ ## Link to the Qt libraries and other libraries built as a part of Vidalia
+ target_link_libraries(${vidalia_BIN}
+   ${QT_LIBRARIES}
++  ${MINIUPNPC}
+   torcontrol
+   util
+ )
