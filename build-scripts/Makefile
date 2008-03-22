@@ -200,7 +200,7 @@ install-extensions: $(DEFAULT_EXTENSIONS) langpack_$(LANGCODE).xpi
 	## Make a dummy profile to stop Firefox creating some large files
 	cp -R $(BUNDLE)/FirefoxPortable/App/DefaultData $(DUMMYPROFILE)
 	## Install default extensions and everything from extensions directory
-	for extension in langpack_$(LANGCODE).xpi $(DEFAULT_EXTENSIONS) $(EXTENSIONS_DIR)/*.xpi; \
+	for extension in langpack_$(LANGCODE).xpi $(DEFAULT_EXTENSIONS) $(EXTENSIONS_DIR)/*.xpi $(EXTENSIONS_DIR)/*.jar; \
 	  do $(BUNDLE)/FirefoxPortable/App/firefox/firefox.exe \
              -profile $(DUMMYPROFILE) \
              -install-global-extension $$extension; \

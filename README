@@ -114,3 +114,5 @@ Changelog
         http://torbutton.torproject.org/dev/CHANGELOG)
        Update of Vidalia to revision 2424
        Supress warning on viewing an encrypted page
+1.0.1: Released 2008-xx-xx
+       Install .jar files placed in /extensions, as well as .xpi files
