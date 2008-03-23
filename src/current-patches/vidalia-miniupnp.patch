@@ -1,8 +1,29 @@
+Index: INSTALL
+===================================================================
+--- INSTALL	(revision 2423)
++++ INSTALL	(working copy)
+@@ -205,3 +205,7 @@
+ 'cmake --help' or 'man cmake' (on non-Windows platforms) for more information
+ about supported generators and configuration options.
+ 
++Including UPnP support
++----------------------
++
++cmake -G "MSYS Makefiles" -DMINIUPNPC_LIBRARY_DIR="/usr/local/lib" -DMINIUPNPC_INCLUDE_DIR="/usr/local/include" .
+\ No newline at end of file
 Index: src/vidalia/CMakeLists.txt
 ===================================================================
 --- src/vidalia/CMakeLists.txt	(revision 2423)
 +++ src/vidalia/CMakeLists.txt	(working copy)
-@@ -238,9 +238,16 @@
+@@ -16,6 +16,7 @@
+   ${CMAKE_CURRENT_SOURCE_DIR}
+   ${CMAKE_CURRENT_SOURCE_DIR}/config
+   ${CMAKE_CURRENT_SOURCE_DIR}/help/browser
++  ${MINIUPNPC_INCLUDE_DIR}
+ )
+ configure_file(
+   ${CMAKE_CURRENT_SOURCE_DIR}/vidalia.h.in
+@@ -238,9 +239,16 @@
  endif(APPLE)
  add_dependencies(${vidalia_BIN} translations)
  
@@ -33,11 +54,88 @@ Index: src/vidalia/config/serversettings.cpp
      rc = torControl()->setConf(confValues(), errmsg);
    } else { 
      QStringList resetKeys;
-@@ -152,6 +155,14 @@
+@@ -152,6 +155,91 @@
    return rc;
  }
  
++
++/** Based on http://miniupnp.free.fr/files/download.php?file=xchat-upnp20061022.patch */
++void
++ServerSettings::init_upnp()
++{
++  struct UPNPDev * devlist;
++  struct UPNPDev * dev;
++  char * descXML;
++  int descXMLsize = 0;
++  printf("TB : init_upnp()\n");
++  memset(&urls, 0, sizeof(struct UPNPUrls));
++  memset(&data, 0, sizeof(struct IGDdatas));
++  devlist = upnpDiscover(2000);
++  if (devlist)
++    {
++      dev = devlist;
++      while (dev)
++	{
++	  if (strstr (dev->st, "InternetGatewayDevice"))
++	    break;
++	  dev = dev->pNext;
++	}
++      if (!dev)
++	dev = devlist; /* defaulting to first device */
++
++      printf("UPnP device :\n"
++	     " desc: %s\n st: %s\n",
++	     dev->descURL, dev->st);
++
++      descXML = miniwget(dev->descURL, &descXMLsize);
++      if (descXML)
++	{
++	  parserootdesc (descXML, descXMLsize, &data);
++	  free (descXML); descXML = 0;
++	  GetUPNPUrls (&urls, &data, dev->descURL);
++	}
++      freeUPNPDevlist(devlist);
++    }
++
++}
++
++/** Based on http://miniupnp.free.fr/files/download.php?file=xchat-upnp20061022.patch */
++void
++ServerSettings::upnp_add_redir(const char * addr, int port)
++{
++	char port_str[16];
++	int r;
++	printf("TB : upnp_add_redir (%s, %d)\n", addr, port);
++	if(urls.controlURL[0] == '\0')
++	{
++		printf("TB : the init was not done !\n");
++		return;
++	}
++	sprintf(port_str, "%d", port);
++	r = UPNP_AddPortMapping(urls.controlURL, data.servicetype,
++	                        port_str, port_str, addr, 0, "TCP");
++	if(r==0)
++		printf("AddPortMapping(%s, %s, %s) failed\n", port_str, port_str, addr);
++}
++
++/** Based on http://miniupnp.free.fr/files/download.php?file=xchat-upnp20061022.patch */
++void
++ServerSettings::upnp_rem_redir(int port)
++{
++	char port_str[16];
++	int t;
++	printf("TB : upnp_rem_redir (%d)\n", port);
++	if(urls.controlURL[0] == '\0')
++	{
++		printf("TB : the init was not done !\n");
++		return;
++	}
++	sprintf(port_str, "%d", port);
++	UPNP_DeletePortMapping(urls.controlURL, data.servicetype, port_str, "TCP");
++}
++
 +/* TODO: We should call this periodically, in case the router gets rebooted or forgets its UPnP settings */
++/* TODO: Remove port forwarding when Tor is shutdown or the ORPort changes */
 +/** Configure UPnP device to forward DirPort and ORPort */
 +void
 +ServerSettings::configurePortForwarding()
@@ -48,3 +146,36 @@ Index: src/vidalia/config/serversettings.cpp
  /** Virtual method called when we retrieve a server-related setting from Tor.
   * Currently this just translates BandwidthFoo to RelayBandwidthFoo when
   * appropriate. */
+Index: src/vidalia/config/serversettings.h
+===================================================================
+--- src/vidalia/config/serversettings.h	(revision 2423)
++++ src/vidalia/config/serversettings.h	(working copy)
+@@ -20,6 +20,9 @@
+ #include "abstracttorsettings.h"
+ #include "exitpolicy.h"
+ 
++#include <miniupnpc/miniwget.h>
++#include <miniupnpc/miniupnpc.h>
++#include <miniupnpc/upnpcommands.h>
+ 
+ class ServerSettings : public AbstractTorSettings
+ {
+@@ -89,8 +92,18 @@
+   virtual QVariant torValue(const QString &key) const;
+ 
+ private:
++  /** Used by miniupnpc library */
++  static struct UPNPUrls urls;
++  static struct IGDdatas data;
++  void init_upnp();
++  void upnp_add_redir (const char * addr, int port);
++  void upnp_rem_redir(int port);
++
+   /** Returns Tor-recognizable configuration keys and current values. */
+   QHash<QString,QString> confValues();
++
++  /** Configure UPnP device to forward DirPort and ORPort */
++  void configurePortForwarding();
+ };
+ 
+ #endif
