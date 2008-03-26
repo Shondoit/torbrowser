@@ -38,11 +38,11 @@ Further issues are discussed in TODO.
 Included applications
 ---------------------
 
-Vidalia (svn trunk revision 2423)
-Tor 0.2.0.22-rc (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8g) 
+Vidalia (svn trunk revision 2464)
+Tor 0.2.0.23-rc (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8g) 
 Polipo 1.0.4
-FirefoxPortable 2.0.0.12
- \_ Firefox 2.0.0.12
+FirefoxPortable 2.0.0.13
+ \_ Firefox 2.0.0.13
     \_ Torbutton 1.1.17-alpha
 
 Usage
@@ -114,5 +114,10 @@ Changelog
         http://torbutton.torproject.org/dev/CHANGELOG)
        Update of Vidalia to revision 2424
        Supress warning on viewing an encrypted page
-1.0.1: Released 2008-xx-xx
+1.0.1: Released 2008-03-26
        Install .jar files placed in /extensions, as well as .xpi files
+       Update of Firefox to 2.0.0.13 to fix security problems (see
+        http://www.mozilla.org/projects/security/known-vulnerabilities.html#firefox2.0.0.13)
+       Update of Vidalia to revision 2464
+       Update of Tor to 0.2.0.23-rc
+       Update prefs.js for new Torbutton defaults
