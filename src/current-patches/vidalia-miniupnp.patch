@@ -69,7 +69,6 @@ Index: src/vidalia/config/serversettings.cpp
 +ServerSettings::init_upnp()
 +{
 +  struct UPNPDev * devlist;
-+  char lanaddr[256];
 +  int retval;
 +
 +  printf("TB : init_upnp()\n");
@@ -78,7 +77,7 @@ Index: src/vidalia/config/serversettings.cpp
 +  memset(&data, 0, sizeof(struct IGDdatas));
 +
 +  devlist = upnpDiscover(2000, NULL, NULL);
-+  retval = UPNP_GetValidIGD(devlist, &urls, &data, lanaddr, 256);
++  retval = UPNP_GetValidIGD(devlist, &urls, &data, lanaddr, sizeof(lanaddr));
 +  printf("UPNP: %d", retval);
 +
 +  freeUPNPDevlist(devlist);
@@ -127,6 +126,7 @@ Index: src/vidalia/config/serversettings.cpp
 +ServerSettings::configurePortForwarding()
 +{
 +  init_upnp();
++  upnp_add_redir(lanaddr, getORPort());
 +}
 +
  /** Virtual method called when we retrieve a server-related setting from Tor.
@@ -152,13 +152,14 @@ Index: src/vidalia/config/serversettings.h
  
  class ServerSettings : public AbstractTorSettings
  {
-@@ -89,9 +93,20 @@
+@@ -89,9 +93,21 @@
    virtual QVariant torValue(const QString &key) const;
  
  private:
 +  /** Used by miniupnpc library */
 +  struct UPNPUrls urls;
 +  struct IGDdatas data;
++  char lanaddr[16];
 +  void init_upnp();
 +  void upnp_add_redir (const char * addr, int port);
 +  void upnp_rem_redir(int port);
