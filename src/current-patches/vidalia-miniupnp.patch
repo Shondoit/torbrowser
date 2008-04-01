@@ -1,20 +1,7 @@
-Index: INSTALL
+Index: CMakeLists.txt
 ===================================================================
---- INSTALL	(revision 2465)
-+++ INSTALL	(working copy)
-@@ -206,3 +206,8 @@
- 'cmake --help' or 'man cmake' (on non-Windows platforms) for more information
- about supported generators and configuration options.
- 
-+Including UPnP support
-+----------------------
-+
-+cmake -G "MSYS Makefiles" -DMINIUPNPC_LIBRARY_DIR="/usr/local/lib" -DMINIUPNPC_INCLUDE_DIR="/usr/local/include" .
-+
-Index: src/vidalia/CMakeLists.txt
-===================================================================
---- src/vidalia/CMakeLists.txt	(revision 2465)
-+++ src/vidalia/CMakeLists.txt	(working copy)
+--- CMakeLists.txt	(revision 2473)
++++ CMakeLists.txt	(working copy)
 @@ -16,6 +16,7 @@
    ${CMAKE_CURRENT_SOURCE_DIR}
    ${CMAKE_CURRENT_SOURCE_DIR}/config
@@ -23,7 +10,23 @@ Index: src/vidalia/CMakeLists.txt
  )
  configure_file(
    ${CMAKE_CURRENT_SOURCE_DIR}/res/vidalia_win.rc.in
-@@ -234,9 +235,16 @@
+@@ -61,6 +62,7 @@
+   config/portvalidator.cpp
+   config/serverpage.cpp
+   config/serversettings.cpp
++  config/upnpcontrol.cpp
+   config/torsettings.cpp
+   config/vidaliasettings.cpp
+   config/vsettings.cpp
+@@ -80,6 +82,7 @@
+   config/portvalidator.h
+   config/serverpage.h
+   config/serversettings.h
++  config/upnpcontrol.h
+   config/torsettings.h
+   config/vidaliasettings.h
+   config/vsettings.h
+@@ -234,9 +237,16 @@
  endif(APPLE)
  add_dependencies(${vidalia_BIN} translations)
  
@@ -40,16 +43,19 @@ Index: src/vidalia/CMakeLists.txt
    torcontrol
    util
  )
-@@ -268,3 +276,4 @@
- endif(NOT WIN32 AND NOT APPLE)
- 
- 
-+
-Index: src/vidalia/config/serversettings.cpp
+Index: config/serversettings.cpp
 ===================================================================
---- src/vidalia/config/serversettings.cpp	(revision 2465)
-+++ src/vidalia/config/serversettings.cpp	(working copy)
-@@ -130,6 +130,9 @@
+--- config/serversettings.cpp	(revision 2473)
++++ config/serversettings.cpp	(working copy)
+@@ -20,6 +20,7 @@
+ 
+ #include "serversettings.h"
+ #include "torsettings.h"
++#include "upnpcontrol.h"
+ 
+ /** Define the set of characters that are valid in a nickname. */
+ #define VALID_NICKNAME_CHARS \
+@@ -130,6 +131,9 @@
    bool rc;
  
    if (isServerEnabled()) {
@@ -59,14 +65,83 @@ Index: src/vidalia/config/serversettings.cpp
      rc = torControl()->setConf(confValues(), errmsg);
    } else { 
      QStringList resetKeys;
-@@ -152,6 +155,72 @@
+@@ -152,6 +156,17 @@
    return rc;
  }
  
++/* TODO: We should call this periodically, in case the router gets rebooted or forgets its UPnP settings */
++/* TODO: Remove port forwarding when Tor is shutdown or the ORPort changes */
++/* TODO: init_upnp() will block for up to 2 seconds. We should fire off a thread */
++/** Configure UPnP device to forward DirPort and ORPort */
++void
++ServerSettings::configurePortForwarding()
++{
++  UPNPControl *pUNPControl = UPNPControl::Instance();
++  pUNPControl->forwardPort(getORPort());
++}
++
+ /** Virtual method called when we retrieve a server-related setting from Tor.
+  * Currently this just translates BandwidthFoo to RelayBandwidthFoo when
+  * appropriate. */
+Index: config/serversettings.h
+===================================================================
+--- config/serversettings.h	(revision 2473)
++++ config/serversettings.h	(working copy)
+@@ -91,6 +91,9 @@
+ private:
+   /** Returns Tor-recognizable configuration keys and current values. */
+   QHash<QString,QString> confValues();
++
++  /** Configure UPnP device to forward DirPort and ORPort */
++  void configurePortForwarding();
+ };
+ 
+ #endif
+Index: config/upnpcontrol.cpp
+===================================================================
+--- config/upnpcontrol.cpp	(revision 0)
++++ config/upnpcontrol.cpp	(revision 0)
+@@ -0,0 +1,93 @@
++/*
++**  This file is part of Vidalia, and is subject to the license terms in the
++**  LICENSE file, found in the top level directory of this distribution. If 
++**  you did not receive the LICENSE file with this file, you may obtain it
++**  from the Vidalia source package distributed by the Vidalia Project at
++**  http://www.vidalia-project.net/. No part of Vidalia, including this file,
++**  may be copied, modified, propagated, or distributed except according to
++**  the terms described in the LICENSE file.
++*/
++
++/* 
++** \file upnpcontrol.cpp
++** \version $Id: torcontrol.h 2362 2008-02-29 04:30:11Z edmanm $
++** \brief Singleton object for interacting with UPNP device
++*/
++
++#include "upnpcontrol.h"
++
++UPNPControl* UPNPControl::pInstance = 0;
++UPNPControl* UPNPControl::Instance()
++{
++  if (0 == pInstance)
++    pInstance = new UPNPControl;
++  return pInstance;
++}
++
++UPNPControl::UPNPControl()
++{
++  init_upnp();
++}
++
++void
++UPNPControl::forwardPort(int port)
++{
++  upnp_add_redir(lanaddr, port);
++}
 +
 +/** Based on http://miniupnp.free.fr/files/download.php?file=xchat-upnp20061022.patch */
 +void
-+ServerSettings::init_upnp()
++UPNPControl::init_upnp()
 +{
 +  struct UPNPDev * devlist;
 +  int retval;
@@ -85,7 +160,7 @@ Index: src/vidalia/config/serversettings.cpp
 +
 +/** Based on http://miniupnp.free.fr/files/download.php?file=xchat-upnp20061022.patch */
 +void
-+ServerSettings::upnp_add_redir(const char * addr, int port)
++UPNPControl::upnp_add_redir(const char * addr, int port)
 +{
 +	char port_str[16];
 +	int r;
@@ -93,6 +168,7 @@ Index: src/vidalia/config/serversettings.cpp
 +	if(urls.controlURL[0] == '\0')
 +	{
 +		printf("TB : the init was not done !\n");
++		fflush(stdout);
 +		return;
 +	}
 +	sprintf(port_str, "%d", port);
@@ -100,11 +176,12 @@ Index: src/vidalia/config/serversettings.cpp
 +	                        port_str, port_str, addr, 0, "TCP");
 +	if(r==0)
 +		printf("AddPortMapping(%s, %s, %s) failed\n", port_str, port_str, addr);
++	fflush(stdout);
 +}
 +
 +/** Based on http://miniupnp.free.fr/files/download.php?file=xchat-upnp20061022.patch */
 +void
-+ServerSettings::upnp_rem_redir(int port)
++UPNPControl::upnp_rem_redir(int port)
 +{
 +	char port_str[16];
 +	int t;
@@ -112,50 +189,55 @@ Index: src/vidalia/config/serversettings.cpp
 +	if(urls.controlURL[0] == '\0')
 +	{
 +		printf("TB : the init was not done !\n");
++		fflush(stdout);
 +		return;
 +	}
 +	sprintf(port_str, "%d", port);
 +	UPNP_DeletePortMapping(urls.controlURL, data.servicetype, port_str, "TCP");
 +}
-+
-+/* TODO: We should call this periodically, in case the router gets rebooted or forgets its UPnP settings */
-+/* TODO: Remove port forwarding when Tor is shutdown or the ORPort changes */
-+/* TODO: init_upnp() will block for up to 2 seconds. We should fire off a thread */
-+/** Configure UPnP device to forward DirPort and ORPort */
-+void
-+ServerSettings::configurePortForwarding()
-+{
-+  init_upnp();
-+  upnp_add_redir(lanaddr, getORPort());
-+}
-+
- /** Virtual method called when we retrieve a server-related setting from Tor.
-  * Currently this just translates BandwidthFoo to RelayBandwidthFoo when
-  * appropriate. */
-@@ -321,3 +390,4 @@
-   setValue(SETTING_BANDWIDTH_BURST, rate);
- }
- 
-+
-Index: src/vidalia/config/serversettings.h
+Index: config/upnpcontrol.h
 ===================================================================
---- src/vidalia/config/serversettings.h	(revision 2465)
-+++ src/vidalia/config/serversettings.h	(working copy)
-@@ -20,6 +20,10 @@
- #include "abstracttorsettings.h"
- #include "exitpolicy.h"
- 
+--- config/upnpcontrol.h	(revision 0)
++++ config/upnpcontrol.h	(revision 0)
+@@ -0,0 +1,48 @@
++/*
++**  This file is part of Vidalia, and is subject to the license terms in the
++**  LICENSE file, found in the top level directory of this distribution. If 
++**  you did not receive the LICENSE file with this file, you may obtain it
++**  from the Vidalia source package distributed by the Vidalia Project at
++**  http://www.vidalia-project.net/. No part of Vidalia, including this file,
++**  may be copied, modified, propagated, or distributed except according to
++**  the terms described in the LICENSE file.
++*/
++
++/* 
++** \file upnpcontrol.h
++** \version $Id: torcontrol.h 2362 2008-02-29 04:30:11Z edmanm $
++** \brief Singleton object for interacting with UPNP device
++*/
++
++#ifndef _UPNPCONTROL_H
++#define _UPNPCONTROL_H
++
++#include <QObject>
++
 +#define STATICLIB
 +#include <miniupnpc/miniwget.h>
 +#include <miniupnpc/miniupnpc.h>
 +#include <miniupnpc/upnpcommands.h>
- 
- class ServerSettings : public AbstractTorSettings
- {
-@@ -89,9 +93,21 @@
-   virtual QVariant torValue(const QString &key) const;
- 
- private:
++
++class UPNPControl : public QObject
++{
++  Q_OBJECT
++
++public:
++  static UPNPControl* Instance();
++  void forwardPort(int port);
++protected:
++  UPNPControl();
++private:
++  static UPNPControl* pInstance;
++
 +  /** Used by miniupnpc library */
 +  struct UPNPUrls urls;
 +  struct IGDdatas data;
@@ -163,14 +245,6 @@ Index: src/vidalia/config/serversettings.h
 +  void init_upnp();
 +  void upnp_add_redir (const char * addr, int port);
 +  void upnp_rem_redir(int port);
++};
 +
-   /** Returns Tor-recognizable configuration keys and current values. */
-   QHash<QString,QString> confValues();
-+
-+  /** Configure UPnP device to forward DirPort and ORPort */
-+  void configurePortForwarding();
- };
- 
- #endif
- 
-+
++#endif 
