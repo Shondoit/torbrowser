@@ -113,7 +113,7 @@ Changelog
        Update of Torbutton to v1.1.17 (see
         http://torbutton.torproject.org/dev/CHANGELOG)
        Update of Vidalia to revision 2424
-       Supress warning on viewing an encrypted page
+       Suppress warning on viewing an encrypted page
 1.0.1: Released 2008-03-26
        Install .jar files placed in /extensions, as well as .xpi files
        Update of Firefox to 2.0.0.13 to fix security problems (see
