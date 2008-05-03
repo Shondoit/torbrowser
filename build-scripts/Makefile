@@ -17,7 +17,7 @@ QT=/c/Qt/4.3.2/bin
 
 ## Location of bundle components
 VIDALIA=/c/build/vidalia
-TOR=/c/build/tor-0.2.0.23-rc
+TOR=/c/build/tor-0.2.0.25-rc
 POLIPO=/c/build/polipo-1.0.4
 FIREFOX_SRC=/c/build/FirefoxPortable
 
@@ -35,7 +35,7 @@ DEST="Generic Bundle"
 NAME="Tor Browser"
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.0.1
+VERSION=1.0.2
 COMPRESSED_NAME=tor-browser-$(VERSION)
 
 ## Extensions to install by default
@@ -45,7 +45,7 @@ DEFAULT_EXTENSIONS=torbutton.xpi
 TORBUTTON=http://torbutton.torproject.org/dev/torbutton-current-alpha.xpi
 
 ## Where to download Mozilla language packs
-MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/2.0.0.12/win32/xpi
+MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/2.0.0.14/win32/xpi
 
 ## Put more extensions here
 EXTENSIONS_DIR=extensions

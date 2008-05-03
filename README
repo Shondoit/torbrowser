@@ -38,12 +38,12 @@ Further issues are discussed in TODO.
 Included applications
 ---------------------
 
-Vidalia (svn trunk revision 2464)
-Tor 0.2.0.23-rc (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8g) 
+Vidalia (svn trunk revision 2539)
+Tor 0.2.0.25-rc (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8g) 
 Polipo 1.0.4
-FirefoxPortable 2.0.0.13
- \_ Firefox 2.0.0.13
-    \_ Torbutton 1.1.17-alpha
+FirefoxPortable 2.0.0.14
+ \_ Firefox 2.0.0.14
+    \_ Torbutton 1.1.18
 
 Usage
 -----
@@ -121,3 +121,9 @@ Changelog
        Update of Vidalia to revision 2464
        Update of Tor to 0.2.0.23-rc
        Update prefs.js for new Torbutton defaults
+1.0.2: Released 2008-05-03
+       Update Vidalia to revision 2539
+       Update Tor to 0.2.0.25-rc
+       Update FirefoxPortable to 2.0.0.14
+       Update Torbutton to 1.1.18
+       Add RunProxyAtStart to vidalia.conf (now required)

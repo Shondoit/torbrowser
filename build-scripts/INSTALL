@@ -32,9 +32,9 @@ Instructions for building Vidalia, Polipo and Tor are included below.
 To compress the bundle and build the self-extracting executable you
 need to have installed 7zip.
 
-Vidalia needs to have the BrowserExecutable, ProxyExecutable and
-ProxyExecutableArguments options. Currently this is only available in
-the Vidalia trunk revision 2328 and later.
+Vidalia needs to have the BrowserExecutable, ProxyExecutable,
+RunProxyAtStart and ProxyExecutableArguments options. Currently this
+is only available in the Vidalia trunk revision 2328 and later.
 
 FirefoxPortable can be downloaded from:
  http://portableapps.com/apps/internet/firefox_portable
