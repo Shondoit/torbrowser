@@ -39,7 +39,7 @@ Included applications
 ---------------------
 
 Vidalia (svn trunk revision 2539)
-Tor 0.2.0.25-rc (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8g) 
+Tor 0.2.0.26-rc (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8g) 
 Polipo 1.0.4
 FirefoxPortable 2.0.0.14
  \_ Firefox 2.0.0.14
@@ -127,3 +127,5 @@ Changelog
        Update FirefoxPortable to 2.0.0.14
        Update Torbutton to 1.1.18
        Add RunProxyAtStart to vidalia.conf (now required)
+1.0.3: Releaseed 2008-05-16
+       Update Tor to 0.2.0.26-rc
