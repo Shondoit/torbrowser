@@ -10,85 +10,231 @@
 Contents
 ========
 
-- Building Tor Browser Bundle
-- Building Vidalia
+- Introduction to Building the Tor Browser Bundle
+- Install Subversion
+- Install 7zip
+- Install Python
+- Install MinGW (MinGW - Minimalist GNU for Windows)
+- Install MSYS
+- Install CMake
+- Install QT
+- Install msysDTK
 - Building Polipo
-- Building OpenSSL, zlib, libevent and Tor
-- Building Firefox
+- Building zlib
+- Building OpenSSL
+- Building libevent
+- Building Tor
+- Building Vidalia
+- Building Firefox or Unpacking Firefox Portable
+- Customizing and Building the Tor Browser Bundle
 
-
-Building Tor Browser Bundle
-===========================
+An Introduction to Building Tor Browser Bundle
+==============================================
 
 To build Tor Browser Bundle, you need to have built:
  Vidalia (in /c/build/vidalia by default)
  Tor (in /c/build/tor-<version> by default)
  Polipo (in /c/build/polipo-<version> by default)
-and have uncompressed Firefox Portable
+and have uncompressed Firefox Portable or produce a custom build Firefox
  FirefoxPortable (in /c/build/FirefoxPortable by default)
 
 Instructions for building Vidalia, Polipo and Tor are included below.
 
-To compress the bundle and build the self-extracting executable you
-need to have installed 7zip.
+As a prerequisite for all builds, we'll need a build directory:
+
+    cd C:\
+    C:\>mkdir build
 
 Vidalia needs to have the BrowserExecutable, ProxyExecutable,
 RunProxyAtStart and ProxyExecutableArguments options. Currently this
 is only available in the Vidalia trunk revision 2328 and later.
 
-FirefoxPortable can be downloaded from:
- http://portableapps.com/apps/internet/firefox_portable
+Furthermore, you'll need to install many different software packages for the
+checkout and build process.  Sadly, many of these packages are unsigned and
+there is very little in the way of a chain of trust.
 
-7zip is needed to compress the bundle can be downloaded from:
- http://www.7-zip.org/download.html
+Installing Subversion
+=====================
 
-Python or wget are needed to download required Firefox
-extensions. Python can be downloaded from:
- http://python.org/download/
-Instructions for downloading, compiling and installing wget for MSYS
-can be found at:
- http://www.mingw.org/MinGWiki/index.php/mingwPORT
+To checkout the Tor Browser Bundle, you need Subversion.
+You can download and install the stock Subversion package:
 
+    http://subversion.tigris.org/project_packages.html
 
-Customization
--------------
+Specifically you should use the pre-built packages. You can choose any from
+this list:
 
-The locations of Qt, MinGW32, the Vidalia/Tor build directory, 7zip,
-FirefoxPortable can be altered in Makefile. The WGET variable should
-be either set to the location of a wget binary, or a command line for
-executing pyget.py under the installed Python interpreter.
+    http://subversion.tigris.org/servlets/ProjectDocumentList?folderID=91
 
-To install additional Firefox extensions, place the .xpi file in the
-build-scripts/extensions directory before building the bundle.
+Or if you'd like a direct link, you can use this as it is tested and working
+for our purposes:
 
-Building the bundle
--------------------
+    http://subversion.tigris.org/files/documents/15/41686/svn-1.4.6-setup.exe
 
-Firefox must not be running while you are building the bundle.
+Installing 7zip
+===============
 
-Run "make bundle_LANGUAGE", e.g. "make bundle_en-US".
+Download 7zip and install it. Possible choices for downloads are listed here:
 
-Alternatively, to build a compressed executable version, run "make
-compressed-bundle_LANGUAGE", e.g. "make compressed-bundle_de".
+    http://www.7-zip.org/download.html
 
-Currently supported language codes are:
- - ar
- - en-US
- - de
- - es-ES
- - fa-IR
- - fr
- - nl
- - pt-PT
- - ru
- - zh-CN
+The suggested version is "7-Zip 4.57":
 
-New languages can be added by finding out the appropriate Mozilla
-language pack code from:
- http://releases.mozilla.org/pub/mozilla.org/firefox/releases/2.0.0.12/win32/xpi
+    http://downloads.sourceforge.net/sevenzip/7z457.exe
 
-If the Mozilla code differs from the Vidalia one, update
-patch-vidalia-language.sh accordingly.
+Installing python
+=================
+
+Either Python or wget is required to download Firefox extensions. Python is the
+suggested method.  To use Python, you'll need to download python and install
+it. The suggested method is a pre-built Windows build.
+Download and install the following msi installer:
+
+    http://python.org/ftp/python/2.5.2/python-2.5.2.msi
+
+When prompted for a directory, install it into: C:\Python25\
+
+Installing MinGW
+(MinGW - Minimalist GNU for Windows)
+====================================
+
+You need to install MinGW and then MSYS.
+It's useful to read about these two projects:
+
+    http://www.mingw.org/
+
+For MinGW, download and run MinGW-5.1.4.
+You can find the proper release on sourceforge:
+
+    http://sourceforge.net/project/showfiles.php?group_id=2435
+
+To download MinGW-5.1.4.exe, visit the following url:
+
+    http://sourceforge.net/project/showfiles.php?group_id=2435&package_id=240780&release_id=595197
+
+Run MinGW-5.1.4.exe and begin the install. When prompted, select 'Full' as the
+type of install.  If you know better, select individual packages. It is
+expected that you will install MinGW into: C:\MinGW
+
+Installing MSYS
+===============
+
+For tar and other useful commands, you will also need MSYS. The current version
+of this is hellish to find.  In short, visit the MSYS Base System download
+page:
+
+    http://sourceforge.net/project/showfiles.php?group_id=2435&package_id=24963
+
+I feel that I must be mistaken but it appears that the current release of MSYS
+is labeled as:
+
+    msys-1.0.10 Notes (2004-03-16 05:47)
+
+The MSYS-1.0.10.exe download url is:
+
+    http://downloads.sourceforge.net/mingw/MSYS-1.0.10.exe?modtime=1079444447&big_mirror=1
+
+Download and install MSYS-1.0.10.exe. When prompted, read the license agreement
+and other documentation.  When asked for an install path, choose: C:\msys\1.0
+
+You will be prompted to do a post install process that will "normalize" your
+MinGW environment with MSYS.  Agree to the prompt. You will hopefully see a
+prompt that says:
+
+    "Oh joy, you do not have C:MinGW/bin/make.exe. Keep it that way."
+
+Read the MSYS README. Understanding how to use MSYS is important.
+Now that you have installed MSYS, upgrade it to MSYS-1.0.11. Visit the download
+mirror for MSYS:
+
+    http://gd.tuwien.ac.at/gnu/mingw/?fisel=0-9,a-z,A-Z
+
+Download, install the upgrade and unpack it into the / of the MSYS root
+directory:
+
+    http://gd.tuwien.ac.at/gnu/mingw/MSYS-1.0.11-2004.04.30-1.exe
+
+You cannot upgrade in place, you must close MSYS or you will have errors.
+You should have three new files, replace the older files with the 1.0.11
+version:
+
+    mount.exe     msys-1.0.dll  ps.exe
+
+Now you'll need to fix your /etc/fstab because it is broken by default. Make it
+look like so:
+
+    Administrator@I-CF61A82488F14 /
+    $ cat /etc/fstab
+    C:\MinGW /mingw
+
+Once you have replaced the three old binaries you will be ready to actually do
+something useful.
+
+All of the rest of the build commands will take place inside of the MSYS Shell.
+Launch that now. It's found in:
+
+    Start Menu -> All Programs -> MinGW -> MSYS -> msys
+
+Installing Gnu wget is optional. If you installed Python, you do not need to
+install wget.  It is not required as basic wget functionality is implemented in
+Python. Instructions for downloading, compiling and installing wget for MSYS 
+can be found here:
+
+    http://www.mingw.org/MinGWiki/index.php/mingwPORT
+
+Installing CMake
+================
+
+We'll need CMake to build Vidalia.
+
+You can read about different versions on the CMake homepage:
+
+    http://cmake.org/
+
+Download version 2.6.0:
+
+    http://www.cmake.org/files/v2.6/cmake-2.6.0-win32-x86.exe
+
+Run the installer with Windows Explorer and install into:
+    
+    'C:\Program Files\CMake 2.6'
+
+Installing QT
+=============
+
+Download QT 4.1 or later, we'll use 4.3.4:
+
+    http://trolltech.com/developer/downloads/qt/windows
+
+Download and run the installer with Windows Explorer:
+
+    ftp://ftp.trolltech.com/qt/source/qt-win-opensource-4.3.4-mingw.exe
+
+When prompted, install QT into 'C:\Qt\4.3.4'
+You will be prompted for the install path for your MinGW directory, enter 'C:\MinGW'
+You may have an error about win32api.h being not found. This is not true. You
+have win32api.h and QT is wrong.  This is a result of the QT installer not
+understanding how to count version numbers.
+
+Installing msysDTK
+==================
+
+In short, you'll now need to install the msysDTK:
+
+    http://prdownloads.sf.net/mingw/msysDTK-1.0.1.exe?download
+
+Run msysDTK-1.0.1.exe and install it into C:\msys\1.0
+
+Installing autoconf update
+==========================
+
+Now you'll download download the mingw autoconf-2.59 update:
+
+    http://prdownloads.sf.net/mingw/msys-autoconf-2.59.tar.bz2?download
+
+Extract the .tar.gz like so in your MSYS console:
+
+    tar -C / -xvjf /c/Documents\ and\ Settings/Administrator/Desktop/msys-autoconf-2.59.tar.bz2
 
 Building Polipo
 ===============
@@ -96,38 +242,157 @@ Building Polipo
 In order to enable the forbiddenFile functionality, the GNU Regex
 library is required. Download the -bin and -dev tarballs from:
 
- http://sourceforge.net/project/showfiles.php?group_id=2435&package_id=73286&release_id=140957
+    http://sourceforge.net/project/showfiles.php?group_id=2435&package_id=73286&release_id=140957
 
 Extract them both into you MinGW directory, e.g.
 
- $ tar -C /c/MinGW -xzvf mingw-libgnurx-2.5.1-bin.tar.gz 
- $ tar -C /c/MinGW -xzvf mingw-libgnurx-2.5.1-dev.tar.gz 
+    tar -C /c/MinGW/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/mingw-libgnurx-2.5.1-bin.tar.gz
+    tar -C /c/MinGW/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/mingw-libgnurx-2.5.1-dev.tar.gz
 
-Overwrite the Makefile that comes with Polipo with:
- https://tor-svn.freehaven.net/svn/tor/trunk/contrib/polipo/Makefile.mingw
+Download Polipo sources:
 
-Run "make"
+    http://www.pps.jussieu.fr/~jch/software/files/polipo/polipo-1.0.4.tar.gz
+    http://www.pps.jussieu.fr/~jch/software/files/polipo/polipo-1.0.4.tar.gz.asc
 
-Further information
--------------------
+Verify the PGP signature of the above files by following the developer directions:
 
-Full instructions in:
- https://tor-svn.freehaven.net/svn/tor/trunk/contrib/polipo/README
+    http://www.pps.jussieu.fr/~jch/software/pgp-validating.html
 
+Unpack the Polipo source code into /c/build/polipo-1.0.4/ :
 
-Building OpenSSL, zlib, libevent and Tor
-========================================
+    cd /c/build/
+    tar -C . -vxzf /c/Documents\ and\ Settings/Administrator/Desktop/polipo-1.0.4.tar.gz
 
-Full instructions in:
- https://tor-svn.freehaven.net/svn/tor/trunk/doc/tor-win32-mingw-creation.txt
+Download a Tor contributed Polipo specific Makefile:
 
-Uncompressing OpenSSL shows a number of errors concerning symlinks.
-These do not appear to have caused a problem.
+    https://tor-svn.freehaven.net/svn/tor/trunk/contrib/polipo/Makefile.mingw
 
-For zlib, use the first option (zlib.a)
+Replace the stock Polipo Makefile with the one above:
 
-For libevent, use 1.3e, as suggested by the document above.
-libevent 1.4.0 is newer but untested.
+    mv Makefile Makefile-dist-unused
+    mv /c/Documents\ and\ Settings/Administrator/Desktop/Makefile.mingw Makefile
+
+Now build Polipo: 
+
+    make
+
+You should have a working binary. If you don't have gcc, it means your path is
+broken. Ensure you applied the aforementioned /etc/fstab suggestion.
+
+Building zlib
+=============
+
+Now we'll download zlib and install it.
+
+Download the zlib source:
+        http://www.zlib.net/zlib-1.2.3.tar.gz
+
+Extract zlib:
+        $ cd /c/build/
+        $ tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/zlib-1.2.3.tar.gz
+        $ cd zlib-1.2.3/
+
+Build it (we'll need this because we want zlib.a):
+        ./configure
+        make
+        make install
+
+Building OpenSSL
+================
+
+Download openssl:
+
+    http://www.openssl.org/source/openssl-0.9.8g.tar.gz
+
+Unpack it:
+
+    cd /c/build/
+    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/openssl-0.9.8g.tar.gz
+
+You should see errors not unlike:
+
+    tar: openssl-0.9.8g/include/openssl/bn.h: Cannot create symlink to `../../crypto/bn/bn.h': No such file or directory
+    tar: openssl-0.9.8g/include/openssl/blowfish.h: Cannot create symlink to `../../crypto/bf/blowfish.h': No such file or directory
+    tar: openssl-0.9.8g/include/openssl/bio.h: Cannot create symlink to `../../crypto/bio/bio.h': No such file or directory
+    tar: openssl-0.9.8g/include/openssl/asn1t.h: Cannot create symlink to `../../crypto/asn1/asn1t.h': No such file or directory
+    tar: openssl-0.9.8g/include/openssl/asn1_mac.h: Cannot create symlink to `../../crypto/asn1/asn1_mac.h': No such file or directory
+    tar: openssl-0.9.8g/include/openssl/asn1.h: Cannot create symlink to `../../crypto/asn1/asn1.h': No such file or directory
+    tar: openssl-0.9.8g/include/openssl/aes.h: Cannot create symlink to `../../crypto/aes/aes.h': No such file or directory
+    tar: openssl-0.9.8g/apps/md4.c: Cannot create symlink to `../crypto/md4/md4.c': No such file or directory
+    tar: Error exit delayed from previous errors
+
+Uncompressing OpenSSL shows a number of errors concerning symlinks. These do
+not appear to have caused a problem.
+
+Now configure the source package:
+
+    cd openssl-0.9.8g/
+    ./config --no-idea -norc5 -no-mdc2 mingw
+    ./config -no-idea -norc5 -no-mdc2
+
+Edit '/c/build/openssl-0.9.8g/Makefile' and remove the "test:" and "tests:" sections that follow:
+
+    test:   tests
+
+    tests: rehash
+            @(cd test && echo "testing..." && \
+            $(CLEARENV) && $(MAKE) -e $(BUILDENV) TOP=.. TESTS='${TESTS}' OPENSSL_DE
+    BUG_MEMORY=on tests );
+            util/opensslwrap.sh version -a
+
+Now remove things we don't need that interfere with the build process:
+
+        rm -rf ./test
+
+Now copy files we do need:
+
+        cd crypto/
+        find ./ -name "*.h" -exec cp {} ../include/openssl/ \;
+        cd ../ssl/
+        find ./ -name "*.h" -exec cp {} ../include/openssl/ \;
+        cd ..
+        cp *.h include/openssl/
+
+And finally, build it - this can take a long time and depends on the speed of your computer:
+
+        make
+        make install
+
+Building libevent
+=================
+
+Next, you'll want to download, unpack, build and install libevent ( Version: libevent-1.3e ).
+You can get libevent here:
+
+        http://www.monkey.org/~provos/libevent/
+        http://www.monkey.org/~provos/libevent-1.3e.tar.gz
+        http://www.monkey.org/~provos/libevent-1.3e.tar.gz.sig
+
+Verify the signature.
+
+Unpack it:
+
+    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/libevent-1.3e.tar.gz
+    cd libevent-1.3e/
+
+Configure, build and install:
+
+    ./configure --enable-static --disable-shared
+    make
+    make install
+
+Building Tor
+============
+
+Download, unpack, build and install Tor:
+        https://www.torproject.org/download.html
+        https://www.torproject.org/dist/tor-0.2.0.26-rc.tar.gz
+        https://www.torproject.org/dist/tor-0.2.0.26-rc.tar.gz.asc
+        $ cd /c/build/
+        tar -C /c/build -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/tor-0.2.0.26-rc.tar.gz
+        $ cd tor-0.2.0.26-rc/
+        ./configure
+        make
 
 Building Vidalia
 ================
@@ -135,20 +400,78 @@ Building Vidalia
 To use QSslSocket for GeoIP lookups, install OpenSSL before building
 Vidalia (see above).
 
-Building under MSYS
--------------------
+Download Vidalia:
 
-Add the following to /etc/profile:
- export QTDIR="C:\Qt\4.3.2"
- export PATH=$PATH:/c/Qt/4.3.2/bin
- export QMAKESPEC=win32-g++
+    http://vidalia-project.net/dist/vidalia-0.1.2.tar.gz
+    http://vidalia-project.net/dist/vidalia-0.1.2.tar.gz.asc
 
-Then run:
- $ cmake -G "MSYS Makefiles" .
- $ make
+Verify the signature.
 
-Building under MinGW32
-----------------------
+Unpack Vidalia:
+   
+    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/vidalia-0.1.2.tar.gz
+    mv vidalia-0.1.2/ vidalia
+
+Set a proper environment:
+
+    cat << 'EOF' >> /etc/profile
+    export QTDIR="C:\Qt\4.3.2"
+    export PATH=$PATH:/c/Qt/4.3.2/bin
+    export PATH=$PATH:/c/Program\ Files/CMake\ 2.6/bin/
+    export QMAKESPEC=win32-g++
+    EOF
+
+    export PATH=$PATH:/c/Program\ Files/CMake\ 2.6/bin/:/c/MinGW/bin/:/c/Qt/4.3.4/bin/
+
+Create the proper MinGW Makefiles and don't forget the '.' at the end!
+
+    cd /c/build/vidalia
+    cmake -G "MinGW Makefiles" . 
+
+You may see some errors:
+
+    -- Check size of int - done
+    -- Configuring done
+    CMake Warning (dev) at src/vidalia/CMakeLists.txt:229 (add_executable):
+      Policy CMP0003 should be set before this line.  Add code such as
+
+        if(COMMAND cmake_policy)
+          cmake_policy(SET CMP0003 NEW)
+        endif(COMMAND cmake_policy)
+
+      as early as possible but after the most recent call to
+      cmake_minimum_required or cmake_policy(VERSION).  This warning appears
+      because target "vidalia" links to some libraries for which the linker must
+      search:
+
+        imm32, winmm, ws2_32, ole32, oleaut32, uuid, winspool, ole32, oleaut32
+        uuid, winspool
+
+      and other libraries with known full path:
+
+        C:/Qt/4.3.4/lib/libQtGui4.a
+
+
+      CMake is adding directories in the second list to the linker search path in
+      case they are needed to find libraries from the first list (for backwards
+      compatibility with CMake 2.4).  Set policy CMP0003 to OLD or NEW to enable
+      or disable this behavior explicitly.  Run "cmake --help-policy CMP0003" for
+      more information.
+    This warning is for project developers.  Use -Wno-dev to suppress it.
+
+    -- Generating done
+    -- Build files have been written to: C:/build/vidalia
+
+This is ok. You can ignore these errors.
+
+Now you'll build Vidalia by running mingw32-make:
+
+    mingw32-make.exe
+
+Alternatively building under MinGW32
+====================================
+
+If you decide to not build with MSYS as mentioned above, you can use MinGW32 to build Vidalia.
 
 Qt and CMake must be in the %PATH%. An easy way to do this is to
 copy qtvars.bat and add the path to CMake. Then, copy the shortcut
@@ -159,28 +482,39 @@ Then run:
  > cmake -G "MinGW Makefiles" .
  > mingw32-make
 
-Patches
--------
+Patches for possible future inclusion
+=====================================
 
 A patch to close the Browser when Vidalia exits is in:
  ../src/current-patches/vidalia-killbrowser.patch
+
 This is not yet useful, since killing FirefoxPortable does not cause
 Firefox to exit. This patch has not yet been applied to Vidalia.
 
+Currently this is not being used by the Torbrowser.
+
 Further information
--------------------
+===================
 
 Full instructions are in the Vidalia INSTALL file.
-
 
 Building Firefox
 ================
 
 Currently the Tor Browser Bundle uses FirefoxPortable binaries.
-Eventually it should use a custom build of Firefox. 
+
+Download FirefoxPortable:
+
+    http://downloads.sourceforge.net/portableapps/Firefox_Portable_2.0.0.14_en-us.paf.exe?download
+
+Run the installer and select it into: 'C:\build\FirefoxPortable\'
+
+If you use FirefoxPortable, you can skip past the following build steps and go directly to the customization section.
+
+Eventually it should use a custom build of Firefox. The following is a set of notes on building Firefox.
 
 Tested compilers
-----------------
+================
 
 MinGW32 cross compile under Linux:
  Failed to work (unsupported by Mozilla)
@@ -197,7 +531,7 @@ For more information see:
  http://developer.mozilla.org/en/docs/Build_and_Install
 
 Instructions for MSVC 7.1
--------------------------
+=========================
 
 - Install MSVC 7.1 (Visual Studio .NET 2003) and upgrade using Microsoft Update
 
@@ -223,4 +557,60 @@ Instructions for MSVC 7.1
 
 $ make -C obj-i686-pc-mingw32/browser/installer
 
+Customization
+=============
+
+The locations of Qt, MinGW32, the Vidalia/Tor build directory, 7zip,
+FirefoxPortable can be altered in Makefile. The WGET variable should
+be either set to the location of a wget binary, or a command line for
+executing pyget.py under the installed Python interpreter.
+
+To install additional Firefox extensions, place the .xpi file in the
+build-scripts/extensions directory before building the bundle.
+
+Building the Torbrowser Bundle
+==============================
+
+Now you'll want to ensure you have the Torbrowser Bundle code checked out into C:\build\
+
+    C:\build>svn co https://tor-svn.freehaven.net/svn/torbrowser/
+
+Firefox must not be running while you are building the bundle.
+If you're using different versions than the Makefile, you'll want to patch the
+Makefile as mentioned in the Customization section above.
+
+An example to change the QT Lib version:
+
+        From: QT=/c/Qt/4.3.2/bin
+        To: QT=/c/Qt/4.3.2/bin
+
+And then change the Tor version:
+
+        From: TOR=/c/build/tor-0.2.0.26-rc
+        TO: TOR=/c/build/tor-0.2.0.26-rc
+
+Now you can run "make bundle_LANGUAGE", e.g. "make bundle_en-US".
+
+Alternatively, to build a compressed executable version, run "make
+compressed-bundle_LANGUAGE", e.g. "make compressed-bundle_de".
+
+Currently supported language codes are:
+ - ar
+ - en-US
+ - de
+ - es-ES
+ - fa-IR
+ - fr
+ - nl
+ - pt-PT
+ - ru
+ - zh-CN
+
+New languages can be added by finding out the appropriate Mozilla
+language pack code from:
+
+    http://releases.mozilla.org/pub/mozilla.org/firefox/releases/2.0.0.12/win32/xpi
+
+If the Mozilla code differs from the Vidalia one, update 
+patch-vidalia-language.sh accordingly.
 
