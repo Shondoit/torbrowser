@@ -78,6 +78,11 @@ Download 7zip and install it. Possible choices for downloads are listed here:
 
     http://www.7-zip.org/download.html
 
+Currently, 7-zip doesn't have package signatures, we requested this for current
+and future releases:
+
+    http://sourceforge.net/forum/message.php?msg_id=4982530
+
 The suggested version is "7-Zip 4.57":
 
     http://downloads.sourceforge.net/sevenzip/7z457.exe
@@ -91,6 +96,10 @@ it. The suggested method is a pre-built Windows build.
 Download and install the following msi installer:
 
     http://python.org/ftp/python/2.5.2/python-2.5.2.msi
+
+Download and verify the signature:
+
+    http://www.python.org/download/releases/2.5.2/python-2.5.2.msi.asc
 
 When prompted for a directory, install it into: C:\Python25\
 
@@ -286,6 +295,8 @@ Now we'll download zlib and install it.
 
 Download the zlib source:
         http://www.zlib.net/zlib-1.2.3.tar.gz
+
+Currently, zlib doesn't have package signatures. We emailed the zlib team and are awaiting a reply. 
 
 Extract zlib:
         $ cd /c/build/

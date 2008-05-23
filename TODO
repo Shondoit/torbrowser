@@ -99,6 +99,21 @@ General
 - Split archive or make auto-downloader to help people who cannot
   download large files in one go
 
+- Because the batch file cannot have an icon other than the default windows
+  icon, perhaps we should abandon the batch file and use a windows specific
+  shortcut. This would allow us to use the Vidalia icon and Vidalia will do all
+  of the work that the batchfile once did. This may not work if shortcuts are 
+  all absolute.
+
+- Ask specific vendors to sign their packaged binary releases, probably with
+  pgp/gpg. The packages are: 7zip, MinGW, MSYS, CMake, QT, msysDTK,
+  zlib, FirefoxPortable
+
+  Letters requesting package signatures have been sent to: zlib
+
+  A forum post requesting package signatures have been posted for 7zip:
+  http://sourceforge.net/forum/message.php?msg_id=4982530
+
 Questions
 =========
 
