@@ -17,7 +17,7 @@ Contents
 - Install MinGW (MinGW - Minimalist GNU for Windows)
 - Install MSYS
 - Install CMake
-- Install QT
+- Install Qt
 - Install msysDTK
 - Building Polipo
 - Building zlib
@@ -71,6 +71,11 @@ for our purposes:
 
     http://subversion.tigris.org/files/documents/15/41686/svn-1.4.6-setup.exe
 
+Alternatively, TortoiseSVN offers a graphical interface and integrates
+with Windows Explorer:
+
+ http://tortoisesvn.tigris.org/
+
 Installing 7zip
 ===============
 
@@ -87,11 +92,11 @@ The suggested version is "7-Zip 4.57":
 
     http://downloads.sourceforge.net/sevenzip/7z457.exe
 
-Installing python
+Installing Python
 =================
 
 Either Python or wget is required to download Firefox extensions. Python is the
-suggested method.  To use Python, you'll need to download python and install
+suggested method.  To use Python, you'll need to download Python and install
 it. The suggested method is a pre-built Windows build.
 Download and install the following msi installer:
 
@@ -113,11 +118,11 @@ It's useful to read about these two projects:
     http://www.mingw.org/
 
 For MinGW, download and run MinGW-5.1.4.
-You can find the proper release on sourceforge:
+You can find the proper release on Sourceforge:
 
     http://sourceforge.net/project/showfiles.php?group_id=2435
 
-To download MinGW-5.1.4.exe, visit the following url:
+To download MinGW-5.1.4.exe, visit the following URL:
 
     http://sourceforge.net/project/showfiles.php?group_id=2435&package_id=240780&release_id=595197
 
@@ -184,7 +189,7 @@ Launch that now. It's found in:
 
     Start Menu -> All Programs -> MinGW -> MSYS -> msys
 
-Installing Gnu wget is optional. If you installed Python, you do not need to
+Installing GNU wget is optional. If you installed Python, you do not need to
 install wget.  It is not required as basic wget functionality is implemented in
 Python. Instructions for downloading, compiling and installing wget for MSYS 
 can be found here:
@@ -208,10 +213,10 @@ Run the installer with Windows Explorer and install into:
     
     'C:\Program Files\CMake 2.6'
 
-Installing QT
+Installing Qt
 =============
 
-Download QT 4.1 or later, we'll use 4.3.4:
+Download Qt 4.1 or later, we'll use 4.3.4:
 
     http://trolltech.com/developer/downloads/qt/windows
 
@@ -219,10 +224,10 @@ Download and run the installer with Windows Explorer:
 
     ftp://ftp.trolltech.com/qt/source/qt-win-opensource-4.3.4-mingw.exe
 
-When prompted, install QT into 'C:\Qt\4.3.4'
+When prompted, install Qt into 'C:\Qt\4.3.4'
 You will be prompted for the install path for your MinGW directory, enter 'C:\MinGW'
 You may have an error about win32api.h being not found. This is not true. You
-have win32api.h and QT is wrong.  This is a result of the QT installer not
+have win32api.h and Qt is wrong.  This is a result of the Qt installer not
 understanding how to count version numbers.
 
 Installing msysDTK
@@ -473,7 +478,7 @@ You may see some errors:
     -- Generating done
     -- Build files have been written to: C:/build/vidalia
 
-This is ok. You can ignore these errors.
+This is OK. You can ignore these errors.
 
 Now you'll build Vidalia by running mingw32-make:
 
@@ -524,8 +529,8 @@ If you use FirefoxPortable, you can skip past the following build steps and go d
 
 Eventually it should use a custom build of Firefox. The following is a set of notes on building Firefox.
 
-Tested compilers
-================
+Tested compilers for building Firefox
+=====================================
 
 MinGW32 cross compile under Linux:
  Failed to work (unsupported by Mozilla)
@@ -541,8 +546,8 @@ For more information see:
  http://developer.mozilla.org/en/docs/Windows_Build_Prerequisites
  http://developer.mozilla.org/en/docs/Build_and_Install
 
-Instructions for MSVC 7.1
-=========================
+Instructions building Firefox with MSVC 7.1
+===========================================
 
 - Install MSVC 7.1 (Visual Studio .NET 2003) and upgrade using Microsoft Update
 
@@ -579,10 +584,10 @@ executing pyget.py under the installed Python interpreter.
 To install additional Firefox extensions, place the .xpi file in the
 build-scripts/extensions directory before building the bundle.
 
-Building the Torbrowser Bundle
-==============================
+Building the Tor Browser Bundle
+===============================
 
-Now you'll want to ensure you have the Torbrowser Bundle code checked out into C:\build\
+Now you'll want to ensure you have the Tor Browser Bundle code checked out into C:\build\
 
     C:\build>svn co https://tor-svn.freehaven.net/svn/torbrowser/
 
@@ -590,7 +595,7 @@ Firefox must not be running while you are building the bundle.
 If you're using different versions than the Makefile, you'll want to patch the
 Makefile as mentioned in the Customization section above.
 
-An example to change the QT Lib version:
+An example to change the Qt Lib version:
 
         From: QT=/c/Qt/4.3.2/bin
         To: QT=/c/Qt/4.3.2/bin
