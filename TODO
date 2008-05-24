@@ -109,7 +109,10 @@ General
   pgp/gpg. The packages are: 7zip, MinGW, MSYS, CMake, QT, msysDTK,
   zlib, FirefoxPortable
 
-  Letters requesting package signatures have been sent to: zlib
+  Letters requesting package signatures have been sent to: zlib, MinGW, MSYS
+
+  Soon letters will be sent to:
+  CMake, QT, msysDTK, FirefoxPortable
 
   A forum post requesting package signatures have been posted for 7zip:
   http://sourceforge.net/forum/message.php?msg_id=4982530
