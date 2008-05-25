@@ -15,7 +15,7 @@
 // windres RelativeLink-res.rc RelativeLink-res.o
 //
 // Then you'll compile the program and include the icon object file:
-// gcc -o StartTorBrowserBundle RelativeLink.c RelativeLink-res.o
+// gcc -mwindows -o StartTorBrowserBundle RelativeLink.c RelativeLink-res.o
 //
 // End users will be able to use StartTorBrowserBundle.exe
 //
