@@ -36,7 +36,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     if( !CreateProcess( 
         NULL, ProgramToStart, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi ))
     {
-         MessageBox ( NULL, TEXT ("Unable to start Vidalia"), NULL, NULL );
+         MessageBox ( NULL, TEXT ("Unable to start Vidalia"), NULL, MB_OK);
          return -1;
     }
 
