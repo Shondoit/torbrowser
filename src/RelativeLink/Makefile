@@ -7,6 +7,7 @@ all: RelativeLink
 
 RelativeLink: $(OBJECTS) 
 	$(CC) $(OBJECTS) $(CFLAGS) -o $(APPNAME)
+	strip $(APPNAME)
 
 RelativeLink.o: RelativeLink.c
 	$(CC) $(CFLAGS) -c RelativeLink.c -o RelativeLink.o
