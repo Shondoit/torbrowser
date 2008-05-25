@@ -20,7 +20,8 @@
 // End users will be able to use StartTorBrowserBundle.exe
 //
 
-int _tmain( int argc, TCHAR *argv[])
+//int _tmain( int argc, TCHAR *argv[])
+int WINAPI WinMain( NULL, NULL, NULL, SW_HIDE )
 {
     STARTUPINFO si;
     PROCESS_INFORMATION pi;
@@ -36,7 +37,8 @@ int _tmain( int argc, TCHAR *argv[])
         NULL, ProgramToStart, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi ))
     {
          MessageBox ( NULL, TEXT ("Unable to start Vidalia"), NULL, NULL );
-         return;
+         return -1;
     }
 
+    return 0;
 }
