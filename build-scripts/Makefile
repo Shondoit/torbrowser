@@ -82,6 +82,7 @@ clean:
 	rm -f "Tor Browser.exe"
 	rm -fr $(NAME)_*
 	rm -fr $(COMPRESSED_NAME)_*.exe
+	cd ../src/RelativeLink/ && $(MAKE) clean
 
 ##
 ## Generate a non-localized bundle and put in $(DEST)
@@ -151,6 +152,8 @@ configure-apps:
 
 launcher:
 	echo 'start /b .\\App\\vidalia.exe --datadir .\\Data\\Vidalia\\' > $(DEST)/"Start Tor Browser.bat"
+	cd ../src/RelativeLink/ && $(MAKE)
+	cp ../src/RelativeLink/StartTorBrowserBundle.exe $(DEST)/StartTorBrowserBundle.exe
 
 ##
 ## How to create required extensions
