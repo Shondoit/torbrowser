@@ -12,10 +12,10 @@
 // To build this, you need Cygwin or MSYS.
 //
 // You need to build the icon resource first:
-// windres ShortCut-res.rc ShortCut-res.o
+// windres RelativeLink-res.rc RelativeLink-res.o
 //
 // Then you'll compile the program and include the icon object file:
-// gcc -o StartTorBrowserBundle ShortCut.c ShortCut-res.o
+// gcc -o StartTorBrowserBundle RelativeLink.c RelativeLink-res.o
 //
 // End users will be able to use StartTorBrowserBundle.exe
 //
