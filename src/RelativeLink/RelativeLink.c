@@ -21,7 +21,7 @@
 //
 
 //int _tmain( int argc, TCHAR *argv[])
-int WINAPI WinMain( NULL, NULL, NULL, SW_HIDE )
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
     STARTUPINFO si;
     PROCESS_INFORMATION pi;
