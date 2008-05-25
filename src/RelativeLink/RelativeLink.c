@@ -29,13 +29,13 @@ int _tmain( int argc, TCHAR *argv[])
     si.cb = sizeof(si);
     ZeroMemory ( &pi, sizeof(pi) );
 
-    char *ProgramToStart;
-    ProgramToStart = "App/vidalia.exe --datadir .\\Data\\Vidalia\\";
+    TCHAR *ProgramToStart;
+    ProgramToStart = TEXT ("App/vidalia.exe --datadir .\\Data\\Vidalia\\");
 
     if( !CreateProcess( 
         NULL, ProgramToStart, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi ))
     {
-         MessageBox ( NULL, "Unable to start Vidalia", NULL, NULL );
+         MessageBox ( NULL, TEXT ("Unable to start Vidalia"), NULL, NULL );
          return;
     }
 
