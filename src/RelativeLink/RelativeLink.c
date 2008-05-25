@@ -35,7 +35,7 @@ int _tmain( int argc, TCHAR *argv[])
     if( !CreateProcess( 
         NULL, ProgramToStart, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi ))
     {
-         printf("Unable to start Vidalia: (%d)\n", GetLastError() );
+         MessageBox ( NULL, "Unable to start Vidalia", NULL, NULL );
          return;
     }
 
