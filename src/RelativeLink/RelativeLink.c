@@ -15,12 +15,12 @@
 // windres RelativeLink-res.rc RelativeLink-res.o
 //
 // Then you'll compile the program and include the icon object file:
-// gcc -mwindows -o StartTorBrowserBundle RelativeLink.c RelativeLink-res.o
+// gcc -Wall -mwindows -o StartTorBrowserBundle RelativeLink.c RelativeLink-res.o
 //
 // End users will be able to use StartTorBrowserBundle.exe
+// Put it in the proper place.
 //
 
-//int _tmain( int argc, TCHAR *argv[])
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
     STARTUPINFO si;
