@@ -9,15 +9,17 @@ RelativeLink: $(OBJECTS)
 	$(CC) $(OBJECTS) $(CFLAGS) -o $(APPNAME)
 
 RelativeLink.o: RelativeLink.c
+	$(CC) $(CFLAGS) -c
 
 RelativeLink-res.rc.o: RelativeLink-res.rc
+	windres.exe RelativeLink-res.rc RelativeLink-res.rc.o
 
 clean:
 	rm -rf *.exe
 	rm -rf *.o
 
-.rc.o:
-		windres.exe $^ -o $@
-
-%.o : %.rc
-		windres.exe $^ -o $@
+#.rc.o:
+#		windres.exe $^ -o $@
+#
+#%.o : %.rc
+#		windres.exe $^ -o $@
