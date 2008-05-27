@@ -65,11 +65,6 @@ General
     Manager, Tcpip\Parameters, Shell Folders, Internet Settings) ]
 [low priority]
 
-- If we can't make a static build of Vidalia, produce a small
-  executable to launch Vidalia (so the top level folder doesn't have
-  random DLLs lying around)
-[mid priority]
-
 - If we can make a static build of Vidalia, make it look for the
   config file in a different directory
 [? priority]
@@ -126,6 +121,13 @@ our target audience?
 
 Done
 ====
+
+[ Done: 2008-05-27 ]
+
+- If we can't make a static build of Vidalia, produce a small
+  executable to launch Vidalia (so the top level folder doesn't have
+  random DLLs lying around)
+[mid priority]
 
 [ Done: 2008-02-15 ]
 

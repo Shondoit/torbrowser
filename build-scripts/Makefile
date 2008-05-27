@@ -151,9 +151,9 @@ configure-apps:
 	cp $(CONFIG_SRC)/torrc $(DEST)/Data/Tor
 
 launcher:
-	echo 'start /b .\\App\\vidalia.exe --datadir .\\Data\\Vidalia\\' > $(DEST)/"Start Tor Browser.bat"
+	#echo 'start /b .\\App\\vidalia.exe --datadir .\\Data\\Vidalia\\' > $(DEST)/"Start Tor Browser.bat"
 	cd ../src/RelativeLink/ && $(MAKE)
-	cp ../src/RelativeLink/StartTorBrowserBundle.exe $(DEST)/StartTorBrowserBundle.exe
+	cp ../src/RelativeLink/StartTorBrowserBundle.exe $(DEST)/"Start Tor Browser.exe"
 
 ##
 ## How to create required extensions

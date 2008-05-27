@@ -127,5 +127,7 @@ Changelog
        Update FirefoxPortable to 2.0.0.14
        Update Torbutton to 1.1.18
        Add RunProxyAtStart to vidalia.conf (now required)
-1.0.3: Releaseed 2008-05-16
+1.0.3: Released 2008-05-16
        Update Tor to 0.2.0.26-rc
+1.0.4: Released 2008-xx-xx
+       Replace startup batch script with application (RelativeLink), so there is a helpful icon
