@@ -65,10 +65,6 @@ General
     Manager, Tcpip\Parameters, Shell Folders, Internet Settings) ]
 [low priority]
 
-- If we can make a static build of Vidalia, make it look for the
-  config file in a different directory
-[? priority]
-
 - What should the installer look like (should it have the Tor logo)?
   We need to be clear in the documentation about the difference between
   the installer and the actual bundle
