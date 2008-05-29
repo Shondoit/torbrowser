@@ -4,6 +4,9 @@
 // RelativeLink.c
 // by Jacob Appelbaum <jacob@appelbaum.net>
 //
+// Copyright 2008 Jacob Appelbaum <jacob@appelbaum.net>
+// See LICENSE for licensing information
+//
 // This is a very small program to work around the lack of relative links 
 // in any of the most recent builds of Windows.
 //

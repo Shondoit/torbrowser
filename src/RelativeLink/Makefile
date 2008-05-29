@@ -1,4 +1,9 @@
-# A simple Makefile to automate building the RelativeLink program
+###
+### A simple Makefile to automate building the RelativeLink program
+### Copyright 2008 Jacob Appelbaum <jacob@appelbaum.net>
+### See LICENSE for licensing information
+###
+
 APPNAME = StartTorBrowserBundle
 OBJECTS = RelativeLink-res.rc.o RelativeLink.o
 CFLAGS = -Wall -mwindows -static
