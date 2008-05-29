@@ -237,5 +237,5 @@ srcdist:
 	svn export https://tor-svn.freehaven.net/svn/torbrowser/trunk/ \
                    $(SRCDESTPATH)
 	cd $(SRCDEST); tar --exclude src/archived-patches \
-                           --exclude src/current-patches  --exclude src/processtest
+                           --exclude src/current-patches  --exclude src/processtest \
                            -czvf $(SRCNAME)-src.tar.gz $(SRCNAME)
