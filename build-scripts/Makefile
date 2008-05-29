@@ -13,7 +13,7 @@
 
 ## Location of required libraries
 MING=/c/MinGW/bin
-QT=/c/Qt/4.3.2/bin
+QT=/c/Qt/4.3.5/bin
 
 ## Location of bundle components
 VIDALIA=/c/build/vidalia
@@ -125,9 +125,9 @@ install-docs:
 	mkdir -p $(DOCSDIR)/Qt
 	mkdir -p $(DOCSDIR)/MinGW
 	mkdir -p $(DOCSDIR)/Polipo
-	cp $(VIDALIA)/LICENSE* $(VIDALIA)/CREDITS $(QT)/../LICENSE.GPL $(DOCSDIR)/Vidalia
+	cp $(VIDALIA)/LICENSE* $(VIDALIA)/CREDITS $(DOCSDIR)/Vidalia
 	cp $(TOR)/LICENSE $(TOR)/AUTHORS $(TOR)/README $(DOCSDIR)/Tor
-	cp $(QT)/../LICENSE.GPL $(DOCSDIR)/Qt
+	cp $(QT)/../LICENSE.GPL* $(QT)/../GPL* $(DOCSDIR)/Qt
 	cp $(MING)/../COPYING $(DOCSDIR)/MinGW
 	cp $(POLIPO)/COPYING  $(POLIPO)/README $(DOCSDIR)/Polipo
 

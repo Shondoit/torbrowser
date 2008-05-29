@@ -131,3 +131,4 @@ Changelog
        Update Tor to 0.2.0.26-rc
 1.0.4: Released 2008-xx-xx
        Replace startup batch script with application (RelativeLink), so there is a helpful icon
+       Make Qt 4.3.5 the default version
