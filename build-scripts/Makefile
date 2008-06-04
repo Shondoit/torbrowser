@@ -20,6 +20,10 @@ VIDALIA=/c/build/vidalia
 TOR=/c/build/tor-0.2.0.26-rc
 POLIPO=/c/build/polipo-1.0.4
 FIREFOX_SRC=/c/build/FirefoxPortable
+PIDGIN_SRC=/c/build/PidginPortable
+
+## Do we install Pidgin?
+USE_PIDGIN=0
 
 ## Location of utility applications
 SEVENZIP="/c/Program Files/7-Zip/7z.exe"
@@ -88,10 +92,10 @@ clean:
 ## Generate a non-localized bundle and put in $(DEST)
 ##
 
-## Install binaries, documentation, FirefoxPortable and launcher into $(DEST)
+## Install binaries, documentation, FirefoxPortable, PidginPortable, and launcher into $(DEST)
 generic-bundle.stamp:
 	make generic-bundle
-generic-bundle: directory-structure install-binaries install-docs install-firefoxportable configure-apps launcher
+generic-bundle: directory-structure install-binaries install-docs install-firefoxportable install-pidginportable configure-apps launcher
 	touch generic-bundle.stamp
 
 APPDIR=$(DEST)/App
@@ -135,6 +139,12 @@ install-docs:
 install-firefoxportable:
 	cp -R $(FIREFOX_SRC) $(DEST)/FirefoxPortable
 
+## Copy over PidginPortable
+install-pidginportable:
+ifeq ($(USE_PIDGIN),1)
+	cp -R $(PIDGIN_SRC) $(DEST)/PidginPortable
+endif
+
 ## Configure Firefox, FirefoxPortable, Vidalia, Polipo and Tor
 configure-apps:
 	## Configure Firefox preferences
@@ -143,8 +153,18 @@ configure-apps:
 	cp $(CONFIG_SRC)/bookmarks.html $(DEST)/FirefoxPortable/App/DefaultData/profile/
 	## Configure FirefoxPortable
 	cp $(CONFIG_SRC)/FirefoxPortable.ini $(DEST)/FirefoxPortable
+	## Configure PidginPortable
+ifeq ($(USE_PIDGIN),1)
+	cp $(CONFIG_SRC)/PidginPortable.ini $(DEST)/PidginPortable
+	mkdir -p $(DEST)/PidginPortable/Data/settings/.purple
+	cp $(CONFIG_SRC)/prefs.xml $(DEST)/PidginPortable/Data/settings/.purple
+endif
 	## Configure Vidalia
-	cp $(CONFIG_SRC)/vidalia.conf $(DEST)/Data/Vidalia
+ifeq ($(USE_PIDGIN),1)
+	cp $(CONFIG_SRC)/vidalia.conf.ff+pidgin $(DEST)/Data/Vidalia/vidalia.conf
+else
+	cp $(CONFIG_SRC)/vidalia.conf.ff $(DEST)/Data/Vidalia/vidalia.conf
+endif
 	## Configure Polipo
 	cp $(CONFIG_SRC)/polipo.conf $(DEST)/Data/Polipo
 	## Configure Tor

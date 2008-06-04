@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<pref version='1' name='/'>
+	<pref name='purple'>
+		<pref name='proxy'>
+			<pref name='type' type='string' value='socks5'/>
+			<pref name='host' type='string' value='127.0.0.1'/>
+			<pref name='port' type='int' value='9050'/>
+			<pref name='username' type='string' value=''/>
+			<pref name='password' type='string' value=''/>
+		</pref>
+	</pref>
+	<pref name='pidgin'>
+		<pref name='plugins'>
+			<pref name='loaded' type='pathlist'>
+				<item value='PidginPortable\App\Pidgin\plugins\ssl-nss.dll'/>
+				<item value='PidginPortable\App\Pidgin\plugins\pidgin-otr.dll'/>
+				<item value='PidginPortable\App\Pidgin\plugins\ssl.dll'/>
+			</pref>
+		</pref>
+	</pref>
+</pref>
