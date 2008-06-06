@@ -28,6 +28,10 @@ USE_PIDGIN=0
 ## Location of utility applications
 SEVENZIP="/c/Program Files/7-Zip/7z.exe"
 WGET:=/c/Python25/python.exe $(shell pwd)/pyget.py
+WINRAR="/c/Program Files/WinRAR/WinRAR.exe"
+
+## Size of split archive volumes for WinRAR
+SPLITSIZE=1440k
 
 ## Location of config files
 CONFIG_SRC=config
@@ -64,7 +68,9 @@ EXTENSIONS_DIR=extensions
 
 bundle: bundle_en-US
 
-all-bundles: compressed-bundle_ar \
+all-bundles: all-compressed-bundles all-split-bundles
+
+all-compressed-bundles: compressed-bundle_ar \
 	compressed-bundle_en-US \
 	compressed-bundle_de \
 	compressed-bundle_es-ES \
@@ -75,17 +81,29 @@ all-bundles: compressed-bundle_ar \
 	compressed-bundle_ru \
 	compressed-bundle_zh-CN
 
+all-split-bundles: split-bundle_ar \
+	split-bundle_en-US \
+	split-bundle_de \
+	split-bundle_es-ES \
+	split-bundle_fa-IR \
+	split-bundle_fr \
+	split-bundle_nl \
+	split-bundle_pt-PT \
+	split-bundle_ru \
+	split-bundle_zh-CN
+
 ##
 ## Cleanup
 ##
 
 clean:
-	rm -fr $(DEST) generic-bundle.stamp
+	rm -fr $(DEST) *.stamp
 	rm -f *~
 	rm -fr *.xpi
 	rm -f "Tor Browser.exe"
 	rm -fr $(NAME)_*
 	rm -fr $(COMPRESSED_NAME)_*.exe
+	rm -fr $(COMPRESSED_NAME)_*.rar
 	cd ../src/RelativeLink/ && $(MAKE) clean
 
 ##
@@ -205,17 +223,25 @@ bundle_%:
 	LANGCODE=$* make bundle-localized
 compressed-bundle_%:
 	LANGCODE=$* make compressed-bundle-localized
+split-bundle_%:
+	LANGCODE=$* make split-bundle-localized
 
-bundle-localized: generic-bundle.stamp copy-base install-extensions patch-vidalia-language patch-firefox-language
+bundle-localized_%.stamp:
+	make copy-files_$* install-extensions patch-vidalia-language patch-firefox-language
+	touch bundle-localized_$*.stamp
 
-## TODO: don't rebuild bundle if it's already there
-compressed-bundle-localized: bundle-localized
+bundle-localized: bundle-localized_$(LANGCODE).stamp
+
+compressed-bundle-localized: bundle-localized_$(LANGCODE).stamp
 	cd $(NAME)_$(LANGCODE); $(SEVENZIP) a -sfx7z.sfx ../$(COMPRESSED_NAME)_$(LANGCODE).exe $(NAME)
 
-copy-base:
-	rm -fr $(NAME)_$(LANGCODE)
-	mkdir $(NAME)_$(LANGCODE)
-	cp -R $(DEST) $(NAME)_$(LANGCODE)/$(NAME)
+split-bundle-localized: bundle-localized_$(LANGCODE).stamp
+	cd $(NAME)_$(LANGCODE); $(WINRAR) a -r -s -sfx -v$(SPLITSIZE) ../$(COMPRESSED_NAME)_$(LANGCODE)_split.exe $(NAME)
+
+copy-files_%: generic-bundle.stamp
+	rm -fr $(NAME)_$*
+	mkdir $(NAME)_$*
+	cp -R $(DEST) $(NAME)_$*/$(NAME)
 
 BUNDLE=$(NAME)_$(LANGCODE)/$(NAME)
 DUMMYPROFILE=$(BUNDLE)/FirefoxPortable/App/DummyProfile
