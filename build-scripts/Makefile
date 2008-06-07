@@ -233,10 +233,12 @@ bundle-localized_%.stamp:
 bundle-localized: bundle-localized_$(LANGCODE).stamp
 
 compressed-bundle-localized: bundle-localized_$(LANGCODE).stamp
+	rm -f $(COMPRESSED_NAME)_$(LANGCODE).exe
 	cd $(NAME)_$(LANGCODE); $(SEVENZIP) a -sfx7z.sfx ../$(COMPRESSED_NAME)_$(LANGCODE).exe $(NAME)
 
 split-bundle-localized: bundle-localized_$(LANGCODE).stamp
-	cd $(NAME)_$(LANGCODE); $(WINRAR) a -r -s -sfx -v$(SPLITSIZE) ../$(COMPRESSED_NAME)_$(LANGCODE)_split.exe $(NAME)
+	rm -f $(COMPRESSED_NAME)_$(LANGCODE)_split.part* $(COMPRESSED_NAME)_$(LANGCODE)_split.exe
+	cd $(NAME)_$(LANGCODE); $(WINRAR) a -r -s -ibck -sfx -v$(SPLITSIZE) ../$(COMPRESSED_NAME)_$(LANGCODE)_split.exe $(NAME)
 
 copy-files_%: generic-bundle.stamp
 	rm -fr $(NAME)_$*
