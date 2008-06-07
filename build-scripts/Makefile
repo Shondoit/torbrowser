@@ -23,7 +23,7 @@ FIREFOX_SRC=/c/build/FirefoxPortable
 PIDGIN_SRC=/c/build/PidginPortable
 
 ## Do we install Pidgin?
-USE_PIDGIN=0
+USE_PIDGIN=1
 
 ## Location of utility applications
 SEVENZIP="/c/Program Files/7-Zip/7z.exe"
@@ -176,6 +176,7 @@ ifeq ($(USE_PIDGIN),1)
 	cp $(CONFIG_SRC)/PidginPortable.ini $(DEST)/PidginPortable
 	mkdir -p $(DEST)/PidginPortable/Data/settings/.purple
 	cp $(CONFIG_SRC)/prefs.xml $(DEST)/PidginPortable/Data/settings/.purple
+	cp $(CONFIG_SRC)/PidginPortableSettings.ini $(DEST)/PidginPortable/Data/settings
 endif
 	## Configure Vidalia
 ifeq ($(USE_PIDGIN),1)
@@ -227,7 +228,7 @@ split-bundle_%:
 	LANGCODE=$* make split-bundle-localized
 
 bundle-localized_%.stamp:
-	make copy-files_$* install-extensions patch-vidalia-language patch-firefox-language
+	make copy-files_$* install-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language
 	touch bundle-localized_$*.stamp
 
 bundle-localized: bundle-localized_$(LANGCODE).stamp
@@ -263,6 +264,15 @@ install-extensions: $(DEFAULT_EXTENSIONS) langpack_$(LANGCODE).xpi
 patch-vidalia-language:
 	## Patch Vidalia
 	./patch-vidalia-language.sh $(BUNDLE)/Data/Vidalia/vidalia.conf $(LANGCODE)
+
+## Set the language for Pidgin
+patch-pidgin-language:
+	## Patch Pidgin
+ifeq ($(USE_PIDGIN),1)
+	./patch-pidgin-language.sh $(BUNDLE)/PidginPortable/Data/settings/PidginPortableSettings.ini $(LANGCODE) \
+                                   $(BUNDLE)/PidginPortable/App/Pidgin/locale \
+                                   $(BUNDLE)/PidginPortable/App/GTK/share/locale
+endif
 
 patch-firefox-language:
 	## Patch Firefox prefs.js
