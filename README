@@ -133,3 +133,5 @@ Changelog
        Replace startup batch script with application (RelativeLink), so there is a helpful icon
        Make Qt 4.3.5 the default version
        Optionally install Pidgin (for Tor IM Browser Bundle)
+       Extended INSTALL documentation
+       Optionally use WinRAR to produce a self-extracting split bundle
