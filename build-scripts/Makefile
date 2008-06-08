@@ -41,10 +41,13 @@ NAME="Tor Browser"
 
 ## Version and name of the compressed bundle (also used for source)
 VERSION=1.0.3
+DEFAULT_COMPRESSED_NAME=tor-browser-$(VERSION)
+IM_COMPRESSED_NAME=tor-im-browser-$(VERSION)
+
 ifeq ($(USE_PIDGIN),1)
-COMPRESSED_NAME=tor-im-browser-$(VERSION)
+COMPRESSED_NAME=$(IM_COMPRESSED_NAME)
 else
-COMPRESSED_NAME=tor-browser-$(VERSION)
+COMPRESSED_NAME=$(DEFAULT_COMPRESSED_NAME)
 endif
 
 ## Extensions to install by default
@@ -71,9 +74,9 @@ bundle: bundle_en-US
 
 all-bundles-both:
 	USE_PIDGIN=1 make all-bundles
-	USE_PIDGIN=1 make clean
+	make clean
 	USE_PIDGIN=0 make all-bundles
-	USE_PIDGIN=0 make clean
+	make clean
 
 all-bundles: all-compressed-bundles all-split-bundles
 
@@ -112,8 +115,10 @@ clean:
 
 ## Also remove the output files
 reallyclean: clean
-	rm -fr $(COMPRESSED_NAME)_*.exe
-	rm -fr $(COMPRESSED_NAME)_*.rar	
+	rm -fr $(IM_COMPRESSED_NAME)_*.exe
+	rm -fr $(IM_COMPRESSED_NAME)_*.rar	
+	rm -fr $(DEFAULT_COMPRESSED_NAME)_*.exe
+	rm -fr $(DEFAULT_COMPRESSED_NAME)_*.rar	
 
 ##
 ## Generate a non-localized bundle and put in $(DEST)
