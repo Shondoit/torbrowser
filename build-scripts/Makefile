@@ -22,9 +22,6 @@ POLIPO=/c/build/polipo-1.0.4
 FIREFOX_SRC=/c/build/FirefoxPortable
 PIDGIN_SRC=/c/build/PidginPortable
 
-## Do we install Pidgin?
-USE_PIDGIN=1
-
 ## Location of utility applications
 SEVENZIP="/c/Program Files/7-Zip/7z.exe"
 WGET:=/c/Python25/python.exe $(shell pwd)/pyget.py
@@ -44,7 +41,11 @@ NAME="Tor Browser"
 
 ## Version and name of the compressed bundle (also used for source)
 VERSION=1.0.3
+ifeq ($(USE_PIDGIN),1)
+COMPRESSED_NAME=tor-im-browser-$(VERSION)
+else
 COMPRESSED_NAME=tor-browser-$(VERSION)
+endif
 
 ## Extensions to install by default
 DEFAULT_EXTENSIONS=torbutton.xpi
@@ -67,6 +68,12 @@ EXTENSIONS_DIR=extensions
 ##
 
 bundle: bundle_en-US
+
+all-bundles-both:
+	USE_PIDGIN=1 make all-bundles
+	USE_PIDGIN=1 make clean
+	USE_PIDGIN=0 make all-bundles
+	USE_PIDGIN=0 make clean
 
 all-bundles: all-compressed-bundles all-split-bundles
 
@@ -99,12 +106,14 @@ all-split-bundles: split-bundle_ar \
 clean:
 	rm -fr $(DEST) *.stamp
 	rm -f *~
-	rm -fr *.xpi
-	rm -f "Tor Browser.exe"
+	rm -fr *.xpi *.jar
 	rm -fr $(NAME)_*
-	rm -fr $(COMPRESSED_NAME)_*.exe
-	rm -fr $(COMPRESSED_NAME)_*.rar
 	cd ../src/RelativeLink/ && $(MAKE) clean
+
+## Also remove the output files
+reallyclean: clean
+	rm -fr $(COMPRESSED_NAME)_*.exe
+	rm -fr $(COMPRESSED_NAME)_*.rar	
 
 ##
 ## Generate a non-localized bundle and put in $(DEST)
