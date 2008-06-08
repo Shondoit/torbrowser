@@ -1,0 +1,120 @@
+###
+### Instructions for deploying the official Tor Browser Bundle
+###
+### Copyright 2008 Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217/>
+### See LICENSE for licensing information
+###
+### $Id: INSTALL 14826 2008-05-29 14:03:31Z sjm217 $
+###
+
+This document describes how the official Tor Browser Bundle is
+deployed. It is probably not of interest outside of the Tor Project.
+
+Building the test bundle
+========================
+
+It is a good idea to build just one bundle, since doing the final
+build for all languages takes about 1 hour
+
+Read INSTALL to set up the environment
+
+Check that you are using the latest version of any of the bundle
+components
+
+Edit the Makefile:
+
+ - Update the location of any packages which have changed
+
+ - Update the VERSION variable for the new release
+
+ - Update the location of MOZILLA_LANGUAGE for whatever version of
+   FirefoxPortable that you are using
+
+Run:
+ $ make reallyclean
+ $ USE_PIDGIN=1 make compressed-bundle_de split-bundle_DE
+
+This will take around 10 minutes
+
+Initial check
+=============
+
+Try out tor-browser-..._de.exe and tor-browser-..._de_split.part01.exe
+
+Make sure that Firefox, Pidgin and Torbutton work and are in the right
+language
+
+Note, if at this stage you find out that Firefox starts with a new tab
+saying that it has been upgraded, you will need to update
+config/prefs.js and set the "extensions.lastAppVersion" variable
+
+If you made any changes, go back to "Building the bundle"
+
+Building all the bundles
+========================
+
+Once you are happy everything is building correctly, run:
+ $ make reallyclean
+ $ make all-bundles-both
+
+This will take around 1 hour
+
+Update README
+=============
+
+Update the section "Included applications" with the new version
+numbers.
+
+In the section "Changelog", add the new version number if it is not
+already there, update the release date and add in what has changed in
+this version.
+
+To make sure you have not missed anything, compare the changelog to
+the results of:
+
+ svn diff \
+  https://tor-svn.freehaven.net/svn/torbrowser/tags/torbrowser-$LASTVERSION/ \
+  https://tor-svn.freehaven.net/svn/torbrowser/trunk/
+
+Tag the build
+=============
+
+Tag the trunk to the correct version number (e.g. torbrowser-1_1_0):
+
+ svn cp \ 
+  https://tor-svn.freehaven.net/svn/torbrowser/trunk/ \
+  https://tor-svn.freehaven.net/svn/torbrowser/tags/torbrowser-$NEWVERSION/
+
+Export the source tarball
+=========================
+
+In build-scripts, run "make srcdist"
+
+The source will be put into /tmp/tor-browser-$NEWVERSION-src.tar.gz
+
+Sign everything
+===============
+
+Copy the files from Windows to the machine with your OpenPGP keys
+
+Sign them all using the "gpg -ab" command
+
+Upload to www.torproject.org
+============================
+
+Copy the files, along with their signatures to:
+ www.torproject.org:/var/www/www.torproject.org/htdocs/torbrowser/dist
+
+Make sure they have the right permissions:
+ find /var/www/www.torproject.org/htdocs/torbrowser/dist -type f -exec chmod 444 {} \;
+ find /var/www/www.torproject.org/htdocs/torbrowser/dist -type d -exec chmod 775 {} \;
+
+Update the website
+==================
+
+Edit https://tor-svn.freehaven.net/svn/website/trunk/include/versions.wmi
+
+Update version-torbrowser* with the versions of the bundles and
+components
+
+Ask Roger to publish the website
