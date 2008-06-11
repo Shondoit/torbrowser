@@ -60,6 +60,13 @@ Firefox modifications
   See related Firefox code:
    http://lxr.mozilla.org/mozilla1.8.0/source/xpfe/bootstrap/nsAppRunner.cpp#802
 
+Pidgin modifications
+--------------------
+
+- Check that SOCKS 5 proxy is always used if configured
+
+- Don't include real account name when generating IRC realname
+
 General
 -------
 
