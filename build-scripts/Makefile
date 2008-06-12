@@ -117,8 +117,10 @@ clean:
 reallyclean: clean
 	rm -fr $(IM_COMPRESSED_NAME)_*.exe
 	rm -fr $(IM_COMPRESSED_NAME)_*.rar	
+	rm -fr $(IM_COMPRESSED_NAME)_*_split
 	rm -fr $(DEFAULT_COMPRESSED_NAME)_*.exe
-	rm -fr $(DEFAULT_COMPRESSED_NAME)_*.rar	
+	rm -fr $(DEFAULT_COMPRESSED_NAME)_*.rar
+	rm -fr $(DEFAULT_COMPRESSED_NAME)_*_split
 
 ##
 ## Generate a non-localized bundle and put in $(DEST)
@@ -252,8 +254,9 @@ compressed-bundle-localized: bundle-localized_$(LANGCODE).stamp
 	cd $(NAME)_$(LANGCODE); $(SEVENZIP) a -sfx7z.sfx ../$(COMPRESSED_NAME)_$(LANGCODE).exe $(NAME)
 
 split-bundle-localized: bundle-localized_$(LANGCODE).stamp
-	rm -f $(COMPRESSED_NAME)_$(LANGCODE)_split.part* $(COMPRESSED_NAME)_$(LANGCODE)_split.exe
-	cd $(NAME)_$(LANGCODE); $(WINRAR) a -r -s -ibck -sfx -v$(SPLITSIZE) ../$(COMPRESSED_NAME)_$(LANGCODE)_split.exe $(NAME)
+	rm -fr $(COMPRESSED_NAME)_$(LANGCODE)_split; mkdir $(COMPRESSED_NAME)_$(LANGCODE)_split
+	cd $(NAME)_$(LANGCODE); $(WINRAR) a -r -s -ibck -sfx -v$(SPLITSIZE) \
+            ../$(COMPRESSED_NAME)_$(LANGCODE)_split/$(COMPRESSED_NAME)_$(LANGCODE)_split.exe $(NAME)
 
 copy-files_%: generic-bundle.stamp
 	rm -fr $(NAME)_$*
