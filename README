@@ -38,12 +38,15 @@ Further issues are discussed in TODO.
 Included applications
 ---------------------
 
-Vidalia (svn trunk revision 2539)
-Tor 0.2.0.26-rc (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8g) 
+Vidalia (svn trunk revision 2718)
+Tor 0.2.1.1-alpha (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8h) 
 Polipo 1.0.4
 FirefoxPortable 2.0.0.14
  \_ Firefox 2.0.0.14
-    \_ Torbutton 1.1.18
+    \_ Torbutton 1.2.0rc2
+PidginPortable 2.4.2
+ \_ Pidgin 2.4.2
+ |_ OTR 3.1
 
 Usage
 -----
@@ -129,9 +132,12 @@ Changelog
        Add RunProxyAtStart to vidalia.conf (now required)
 1.0.3: Released 2008-05-16
        Update Tor to 0.2.0.26-rc
-1.1.0: Released 2008-xx-xx
+1.1.0: Released 2008-06-13
        Replace startup batch script with application (RelativeLink), so there is a helpful icon
        Make Qt 4.3.5 the default version
        Optionally install Pidgin (for Tor IM Browser Bundle)
        Extended INSTALL documentation
        Optionally use WinRAR to produce a self-extracting split bundle
+       Update Vidalia to revision 2718
+       Update Tor to 0.2.1.1-alpha
+       Update OpenSSL to 0.9.8h

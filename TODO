@@ -70,6 +70,12 @@ Pidgin modifications
 General
 -------
 
+- OCSP_RESPONSE is defined both in ssl/include/openssl/ossl_typ.h and
+  wincrypt.h, which causes an error on building Tor. This can be fixed
+  by renameing the #define in wincrypt.h, but something better should
+  be done. See:
+   http://www.mail-archive.com/openssl-dev@openssl.org/msg24079.html
+
 - Use process monitor to watch filesystem activity:
   http://www.microsoft.com/technet/sysinternals/utilities/processmonitor.mspx
 
