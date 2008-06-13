@@ -1,0 +1,44 @@
+###
+### Notes on traces left by Tor Browser Bundle
+###
+### Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217/>
+###
+### $Id$
+###
+
+Filesystem modifications
+========================
+
+To study what changes Firefox portable makes I started two instances
+of Windows in VMWare, from the same base. In one I ran Tor Browser
+Bundle and in the other I ran nothing. By comparing the filesystem
+states I was able to find out which files changed.
+
+33 files changed in each instance, 32 of which are common to both
+runs.
+
+When the Tor Browser Bundle was run this file was modified:
+ 
+ WINDOWS/system32/wbem/Repository/FS/INDEX.BTR
+
+When Tor Browser was not run this file was modified.
+
+ WINDOWS/Prefetch/WUAUCLT.EXE ... .pf
+
+The former is part of the Windows logging infrastructure, so needs to
+be investigated as to whether there is any sensitive information
+stored.
+
+The latter file indicates that Windows update ran, which is probably
+just a coincidence. Some more investigation to confirm this would be
+advisable.
+
+Also, the application was run from a USB drive. The situation could
+also be different if the application was run from the hard drive.
+
+Future steps
+============
+
+These tests were run on a computer which already had Firefox
+installed. It is possible that without Firefox the situation will be
+different.
