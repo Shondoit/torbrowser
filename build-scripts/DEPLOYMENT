@@ -19,7 +19,7 @@ build for all languages takes about 1 hour
 Read INSTALL to set up the environment
 
 Check that you are using the latest version of any of the bundle
-components
+components (OpenSSL, zlib, libevent, Firefox, Pidgin, Vidalia, Tor)
 
 Edit the Makefile:
 
@@ -32,7 +32,7 @@ Edit the Makefile:
 
 Run:
  $ make reallyclean
- $ USE_PIDGIN=1 make compressed-bundle_de split-bundle_DE
+ $ USE_PIDGIN=1 make compressed-bundle_de split-bundle_de
 
 This will take around 10 minutes
 

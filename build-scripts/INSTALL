@@ -25,6 +25,7 @@ Contents
 - Building libevent
 - Building Tor
 - Building Vidalia
+- Unpacking PidginPortable
 - Building Firefox or Unpacking Firefox Portable
 - Customizing and Building the Tor Browser Bundle
 
@@ -238,6 +239,8 @@ In short, you'll now need to install the msysDTK:
     http://prdownloads.sf.net/mingw/msysDTK-1.0.1.exe?download
 
 Run msysDTK-1.0.1.exe and install it into C:\msys\1.0
+
+This will give you Perl, which is necessary for the OpenSSL build
 
 Installing autoconf update
 ==========================
@@ -513,6 +516,19 @@ Further information
 ===================
 
 Full instructions are in the Vidalia INSTALL file.
+
+Unpacking PidginPortable
+========================
+
+Download PidginPortable from:
+ http://portableapps.com/apps/internet/pidgin_portable
+
+Also download the portable Pidgin-OTR plugin from the same page.
+
+Install both to C:\build\PidginPortable
+
+When installing Pidgin Portable, choose to install the extra language
+packs.
 
 Building Firefox
 ================
