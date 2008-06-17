@@ -97,7 +97,11 @@ Sign everything
 
 Copy the files from Windows to the machine with your OpenPGP keys
 
-Sign them all using the "gpg -ab" command
+Sign them all using the "gpg -ab" command:
+ find . -type f -exec gpg --use-agent -ab {} \;
+
+Move the split signatures to a directory:
+ for i in *_split; do mkdir $i/signatures; mv $i/*.asc $i/signatures;done
 
 Upload to www.torproject.org
 ============================
