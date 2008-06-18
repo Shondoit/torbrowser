@@ -6,31 +6,17 @@
 Vidalia modifications
 ---------------------
 
-- Make Vidalia show some evidence of activity while it is starting Tor
-[mid priority -- what do you have in mind here?]
-
 - Prevent user from starting Firefox manually while Tor is still
   starting up
   OR (preferably)
 - Allow normal Firefox and Tor Browser to co-exist safely
 [mid priority]
 
-- Also make Vidalia show what percentage progress Tor has made in
-  building a circuit (needs Tor to send events while startup is proceeding)
-  - Tor should send out more status_event messages based on various
-    milestones towards its circuit-establishment phase.
-  - Vidalia should recognize these and either change the text for
-    "Tor is starting up", or have a status bar, or something.
-[high priority]
-
 - Make Vidalia kill Firefox when it exits. Currently Vidalia
   terminates the process, but killing FirefoxPortable does not end Firefox.
   Either we could kill firefox.exe directly, or wait until Vidalia
   launches Firefox.
   Let's wait until Vidalia launches Firefox directly. -RD
-
-- Implement UPNP
-  Perhaps based on this library http://search.cpan.org/src/SKONNO/Net-UPnP-1.2.1/
 
 Firefox modifications
 ---------------------
@@ -50,8 +36,6 @@ Firefox modifications
 - Tailor error messages so are more appropriate to Tor (e.g. point out
   dangers when submitting forms to non-HTTPS URLs)
 [low priority]
-
-- Check if Torbutton behaves as intended if pre-configures by prefs.js
 
 - Check if setting -UILocale command line option, and match is a more reliable
   way of setting locale than general.useragent.locale.
@@ -90,9 +74,6 @@ General
   the installer and the actual bundle
 [mid priority]
 
-- Modify Torbutton to prevent user from disabling Tor (easily)
-[mid priority]
-
 - Ensure Firefox update works securely
 [low priority]
 
@@ -106,9 +87,6 @@ General
   - Set default extraction location the Desktop
   - Allow it to be translated
   - Make the directory selector clearer (not "...")
-
-- Split archive or make auto-downloader to help people who cannot
-  download large files in one go
 
 - Ask specific vendors to sign their packaged binary releases, probably with
   pgp/gpg. The packages are: 7zip, MinGW, MSYS, CMake, QT, msysDTK,
@@ -131,6 +109,30 @@ our target audience?
 
 Done
 ====
+
+[ Done: 2008-06-18 ]
+
+- Make Vidalia show some evidence of activity while it is starting Tor
+[mid priority -- what do you have in mind here?]
+
+- Also make Vidalia show what percentage progress Tor has made in
+  building a circuit (needs Tor to send events while startup is proceeding)
+  - Tor should send out more status_event messages based on various
+    milestones towards its circuit-establishment phase.
+  - Vidalia should recognize these and either change the text for
+    "Tor is starting up", or have a status bar, or something.
+[high priority]
+
+- Implement UPNP
+  Perhaps based on this library http://search.cpan.org/src/SKONNO/Net-UPnP-1.2.1/
+
+- Check if Torbutton behaves as intended if pre-configures by prefs.js
+
+- Modify Torbutton to prevent user from disabling Tor (easily)
+[mid priority]
+
+- Split archive or make auto-downloader to help people who cannot
+  download large files in one go
 
 [ Done: 2008-05-27 ]
 
