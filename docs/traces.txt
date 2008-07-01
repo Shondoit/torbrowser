@@ -36,6 +36,17 @@ advisable.
 Also, the application was run from a USB drive. The situation could
 also be different if the application was run from the hard drive.
 
+Prefetch
+--------
+
+If there are less than 128 entries in WINDOWS/Prefetch on reboot, and
+sufficient time has passed since booting, the starting of any
+executable will create a new file in that location. File names are of
+the form <COMMAND>-<HASH>.pf.
+
+There appears to be no difference when the bundle is run from
+removable storage as opposed to the hard disk. 
+
 Future steps
 ============
 
