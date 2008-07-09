@@ -47,6 +47,23 @@ the form <COMMAND>-<HASH>.pf.
 There appears to be no difference when the bundle is run from
 removable storage as opposed to the hard disk. 
 
+Registry modifications
+======================
+
+The dumpreg.py in FindTraces will take a ProcessMonitor trace and dump the
+contents of all registry keys opened or modified by Tor Browser Bundle. For each
+of these keys, the state before and after Tor Browser Bundle is started can be
+saved. Then, by comparing the two files it is possible to find registry keys
+modified by Tor Browser Bundle.
+
+On a Windows XP installation, with Firefox installed, only one registry key is
+modified: HKLM\Software\Microsoft\Cryptography\RNG\Seed (by vidalia.exe,
+tor.exe, FirefoxPortable.exe, firefox.exe, polipo.exe)
+
+This key is also modifed by a large number of other applications (including
+calc.exe, mspaint.exe, notpad.exe, etc...) Therefore the modification of this
+does not indicate that Tor Browser Bundle was run.
+
 Future steps
 ============
 
