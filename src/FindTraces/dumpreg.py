@@ -58,12 +58,18 @@ def main():
 	## Skip header
 	logfile.next()
 
+	keys = {}
 	for row in logfile:
 		## Parse the line
 		seq, time, proc, pid, op, key, result, detail = row
 		## We only handle RegCreateKey operations
-		assert(op=='RegCreateKey')
-		## Parse the registry key
+		assert(op.startswith('Reg'))
+
+		if keys.has_key(key):
+			continue
+		keys[key] = None
+		
+		## Parse the registry key		
 		handle, path = parse_key(key)
 		try:
 			## Get the contents
