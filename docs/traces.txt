@@ -64,6 +64,15 @@ This key is also modifed by a large number of other applications (including
 calc.exe, mspaint.exe, notpad.exe, etc...) Therefore the modification of this
 does not indicate that Tor Browser Bundle was run.
 
+Other traces
+============
+
+If the Tor Browser Bundle is initially saved to the hard disk, then
+deleted, the contents will likely be obtainable with a forensic disk
+analysis tool or undeletion program. A safer option is to download and
+install the bundle on a USB drive, and then take this away after using
+the computer.
+
 Future steps
 ============
 
