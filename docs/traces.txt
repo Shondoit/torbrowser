@@ -60,9 +60,20 @@ On a Windows XP installation, with Firefox installed, only one registry key is
 modified: HKLM\Software\Microsoft\Cryptography\RNG\Seed (by vidalia.exe,
 tor.exe, FirefoxPortable.exe, firefox.exe, polipo.exe)
 
+Without Firefox installed, there appears to be no difference, although
+it is difficult to be certain since Windows makes changes to a large
+number of binary objects stored in the registry on each boot.
+
 This key is also modifed by a large number of other applications (including
 calc.exe, mspaint.exe, notpad.exe, etc...) Therefore the modification of this
 does not indicate that Tor Browser Bundle was run.
+
+Windows explorer also logs the ROT-13 encoded names of executables run in:
+ HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist
+
+FirefoxPortable will sometimes create a new entry, containing the path
+ to Vidalia in:
+ (HK_CURRENT_USER|HKEY_USER)Software\Microsoft\Windows\ShellNoRoam\MUICache
 
 Other traces
 ============
