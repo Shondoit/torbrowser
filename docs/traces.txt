@@ -70,6 +70,8 @@ does not indicate that Tor Browser Bundle was run.
 
 Windows explorer also logs the ROT-13 encoded names of executables run in:
  HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist
+Further information can be found in this article:
+ http://personal-computer-tutor.com/abc3/v29/vic29.htm
 
 FirefoxPortable will sometimes create a new entry, containing the path
  to Vidalia in:
