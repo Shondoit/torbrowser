@@ -46,7 +46,7 @@ FirefoxPortable 2.0.0.14
     \_ Torbutton 1.2.0rc2
 PidginPortable 2.4.2
  \_ Pidgin 2.4.2
- |_ OTR 3.1
+   \_ OTR 3.1
 
 Usage
 -----
