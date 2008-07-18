@@ -22,6 +22,9 @@
 // Put it in the proper place.
 //
 
+#define TZVAR TEXT("TZ")
+#define TZVAL TEXT("UTC")
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
     STARTUPINFO si;
@@ -30,6 +33,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     ZeroMemory ( &si, sizeof(si) );  
     si.cb = sizeof(si);
     ZeroMemory ( &pi, sizeof(pi) );
+
+    // Set TZ=UTC environment variable
+
+    if (! SetEnvironmentVariable(TZVAR, TZVAL)) 
+    {
+        MessageBox ( NULL, TEXT ("Unable to set TZ environment variable"), NULL, MB_OK);
+        return -1;
+    }
 
     TCHAR *ProgramToStart;
     ProgramToStart = TEXT ("App/vidalia.exe --datadir .\\Data\\Vidalia\\");

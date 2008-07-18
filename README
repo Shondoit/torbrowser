@@ -148,3 +148,4 @@ Changelog
        Update Tor to 0.2.1.2-alpha
        Update Portable Firefox to xx
        Update Torbutton to 1.2.0rc6
+       Set TZ=UTC environment variable in RelativeLink (needed by Torbutton)
