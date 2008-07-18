@@ -30,6 +30,8 @@ Edit the Makefile:
  - Update the location of MOZILLA_LANGUAGE for whatever version of
    FirefoxPortable that you are using
 
+ - Update the location of TORBUTTON
+
 Run:
  $ make reallyclean
  $ USE_PIDGIN=1 make compressed-bundle_de split-bundle_de
