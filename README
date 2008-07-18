@@ -141,3 +141,10 @@ Changelog
        Update Vidalia to revision 2718
        Update Tor to 0.2.1.1-alpha
        Update OpenSSL to 0.9.8h
+1.1.1: Released 2008-07-xx
+       Update Vidalia to release 0.1.6 (we now longer need to track SVN trunk)
+       Update Pidgin Portable to 2.4.3
+       Update Pidgin OTR plugin to 3.2
+       Update Tor to 0.2.1.2-alpha
+       Update Portable Firefox to xx
+       Update Torbutton to 1.2.0rc6
