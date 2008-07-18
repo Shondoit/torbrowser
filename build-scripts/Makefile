@@ -16,8 +16,8 @@ MING=/c/MinGW/bin
 QT=/c/Qt/4.3.5/bin
 
 ## Location of bundle components
-VIDALIA=/c/build/vidalia
-TOR=/c/build/tor-0.2.1.1-alpha
+VIDALIA=/c/build/vidalia-0.1.6
+TOR=/c/build/tor-0.2.1.2-alpha
 POLIPO=/c/build/polipo-1.0.4
 FIREFOX_SRC=/c/build/FirefoxPortable
 PIDGIN_SRC=/c/build/PidginPortable
@@ -40,7 +40,7 @@ DEST="Generic Bundle"
 NAME="Tor Browser"
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.1.0
+VERSION=1.1.1
 DEFAULT_COMPRESSED_NAME=tor-browser-$(VERSION)
 IM_COMPRESSED_NAME=tor-im-browser-$(VERSION)
 
@@ -54,7 +54,7 @@ endif
 DEFAULT_EXTENSIONS=torbutton.xpi
 
 ## Where to download Torbutton from
-TORBUTTON=http://torbutton.torproject.org/dev/torbutton-current-alpha.xpi
+TORBUTTON=https://addons.mozilla.org/en-US/firefox/downloads/file/33502/torbutton-1.2.0rc6-fx.xpi
 
 ## Where to download Mozilla language packs
 MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/2.0.0.14/win32/xpi
