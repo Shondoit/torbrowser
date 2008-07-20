@@ -183,10 +183,10 @@ endif
 configure-apps:
 	## Configure Firefox preferences
 	cp $(CONFIG_SRC)/prefs.js $(DEST)/FirefoxPortable/App/DefaultData/profile/
-	cp $(CONFIG_SRC)/user.js $(DEST)/FirefoxPortable/App/DefaultData/profile/
 	cp $(CONFIG_SRC)/bookmarks.html $(DEST)/FirefoxPortable/App/DefaultData/profile/
 	## Configure FirefoxPortable
 	cp $(CONFIG_SRC)/FirefoxPortable.ini $(DEST)/FirefoxPortable
+	cp $(CONFIG_SRC)/FirefoxPortableSettings.ini $(DEST)/FirefoxPortable
 	## Configure PidginPortable
 ifeq ($(USE_PIDGIN),1)
 	cp $(CONFIG_SRC)/PidginPortable.ini $(DEST)/PidginPortable
