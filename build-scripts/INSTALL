@@ -442,10 +442,10 @@ Set a proper environment:
 
     export PATH=$PATH:/c/Program\ Files/CMake\ 2.6/bin/:/c/MinGW/bin/:/c/Qt/4.3.5/bin/
 
-Create the proper MinGW Makefiles and don't forget the '.' at the end!
+Create the proper MSYS Makefiles and don't forget the '.' at the end!
 
     cd /c/build/vidalia
-    cmake -G "MinGW Makefiles" . 
+    cmake -G "MSYS Makefiles" . 
 
 You may see some errors:
 
@@ -483,9 +483,9 @@ You may see some errors:
 
 This is OK. You can ignore these errors.
 
-Now you'll build Vidalia by running mingw32-make:
+Now you'll build Vidalia by running MSYS make:
 
-    mingw32-make.exe
+    make
 
 Alternatively building under MinGW32
 ====================================
