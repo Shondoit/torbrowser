@@ -38,15 +38,15 @@ Further issues are discussed in TODO.
 Included applications
 ---------------------
 
-Vidalia (svn trunk revision 2718)
-Tor 0.2.1.1-alpha (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8h) 
+Vidalia 0.1.6
+Tor 0.2.1.2-alpha (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8h) 
 Polipo 1.0.4
 FirefoxPortable 2.0.0.14
  \_ Firefox 2.0.0.14
-    \_ Torbutton 1.2.0rc2
-PidginPortable 2.4.2
- \_ Pidgin 2.4.2
-   \_ OTR 3.1
+    \_ Torbutton 1.2.0rc6
+PidginPortable 2.4.3
+ \_ Pidgin 2.4.3
+   \_ OTR 3.2
 
 Usage
 -----
@@ -141,11 +141,10 @@ Changelog
        Update Vidalia to revision 2718
        Update Tor to 0.2.1.1-alpha
        Update OpenSSL to 0.9.8h
-1.1.1: Released 2008-07-xx
+1.1.1: Released 2008-07-20
        Update Vidalia to release 0.1.6 (we now longer need to track SVN trunk)
        Update Pidgin Portable to 2.4.3
        Update Pidgin OTR plugin to 3.2
        Update Tor to 0.2.1.2-alpha
-       Update Portable Firefox to xx
        Update Torbutton to 1.2.0rc6
        Set TZ=UTC environment variable in RelativeLink (needed by Torbutton)
