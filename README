@@ -148,3 +148,5 @@ Changelog
        Update Tor to 0.2.1.2-alpha
        Update Torbutton to 1.2.0rc6
        Set TZ=UTC environment variable in RelativeLink (needed by Torbutton)
+1.1.2: Released 2008-08-xx
+       Don't set TZ environment variable in RelativeLink (now done by Vidalia 0.1.7)
