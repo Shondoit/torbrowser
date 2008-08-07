@@ -16,10 +16,10 @@ MING=/c/MinGW/bin
 QT=/c/Qt/4.3.5/bin
 
 ## Location of bundle components
-VIDALIA=/c/build/vidalia-0.1.6
-TOR=/c/build/tor-0.2.1.2-alpha
+VIDALIA=/c/build/vidalia-0.1.7
+TOR=/c/build/tor-0.2.1.4-alpha
 POLIPO=/c/build/polipo-1.0.4
-FIREFOX_SRC=/c/build/FirefoxPortable
+FIREFOX_SRC=/c/build/FirefoxPortable2.0.0.16
 PIDGIN_SRC=/c/build/PidginPortable
 
 ## Location of utility applications
