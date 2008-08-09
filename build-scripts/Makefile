@@ -40,7 +40,7 @@ DEST="Generic Bundle"
 NAME="Tor Browser"
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.1.1
+VERSION=1.1.2
 DEFAULT_COMPRESSED_NAME=tor-browser-$(VERSION)
 IM_COMPRESSED_NAME=tor-im-browser-$(VERSION)
 
@@ -54,10 +54,10 @@ endif
 DEFAULT_EXTENSIONS=torbutton.xpi
 
 ## Where to download Torbutton from
-TORBUTTON=https://addons.mozilla.org/en-US/firefox/downloads/file/33502/torbutton-1.2.0rc6-fx.xpi
+TORBUTTON=https://addons.mozilla.org/en-US/firefox/downloads/file/34698/torbutton-1.2.0-fx.xpi
 
 ## Where to download Mozilla language packs
-MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/2.0.0.14/win32/xpi
+MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/2.0.0.16/win32/xpi
 
 ## Put more extensions here
 EXTENSIONS_DIR=extensions
