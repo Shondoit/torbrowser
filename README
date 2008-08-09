@@ -38,12 +38,12 @@ Further issues are discussed in TODO.
 Included applications
 ---------------------
 
-Vidalia 0.1.6
-Tor 0.2.1.2-alpha (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8h) 
+Vidalia 0.1.7
+Tor 0.2.1.4-alpha (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8h) 
 Polipo 1.0.4
-FirefoxPortable 2.0.0.14
- \_ Firefox 2.0.0.14
-    \_ Torbutton 1.2.0rc6
+FirefoxPortable 2.0.0.16
+ \_ Firefox 2.0.0.16
+    \_ Torbutton 1.2.0
 PidginPortable 2.4.3
  \_ Pidgin 2.4.3
    \_ OTR 3.2
@@ -148,5 +148,8 @@ Changelog
        Update Tor to 0.2.1.2-alpha
        Update Torbutton to 1.2.0rc6
        Set TZ=UTC environment variable in RelativeLink (needed by Torbutton)
-1.1.2: Released 2008-08-xx
+1.1.2: Released 2008-08-09
        Don't set TZ environment variable in RelativeLink (now done by Vidalia 0.1.7)
+       Update Vidalia to release 0.1.7
+       Update Tor to 0.2.1.4-alpha
+       Update Firefox to 2.0.0.16
