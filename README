@@ -153,3 +153,6 @@ Changelog
        Update Vidalia to release 0.1.7
        Update Tor to 0.2.1.4-alpha
        Update Firefox to 2.0.0.16
+1.1.3: Released 2008-08-13
+       Fix homepage so that it is properly localized
+       Add &small=1 to homepage URL to request a more discreet page
