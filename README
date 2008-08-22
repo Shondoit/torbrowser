@@ -38,7 +38,7 @@ Further issues are discussed in TODO.
 Included applications
 ---------------------
 
-Vidalia 0.1.7
+Vidalia 0.1.8
 Tor 0.2.1.4-alpha (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8h) 
 Polipo 1.0.4
 FirefoxPortable 2.0.0.16
@@ -153,6 +153,7 @@ Changelog
        Update Vidalia to release 0.1.7
        Update Tor to 0.2.1.4-alpha
        Update Firefox to 2.0.0.16
-1.1.3: Released 2008-08-13
+1.1.3: Released 2008-08-22
        Fix homepage so that it is properly localized
        Add &small=1 to homepage URL to request a more discreet page
+       Update Vidalia to release 0.1.8
