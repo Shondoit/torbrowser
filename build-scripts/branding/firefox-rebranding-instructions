@@ -1,0 +1,35 @@
+To rebrand Firefox from BonEcho into TorBrowser, a small bit of patching is
+required.
+
+First apply the renaming patch:
+
+    /tmp/mozilla$ patch -p1 < ../firefox-torbrowser.diff
+    patching file browser/base/content/browserconfig.properties
+    patching file browser/base/content/old-homepage-default.properties
+    patching file browser/locales/en-US/chrome/branding/brand.dtd
+    patching file browser/locales/en-US/chrome/branding/brand.properties
+    patching file configure.in
+
+Now rebuild the configuration script with autoconf:
+    
+   /tmp/mozilla$ autoconf2.13 configure.in
+
+   [...] # Lots of Autoconf magic will fly by the terminal
+ 
+Ensure you have the proper .mozconfig from svn and then:
+
+    /tmp/mozilla$ ./configure --with-moz-app-displayname=TorBrowser
+
+Replace the about.png with the TorBrowser version:
+
+    mv about.png /tmp/mozilla/browser/base/branding/
+
+Build Firefox^H^H^H^H^H^H^H TorBrowser:
+
+    make
+
+And now you'll run it and see a newly rebranded browser:
+
+   ./dist/bin/run-mozilla.sh dist/bin/firefox 
+
+You should have a newly branded firefox!
