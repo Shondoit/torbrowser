@@ -271,7 +271,7 @@ install-extensions: $(DEFAULT_EXTENSIONS) langpack_$(LANGCODE).xpi
 	## Install default extensions and everything from extensions directory
 	for extension in langpack_$(LANGCODE).xpi $(DEFAULT_EXTENSIONS) $(EXTENSIONS_DIR)/*.xpi $(EXTENSIONS_DIR)/*.jar; \
 	  do $(BUNDLE)/FirefoxPortable/App/firefox/firefox.exe \
-             -profile $(DUMMYPROFILE) \
+             -profile $(DUMMYPROFILE)/profile \
              -install-global-extension $$extension; \
           done
 	## Delete the dummy profile
