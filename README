@@ -38,14 +38,14 @@ Further issues are discussed in TODO.
 Included applications
 ---------------------
 
-Vidalia 0.1.8
-Tor 0.2.1.4-alpha (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8h) 
+Vidalia 0.1.9
+Tor 0.2.1.6-alpha (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8h) 
 Polipo 1.0.4
-FirefoxPortable 2.0.0.16
- \_ Firefox 2.0.0.16
+FirefoxPortable 2.0.0.17
+ \_ Firefox 2.0.0.17
     \_ Torbutton 1.2.0
-PidginPortable 2.4.3
- \_ Pidgin 2.4.3
+PidginPortable 2.5.1
+ \_ Pidgin 2.5.1
    \_ OTR 3.2
 
 Usage
@@ -157,3 +157,8 @@ Changelog
        Fix homepage so that it is properly localized
        Add &small=1 to homepage URL to request a more discreet page
        Update Vidalia to release 0.1.8
+1.1.4: Released 2008-10-13
+       Update Vidalia to release 0.1.9
+       Update Tor to 0.2.1.6-alpha
+       Update Firefox to 2.0.0.16
+       Update Pidgin to 2.5.1

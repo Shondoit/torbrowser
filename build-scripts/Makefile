@@ -16,11 +16,11 @@ MING=/c/MinGW/bin
 QT=/c/Qt/4.3.5/bin
 
 ## Location of bundle components
-VIDALIA=/c/build/vidalia-0.1.8
-TOR=/c/build/tor-0.2.1.4-alpha
+VIDALIA=/c/build/vidalia-0.1.9
+TOR=/c/build/tor-0.2.1.6-alpha
 POLIPO=/c/build/polipo-1.0.4
-FIREFOX_SRC=/c/build/FirefoxPortable2.0.0.16
-PIDGIN_SRC=/c/build/PidginPortable
+FIREFOX_SRC=/c/build/FirefoxPortable2.0.0.17
+PIDGIN_SRC=/c/build/PidginPortable2.5.1
 
 ## Location of utility applications
 SEVENZIP="/c/Program Files/7-Zip/7z.exe"
@@ -40,7 +40,7 @@ DEST="Generic Bundle"
 NAME="Tor Browser"
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.1.3
+VERSION=1.1.4
 DEFAULT_COMPRESSED_NAME=tor-browser-$(VERSION)
 IM_COMPRESSED_NAME=tor-im-browser-$(VERSION)
 
@@ -57,7 +57,7 @@ DEFAULT_EXTENSIONS=torbutton.xpi
 TORBUTTON=https://addons.mozilla.org/en-US/firefox/downloads/file/34698/torbutton-1.2.0-fx.xpi
 
 ## Where to download Mozilla language packs
-MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/2.0.0.16/win32/xpi
+MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/2.0.0.17/win32/xpi
 
 ## Put more extensions here
 EXTENSIONS_DIR=extensions
