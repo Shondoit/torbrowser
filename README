@@ -162,3 +162,6 @@ Changelog
        Update Tor to 0.2.1.6-alpha
        Update Firefox to 2.0.0.16
        Update Pidgin to 2.5.1
+1.1.5: Released 2008-11-xx
+       Set AllowMultipleInstances=true, to allow Tor Browser Bundle and
+        Firefox to be run at the same time (suggested by John Brooks)
