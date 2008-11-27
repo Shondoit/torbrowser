@@ -536,7 +536,7 @@ Download PidginPortable from:
 
 Also download the portable Pidgin-OTR plugin from the same page.
 
-Install both to C:\build\PidginPortable
+Install both to C:\build\PidginPortable-<version>
 
 When installing Pidgin Portable, choose to install the extra language
 packs.
@@ -550,7 +550,7 @@ Download FirefoxPortable:
 
     http://downloads.sourceforge.net/portableapps/Firefox_Portable_2.0.0.18_en-us.paf.exe?download
 
-Run the installer and select it into: 'C:\build\FirefoxPortable\'
+Run the installer and select it into: 'C:\build\FirefoxPortable-<version>>'
 
 If you use FirefoxPortable, you can skip past the following build steps and go directly to the customization section.
 
