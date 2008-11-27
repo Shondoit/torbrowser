@@ -2,6 +2,7 @@
 ### Instructions for building Tor Browser Bundle components
 ###
 ### Copyright 2007 Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217/>
+### Copyright 2008 The Tor Project <https://www.torproject.org/> 
 ### See LICENSE for licensing information
 ###
 ### $Id$
@@ -33,7 +34,7 @@ An Introduction to Building Tor Browser Bundle
 ==============================================
 
 To build Tor Browser Bundle, you need to have built:
- Vidalia (in /c/build/vidalia by default)
+ Vidalia (in /c/build/vidalia-<version> by default)
  Tor (in /c/build/tor-<version> by default)
  Polipo (in /c/build/polipo-<version> by default)
 and have uncompressed Firefox Portable or produce a custom build Firefox
@@ -229,7 +230,8 @@ When prompted, install Qt into 'C:\Qt\4.3.5'
 You will be prompted for the install path for your MinGW directory, enter 'C:\MinGW'
 You may have an error about win32api.h being not found. This is not true. You
 have win32api.h and Qt is wrong.  This is a result of the Qt installer not
-understanding how to count version numbers.
+understanding how to count version numbers. This is probably fixed in newer 
+versions of Qt. YMMV.
 
 Installing msysDTK
 ==================
@@ -321,23 +323,23 @@ Building OpenSSL
 
 Download openssl:
 
-    http://www.openssl.org/source/openssl-0.9.8g.tar.gz
+    http://www.openssl.org/source/openssl-0.9.8h.tar.gz
 
 Unpack it:
 
     cd /c/build/
-    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/openssl-0.9.8g.tar.gz
+    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/openssl-0.9.8h.tar.gz
 
 You should see errors not unlike:
 
-    tar: openssl-0.9.8g/include/openssl/bn.h: Cannot create symlink to `../../crypto/bn/bn.h': No such file or directory
-    tar: openssl-0.9.8g/include/openssl/blowfish.h: Cannot create symlink to `../../crypto/bf/blowfish.h': No such file or directory
-    tar: openssl-0.9.8g/include/openssl/bio.h: Cannot create symlink to `../../crypto/bio/bio.h': No such file or directory
-    tar: openssl-0.9.8g/include/openssl/asn1t.h: Cannot create symlink to `../../crypto/asn1/asn1t.h': No such file or directory
-    tar: openssl-0.9.8g/include/openssl/asn1_mac.h: Cannot create symlink to `../../crypto/asn1/asn1_mac.h': No such file or directory
-    tar: openssl-0.9.8g/include/openssl/asn1.h: Cannot create symlink to `../../crypto/asn1/asn1.h': No such file or directory
-    tar: openssl-0.9.8g/include/openssl/aes.h: Cannot create symlink to `../../crypto/aes/aes.h': No such file or directory
-    tar: openssl-0.9.8g/apps/md4.c: Cannot create symlink to `../crypto/md4/md4.c': No such file or directory
+    tar: openssl-0.9.8h/include/openssl/bn.h: Cannot create symlink to `../../crypto/bn/bn.h': No such file or directory
+    tar: openssl-0.9.8h/include/openssl/blowfish.h: Cannot create symlink to `../../crypto/bf/blowfish.h': No such file or directory
+    tar: openssl-0.9.8h/include/openssl/bio.h: Cannot create symlink to `../../crypto/bio/bio.h': No such file or directory
+    tar: openssl-0.9.8h/include/openssl/asn1t.h: Cannot create symlink to `../../crypto/asn1/asn1t.h': No such file or directory
+    tar: openssl-0.9.8h/include/openssl/asn1_mac.h: Cannot create symlink to `../../crypto/asn1/asn1_mac.h': No such file or directory
+    tar: openssl-0.9.8h/include/openssl/asn1.h: Cannot create symlink to `../../crypto/asn1/asn1.h': No such file or directory
+    tar: openssl-0.9.8h/include/openssl/aes.h: Cannot create symlink to `../../crypto/aes/aes.h': No such file or directory
+    tar: openssl-0.9.8h/apps/md4.c: Cannot create symlink to `../crypto/md4/md4.c': No such file or directory
     tar: Error exit delayed from previous errors
 
 Uncompressing OpenSSL shows a number of errors concerning symlinks. These do
@@ -345,11 +347,10 @@ not appear to have caused a problem.
 
 Now configure the source package:
 
-    cd openssl-0.9.8g/
-    ./config --no-idea -norc5 -no-mdc2 mingw
-    ./config -no-idea -norc5 -no-mdc2
+    cd openssl-0.9.8h/
+    ./config -no-idea -no-rc5 -no-mdc2
 
-Edit '/c/build/openssl-0.9.8g/Makefile' and remove the "test:" and "tests:" sections that follow:
+Edit '/c/build/openssl-0.9.8h/Makefile' and remove the "test:" and "tests:" sections that follow:
 
     test:   tests
 
@@ -405,11 +406,11 @@ Building Tor
 
 Download, unpack, build and install Tor:
         https://www.torproject.org/download.html
-        https://www.torproject.org/dist/tor-0.2.0.26-rc.tar.gz
-        https://www.torproject.org/dist/tor-0.2.0.26-rc.tar.gz.asc
+        https://www.torproject.org/dist/tor-0.2.1.7-alpha.tar.gz
+        https://www.torproject.org/dist/tor-0.2.1.7-alpha.gz.asc
         $ cd /c/build/
-        tar -C /c/build -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/tor-0.2.0.26-rc.tar.gz
-        $ cd tor-0.2.0.26-rc/
+        tar -C /c/build -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/tor-0.2.1.7-alpha.tar.gz
+        $ cd tor-0.2.1.7-alpha/
         ./configure
         make
 
@@ -421,15 +422,15 @@ Vidalia (see above).
 
 Download Vidalia:
 
-    http://vidalia-project.net/dist/vidalia-0.1.2.tar.gz
-    http://vidalia-project.net/dist/vidalia-0.1.2.tar.gz.asc
+    http://vidalia-project.net/dist/vidalia-0.1.10.tar.gz
+    http://vidalia-project.net/dist/vidalia-0.1.10.tar.gz.asc
 
 Verify the signature.
 
 Unpack Vidalia:
    
-    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/vidalia-0.1.2.tar.gz
-    mv vidalia-0.1.2/ vidalia
+    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/vidalia-0.1.10.tar.gz
+    mv vidalia-0.1.10/ vidalia
 
 Set a proper environment:
 
@@ -482,6 +483,16 @@ You may see some errors:
     -- Build files have been written to: C:/build/vidalia
 
 This is OK. You can ignore these errors.
+
+It appears that for whatever reason, Qt now requires a small patch to compile
+Vidalia. We've created a small patch that will allow the build to function.
+
+Apply it like so:
+
+    cd /c/Qt/4.3.5/src/corelib/arch
+    patch -p0 < /c/build/qt-interlock-fix.patch
+
+This patch is very simple and should no longer be required in Qt 4.4.4
 
 Now you'll build Vidalia by running MSYS make:
 
@@ -537,7 +548,7 @@ Currently the Tor Browser Bundle uses FirefoxPortable binaries.
 
 Download FirefoxPortable:
 
-    http://downloads.sourceforge.net/portableapps/Firefox_Portable_2.0.0.14_en-us.paf.exe?download
+    http://downloads.sourceforge.net/portableapps/Firefox_Portable_2.0.0.18_en-us.paf.exe?download
 
 Run the installer and select it into: 'C:\build\FirefoxPortable\'
 
@@ -619,7 +630,7 @@ An example to change the Qt Lib version:
 And then change the Tor version:
 
         From: TOR=/c/build/tor-0.2.0.26-rc
-        TO: TOR=/c/build/tor-0.2.0.26-rc
+        TO: TOR=/c/build/tor-0.2.1.7-alpha
 
 Now you can run "make bundle_LANGUAGE", e.g. "make bundle_en-US".
 
@@ -641,7 +652,7 @@ Currently supported language codes are:
 New languages can be added by finding out the appropriate Mozilla
 language pack code from:
 
-    http://releases.mozilla.org/pub/mozilla.org/firefox/releases/2.0.0.12/win32/xpi
+    http://releases.mozilla.org/pub/mozilla.org/firefox/releases/2.0.0.18/win32/xpi
 
 If the Mozilla code differs from the Vidalia one, update 
 patch-vidalia-language.sh accordingly.

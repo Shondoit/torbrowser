@@ -164,4 +164,11 @@ Changelog
        Update Pidgin to 2.5.1
 1.1.5: Released 2008-11-xx
        Set AllowMultipleInstances=true, to allow Tor Browser Bundle and
-        Firefox to be run at the same time (suggested by John Brooks)
+       Firefox to be run at the same time (suggested by John Brooks)>>>>>>> .r17398
+1.1.6: Planned Release
+       Update Vidalia to release 0.1.10
+       Update Firefox to 2.0.0.18
+       Update Tor to 0.2.1.7-alpha
+       Added a small patch and instructions to fix Qt compile time error
+       Corrected some minor mistakes in the INSTALL document
+       Updated INSTALL document to reflect updated build process

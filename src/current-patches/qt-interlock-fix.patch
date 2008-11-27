@@ -1,0 +1,36 @@
+--- qatomic_windows.h-orig	Wed Nov 26 14:36:33 2008
++++ qatomic_windows.h	Wed Nov 26 15:11:57 2008
+@@ -190,13 +190,32 @@
+ 
+ #if !(defined Q_CC_BOR) || (__BORLANDC__ < 0x560)
+ 
++#if defined(Q_CC_GNU)
++#include <windows.h>
++#endif
++
++#ifndef __INTERLOCKED_DECLARED
++
++extern "C" {
++__declspec(dllimport) long __stdcall InterlockedCompareExchange(long *, long, long);
++__declspec(dllimport) long __stdcall InterlockedIncrement(long *);
++__declspec(dllimport) long __stdcall InterlockedDecrement(long *);
++__declspec(dllimport) long __stdcall InterlockedExchange(long *, long);
++__declspec(dllimport) long __stdcall InterlockedExchangeAdd(long *, long);
++}
++
++#endif
++/*
+ extern "C" {
+     __declspec(dllimport) long __stdcall InterlockedCompareExchange(long *, long, long);
+     __declspec(dllimport) long __stdcall InterlockedIncrement(long *);
+     __declspec(dllimport) long __stdcall InterlockedDecrement(long *);
+     __declspec(dllimport) long __stdcall InterlockedExchange(long *, long);
+     __declspec(dllimport) long __stdcall InterlockedExchangeAdd(long *, long);
+-}
++}
++*/
++
++
+ 
+ #else
+ 
