@@ -30,7 +30,7 @@ user_pref("browser.shell.checkDefaultBrowser", false);
 user_pref("browser.startup.homepage", "https://check.torproject.org/?lang=BUNDLELOCALE&small=1");
 user_pref("browser.startup.homepage_override.mstone", "rv:1.8.1.17");
 user_pref("dom.storage.enabled", false);
-user_pref("extensions.lastAppVersion", "2.0.0.17");
+user_pref("extensions.lastAppVersion", "2.0.0.18");
 user_pref("extensions.torbutton.fresh_install", false);
 user_pref("extensions.torbutton.http_port", 8118);
 user_pref("extensions.torbutton.http_proxy", "127.0.0.1");
