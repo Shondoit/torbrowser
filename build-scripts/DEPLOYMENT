@@ -48,7 +48,10 @@ language
 
 Note, if at this stage you find out that Firefox starts with a new tab
 saying that it has been upgraded, you will need to update
-config/prefs.js and set the "extensions.lastAppVersion" variable
+config/prefs.js and set the "extensions.lastAppVersion" variable. It is 
+also likely that you'll need to update the 
+"browser.startup.homepage_override.mstone" variable.
+
 
 If you made any changes, go back to "Building the bundle"
 
