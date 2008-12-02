@@ -38,14 +38,14 @@ Further issues are discussed in TODO.
 Included applications
 ---------------------
 
-Vidalia 0.1.9
-Tor 0.2.1.6-alpha (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8h) 
+Vidalia 0.1.10
+Tor 0.2.1.7-alpha (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8h) 
 Polipo 1.0.4
-FirefoxPortable 2.0.0.17
- \_ Firefox 2.0.0.17
+FirefoxPortable 2.0.0.18
+ \_ Firefox 2.0.0.18
     \_ Torbutton 1.2.0
-PidginPortable 2.5.1
- \_ Pidgin 2.5.1
+PidginPortable 2.5.2
+ \_ Pidgin 2.5.2
    \_ OTR 3.2
 
 Usage
