@@ -168,6 +168,7 @@ Changelog
        Update Vidalia to release 0.1.10
        Update Firefox to 2.0.0.18
        Update Tor to 0.2.1.7-alpha
+       Update Pidgin to 2.5.2
        Added a small patch and instructions to fix Qt compile time error
        Corrected some minor mistakes in the INSTALL document
        Updated INSTALL document to reflect updated build process
