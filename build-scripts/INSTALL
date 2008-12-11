@@ -417,11 +417,11 @@ Building Tor
 
 Download, unpack, build and install Tor:
         https://www.torproject.org/download.html
-        https://www.torproject.org/dist/tor-0.2.1.7-alpha.tar.gz
-        https://www.torproject.org/dist/tor-0.2.1.7-alpha.gz.asc
+        https://www.torproject.org/dist/tor-0.2.1.8-alpha.tar.gz
+        https://www.torproject.org/dist/tor-0.2.1.8-alpha.gz.asc
         $ cd /c/build/
-        tar -C /c/build -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/tor-0.2.1.7-alpha.tar.gz
-        $ cd tor-0.2.1.7-alpha/
+        tar -C /c/build -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/tor-0.2.1.8-alpha.tar.gz
+        $ cd tor-0.2.1.8-alpha/
         ./configure
         make
 

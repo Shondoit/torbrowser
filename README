@@ -39,7 +39,7 @@ Included applications
 ---------------------
 
 Vidalia 0.1.10
-Tor 0.2.1.7-alpha (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8h) 
+Tor 0.2.1.8-alpha (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8h) 
 Polipo 1.0.4
 FirefoxPortable 2.0.0.18
  \_ Firefox 2.0.0.18
@@ -174,3 +174,7 @@ Changelog
        Updated INSTALL document to reflect updated build process
 1.1.6: Released 2008-12-02
        Set AllowMultipleInstances=false, this isn't ready for primetime
+1.1.7: Released 2008-12-12
+       Update Tor to 0.2.1.8-alpha
+       Fix issue with OTR (The Pidgin wasn't in the right directory) 
+       Update INSTALL document to reflect updated version numbers
