@@ -62,7 +62,7 @@ Installing Subversion
 To checkout the Tor Browser Bundle, you need Subversion.
 You can download and install the stock Subversion package:
 
-    http://subversion.tigris.org/project_packages.html
+    http://subversion.tigris.org/getting.html
 
 Specifically you should use the pre-built packages. You can choose any from
 this list:
@@ -498,6 +498,14 @@ This is OK. You can ignore these errors.
 It appears that for whatever reason, Qt now requires a small patch to compile
 Vidalia. We've created a small patch that will allow the build to function.
 
+Download the patch:
+
+    https://svn.torproject.org/svn/torbrowser/trunk/src/current-patches/qt-interlock-fix.patch
+
+Copy the patch to your build directory:
+
+    cp /c/Documents\ and\ Settings/Administrator/Desktop/qt-interlock-fix.patch /c/build/
+
 Apply it like so:
 
     cd /c/Qt/4.3.5/src/corelib/arch
@@ -507,6 +515,7 @@ This patch is very simple and should no longer be required in Qt 4.4.4
 
 Now you'll build Vidalia by running MSYS make:
 
+    cd /c/build/vidalia/
     make
 
 Alternatively building under MinGW32
@@ -635,13 +644,13 @@ Makefile as mentioned in the Customization section above.
 
 An example to change the Qt Lib version:
 
-        From: QT=/c/Qt/4.3.5/bin
+        From: QT=/c/Qt/4.3.4/bin
         To: QT=/c/Qt/4.3.5/bin
 
 And then change the Tor version:
 
         From: TOR=/c/build/tor-0.2.0.26-rc
-        TO: TOR=/c/build/tor-0.2.1.7-alpha
+        To: TOR=/c/build/tor-0.2.1.8-alpha
 
 Now you can run "make bundle_LANGUAGE", e.g. "make bundle_en-US".
 
