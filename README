@@ -178,3 +178,6 @@ Changelog
        Update Tor to 0.2.1.8-alpha
        Fix issue with OTR (The Pidgin wasn't in the right directory) 
        Update INSTALL document to reflect updated version numbers
+1.1.8: Released 200x-xx-xx
+       Update Firefox to 2.0.0.20
+       Update Pidgin to 2.5.3
