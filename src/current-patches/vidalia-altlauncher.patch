@@ -1,0 +1,185 @@
+Index: src/common/file.cpp
+===================================================================
+--- src/common/file.cpp	(revision 3023)
++++ src/common/file.cpp	(working copy)
+@@ -64,6 +64,43 @@
+   return true;
+ }
+ 
++/** Recursively copy the contents of one directory to another. The
++ * destination must already exist. Returns true on success, and false
++ * otherwise. */
++bool
++copy_dir(QString source, QString dest)
++{
++  /* Source and destination as QDir's */
++  QDir src(source);
++  QDir dst(dest);
++  
++  /* Get contents of the directory */
++  QFileInfoList contents = src.entryInfoList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
++
++  /* Copy each entry in src to dst */
++  foreach (QFileInfo fileInfo, contents) {
++    /* Get absolute path of source and destination */
++    QString fileName = fileInfo.fileName();
++    QString srcFilePath = src.absoluteFilePath(fileName);
++    QString dstFilePath = dst.absoluteFilePath(fileName);
++
++    if (fileInfo.isDir()) {
++      /* This is a directory, make it and recurse */
++      if (!dst.mkdir(fileName))
++	return false;
++      if (!copy_dir(srcFilePath, dstFilePath))
++	return false;
++    } else if (fileInfo.isFile()) {
++      /* This is a file, copy it */
++      if (!QFile::copy(srcFilePath, dstFilePath))
++	return false;
++    } 
++    /* Ignore special files (e.g. symlinks, devices) */
++
++  }
++  return true;
++}
++
+ /** Expands <b>filename</b> if it starts with "~/". On Windows, this will
+  * expand "%APPDATA%" and "%PROGRAMFILES%". If <b>filename</b> does not
+  * start with a shortcut, <b>filename</b> will be returned unmodified. */
+Index: src/common/file.h
+===================================================================
+--- src/common/file.h	(revision 3023)
++++ src/common/file.h	(working copy)
+@@ -32,6 +32,11 @@
+  * expand "%APPDATA%" and "%PROGRAMFILES%". If <b>filename</b> does not
+  * start with a shortcut, <b>filename</b> will be returned unmodified. */
+ QString expand_filename(QString filename);
++    
++/** Recursively copy the contents of one directory to another. The
++ * destination must already exist. Returns true on success, and false
++ * otherwise. */
++bool copy_dir(QString source, QString dest);
+ 
+ #endif
+ 
+Index: src/vidalia/mainwindow.cpp
+===================================================================
+--- src/vidalia/mainwindow.cpp	(revision 3024)
++++ src/vidalia/mainwindow.cpp	(working copy)
+@@ -29,6 +29,8 @@
+ #include <dangerousversionevent.h>
+ #include <vmessagebox.h>
+ 
++#include "procutil.h"
++
+ #include "mainwindow.h"
+ 
+ #define IMG_BWGRAPH        ":/images/16x16/utilities-system-monitor.png"
+@@ -459,15 +461,32 @@
+   env << "MOZ_NO_REMOTE=1";
+   _browserProcess->setEnvironment(env);
+ 
+-  /* The browser is in DIR/App/Firefox/firefox.exe */
++  /* The browser is in DIR/App/Firefox/tbb-firefox.exe */
+   QString browserExecutable =
+-    QDir::toNativeSeparators(browserDirectory + "/App/Firefox/firefox.exe");
+-  /* The profile is in DIR/Data/Firefox/profile */
++    QDir::toNativeSeparators(browserDirectory + "/App/Firefox/tbb-firefox.exe");
++  /* The profile is in DIR/Data/profile */
+   QString profileDir =
+-    QDir::toNativeSeparators(browserDirectory + "/Data/Firefox/profile");
++    QDir::toNativeSeparators(browserDirectory + "/Data/profile");
+ 
++  /* Copy the profile directory if it's not already there */
++  QDir browserDirObj = QDir(browserDirectory);
++
++  /* Copy the profile directory if it's not already there */
++  if (!browserDirObj.exists("Data/profile")) {
++    browserDirObj.mkdir("Data/profile");
++    copy_dir(browserDirectory + "/App/DefaultData/profile", browserDirectory + "/Data/profile");
++  }
++
++  /* Copy the plugins directory if it's not already there */
++  if (!browserDirObj.exists("Data/plugins")) {
++    browserDirObj.mkdir("Data/plugins");
++    copy_dir(browserDirectory + "/App/DefaultData/plugins", browserDirectory + "/Data/plugins");
++  }
++
+   /* Build the command line arguments */
+   QStringList commandLine;
++  // Is this better or worse than MOZ_NO_REMOTE?
++  //commandLine << "-no-remote";
+   commandLine << "-profile";
+   commandLine << profileDir;
+ 
+@@ -510,17 +529,53 @@
+   /* Get path to browser and IM client */
+   VidaliaSettings settings;
+   QString browserExecutable = settings.getBrowserExecutable();
++  QString browserDirectory = settings.getBrowserDirectory();
+   QString imExecutable = settings.getIMExecutable();
+ 
+   /* A subprocess is finished if it successfully exited or was never asked to start */
+-  bool browserDone = browserExecutable.isEmpty() || _browserProcess->isDone();
++  bool browserDone = (browserExecutable.isEmpty() && browserDirectory.isEmpty()) || _browserProcess->isDone();
+   bool imDone = imExecutable.isEmpty() || _imProcess->isDone();
+ 
+   /* Exit if both subprocesses are finished */
+-  if (browserDone && imDone)
+-    shutdown();
++  if (browserDone && imDone) {
++    if (browserDirectory.isEmpty()) {
++      /* We are using the standard launcher, exit immediately */
++      shutdown();
++    } else {
++      /* We are using the alternate launcher, wait until the browser has really died */
++      QTimer *browserWatcher = new QTimer(this);
++      connect(browserWatcher, SIGNAL(timeout()), this, SLOT(onCheckForBrowser()));
++      browserWatcher->start(2000);
++    }
++  }
+ }
+ 
++/** Called periodically to check if the browser is running. If it is not,
++ * exit Vidalia cleanly */
++void
++MainWindow::onCheckForBrowser()
++{
++/* This only works on Windows for now */
++#if defined(Q_OS_WIN)
++
++  /* Get list of running processes */
++  QHash<qint64, QString> procList = win32_process_list();
++  QHashIterator<qint64, QString> i(procList);
++      
++  /* Loop over all processes or until we find tbb-firefox.exe */
++  while (i.hasNext()) {
++    i.next();
++    if (i.value().toLower() == "tbb-firefox.exe") {
++      /* The browser is still running, so Vidalia should keep running too */
++      return;
++    }
++  }
++
++  /* The browser isn't running, exit Vidalia */
++  shutdown();
++#endif  
++}
++
+ /** Called when the web browser failed to start, for example, because the path
+  * specified to the web browser executable didn't lead to an executable. */
+ void
+Index: src/vidalia/mainwindow.h
+===================================================================
+--- src/vidalia/mainwindow.h	(revision 3024)
++++ src/vidalia/mainwindow.h	(working copy)
+@@ -104,6 +104,9 @@
+   void toggleShowOnStartup(bool checked);
+   /** Called when the web browser or IM client have stopped */
+   void onSubprocessFinished(int exitCode, QProcess::ExitStatus exitStatus);
++  /** Called periodically to check if the browser is running. If it is not,
++   * exit Vidalia cleanly */
++  void onCheckForBrowser();
+   /** Called web the web browser failed to start */
+   void onBrowserFailed(QString errmsg);
+   /** Called web the IM client failed to start */
