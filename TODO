@@ -88,6 +88,9 @@ General
   - Allow it to be translated
   - Make the directory selector clearer (not "...")
 
+- Investigate how to build Windows packages in a deterministic way so
+  others can build them and compare digests.
+
 - Ask specific vendors to sign their packaged binary releases, probably with
   pgp/gpg. The packages are: 7zip, MinGW, MSYS, CMake, QT, msysDTK,
   zlib, FirefoxPortable
