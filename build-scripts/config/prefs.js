@@ -38,7 +38,6 @@ user_pref("browser.shell.checkDefaultBrowser", false);
 user_pref("browser.startup.homepage", "https://check.torproject.org/?lang=BUNDLELOCALE&small=1");
 user_pref("browser.startup.homepage_override.mstone", "rv:1.9.0.5");
 user_pref("dom.storage.enabled", false);
-user_pref("extensions.enabledItems", "langpack-de@firefox.mozilla.org:3.0.5,{e0204bd5-9d31-402b-a99d-a6aa8ffebdca}:1.2.0,{972ce4c6-7e08-4474-a285-3208198ce6fd}:3.0.5");
 user_pref("extensions.lastAppVersion", "3.0.5");
 user_pref("extensions.torbutton.fresh_install", false);
 user_pref("extensions.torbutton.http_port", 8118);
