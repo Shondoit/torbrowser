@@ -31,7 +31,6 @@ Status
 Using build-scripts/Makefile it is possible to create a working USB
 Tor bundle. It's limitations include:
  - It uses the FirefoxPortable binaries
- - The starting program doesn't have a pretty icon
 
 Further issues are discussed in TODO.
 
@@ -39,13 +38,13 @@ Included applications
 ---------------------
 
 Vidalia 0.1.10
-Tor 0.2.1.8-alpha (with libevent-1.3e, zlib-1.2.3 and openssl-0.9.8h) 
+Tor 0.2.1.11-alpha (with libevent-1.4.9, zlib-1.2.3 and openssl-0.9.8j) 
 Polipo 1.0.4
-FirefoxPortable 2.0.0.18
- \_ Firefox 2.0.0.18
+FirefoxPortable 3.0.5
+ \_ Firefox 3.0.5
     \_ Torbutton 1.2.0
-PidginPortable 2.5.2
- \_ Pidgin 2.5.2
+PidginPortable 2.5.4
+ \_ Pidgin 2.5.4
    \_ OTR 3.2
 
 Usage
@@ -178,6 +177,10 @@ Changelog
        Update Tor to 0.2.1.8-alpha
        Fix issue with OTR (The Pidgin wasn't in the right directory) 
        Update INSTALL document to reflect updated version numbers
-1.1.8: Released 200x-xx-xx
-       Update Firefox to 2.0.0.20
-       Update Pidgin to 2.5.3
+1.1.8: Released 2009-01-22
+       Update Tor to 0.2.1.11-alpha (security update)
+       Update OpenSSL to 0.9.8j (security update)
+       Update Firefox to 3.0.5
+       Update Pidgin to 2.5.4
+       Update libevent to 1.4.9
+
