@@ -93,7 +93,7 @@ Tag the trunk to the correct version number (e.g. torbrowser-1_1_0):
 or
 
  svn cp \
-  svn+ssh://tor-svn.freehaven.net/home/or/svnrepo/torbrowser/trunk
+  svn+ssh://tor-svn.freehaven.net/home/or/svnrepo/torbrowser/trunk \
   svn+ssh://tor-svn.freehaven.net/home/or/svnrepo/torbrowser/tags/torbrowser-$NEWVERSION/
 
 Export the source tarball
