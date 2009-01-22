@@ -46,6 +46,7 @@ user_pref("extensions.torbutton.https_port", 8118);
 user_pref("extensions.torbutton.https_proxy", "127.0.0.1");
 user_pref("extensions.torbutton.locked_mode", true);
 user_pref("extensions.torbutton.proxies_applied", true);
+user_pref("extensions.torbutton.restore_tor", true);
 user_pref("extensions.torbutton.saved.auto_update", false);
 user_pref("extensions.torbutton.saved.share_proxy_settings", false);
 user_pref("extensions.torbutton.saved.socks_version", 5);
