@@ -208,9 +208,9 @@ You can read about different versions on the CMake homepage:
 
     http://cmake.org/
 
-Download version 2.6.0:
+Download version 2.6.2:
 
-    http://www.cmake.org/files/v2.6/cmake-2.6.0-win32-x86.exe
+    http://www.cmake.org/files/v2.6/cmake-2.6.2-win32-x86.exe
 
 Run the installer with Windows Explorer and install into:
     
@@ -219,15 +219,15 @@ Run the installer with Windows Explorer and install into:
 Installing Qt
 =============
 
-Download Qt 4.1 or later, we'll use 4.3.5:
+Download Qt 4.1 or later, we'll use 4.4.3:
 
     http://trolltech.com/developer/downloads/qt/windows
 
 Download and run the installer with Windows Explorer:
 
-    ftp://ftp.trolltech.com/qt/source/qt-win-opensource-4.3.5-mingw.exe
+    ftp://ftp.trolltech.com/qt/source/qt-win-opensource-4.4.3-mingw.exe
 
-When prompted, install Qt into 'C:\Qt\4.3.5'
+When prompted, install Qt into 'C:\Qt\4.4.3'
 You will be prompted for the install path for your MinGW directory, enter 'C:\MinGW'
 You may have an error about win32api.h being not found. This is not true. You
 have win32api.h and Qt is wrong.  This is a result of the Qt installer not
@@ -334,12 +334,12 @@ Building OpenSSL
 
 Download openssl:
 
-    http://www.openssl.org/source/openssl-0.9.8h.tar.gz
+    http://www.openssl.org/source/openssl-0.9.8j.tar.gz
 
 Unpack it:
 
     cd /c/build/
-    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/openssl-0.9.8h.tar.gz
+    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/openssl-0.9.8j.tar.gz
 
 You should see errors not unlike:
 
@@ -358,10 +358,10 @@ not appear to have caused a problem.
 
 Now configure the source package:
 
-    cd openssl-0.9.8h/
+    cd openssl-0.9.8j/
     ./config -no-idea -no-rc5 -no-mdc2
 
-Edit '/c/build/openssl-0.9.8h/Makefile' and remove the "test:" and "tests:" sections that follow:
+Edit '/c/build/openssl-0.9.8j/Makefile' and remove the "test:" and "tests:" sections that follow:
 
     test:   tests
 
@@ -392,19 +392,19 @@ And finally, build it - this can take a long time and depends on the speed of yo
 Building libevent
 =================
 
-Next, you'll want to download, unpack, build and install libevent ( Version: libevent-1.3e ).
+Next, you'll want to download, unpack, build and install libevent ( Version: libevent-1.4.9 ).
 You can get libevent here:
 
         http://www.monkey.org/~provos/libevent/
-        http://www.monkey.org/~provos/libevent-1.3e.tar.gz
-        http://www.monkey.org/~provos/libevent-1.3e.tar.gz.sig
+        http://www.monkey.org/~provos/libevent-1.4.9.tar.gz
+        http://www.monkey.org/~provos/libevent-1.4.9.tar.gz.sig
 
 Verify the signature.
 
 Unpack it:
 
-    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/libevent-1.3e.tar.gz
-    cd libevent-1.3e/
+    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/libevent-1.4.9.tar.gz
+    cd libevent-1.4.9/
 
 Configure, build and install:
 
@@ -417,11 +417,11 @@ Building Tor
 
 Download, unpack, build and install Tor:
         https://www.torproject.org/download.html
-        https://www.torproject.org/dist/tor-0.2.1.8-alpha.tar.gz
-        https://www.torproject.org/dist/tor-0.2.1.8-alpha.gz.asc
+        https://www.torproject.org/dist/tor-0.2.1.12-alpha.tar.gz
+        https://www.torproject.org/dist/tor-0.2.1.12-alpha.gz.asc
         $ cd /c/build/
-        tar -C /c/build -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/tor-0.2.1.8-alpha.tar.gz
-        $ cd tor-0.2.1.8-alpha/
+        tar -C /c/build -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/tor-0.2.1.12-alpha.tar.gz
+        $ cd tor-0.2.1.12-alpha/
         ./configure
         make
 
@@ -433,26 +433,26 @@ Vidalia (see above).
 
 Download Vidalia:
 
-    http://vidalia-project.net/dist/vidalia-0.1.10.tar.gz
-    http://vidalia-project.net/dist/vidalia-0.1.10.tar.gz.asc
+    http://vidalia-project.net/dist/vidalia-0.1.11.tar.gz
+    http://vidalia-project.net/dist/vidalia-0.1.11.tar.gz.asc
 
 Verify the signature.
 
 Unpack Vidalia:
    
-    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/vidalia-0.1.10.tar.gz
-    mv vidalia-0.1.10/ vidalia
+    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/vidalia-0.1.11.tar.gz
+    mv vidalia-0.1.11/ vidalia
 
 Set a proper environment:
 
     cat << 'EOF' >> /etc/profile
-    export QTDIR="C:\Qt\4.3.5"
-    export PATH=$PATH:/c/Qt/4.3.5/bin
+    export QTDIR="C:\Qt\4.4.3"
+    export PATH=$PATH:/c/Qt/4.4.3/bin
     export PATH=$PATH:/c/Program\ Files/CMake\ 2.6/bin/
     export QMAKESPEC=win32-g++
     EOF
 
-    export PATH=$PATH:/c/Program\ Files/CMake\ 2.6/bin/:/c/MinGW/bin/:/c/Qt/4.3.5/bin/
+    export PATH=$PATH:/c/Program\ Files/CMake\ 2.6/bin/:/c/MinGW/bin/:/c/Qt/4.4.3/bin/
 
 Create the proper MSYS Makefiles and don't forget the '.' at the end!
 
@@ -480,7 +480,7 @@ You may see some errors:
 
       and other libraries with known full path:
 
-        C:/Qt/4.3.5/lib/libQtGui4.a
+        C:/Qt/4.4.3/lib/libQtGui4.a
 
 
       CMake is adding directories in the second list to the linker search path in
@@ -508,7 +508,7 @@ Copy the patch to your build directory:
 
 Apply it like so:
 
-    cd /c/Qt/4.3.5/src/corelib/arch
+    cd /c/Qt/4.4.3/src/corelib/arch
     patch -p0 < /c/build/qt-interlock-fix.patch
 
 This patch is very simple and should no longer be required in Qt 4.4.4
@@ -568,7 +568,7 @@ Currently the Tor Browser Bundle uses FirefoxPortable binaries.
 
 Download FirefoxPortable:
 
-    http://downloads.sourceforge.net/portableapps/Firefox_Portable_2.0.0.18_en-us.paf.exe?download
+    http://downloads.sourceforge.net/portableapps/Firefox_Portable_3.0.6_en-us.paf.exe?download
 
 Run the installer and select it into: 'C:\build\FirefoxPortable-<version>>'
 
