@@ -383,6 +383,7 @@ Now copy files we do need:
         find ./ -name "*.h" -exec cp {} ../include/openssl/ \;
         cd ..
         cp *.h include/openssl/
+        cp fips/fips.h include/openssl/
 
 And finally, build it - this can take a long time and depends on the speed of your computer:
 
