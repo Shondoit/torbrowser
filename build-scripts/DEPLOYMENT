@@ -117,12 +117,12 @@ Move the split signatures to a directory:
 Upload to www.torproject.org
 ============================
 
+Make sure they have the right permissions:
+ find . -type f -exec chmod 444 {} \;
+ find . -type d -exec chmod 775 {} \;
+
 Copy the files, along with their signatures to:
  www.torproject.org:/var/www/www.torproject.org/htdocs/torbrowser/dist
-
-Make sure they have the right permissions:
- find /var/www/www.torproject.org/htdocs/torbrowser/dist -type f -exec chmod 444 {} \;
- find /var/www/www.torproject.org/htdocs/torbrowser/dist -type d -exec chmod 775 {} \;
 
 Update the website
 ==================
