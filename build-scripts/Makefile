@@ -13,13 +13,13 @@
 
 ## Location of required libraries
 MING=/c/MinGW/bin
-QT=/c/Qt/4.3.5/bin
+QT=/c/Qt/4.4.3/bin
 
 ## Location of bundle components
-VIDALIA=/c/build/vidalia-0.1.10
-TOR=/c/build/tor-0.2.1.11-alpha
+VIDALIA=/c/build/vidalia-0.1.11
+TOR=/c/build/tor-0.2.1.12-alpha
 POLIPO=/c/build/polipo-1.0.4
-FIREFOX_SRC=/c/build/FirefoxPortable-3.0.5
+FIREFOX_SRC=/c/build/FirefoxPortable-3.0.6
 PIDGIN_SRC=/c/build/PidginPortable-2.5.4
 
 ## Location of utility applications
@@ -59,10 +59,10 @@ DEFAULT_EXTENSIONS=torbutton.xpi
 TORBUTTON=https://addons.mozilla.org/en-US/firefox/downloads/file/34698/torbutton-1.2.0-fx.xpi
 
 ## Where to download Mozilla language packs
-MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.0.5/win32/xpi
+MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.0.6/win32/xpi
 
 ## Where Farsi Language Pack can be downloaded from
-FA_LANGPACK=https://addons.mozilla.org/en-US/firefox/downloads/file/31181/persian_language_pack-3.0.2-fx.xpi
+FA_LANGPACK=https://addons.mozilla.org/en-US/firefox/downloads/file/31181/persian_language_pack-3.0.6-fx.xpi
 
 ## Put more extensions here
 EXTENSIONS_DIR=extensions
