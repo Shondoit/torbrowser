@@ -343,14 +343,14 @@ Unpack it:
 
 You should see errors not unlike:
 
-    tar: openssl-0.9.8h/include/openssl/bn.h: Cannot create symlink to `../../crypto/bn/bn.h': No such file or directory
-    tar: openssl-0.9.8h/include/openssl/blowfish.h: Cannot create symlink to `../../crypto/bf/blowfish.h': No such file or directory
-    tar: openssl-0.9.8h/include/openssl/bio.h: Cannot create symlink to `../../crypto/bio/bio.h': No such file or directory
-    tar: openssl-0.9.8h/include/openssl/asn1t.h: Cannot create symlink to `../../crypto/asn1/asn1t.h': No such file or directory
-    tar: openssl-0.9.8h/include/openssl/asn1_mac.h: Cannot create symlink to `../../crypto/asn1/asn1_mac.h': No such file or directory
-    tar: openssl-0.9.8h/include/openssl/asn1.h: Cannot create symlink to `../../crypto/asn1/asn1.h': No such file or directory
-    tar: openssl-0.9.8h/include/openssl/aes.h: Cannot create symlink to `../../crypto/aes/aes.h': No such file or directory
-    tar: openssl-0.9.8h/apps/md4.c: Cannot create symlink to `../crypto/md4/md4.c': No such file or directory
+    tar: openssl-0.9.8j/include/openssl/bn.h: Cannot create symlink to `../../crypto/bn/bn.h': No such file or directory
+    tar: openssl-0.9.8j/include/openssl/blowfish.h: Cannot create symlink to `../../crypto/bf/blowfish.h': No such file or directory
+    tar: openssl-0.9.8j/include/openssl/bio.h: Cannot create symlink to `../../crypto/bio/bio.h': No such file or directory
+    tar: openssl-0.9.8j/include/openssl/asn1t.h: Cannot create symlink to `../../crypto/asn1/asn1t.h': No such file or directory
+    tar: openssl-0.9.8j/include/openssl/asn1_mac.h: Cannot create symlink to `../../crypto/asn1/asn1_mac.h': No such file or directory
+    tar: openssl-0.9.8j/include/openssl/asn1.h: Cannot create symlink to `../../crypto/asn1/asn1.h': No such file or directory
+    tar: openssl-0.9.8j/include/openssl/aes.h: Cannot create symlink to `../../crypto/aes/aes.h': No such file or directory
+    tar: openssl-0.9.8j/apps/md4.c: Cannot create symlink to `../crypto/md4/md4.c': No such file or directory
     tar: Error exit delayed from previous errors
 
 Uncompressing OpenSSL shows a number of errors concerning symlinks. These do
@@ -397,15 +397,15 @@ Next, you'll want to download, unpack, build and install libevent ( Version: lib
 You can get libevent here:
 
         http://www.monkey.org/~provos/libevent/
-        http://www.monkey.org/~provos/libevent-1.4.9.tar.gz
-        http://www.monkey.org/~provos/libevent-1.4.9.tar.gz.sig
+        http://www.monkey.org/~provos/libevent-1.4.9-stable.tar.gz
+        http://www.monkey.org/~provos/libevent-1.4.9-stable.tar.gz.sig
 
 Verify the signature.
 
 Unpack it:
 
-    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/libevent-1.4.9.tar.gz
-    cd libevent-1.4.9/
+    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/libevent-1.4.9-stable.tar.gz
+    cd libevent-1.4.9-stable/
 
 Configure, build and install:
 
@@ -646,12 +646,12 @@ Makefile as mentioned in the Customization section above.
 An example to change the Qt Lib version:
 
         From: QT=/c/Qt/4.3.4/bin
-        To: QT=/c/Qt/4.3.5/bin
+        To: QT=/c/Qt/4.4.3/bin
 
 And then change the Tor version:
 
         From: TOR=/c/build/tor-0.2.0.26-rc
-        To: TOR=/c/build/tor-0.2.1.8-alpha
+        To: TOR=/c/build/tor-0.2.1.12-alpha
 
 Now you can run "make bundle_LANGUAGE", e.g. "make bundle_en-US".
 
