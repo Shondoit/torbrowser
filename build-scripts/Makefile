@@ -17,10 +17,10 @@ QT=/c/Qt/4.4.3/bin
 
 ## Location of bundle components
 VIDALIA=/c/build/vidalia-0.1.11
-TOR=/c/build/tor-0.2.1.12-alpha
+TOR=/c/build/tor-0.2.1.13-alpha
 POLIPO=/c/build/polipo-1.0.4
-FIREFOX_SRC=/c/build/FirefoxPortable-3.0.6
-PIDGIN_SRC=/c/build/PidginPortable-2.5.4
+FIREFOX_SRC=/c/build/FirefoxPortable-3.0.7
+PIDGIN_SRC=/c/build/PidginPortable-2.5.5
 
 ## Location of utility applications
 SEVENZIP="/c/Program Files/7-Zip/7z.exe"
@@ -40,7 +40,7 @@ DEST="Generic Bundle"
 NAME="Tor Browser"
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.1.9
+VERSION=1.1.10
 DEFAULT_COMPRESSED_BASENAME=tor-browser-
 IM_COMPRESSED_BASENAME=tor-im-browser-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
