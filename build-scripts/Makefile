@@ -59,10 +59,10 @@ DEFAULT_EXTENSIONS=torbutton.xpi
 TORBUTTON=https://addons.mozilla.org/en-US/firefox/downloads/file/34698/torbutton-1.2.0-fx.xpi
 
 ## Where to download Mozilla language packs
-MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.0.6/win32/xpi
+MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.0.7/win32/xpi
 
 ## Where Farsi Language Pack can be downloaded from
-FA_LANGPACK=https://addons.mozilla.org/en-US/firefox/downloads/file/31181/persian_language_pack-3.0.6-fx.xpi
+FA_LANGPACK=https://addons.mozilla.org/en-US/firefox/downloads/file/31181/persian_language_pack-3.0.7-fx.xpi
 
 ## Put more extensions here
 EXTENSIONS_DIR=extensions
