@@ -36,6 +36,10 @@ advisable.
 Also, the application was run from a USB drive. The situation could
 also be different if the application was run from the hard drive.
 
+Firefox 3 will create a Mozilla directory in the current user's Application
+Data directory, which contains
+"Extensions\{ec8030f7-c20a-464f-9b0e-13a3a9e97384}" and "Firefox\Crash Reports"
+
 Prefetch
 --------
 
@@ -73,9 +77,7 @@ Windows explorer also logs the ROT-13 encoded names of executables run in:
 Further information can be found in this article:
  http://personal-computer-tutor.com/abc3/v29/vic29.htm
 
-FirefoxPortable will sometimes create a new entry, containing the path
- to Vidalia in:
- (HK_CURRENT_USER|HKEY_USER)Software\Microsoft\Windows\ShellNoRoam\MUICache
+Firefox 3 changes the key HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings\Connections\SavedLegacySettings. This is a binary field and its purpose is unclear.
 
 Other traces
 ============
