@@ -13,10 +13,10 @@
 
 ## Location of required libraries
 MING=/c/MinGW/bin
-QT=/c/Qt/4.4.3/bin
+QT=/c/Qt/4.5.0/bin
 
 ## Location of bundle components
-VIDALIA=/c/build/vidalia-0.1.11
+VIDALIA=/c/build/vidalia-0.1.12
 TOR=/c/build/tor-0.2.1.13-alpha
 POLIPO=/c/build/polipo-1.0.4
 FIREFOX_SRC=/c/build/FirefoxPortable-3.0.7
@@ -170,7 +170,7 @@ install-docs:
 	mkdir -p $(DOCSDIR)/Polipo
 	cp $(VIDALIA)/LICENSE* $(VIDALIA)/CREDITS $(DOCSDIR)/Vidalia
 	cp $(TOR)/LICENSE $(TOR)/AUTHORS $(TOR)/README $(DOCSDIR)/Tor
-	cp $(QT)/../LICENSE.GPL* $(QT)/../GPL* $(DOCSDIR)/Qt
+	cp $(QT)/../LICENSE.GPL* $(QT)/../LICENSE.LGPL $(DOCSDIR)/Qt
 	cp $(MING)/../COPYING $(DOCSDIR)/MinGW
 	cp $(POLIPO)/COPYING  $(POLIPO)/README $(DOCSDIR)/Polipo
 
