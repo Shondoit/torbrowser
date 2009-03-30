@@ -19,7 +19,7 @@ QT=/c/Qt/4.5.0/bin
 VIDALIA=/c/build/vidalia-0.1.12
 TOR=/c/build/tor-0.2.1.13-alpha
 POLIPO=/c/build/polipo-1.0.4
-FIREFOX_SRC=/c/build/FirefoxPortable-3.0.7
+FIREFOX_SRC=/c/build/FirefoxPortable-3.0.8
 PIDGIN_SRC=/c/build/PidginPortable-2.5.5
 
 ## Location of utility applications
@@ -56,13 +56,13 @@ endif
 DEFAULT_EXTENSIONS=torbutton.xpi
 
 ## Where to download Torbutton from
-TORBUTTON=https://addons.mozilla.org/en-US/firefox/downloads/file/34698/torbutton-1.2.0-fx.xpi
+TORBUTTON=https://addons.mozilla.org/en-US/firefox/downloads/file/34698/torbutton-1.2.1-fx.xpi
 
 ## Where to download Mozilla language packs
-MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.0.7/win32/xpi
+MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.0.8/win32/xpi
 
 ## Where Farsi Language Pack can be downloaded from
-FA_LANGPACK=https://addons.mozilla.org/en-US/firefox/downloads/file/31181/persian_language_pack-3.0.7-fx.xpi
+FA_LANGPACK=https://addons.mozilla.org/en-US/firefox/downloads/file/31181/persian_language_pack-3.0.8-fx.xpi
 
 ## Put more extensions here
 EXTENSIONS_DIR=extensions
@@ -94,7 +94,8 @@ all-compressed-bundles: compressed-bundle_ar \
 	compressed-bundle_nl \
 	compressed-bundle_pt-PT \
 	compressed-bundle_ru \
-	compressed-bundle_zh-CN
+	compressed-bundle_zh-CN \
+	compressed-bundle_it
 
 all-split-bundles: split-bundle_ar \
 	split-bundle_en-US \
@@ -105,7 +106,8 @@ all-split-bundles: split-bundle_ar \
 	split-bundle_nl \
 	split-bundle_pt-PT \
 	split-bundle_ru \
-	split-bundle_zh-CN
+	split-bundle_zh-CN \
+	split-bundle_it
 
 ##
 ## Cleanup
