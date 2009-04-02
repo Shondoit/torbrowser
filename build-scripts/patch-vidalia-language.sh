@@ -23,7 +23,7 @@ case "$MOZLANG" in
     ;;
     'pt-PT') LANGCODE='pt'
     ;;
-    'zh-CN') LANGCODE='zh-cn'
+    'zh-CN') LANGCODE='zh_CN'
     ;;
     *) LANGCODE="$MOZLANG"
     ;;
