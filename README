@@ -199,3 +199,6 @@ Changelog
       Add Italian language bundles
       Update Torbutton to 1.2.1
       Update Vidalia to 0.1.12
+
+1.1.12:
+      Update OpenSSL to 0.9.8k

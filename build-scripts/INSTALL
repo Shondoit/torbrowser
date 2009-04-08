@@ -334,23 +334,23 @@ Building OpenSSL
 
 Download openssl:
 
-    http://www.openssl.org/source/openssl-0.9.8j.tar.gz
+    http://www.openssl.org/source/openssl-0.9.8k.tar.gz
 
 Unpack it:
 
     cd /c/build/
-    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/openssl-0.9.8j.tar.gz
+    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/openssl-0.9.8k.tar.gz
 
 You should see errors not unlike:
 
-    tar: openssl-0.9.8j/include/openssl/bn.h: Cannot create symlink to `../../crypto/bn/bn.h': No such file or directory
-    tar: openssl-0.9.8j/include/openssl/blowfish.h: Cannot create symlink to `../../crypto/bf/blowfish.h': No such file or directory
-    tar: openssl-0.9.8j/include/openssl/bio.h: Cannot create symlink to `../../crypto/bio/bio.h': No such file or directory
-    tar: openssl-0.9.8j/include/openssl/asn1t.h: Cannot create symlink to `../../crypto/asn1/asn1t.h': No such file or directory
-    tar: openssl-0.9.8j/include/openssl/asn1_mac.h: Cannot create symlink to `../../crypto/asn1/asn1_mac.h': No such file or directory
-    tar: openssl-0.9.8j/include/openssl/asn1.h: Cannot create symlink to `../../crypto/asn1/asn1.h': No such file or directory
-    tar: openssl-0.9.8j/include/openssl/aes.h: Cannot create symlink to `../../crypto/aes/aes.h': No such file or directory
-    tar: openssl-0.9.8j/apps/md4.c: Cannot create symlink to `../crypto/md4/md4.c': No such file or directory
+    tar: openssl-0.9.8k/include/openssl/bn.h: Cannot create symlink to `../../crypto/bn/bn.h': No such file or directory
+    tar: openssl-0.9.8k/include/openssl/blowfish.h: Cannot create symlink to `../../crypto/bf/blowfish.h': No such file or directory
+    tar: openssl-0.9.8k/include/openssl/bio.h: Cannot create symlink to `../../crypto/bio/bio.h': No such file or directory
+    tar: openssl-0.9.8k/include/openssl/asn1t.h: Cannot create symlink to `../../crypto/asn1/asn1t.h': No such file or directory
+    tar: openssl-0.9.8k/include/openssl/asn1_mac.h: Cannot create symlink to `../../crypto/asn1/asn1_mac.h': No such file or directory
+    tar: openssl-0.9.8k/include/openssl/asn1.h: Cannot create symlink to `../../crypto/asn1/asn1.h': No such file or directory
+    tar: openssl-0.9.8k/include/openssl/aes.h: Cannot create symlink to `../../crypto/aes/aes.h': No such file or directory
+    tar: openssl-0.9.8k/apps/md4.c: Cannot create symlink to `../crypto/md4/md4.c': No such file or directory
     tar: Error exit delayed from previous errors
 
 Uncompressing OpenSSL shows a number of errors concerning symlinks. These do
@@ -358,10 +358,10 @@ not appear to have caused a problem.
 
 Now configure the source package:
 
-    cd openssl-0.9.8j/
+    cd openssl-0.9.8k/
     ./config -no-idea -no-rc5 -no-mdc2
 
-Edit '/c/build/openssl-0.9.8j/Makefile' and remove the "test:" and "tests:" sections that follow:
+Edit '/c/build/openssl-0.9.8k/Makefile' and remove the "test:" and "tests:" sections that follow:
 
     test:   tests
 
