@@ -17,7 +17,7 @@ QT=/c/Qt/4.5.0/bin
 
 ## Location of bundle components
 VIDALIA=/c/build/vidalia-0.1.12
-TOR=/c/build/tor-0.2.1.13-alpha
+TOR=/c/build/tor-0.2.1.14-rc
 POLIPO=/c/build/polipo-1.0.4
 FIREFOX_SRC=/c/build/FirefoxPortable-3.0.8
 PIDGIN_SRC=/c/build/PidginPortable-2.5.5
