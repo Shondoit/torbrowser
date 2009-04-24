@@ -203,3 +203,5 @@ Changelog
 1.1.12:
       Update OpenSSL to 0.9.8k
       Update Tor to 0.2.1.14-rc
+1.1.13:
+      Update Firefox to 3.0.9
