@@ -59,10 +59,10 @@ DEFAULT_EXTENSIONS=torbutton.xpi
 TORBUTTON=https://addons.mozilla.org/en-US/firefox/downloads/file/34698/torbutton-1.2.1-fx.xpi
 
 ## Where to download Mozilla language packs
-MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.0.8/win32/xpi
+MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.0.9/win32/xpi
 
 ## Where Farsi Language Pack can be downloaded from
-FA_LANGPACK=https://addons.mozilla.org/en-US/firefox/downloads/file/31181/persian_language_pack-3.0.8-fx.xpi
+FA_LANGPACK=https://addons.mozilla.org/en-US/firefox/downloads/file/31181/persian_language_pack-3.0.9-fx.xpi
 
 ## Put more extensions here
 EXTENSIONS_DIR=extensions
@@ -175,6 +175,7 @@ install-docs:
 	cp $(QT)/../LICENSE.GPL* $(QT)/../LICENSE.LGPL $(DOCSDIR)/Qt
 	cp $(MING)/../COPYING $(DOCSDIR)/MinGW
 	cp $(POLIPO)/COPYING  $(POLIPO)/README $(DOCSDIR)/Polipo
+	cp ../README $(DOCSDIR)/README-TorBrowserBundle
 
 ## Copy over FirefoxPortable
 install-firefoxportable:
