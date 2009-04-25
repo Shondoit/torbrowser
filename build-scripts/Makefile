@@ -13,7 +13,7 @@
 
 ## Location of required libraries
 MING=/c/MinGW/bin
-QT=/c/Qt/4.5.0/bin
+QT=/c/Qt/4.5.1/bin
 
 ## Location of bundle components
 VIDALIA=/c/build/vidalia-0.1.12
