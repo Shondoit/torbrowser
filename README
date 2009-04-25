@@ -194,15 +194,16 @@ Changelog
       Update Firefox to 3.0.7
       Update Pidgin to 2.5.5
 
-1.1.11:
+1.1.11: Released 2009-03-31
       Update Firefox to 3.0.8
       Add Italian language bundles
       Update Torbutton to 1.2.1
       Update Vidalia to 0.1.12
 
-1.1.12:
+1.1.12: Released 2009-04-12
       Update OpenSSL to 0.9.8k
       Update Tor to 0.2.1.14-rc
+
 1.1.13:
       Update Firefox to 3.0.9
       Update to Qt 4.5.1
