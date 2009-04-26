@@ -56,13 +56,13 @@ endif
 DEFAULT_EXTENSIONS=torbutton.xpi
 
 ## Where to download Torbutton from
-TORBUTTON=https://addons.mozilla.org/en-US/firefox/downloads/file/34698/torbutton-1.2.1-fx.xpi
+TORBUTTON=https://addons.mozilla.org/en-US/firefox/downloads/file/49457/torbutton-1.2.1-fx.xpi
 
 ## Where to download Mozilla language packs
 MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.0.9/win32/xpi
 
 ## Where Farsi Language Pack can be downloaded from
-FA_LANGPACK=https://addons.mozilla.org/en-US/firefox/downloads/file/31181/persian_language_pack-3.0.9-fx.xpi
+FA_LANGPACK=https://addons.mozilla.org/en-US/firefox/downloads/latest/3667/addon-3667-latest.xpi
 
 ## Put more extensions here
 EXTENSIONS_DIR=extensions
