@@ -1,39 +1,6 @@
 Tor USB project
 ===============
 
-Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217/>
-
-Contents
---------
-
-build-scripts: Code for building and customizing a Tor USB bundle
-  \___ INSTALL: Installation instructions
-  |___ config/: Configuration files for bundle components
-
-docs: Documentation for project
-  \___ ToaST-startup: Rough description of ToaST startup procedure
-  |___ rationale.txt: Reasoning behind bundle design decisions
-  |___ torusb-notes.txt: Experiences from running various other Tor
-                         USB bundles
-
-src: Source code
-  \___ processtest: Qt project for starting Firefox and detecting
-  |                 termination behaviour (see included README for
-  |                 build instructions)
-  |___ current-patches: Patches to other applications currently in
-  |                     testing
-  |___ archived-patches: Patches to other applications which have
-                         either been applied upstream or abandoned 
-
-Status
-------
-
-Using build-scripts/Makefile it is possible to create a working USB
-Tor bundle. It's limitations include:
- - It uses the FirefoxPortable binaries
-
-Further issues are discussed in TODO.
-
 Included applications
 ---------------------
 
