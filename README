@@ -7,8 +7,8 @@ Included applications
 Vidalia 0.1.12
 Tor 0.2.1.14-rc (with libevent-1.4.9, zlib-1.2.3 and openssl-0.9.8k) 
 Polipo 1.0.4
-FirefoxPortable 3.0.9
- \_ Firefox 3.0.9
+FirefoxPortable 3.0.10
+ \_ Firefox 3.0.10
     \_ Torbutton 1.2.1
 PidginPortable 2.5.5
  \_ Pidgin 2.5.5
@@ -172,6 +172,6 @@ Changelog
       Update Tor to 0.2.1.14-rc
 
 1.1.13:
-      Update Firefox to 3.0.9
+      Update Firefox to 3.0.10
       Update to Qt 4.5.1
       Update Firefox prefs.js to stop scanning for plugins
