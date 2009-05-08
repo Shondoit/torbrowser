@@ -40,7 +40,7 @@ DEST="Generic Bundle"
 NAME="Tor Browser"
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.1.13-dev
+VERSION=1.2.0-rc5
 DEFAULT_COMPRESSED_BASENAME=tor-browser-
 IM_COMPRESSED_BASENAME=tor-im-browser-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
@@ -195,6 +195,9 @@ configure-apps:
 	## Configure Firefox preferences
 	cp $(CONFIG_SRC)/prefs.js $(DEST)/FirefoxPortable/App/DefaultData/profile/
 	cp $(CONFIG_SRC)/bookmarks.html $(DEST)/FirefoxPortable/App/DefaultData/profile/
+	## Set up alternate launcher
+	mv $(DEST)/FirefoxPortable/App/Firefox/firefox.exe $(DEST)/FirefoxPortable/App/Firefox/tbb-firefox.exe
+	#rm $(DEST)/FirefoxPortable/FirefoxPortable.exe
 	## Configure FirefoxPortable
 	cp $(CONFIG_SRC)/FirefoxPortable.ini $(DEST)/FirefoxPortable
 	cp $(CONFIG_SRC)/FirefoxPortableSettings.ini $(DEST)/FirefoxPortable/Data/settings
@@ -277,7 +280,7 @@ install-extensions: $(DEFAULT_EXTENSIONS) langpack_$(LANGCODE).xpi
 	cp -R $(BUNDLE)/FirefoxPortable/App/DefaultData $(DUMMYPROFILE)
 	## Install default extensions and everything from extensions directory
 	for extension in langpack_$(LANGCODE).xpi $(DEFAULT_EXTENSIONS) $(EXTENSIONS_DIR)/*.xpi $(EXTENSIONS_DIR)/*.jar; \
-	  do $(BUNDLE)/FirefoxPortable/App/firefox/firefox.exe \
+	  do $(BUNDLE)/FirefoxPortable/App/firefox/tbb-firefox.exe \
              -profile $(DUMMYPROFILE)/profile \
              -install-global-extension $$extension; \
           done

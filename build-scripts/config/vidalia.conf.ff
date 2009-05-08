@@ -1,5 +1,6 @@
 [General]
-BrowserExecutable=FirefoxPortable\\FirefoxPortable.exe
+BrowserDirectory=FirefoxPortable
+BrowserExecutable=tbb-firefox.exe
 LanguageCode=en
 ProxyExecutable=App\\polipo.exe
 ProxyExecutableArguments=-c, Data\\Polipo\\polipo.conf
