@@ -67,6 +67,9 @@ FA_LANGPACK=https://addons.mozilla.org/en-US/firefox/downloads/latest/3667/addon
 ## Put more extensions here
 EXTENSIONS_DIR=extensions
 
+## Local overrides
+-include local.makefile
+
 #############
 ### Rules ###
 #############
