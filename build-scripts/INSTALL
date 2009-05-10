@@ -551,7 +551,7 @@ Currently the Tor Browser Bundle uses FirefoxPortable binaries.
 
 Download FirefoxPortable:
 
-    http://downloads.sourceforge.net/portableapps/Firefox_Portable_3.0.9_en-us.paf.exe?download
+    http://downloads.sourceforge.net/portableapps/Firefox_Portable_3.0.10_en-us.paf.exe?download
 
 Run the installer and select it into: 'C:\build\FirefoxPortable-<version>>'
 
