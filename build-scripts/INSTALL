@@ -393,19 +393,19 @@ And finally, build it - this can take a long time and depends on the speed of yo
 Building libevent
 =================
 
-Next, you'll want to download, unpack, build and install libevent ( Version: libevent-1.4.9 ).
+Next, you'll want to download, unpack, build and install libevent (Version: libevent-1.4.11).
 You can get libevent here:
 
         http://www.monkey.org/~provos/libevent/
-        http://www.monkey.org/~provos/libevent-1.4.9-stable.tar.gz
-        http://www.monkey.org/~provos/libevent-1.4.9-stable.tar.gz.sig
+        http://www.monkey.org/~provos/libevent-1.4.11-stable.tar.gz
+        http://www.monkey.org/~provos/libevent-1.4.11-stable.tar.gz.sig
 
 Verify the signature.
 
 Unpack it:
 
-    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/libevent-1.4.9-stable.tar.gz
-    cd libevent-1.4.9-stable/
+    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/libevent-1.4.11-stable.tar.gz
+    cd libevent-1.4.11-stable/
 
 Configure, build and install:
 
@@ -418,11 +418,11 @@ Building Tor
 
 Download, unpack, build and install Tor:
         https://www.torproject.org/download.html
-        https://www.torproject.org/dist/tor-0.2.1.13-alpha.tar.gz
-        https://www.torproject.org/dist/tor-0.2.1.13-alpha.gz.asc
+        https://www.torproject.org/dist/tor-0.2.1.14-rc.tar.gz
+        https://www.torproject.org/dist/tor-0.2.1.14-rc.gz.asc
         $ cd /c/build/
-        tar -C /c/build -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/tor-0.2.1.13-alpha.tar.gz
-        $ cd tor-0.2.1.13-alpha/
+        tar -C /c/build -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/tor-0.2.1.14-rc.tar.gz
+        $ cd tor-0.2.1.14-rc/
         ./configure
         make
 

@@ -171,9 +171,10 @@ Changelog
       Update OpenSSL to 0.9.8k
       Update Tor to 0.2.1.14-rc
 
-1.2.0:
+1.2.0-dev:
       Switch to launching Firefox directly from Vidalia to
        allow multiple instances of Firefox
       Update Firefox to 3.0.10
       Update to Qt 4.5.1
       Update Firefox prefs.js to stop scanning for plugins
+      Update libevent to 1.4.11
