@@ -218,6 +218,7 @@ endif
 	cp $(CONFIG_SRC)/polipo.conf $(DEST)/Data/Polipo
 	## Configure Tor
 	cp $(CONFIG_SRC)/torrc $(DEST)/Data/Tor
+    cp $(TOR)/src/config/geoip $(DEST)/Data/Tor
 
 launcher:
 	#echo 'start /b .\\App\\vidalia.exe --datadir .\\Data\\Vidalia\\' > $(DEST)/"Start Tor Browser.bat"
