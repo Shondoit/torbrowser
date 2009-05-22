@@ -2,6 +2,7 @@
 AvoidDiskWrites 1
 # Store working data, state, keys, and caches here.
 DataDirectory .\Data\Tor
+GeoIPFile .\Data\Tor\geoip
 # Where to send logging messages.  Format is minSeverity[-maxSeverity]
 # (stderr|stdout|syslog|file FILENAME).
 Log notice stdout
