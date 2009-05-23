@@ -178,3 +178,4 @@ Changelog
       Update to Qt 4.5.1
       Update Firefox prefs.js to stop scanning for plugins
       Update libevent to 1.4.11
+      Include the Tor geoip database 
