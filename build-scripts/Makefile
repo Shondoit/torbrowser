@@ -40,7 +40,7 @@ DEST="Generic Bundle"
 NAME="Tor Browser"
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.2.0-dev
+VERSION=1.2.0
 DEFAULT_COMPRESSED_BASENAME=tor-browser-
 IM_COMPRESSED_BASENAME=tor-im-browser-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)

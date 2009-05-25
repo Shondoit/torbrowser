@@ -171,7 +171,7 @@ Changelog
       Update OpenSSL to 0.9.8k
       Update Tor to 0.2.1.14-rc
 
-1.2.0-dev:
+1.2.0: Released 2009-05-25
       Switch to launching Firefox directly from Vidalia to
        allow multiple instances of Firefox
       Update Firefox to 3.0.10
