@@ -4,8 +4,8 @@ Tor USB project
 Included applications
 ---------------------
 
-Vidalia 0.1.12
-Tor 0.2.1.14-rc (with libevent-1.4.9, zlib-1.2.3 and openssl-0.9.8k) 
+Vidalia 0.1.13
+Tor 0.2.1.16-rc (with libevent-1.4.11, zlib-1.2.3 and openssl-0.9.8k) 
 Polipo 1.0.4
 FirefoxPortable 3.0.10
  \_ Firefox 3.0.10
