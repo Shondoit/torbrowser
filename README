@@ -179,3 +179,5 @@ Changelog
       Update Firefox prefs.js to stop scanning for plugins
       Update libevent to 1.4.11
       Include the Tor geoip database 
+      Update Vidalia to 0.1.13
+      Update Tor to 0.2.1.15-rc
