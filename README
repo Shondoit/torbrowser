@@ -181,3 +181,6 @@ Changelog
       Include the Tor geoip database 
       Update Vidalia to 0.1.13
       Update Tor to 0.2.1.15-rc
+
+1.2.1:
+    Better updates to Firefox to stop scanning for plugins on start
