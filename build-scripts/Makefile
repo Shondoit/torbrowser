@@ -19,8 +19,8 @@ QT=/c/Qt/4.5.1/bin
 VIDALIA=/c/build/vidalia-0.1.13
 TOR=/c/build/tor-0.2.1.15-rc
 POLIPO=/c/build/polipo-1.0.4
-FIREFOX_SRC=/c/build/FirefoxPortable-3.0.10
-PIDGIN_SRC=/c/build/PidginPortable-2.5.5
+FIREFOX_SRC=/c/build/FirefoxPortable-3.0.11
+PIDGIN_SRC=/c/build/PidginPortable-2.5.6rev2
 
 ## Location of utility applications
 SEVENZIP="/c/Program Files/7-Zip/7z.exe"
@@ -59,7 +59,7 @@ DEFAULT_EXTENSIONS=torbutton.xpi
 TORBUTTON=https://addons.mozilla.org/en-US/firefox/downloads/file/49457/torbutton-1.2.1-fx.xpi
 
 ## Where to download Mozilla language packs
-MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.0.10/win32/xpi
+MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.0.11/win32/xpi
 
 ## Where Farsi Language Pack can be downloaded from
 FA_LANGPACK=https://addons.mozilla.org/en-US/firefox/downloads/latest/3667/addon-3667-latest.xpi
