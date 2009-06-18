@@ -186,3 +186,4 @@ Changelog
     Better updates to Firefox to stop scanning for plugins on start
     Update Pidgin to 2.5.6r2
     Update Firefox to 3.0.11
+    Include OpenSSL 0.9.8k DLL and stop using the system ssl dll

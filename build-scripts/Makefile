@@ -14,6 +14,7 @@
 ## Location of required libraries
 MING=/c/MinGW/bin
 QT=/c/Qt/4.5.1/bin
+OPENSSL=/c/OpenSSL/bin
 
 ## Location of bundle components
 VIDALIA=/c/build/vidalia-0.1.13
@@ -162,6 +163,7 @@ install-binaries:
 	cp $(MING)/libgnurx-0.dll $(APPDIR)
 	cp $(QT)/QtCore4.dll $(QT)/QtGui4.dll \
            $(QT)/QtNetwork4.dll $(QT)/QtXml4.dll $(APPDIR) 
+	cp $(OPENSSL)/ssleay32.dll $(APPDIR)
 	cp $(VIDALIA)/src/vidalia/vidalia.exe $(APPDIR)
 	cp $(POLIPO)/polipo.exe $(APPDIR)
 	cp $(TOR)/src/or/tor.exe $(TOR)/src/tools/tor-resolve.exe $(APPDIR)
