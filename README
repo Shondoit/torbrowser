@@ -188,3 +188,5 @@ Changelog
     Update Firefox to 3.0.11
     Include OpenSSL 0.9.8k DLL and stop using the system ssl dll
     Update Tor to 0.2.1.16-rc
+
+1.2.2:
