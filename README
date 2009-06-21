@@ -5,13 +5,13 @@ Included applications
 ---------------------
 
 Vidalia 0.1.13
-Tor 0.2.1.15-rc (with libevent-1.4.11, zlib-1.2.3 and openssl-0.9.8k) 
+Tor 0.2.1.16-rc (with libevent-1.4.11, zlib-1.2.3 and openssl-0.9.8k) 
 Polipo 1.0.4
-FirefoxPortable 3.0.10
- \_ Firefox 3.0.10
+FirefoxPortable 3.0.11
+ \_ Firefox 3.0.11
     \_ Torbutton 1.2.1
-PidginPortable 2.5.5
- \_ Pidgin 2.5.5
+PidginPortable 2.5.6rev2
+ \_ Pidgin 2.5.6rev2
    \_ OTR 3.2
 
 Usage
@@ -187,3 +187,4 @@ Changelog
     Update Pidgin to 2.5.6r2
     Update Firefox to 3.0.11
     Include OpenSSL 0.9.8k DLL and stop using the system ssl dll
+    Update Tor to 0.2.1.16-rc
