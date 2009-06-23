@@ -10,8 +10,8 @@ Polipo 1.0.4
 FirefoxPortable 3.0.11
  \_ Firefox 3.0.11
     \_ Torbutton 1.2.1
-PidginPortable 2.5.6rev2
- \_ Pidgin 2.5.6rev2
+PidginPortable 2.5.7
+ \_ Pidgin 2.5.7
    \_ OTR 3.2
 
 Usage
@@ -190,3 +190,4 @@ Changelog
     Update Tor to 0.2.1.16-rc
 
 1.2.2:
+    Update Pidgin to 2.5.7
