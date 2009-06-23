@@ -189,5 +189,5 @@ Changelog
     Include OpenSSL 0.9.8k DLL and stop using the system ssl dll
     Update Tor to 0.2.1.16-rc
 
-1.2.2:
+1.2.2: Released 2009-06-23
     Update Pidgin to 2.5.7
