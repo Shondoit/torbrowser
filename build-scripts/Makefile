@@ -18,10 +18,10 @@ OPENSSL=/c/OpenSSL/bin
 
 ## Location of bundle components
 VIDALIA=/c/build/vidalia-0.1.14
-TOR=/c/build/tor-0.2.1.16-rc
+TOR=/c/build/tor-0.2.1.17-rc
 POLIPO=/c/build/polipo-1.0.4
 FIREFOX_SRC=/c/build/FirefoxPortable-3.0.11
-PIDGIN_SRC=/c/build/PidginPortable-2.5.7
+PIDGIN_SRC=/c/build/PidginPortable-2.5.8
 
 ## Location of utility applications
 SEVENZIP="/c/Program Files/7-Zip/7z.exe"
