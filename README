@@ -4,14 +4,14 @@ Tor USB project
 Included applications
 ---------------------
 
-Vidalia 0.1.13
-Tor 0.2.1.16-rc (with libevent-1.4.11, zlib-1.2.3 and openssl-0.9.8k) 
+Vidalia 0.1.14
+Tor 0.2.1.17-rc (with libevent-1.4.11, zlib-1.2.3 and openssl-0.9.8k) 
 Polipo 1.0.4
 FirefoxPortable 3.0.11
  \_ Firefox 3.0.11
     \_ Torbutton 1.2.1
-PidginPortable 2.5.7
- \_ Pidgin 2.5.7
+PidginPortable 2.5.8
+ \_ Pidgin 2.5.8
    \_ OTR 3.2
 
 Usage
@@ -192,7 +192,7 @@ Changelog
 1.2.2: Released 2009-06-23
     Update Pidgin to 2.5.7
 
-1.2.3:
+1.2.3: Released 2009-07-08
   Update Vidalia to 0.1.14
   Update Tor to 0.2.1.17-rc
   Update Pidgin to 2.5.8
