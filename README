@@ -197,6 +197,6 @@ Changelog
   Update Tor to 0.2.1.17-rc
   Update Pidgin to 2.5.8
 
-1.2.4:
+1.2.4: Released 2009-07-11
   Include libeay32.dll from OpenSSL 0.9.8k to make QT happy
   Update Vidalia to 0.1.15
