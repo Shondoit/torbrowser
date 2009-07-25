@@ -201,5 +201,5 @@ Changelog
   Include libeay32.dll from OpenSSL 0.9.8k to make QT happy
   Update Vidalia to 0.1.15
 
-1.2.5: Released
+1.2.5: Released 2009-07-25
   update Tor to 0.2.1.18
