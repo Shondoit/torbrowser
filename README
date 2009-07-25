@@ -5,7 +5,7 @@ Included applications
 ---------------------
 
 Vidalia 0.1.15
-Tor 0.2.1.17-rc (with libevent-1.4.11, zlib-1.2.3 and openssl-0.9.8k) 
+Tor 0.2.1.18 (with libevent-1.4.11, zlib-1.2.3 and openssl-0.9.8k) 
 Polipo 1.0.4
 FirefoxPortable 3.0.11
  \_ Firefox 3.0.11
@@ -200,3 +200,6 @@ Changelog
 1.2.4: Released 2009-07-11
   Include libeay32.dll from OpenSSL 0.9.8k to make QT happy
   Update Vidalia to 0.1.15
+
+1.2.5: Released
+  update Tor to 0.2.1.18
