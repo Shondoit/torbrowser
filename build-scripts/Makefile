@@ -20,7 +20,7 @@ OPENSSL=/c/OpenSSL/bin
 VIDALIA=/c/build/vidalia-0.1.15
 TOR=/c/build/tor-0.2.1.19
 POLIPO=/c/build/polipo-1.0.4
-FIREFOX_SRC=/c/build/FirefoxPortable-3.0.11
+FIREFOX_SRC=/c/build/FirefoxPortable-3.0.13
 PIDGIN_SRC=/c/build/PidginPortable-2.5.8
 
 ## Location of utility applications
@@ -96,6 +96,7 @@ all-compressed-bundles: compressed-bundle_ar \
 	compressed-bundle_fa-IR \
 	compressed-bundle_fr \
 	compressed-bundle_nl \
+    compressed-bundle_pl \
 	compressed-bundle_pt-PT \
 	compressed-bundle_ru \
 	compressed-bundle_zh-CN \
@@ -108,6 +109,7 @@ all-split-bundles: split-bundle_ar \
 	split-bundle_fa-IR \
 	split-bundle_fr \
 	split-bundle_nl \
+    split-bundle_pl \
 	split-bundle_pt-PT \
 	split-bundle_ru \
 	split-bundle_zh-CN \
