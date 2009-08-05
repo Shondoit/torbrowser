@@ -393,19 +393,19 @@ And finally, build it - this can take a long time and depends on the speed of yo
 Building libevent
 =================
 
-Next, you'll want to download, unpack, build and install libevent (Version: libevent-1.4.11).
+Next, you'll want to download, unpack, build and install libevent (Version: libevent-1.4.12).
 You can get libevent here:
 
         http://www.monkey.org/~provos/libevent/
-        http://www.monkey.org/~provos/libevent-1.4.11-stable.tar.gz
-        http://www.monkey.org/~provos/libevent-1.4.11-stable.tar.gz.sig
+        http://www.monkey.org/~provos/libevent-1.4.12-stable.tar.gz
+        http://www.monkey.org/~provos/libevent-1.4.12-stable.tar.gz.sig
 
 Verify the signature.
 
 Unpack it:
 
-    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/libevent-1.4.11-stable.tar.gz
-    cd libevent-1.4.11-stable/
+    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/libevent-1.4.12-stable.tar.gz
+    cd libevent-1.4.12-stable/
 
 Configure, build and install:
 
@@ -418,11 +418,11 @@ Building Tor
 
 Download, unpack, build and install Tor:
         https://www.torproject.org/download.html
-        https://www.torproject.org/dist/tor-0.2.1.15-rc.tar.gz
-        https://www.torproject.org/dist/tor-0.2.1.15-rc.gz.asc
+        https://www.torproject.org/dist/tor-0.2.1.19-rc.tar.gz
+        https://www.torproject.org/dist/tor-0.2.1.19-rc.gz.asc
         $ cd /c/build/
-        tar -C /c/build -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/tor-0.2.1.15-rc.tar.gz
-        $ cd tor-0.2.1.15-rc/
+        tar -C /c/build -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/tor-0.2.1.19-rc.tar.gz
+        $ cd tor-0.2.1.19-rc/
         ./configure
         make
 
@@ -434,15 +434,15 @@ Vidalia (see above).
 
 Download Vidalia:
 
-    http://vidalia-project.net/dist/vidalia-0.1.13.tar.gz
-    http://vidalia-project.net/dist/vidalia-0.1.13.tar.gz.asc
+    http://vidalia-project.net/dist/vidalia-0.1.15.tar.gz
+    http://vidalia-project.net/dist/vidalia-0.1.15.tar.gz.asc
 
 Verify the signature.
 
 Unpack Vidalia:
    
-    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/vidalia-0.1.13.tar.gz
-    mv vidalia-0.1.13/ vidalia
+    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/vidalia-0.1.15.tar.gz
+    mv vidalia-0.1.15/ vidalia
 
 Set a proper environment:
 
@@ -551,7 +551,7 @@ Currently the Tor Browser Bundle uses FirefoxPortable binaries.
 
 Download FirefoxPortable:
 
-    http://prdownloads.sourceforge.net/portableapps/FirefoxPortable_3.0.11_English.paf.exe
+    http://prdownloads.sourceforge.net/portableapps/FirefoxPortable_3.0.13_English.paf.exe
 
 Run the installer and select it into: 'C:\build\FirefoxPortable-<version>>'
 
@@ -633,7 +633,7 @@ An example to change the Qt Lib version:
 And then change the Tor version:
 
         From: TOR=/c/build/tor-0.2.0.26-rc
-        To: TOR=/c/build/tor-0.2.1.13-alpha
+        To: TOR=/c/build/tor-0.2.1.19
 
 Now you can run "make bundle_LANGUAGE", e.g. "make bundle_en-US".
 
