@@ -9,7 +9,7 @@ Tor 0.2.1.19 (with libevent-1.4.12, zlib-1.2.3 and openssl-0.9.8k)
 Polipo 1.0.4
 FirefoxPortable 3.0.13
  \_ Firefox 3.0.13
-    \_ Torbutton 1.2.1
+    \_ Torbutton 1.2.2
 PidginPortable 2.5.8
  \_ Pidgin 2.5.8
    \_ OTR 3.2
@@ -213,3 +213,4 @@ Changelog
   update libevent to 1.4.12
 
 1.2.8:
+  update Torbutton to 1.2.2
