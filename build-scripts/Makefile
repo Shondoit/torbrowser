@@ -14,7 +14,7 @@
 ## Location of required libraries
 MING=/c/MinGW/bin
 QT=/c/Qt/4.5.1/bin
-OPENSSL=/c/OpenSSL/bin
+OPENSSL=/c/build/openssl-0.9.8k/bin
 
 ## Location of bundle components
 VIDALIA=/c/build/vidalia-0.2.2

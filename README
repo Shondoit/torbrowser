@@ -215,3 +215,4 @@ Changelog
 1.2.8:
   update Torbutton to 1.2.2
   update Vidalia to 0.2.2
+  compile OpenSSL 0.9.8k with Visual C to make dlls
