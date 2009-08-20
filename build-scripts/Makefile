@@ -21,7 +21,7 @@ VIDALIA=/c/build/vidalia-0.2.2
 TOR=/c/build/tor-0.2.1.19
 POLIPO=/c/build/polipo-1.0.4
 FIREFOX_SRC=/c/build/FirefoxPortable-3.0.13
-PIDGIN_SRC=/c/build/PidginPortable-2.5.8
+PIDGIN_SRC=/c/build/PidginPortable-2.6.1
 
 ## Location of utility applications
 SEVENZIP="/c/Program Files/7-Zip/7z.exe"

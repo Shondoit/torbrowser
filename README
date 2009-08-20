@@ -10,8 +10,8 @@ Polipo 1.0.4
 FirefoxPortable 3.0.13
  \_ Firefox 3.0.13
     \_ Torbutton 1.2.2
-PidginPortable 2.5.8
- \_ Pidgin 2.5.8
+PidginPortable 2.6.1
+ \_ Pidgin 2.6.1
    \_ OTR 3.2
 
 Usage
@@ -216,3 +216,4 @@ Changelog
   update Torbutton to 1.2.2
   update Vidalia to 0.2.2
   compile OpenSSL 0.9.8k with Visual C to make dlls
+  update Pidgin to 2.6.1
