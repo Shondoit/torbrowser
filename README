@@ -212,7 +212,7 @@ Changelog
   add Polish translation
   update libevent to 1.4.12
 
-1.2.8:
+1.2.8: Released 2009-08-19
   update Torbutton to 1.2.2
   update Vidalia to 0.2.2
   compile OpenSSL 0.9.8k with Visual C to make dlls
