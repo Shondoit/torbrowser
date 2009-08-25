@@ -219,15 +219,15 @@ Run the installer with Windows Explorer and install into:
 Installing Qt
 =============
 
-Download Qt 4.1 or later, we'll use 4.5.1:
+Download Qt 4.1 or later, we'll use 4.5.2:
 
     http://trolltech.com/developer/downloads/qt/windows
 
 Download and run the installer with Windows Explorer:
 
-    ftp://ftp.trolltech.com/qt/source/qt-win-opensource-4.5.1-mingw.exe
+    ftp://ftp.trolltech.com/qt/source/qt-win-opensource-4.5.2-mingw.exe
 
-When prompted, install Qt into 'C:\Qt\4.5.1'
+When prompted, install Qt into 'C:\Qt\4.5.2'
 You will be prompted for the install path for your MinGW directory, enter 'C:\MinGW'
 You may have an error about win32api.h being not found. This is not true. You
 have win32api.h and Qt is wrong.  This is a result of the Qt installer not
@@ -447,13 +447,13 @@ Unpack Vidalia:
 Set a proper environment:
 
     cat << 'EOF' >> /etc/profile
-    export QTDIR="C:\Qt\4.5.1"
-    export PATH=$PATH:/c/Qt/4.5.1/bin
+    export QTDIR="C:\Qt\4.5.2"
+    export PATH=$PATH:/c/Qt/4.5.2/bin
     export PATH=$PATH:/c/Program\ Files/CMake\ 2.6/bin/
     export QMAKESPEC=win32-g++
     EOF
 
-    export PATH=$PATH:/c/Program\ Files/CMake\ 2.6/bin/:/c/MinGW/bin/:/c/Qt/4.5.1/bin/
+    export PATH=$PATH:/c/Program\ Files/CMake\ 2.6/bin/:/c/MinGW/bin/:/c/Qt/4.5.2/bin/
 
 Create the proper MSYS Makefiles and don't forget the '.' at the end!
 
@@ -481,7 +481,7 @@ You may see some errors:
 
       and other libraries with known full path:
 
-        C:/Qt/4.5.1/lib/libQtGui4.a
+        C:/Qt/4.5.2/lib/libQtGui4.a
 
 
       CMake is adding directories in the second list to the linker search path in
@@ -628,7 +628,7 @@ Makefile as mentioned in the Customization section above.
 An example to change the Qt Lib version:
 
         From: QT=/c/Qt/4.3.4/bin
-        To: QT=/c/Qt/4.5.1/bin
+        To: QT=/c/Qt/4.5.2/bin
 
 And then change the Tor version:
 
