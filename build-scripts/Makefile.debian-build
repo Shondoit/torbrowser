@@ -1,0 +1,461 @@
+###
+### Makefile for building Tor USB bundle
+###
+### Copyright 2007 Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217/>
+### See LICENSE for licensing information
+###
+### $Id: Makefile 19973 2009-07-12 02:26:03Z phobos $
+###
+
+#####################
+### Configuration ###
+#####################
+
+## Versions for our source packages
+ZLIB_VER=1.2.3
+OPENSSL_VER=0.9.8k
+QT_VER=4.5.1
+VIDALIA_VER=0.1.15
+LIBEVENT_VER=1.4.12-stable
+TOR_VER=0.2.1.19
+POLIPO_VER=1.0.4
+PIDGIN_VER=2.6.1
+FIREFOX_VER=3.0.13
+
+## File names for the source packages
+ZLIB_PACKAGE=zlib-$(ZLIB_VER).tar.gz
+OPENSSL_PACKAGE=openssl-$(OPENSSL_VER).tar.gz
+QT_PACKAGE=qt-x11-opensource-src-$(QT_VER).tar.gz
+VIDALIA_PACKAGE=vidalia-$(VIDALIA_VER).tar.gz
+LIBEVENT_PACKAGE=libevent-$(LIBEVENT_VER).tar.gz
+TOR_PACKAGE=tor-$(TOR_VER).tar.gz
+POLIPO_PACKAGE=polipo-$(POLIPO_VER).tar.gz
+PIDGIN_PACKAGE=pidgin-$(PIDGIN_VER).tar.bz2
+FIREFOX_PACKAGE=firefox-$(FIREFOX_VER).tar.bz2
+
+## Location of files for download
+ZLIB_URL=http://www.gzip.org/zlib/$(ZLIB_PACKAGE)
+OPENSSL_URL=https://www.openssl.org/source/$(OPENSSL_PACKAGE)
+QT_URL=ftp://ftp.qtsoftware.com/qt/source/$(QT_PACKAGE)
+VIDALIA_URL=https://www.torproject.org/vidalia/dist/$(VIDALIA_PACKAGE)
+LIBEVENT_URL=http://www.monkey.org/~provos/$(LIBEVENT_PACKAGE)
+TOR_URL=https://www.torproject.org/dist/$(TOR_PACKAGE)
+POLIPO_URL=http://www.pps.jussieu.fr/~jch/software/files/polipo/$(POLIPO_PACKAGE)
+PIDGIN_URL=http://sourceforge.net/projects/pidgin/files/Pidgin/$(PIDGIN_PACKAGE)
+FIREFOX_URL=http://mozilla3.snt.utwente.nl/firefox/releases/$(FIREFOX_VER)/linux-i686/en-US/$(FIREFOX_PACKAGE)
+
+## Location of directory for source unpacking
+FETCH_DIR=/tmp/build/
+## Location of directory for prefix/destdir/compiles/etc
+BUILT_DIR=$(FETCH_DIR)/built/
+TBB_FINAL=$(BUILT_DIR)/TBBL/
+
+fetch-source:
+	-mkdir $(FETCH_DIR)
+	$(WGET) --directory-prefix=$(FETCH_DIR) $(ZLIB_URL)
+	$(WGET) --directory-prefix=$(FETCH_DIR) $(OPENSSL_URL)
+	$(WGET) --directory-prefix=$(FETCH_DIR) $(QT_URL)
+	$(WGET) --directory-prefix=$(FETCH_DIR) $(VIDALIA_URL)
+	$(WGET) --directory-prefix=$(FETCH_DIR) $(LIBEVENT_URL)
+	$(WGET) --directory-prefix=$(FETCH_DIR) $(TOR_URL)
+	$(WGET) --directory-prefix=$(FETCH_DIR) $(POLIPO_URL)
+	$(WGET) --directory-prefix=$(FETCH_DIR) $(PIDGIN_URL)
+	$(WGET) --directory-prefix=$(FETCH_DIR) $(FIREFOX_URL)
+
+unpack-source:
+	cd $(FETCH_DIR) && tar -xvzf $(ZLIB_PACKAGE)
+	cd $(FETCH_DIR) && tar -xvzf $(OPENSSL_PACKAGE)
+	cd $(FETCH_DIR) && tar -xvzf $(QT_PACKAGE)
+	cd $(FETCH_DIR) && tar -xvzf $(VIDALIA_PACKAGE)
+	cd $(FETCH_DIR) && tar -xvzf $(LIBEVENT_PACKAGE)
+	cd $(FETCH_DIR) && tar -xvzf $(TOR_PACKAGE)
+	cd $(FETCH_DIR) && tar -xvzf $(POLIPO_PACKAGE)
+	cd $(FETCH_DIR) && tar -xvjf $(PIDGIN_PACKAGE)
+	cd $(FETCH_DIR) && tar -xvjf $(FIREFOX_PACKAGE)
+
+source-dance: fetch-source unpack-source
+	echo "We're ready for building now."
+
+ZLIB_DIR=$(FETCH_DIR)/zlib-$(ZLIB_VER)/
+ZLIB_OPTS=--shared --prefix=$(BUILT_DIR)
+build-zlib:
+	cd $(ZLIB_DIR) && ./configure $(ZLIB_OPTS)
+	cd $(ZLIB_DIR) && make
+	cd $(ZLIB_DIR) && make install
+
+OPENSSL_DIR=$(FETCH_DIR)/openssl-$(OPENSSL_VER)/
+OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -I$(BUILT_DIR)/lib/
+build-openssl:
+	cd $(OPENSSL_DIR) && ./config $(OPENSSL_OPTS)
+	cd $(OPENSSL_DIR) && make depend
+	cd $(OPENSSL_DIR) && make
+	cd $(OPENSSL_DIR) && make install
+
+QT_DIR=$(FETCH_DIR)/qt-x11-opensource-src-$(QT_VER)/
+QT_BUILD_PREFS=-system-zlib -openssl-linked -no-qt3support -fast -release -nomake demos -nomake example
+QT_OPTS=$(QT_BUILD_PREFS) -prefix $(BUILT_DIR) -I $(BUILT_DIR)/include -I $(BUILT_DIR)/include/openssl/ -L $(BUILT_DIR)/lib/
+build-qt:
+	cd $(QT_DIR) && ./configure $(QT_OPTS)
+	cd $(QT_DIR) && make -j2
+	cd $(QT_DIR) && make install
+
+VIDALIA_DIR=$(FETCH_DIR)/vidalia-$(VIDALIA_VER)/
+VIDALIA_OPTS=-DOPENSSL_LIBRARY_DIR=$(BUILT_DIR)/lib/ -DCMAKE_BUILD_TYPE=debug -DQT_QMAKE_EXECUTABLE=$(BUILT_DIR)/bin/qmake ..
+build-vidalia:
+	-mkdir $(VIDALIA_DIR)/build
+	cd $(VIDALIA_DIR)/build && cmake $(VIDALIA_OPTS) && make
+	cd $(VIDALIA_DIR)/build DESTDIR=$(BUILT_DIR) make
+
+LIBEVENT_DIR=$(FETCH_DIR)/libevent-$(LIBEVENT_VER)/
+LIBEVENT_OPTS=--prefix=$(BUILT_DIR)
+build-libevent:
+	cd $(LIBEVENT_DIR) && ./configure $(LIBEVENT_OPTS)
+	cd $(LIBEVENT_DIR) && make -j2
+	cd $(LIBEVENT_DIR) && make install
+
+TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)/
+TOR_OPTS=--with-openssl-dir=$(BUILT_DIR)/include/openssl --with-zlib-dir=$(BUILT_DIR)/include/ --with-libevent-dir=$(BUILT_DIR)/lib/ --prefix=$(BUILT_DIR)
+build-tor:
+	cd $(TOR_DIR) && ./configure $(TOR_OPTS)
+	cd $(TOR_DIR) && make -j2
+	cd $(TOR_DIR) && make install
+
+## Polipo doesn't use autoconf, so we just have to hack their Makefile
+# HACKUP THE MAKEFILE TO FIX THE PREFIX!
+## PREFIX = /home/rorreoi/tmp/build/built
+## LOCAL_ROOT = /home/rorreoi/tmp/build/built/usr/share/polipo/www
+## DISK_CACHE_ROOT = /home/rorreoi/tmp/build/built/var/cache/polipo
+POLIPO_DIR=$(FETCH_DIR)/polipo-$(POLIPO_VER)/
+build-polipo:
+	cd $(POLIPO_DIR) && make && make install.binary
+
+build-pidgin:
+	echo "We're not building pidgin yet!"
+
+build-firefox:
+	echo "We're using a prebuilt firefox. Fix this someday!"
+
+build-all-binaries: source-dance build-zlib build-openssl build-qt build-vidalia build-libevent build-tor
+	echo "If we're here, we've done something right."
+
+## Location of compiled libraries
+COMPILED_LIBS=$(BUILT_DIR)/lib/
+
+## Location of the libraries we've built
+QT=$(COMPILED_LIBS)
+OPENSSL=$(COMPILED_LIBS)
+ZLIB=$(COMPILED_LIBS)
+LIBEVENT=$(COMPILED_LIBS)
+
+## Location of bundle components
+VIDALIA=/c/build/vidalia-0.1.15
+TOR=/c/build/tor-0.2.1.17-rc
+POLIPO=/c/build/polipo-1.0.4
+FIREFOX_SRC=/c/build/FirefoxPortable-3.0.11
+PIDGIN_SRC=/c/build/PidginPortable-2.5.8
+
+## Location of utility applications
+SEVENZIP="/c/Program Files/7-Zip/7z.exe"
+WGET:=$(shell which wget)
+WINRAR="/c/Program Files/WinRAR/WinRAR.exe"
+
+## Size of split archive volumes for WinRAR
+SPLITSIZE=1440k
+
+## Location of config files
+CONFIG_SRC=config
+
+## Destination for the generic bundle
+DEST="Generic Bundle"
+
+## Name of the bundle"
+NAME="Tor Browser"
+
+## Version and name of the compressed bundle (also used for source)
+VERSION=1.2.4
+DEFAULT_COMPRESSED_BASENAME=tor-browser-
+IM_COMPRESSED_BASENAME=tor-im-browser-
+DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
+IM_COMPRESSED_NAME=$(IM_COMPRESSED_BASENAME)$(VERSION)
+
+ifeq ($(USE_PIDGIN),1)
+COMPRESSED_NAME=$(IM_COMPRESSED_NAME)
+else
+COMPRESSED_NAME=$(DEFAULT_COMPRESSED_NAME)
+endif
+
+## Extensions to install by default
+DEFAULT_EXTENSIONS=torbutton.xpi
+
+## Where to download Torbutton from
+TORBUTTON=https://addons.mozilla.org/en-US/firefox/downloads/file/49457/torbutton-1.2.1-fx.xpi
+
+## Where to download Mozilla language packs
+MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.0.11/win32/xpi
+
+## Where Farsi Language Pack can be downloaded from
+FA_LANGPACK=https://addons.mozilla.org/en-US/firefox/downloads/latest/3667/addon-3667-latest.xpi
+
+## Put more extensions here
+EXTENSIONS_DIR=extensions
+
+## Local overrides
+-include local.makefile
+
+#############
+### Rules ###
+#############
+
+##
+## Default rule
+##
+
+bundle: bundle_en-US
+
+all-bundles-both:
+	USE_PIDGIN=1 make all-bundles
+	make clean
+	USE_PIDGIN=0 make all-bundles
+	make clean
+
+all-bundles: all-compressed-bundles all-split-bundles
+
+all-compressed-bundles: compressed-bundle_ar \
+	compressed-bundle_en-US \
+	compressed-bundle_de \
+	compressed-bundle_es-ES \
+	compressed-bundle_fa-IR \
+	compressed-bundle_fr \
+	compressed-bundle_nl \
+	compressed-bundle_pt-PT \
+	compressed-bundle_ru \
+	compressed-bundle_zh-CN \
+	compressed-bundle_it
+
+all-split-bundles: split-bundle_ar \
+	split-bundle_en-US \
+	split-bundle_de \
+	split-bundle_es-ES \
+	split-bundle_fa-IR \
+	split-bundle_fr \
+	split-bundle_nl \
+	split-bundle_pt-PT \
+	split-bundle_ru \
+	split-bundle_zh-CN \
+	split-bundle_it
+
+##
+## Cleanup
+##
+
+clean:
+	rm -fr $(DEST) *.stamp
+	rm -f *~
+	rm -fr *.xpi *.jar
+	rm -fr $(NAME)_*
+	cd ../src/RelativeLink/ && $(MAKE) clean
+
+## Also remove the output files
+reallyclean: clean
+	rm -fr $(IM_COMPRESSED_BASENAME)*_*.exe
+	rm -fr $(IM_COMPRESSED_BASENAME)*_*.rar	
+	rm -fr $(IM_COMPRESSED_BASENAME)*_*_split
+	rm -fr $(DEFAULT_COMPRESSED_BASENAME)*_*.exe
+	rm -fr $(DEFAULT_COMPRESSED_BASENAME)*_*.rar
+	rm -fr $(DEFAULT_COMPRESSED_BASENAME)*_*_split
+
+##
+## Generate a non-localized bundle and put in $(DEST)
+##
+
+## Install binaries, documentation, FirefoxPortable, PidginPortable, and launcher into $(DEST)
+generic-bundle.stamp:
+	make generic-bundle
+generic-bundle: directory-structure install-binaries install-docs install-firefoxportable install-pidginportable configure-apps launcher
+	touch generic-bundle.stamp
+
+APPDIR=$(DEST)/App
+DOCSDIR=$(DEST)/Docs
+DATADIR=$(DEST)/Data
+
+## Build directory structure
+directory-structure: 
+	rm -fr $(DEST)
+	mkdir -p $(APPDIR)
+	mkdir -p $(DATADIR)/Tor
+	mkdir -p $(DATADIR)/Vidalia
+	mkdir -p $(DATADIR)/Polipo
+	mkdir -p $(DOCSDIR)
+
+## Package up all the Vidalia and Tor pre-requisites
+## Filenames extracted using Dependency Walker <http://www.dependencywalker.com/>
+install-binaries: 
+	cp $(MING)/mingwm10.dll $(APPDIR)
+	cp $(MING)/libgnurx-0.dll $(APPDIR)
+	cp $(QT)/QtCore4.dll $(QT)/QtGui4.dll \
+           $(QT)/QtNetwork4.dll $(QT)/QtXml4.dll $(APPDIR) 
+	cp $(OPENSSL)/ssleay32.dll $(APPDIR)
+	cp $(OPENSSL)/libeay32.dll $(APPDIR)
+	cp $(VIDALIA)/src/vidalia/vidalia.exe $(APPDIR)
+	cp $(POLIPO)/polipo.exe $(APPDIR)
+	cp $(TOR)/src/or/tor.exe $(TOR)/src/tools/tor-resolve.exe $(APPDIR)
+
+## Collect up license files
+install-docs:
+	mkdir -p $(DOCSDIR)/Vidalia
+	mkdir -p $(DOCSDIR)/Tor
+	mkdir -p $(DOCSDIR)/Qt
+	mkdir -p $(DOCSDIR)/MinGW
+	mkdir -p $(DOCSDIR)/Polipo
+	cp $(VIDALIA)/LICENSE* $(VIDALIA)/CREDITS $(DOCSDIR)/Vidalia
+	cp $(TOR)/LICENSE $(TOR)/AUTHORS $(TOR)/README $(DOCSDIR)/Tor
+	cp $(QT)/../LICENSE.GPL* $(QT)/../LICENSE.LGPL $(DOCSDIR)/Qt
+	cp $(MING)/../COPYING $(DOCSDIR)/MinGW
+	cp $(POLIPO)/COPYING  $(POLIPO)/README $(DOCSDIR)/Polipo
+	cp ../README $(DOCSDIR)/README-TorBrowserBundle
+
+## Copy over FirefoxPortable
+install-firefoxportable:
+	cp -R $(FIREFOX_SRC) $(DEST)/FirefoxPortable
+
+## Copy over PidginPortable
+install-pidginportable:
+ifeq ($(USE_PIDGIN),1)
+	cp -R $(PIDGIN_SRC) $(DEST)/PidginPortable
+endif
+
+## Configure Firefox, FirefoxPortable, Vidalia, Polipo and Tor
+configure-apps:
+	## Configure Firefox preferences
+	cp $(CONFIG_SRC)/prefs.js $(DEST)/FirefoxPortable/App/DefaultData/profile/
+	cp $(CONFIG_SRC)/bookmarks.html $(DEST)/FirefoxPortable/App/DefaultData/profile/
+	## Set up alternate launcher
+	mv $(DEST)/FirefoxPortable/App/Firefox/firefox.exe $(DEST)/FirefoxPortable/App/Firefox/tbb-firefox.exe
+	#rm $(DEST)/FirefoxPortable/FirefoxPortable.exe
+	## Configure FirefoxPortable
+	cp $(CONFIG_SRC)/FirefoxPortable.ini $(DEST)/FirefoxPortable
+	cp $(CONFIG_SRC)/FirefoxPortableSettings.ini $(DEST)/FirefoxPortable/Data/settings
+	## Configure PidginPortable
+ifeq ($(USE_PIDGIN),1)
+	cp $(CONFIG_SRC)/PidginPortable.ini $(DEST)/PidginPortable
+	mkdir -p $(DEST)/PidginPortable/Data/settings/.purple
+	cp $(CONFIG_SRC)/prefs.xml $(DEST)/PidginPortable/Data/settings/.purple
+	cp $(CONFIG_SRC)/PidginPortableSettings.ini $(DEST)/PidginPortable/Data/settings
+endif
+	## Configure Vidalia
+ifeq ($(USE_PIDGIN),1)
+	cp $(CONFIG_SRC)/vidalia.conf.ff+pidgin $(DEST)/Data/Vidalia/vidalia.conf
+else
+	cp $(CONFIG_SRC)/vidalia.conf.ff $(DEST)/Data/Vidalia/vidalia.conf
+endif
+	## Configure Polipo
+	cp $(CONFIG_SRC)/polipo.conf $(DEST)/Data/Polipo
+	## Configure Tor
+	cp $(CONFIG_SRC)/torrc $(DEST)/Data/Tor
+	cp $(TOR)/src/config/geoip $(DEST)/Data/Tor
+
+launcher:
+	#echo 'start /b .\\App\\vidalia.exe --datadir .\\Data\\Vidalia\\' > $(DEST)/"Start Tor Browser.bat"
+	cd ../src/RelativeLink/ && $(MAKE)
+	cp ../src/RelativeLink/StartTorBrowserBundle.exe $(DEST)/"Start Tor Browser.exe"
+
+##
+## How to create required extensions
+##
+
+## Torbutton development version
+torbutton.xpi:
+	$(WGET) -O $@ $(TORBUTTON)
+
+## Generic language pack rule
+langpack_%.xpi:
+	$(WGET) -O $@ $(MOZILLA_LANGUAGE)/$*.xpi
+## Persian isn't a supported language by Firefox yet
+langpack_fa-IR.xpi:
+	$(WGET) -O $@ $(FA_LANGPACK)
+## English comes as default
+langpack_en-US.xpi:
+	touch $@
+
+##
+## Customize the bundle
+##
+
+bundle_%:
+	LANGCODE=$* make bundle-localized
+compressed-bundle_%:
+	LANGCODE=$* make compressed-bundle-localized
+split-bundle_%:
+	LANGCODE=$* make split-bundle-localized
+
+bundle-localized_%.stamp:
+	make copy-files_$* install-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language
+	touch bundle-localized_$*.stamp
+
+bundle-localized: bundle-localized_$(LANGCODE).stamp
+
+compressed-bundle-localized: bundle-localized_$(LANGCODE).stamp
+	rm -f $(COMPRESSED_NAME)_$(LANGCODE).exe
+	cd $(NAME)_$(LANGCODE); $(SEVENZIP) a -sfx7z.sfx ../$(COMPRESSED_NAME)_$(LANGCODE).exe $(NAME)
+
+split-bundle-localized: bundle-localized_$(LANGCODE).stamp
+	rm -fr $(COMPRESSED_NAME)_$(LANGCODE)_split; mkdir $(COMPRESSED_NAME)_$(LANGCODE)_split
+	cd $(NAME)_$(LANGCODE); $(WINRAR) a -r -s -ibck -sfx -v$(SPLITSIZE) \
+            ../$(COMPRESSED_NAME)_$(LANGCODE)_split/$(COMPRESSED_NAME)_$(LANGCODE)_split.exe $(NAME)
+
+copy-files_%: generic-bundle.stamp
+	rm -fr $(NAME)_$*
+	mkdir $(NAME)_$*
+	cp -R $(DEST) $(NAME)_$*/$(NAME)
+
+BUNDLE=$(NAME)_$(LANGCODE)/$(NAME)
+DUMMYPROFILE=$(BUNDLE)/FirefoxPortable/App/DummyProfile
+install-extensions: $(DEFAULT_EXTENSIONS) langpack_$(LANGCODE).xpi
+	## Make a dummy profile to stop Firefox creating some large files
+	cp -R $(BUNDLE)/FirefoxPortable/App/DefaultData $(DUMMYPROFILE)
+	## Install default extensions and everything from extensions directory
+	for extension in langpack_$(LANGCODE).xpi $(DEFAULT_EXTENSIONS) $(EXTENSIONS_DIR)/*.xpi $(EXTENSIONS_DIR)/*.jar; \
+	  do $(BUNDLE)/FirefoxPortable/App/firefox/tbb-firefox.exe \
+             -profile $(DUMMYPROFILE)/profile \
+             -install-global-extension $$extension; \
+          done
+	## Delete the dummy profile
+	rm -fr $(DUMMYPROFILE)
+
+## Set the language for Vidalia
+patch-vidalia-language:
+	## Patch Vidalia
+	./patch-vidalia-language.sh $(BUNDLE)/Data/Vidalia/vidalia.conf $(LANGCODE)
+
+## Set the language for Pidgin
+patch-pidgin-language:
+	## Patch Pidgin
+ifeq ($(USE_PIDGIN),1)
+	./patch-pidgin-language.sh $(BUNDLE)/PidginPortable/Data/settings/PidginPortableSettings.ini $(LANGCODE) \
+                                   $(BUNDLE)/PidginPortable/App/Pidgin/locale \
+                                   $(BUNDLE)/PidginPortable/App/GTK/share/locale
+endif
+
+patch-firefox-language:
+	## Patch Firefox prefs.js
+	./patch-firefox-language.sh $(BUNDLE)/FirefoxPortable/App/DefaultData/profile/prefs.js $(LANGCODE)
+
+###
+### Utilities
+###
+
+## Copy Firefox preferences from a run of FirefoxPortable to be the default
+apply-prefs:
+	cp $(DEST)/FirefoxPortable/Data/profile/prefs.js $(CONFIG_SRC)
+
+## Export the source code of the bundle
+SRCNAME=$(COMPRESSED_NAME)
+SRCDEST=/tmp
+SRCDESTPATH=$(SRCDEST)/$(SRCNAME)
+srcdist:
+	rm -fr $(SRCDESTPATH)
+	svn export https://tor-svn.freehaven.net/svn/torbrowser/trunk/ \
+                   $(SRCDESTPATH)
+	cd $(SRCDEST); tar --exclude src/archived-patches \
+                           --exclude src/current-patches  --exclude src/processtest \
+                           -czvf $(SRCNAME)-src.tar.gz $(SRCNAME)
