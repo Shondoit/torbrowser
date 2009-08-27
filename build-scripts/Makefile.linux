@@ -344,6 +344,9 @@ install-docs:
 ## Copy over Firefox
 install-firefox:
 	cp -R $(FIREFOX) $(APPDIR)
+	# Due to various issues with a broken libxml2, we'll remove these...
+	rm -f $(APPDIR)/firefox/components/libnkgnomevfs.so
+	rm -f $(APPDIR)/firefox/components/libmozgnome.so
 
 ## Copy over Pidgin
 install-pidgin:
@@ -429,14 +432,16 @@ copy-files_%: generic-bundle.stamp
 	cp -R $(DEST) $(NAME)_$*/$(NAME)
 
 BUNDLE=$(NAME)_$(LANGCODE)/$(NAME)
-DUMMYPROFILE=$(BUNDLE)/.mozilla/firefox
+DUMMYPROFILE=$(BUNDLE)/.mozilla/
 install-extensions: $(DEFAULT_EXTENSIONS) langpack_$(LANGCODE).xpi
 	## Make a dummy profile to stop Firefox creating some large files
-	#cp -R $(BUNDLE)/FirefoxPortable/App/DefaultData $(DUMMYPROFILE)
+	#cp -R $(BUNDLE)/.mozilla/DefaultData $(DUMMYPROFILE)
 	## Install default extensions and everything from extensions directory
-	for extension in langpack_$(LANGCODE).xpi $(DEFAULT_EXTENSIONS) $(EXTENSIONS_DIR)/*.xpi $(EXTENSIONS_DIR)/*.jar; \
-	  do $(BUNDLE)/App/firefox/firefox \
-             -profile $(DUMMYPROFILE)/firefox.default \
+	-for extension in langpack_$(LANGCODE).xpi $(DEFAULT_EXTENSIONS) $(EXTENSIONS_DIR)/*.xpi $(EXTENSIONS_DIR)/*.jar; \
+	  do \
+             echo "Attempting to install $$extension" && export HOME=$(BUNDLE) && \
+             ./$(BUNDLE)/App/firefox/firefox \
+             -profile firefox \
              -install-global-extension $$extension; \
           done
 	## Delete the dummy profile
