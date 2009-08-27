@@ -9,10 +9,10 @@
 echo "Attemping to properly configure HOME..."
 export HOME=$PWD
 echo $HOME
-export LDPATH=$HOME/lib/
+export LDPATH=$HOME/Lib/
 echo "Attemping to properly configure LDPATH..."
 echo $LDPATH
-export LD_LIBRARY_PATH=$HOME/lib/
+export LD_LIBRARY_PATH=$HOME/Lib/
 echo "Attemping to properly configure LD_LIBRARY_PATH..."
 echo $LD_LIBRARY_PATH
 export DYLD_PRINT_LIBRARIES=1
@@ -22,5 +22,5 @@ echo $DYLD_PRINT_LIBRARIES
 # exec $HOME/bin/vidalia --loglevel debug --logfile vidalia-log \
 # --datadir .config/
 echo "Now attempting to launch the TBB for Linux..."
-exec $HOME/bin/vidalia --datadir .config/
+exec $HOME/bin/vidalia --datadir Data/
 echo "Everything should be gone!"
