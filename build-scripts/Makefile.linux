@@ -223,10 +223,10 @@ EXTENSIONS_DIR=extensions
 bundle: bundle_en-US
 
 all-bundles-both:
-	USE_PIDGIN=1 make all-bundles
-	make clean
-	USE_PIDGIN=0 make all-bundles
-	make clean
+	USE_PIDGIN=1 make -f Makefile.linux all-bundles
+	make -f Makefile.linux clean
+	USE_PIDGIN=0 make -f Makefile.linux all-bundles
+	make -f Makefile.linux clean
 
 all-bundles: all-compressed-bundles all-split-bundles
 
@@ -281,7 +281,7 @@ reallyclean: clean
 
 ## Install binaries, documentation, FirefoxPortable, PidginPortable, and launcher into $(DEST)
 generic-bundle.stamp:
-	make generic-bundle
+	make -f Makefile.linux generic-bundle
 generic-bundle: directory-structure install-binaries install-docs install-firefox install-pidgin configure-apps launcher
 	touch generic-bundle.stamp
 
@@ -402,14 +402,14 @@ langpack_en-US.xpi:
 ##
 
 bundle_%:
-	LANGCODE=$* make bundle-localized
+	LANGCODE=$* make -f Makefile.linux bundle-localized
 compressed-bundle_%:
-	LANGCODE=$* make compressed-bundle-localized
+	LANGCODE=$* make -f Makefile.linux compressed-bundle-localized
 split-bundle_%:
-	LANGCODE=$* make split-bundle-localized
+	LANGCODE=$* make -f Makefile.linux split-bundle-localized
 
 bundle-localized_%.stamp:
-	make copy-files_$* install-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language
+	make -f Makefile.linux copy-files_$* install-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language
 	touch bundle-localized_$*.stamp
 
 bundle-localized: bundle-localized_$(LANGCODE).stamp
@@ -429,14 +429,14 @@ copy-files_%: generic-bundle.stamp
 	cp -R $(DEST) $(NAME)_$*/$(NAME)
 
 BUNDLE=$(NAME)_$(LANGCODE)/$(NAME)
-DUMMYPROFILE=$(BUNDLE)/FirefoxPortable/App/DummyProfile
+DUMMYPROFILE=$(BUNDLE)/.mozilla/firefox
 install-extensions: $(DEFAULT_EXTENSIONS) langpack_$(LANGCODE).xpi
 	## Make a dummy profile to stop Firefox creating some large files
-	cp -R $(BUNDLE)/FirefoxPortable/App/DefaultData $(DUMMYPROFILE)
+	#cp -R $(BUNDLE)/FirefoxPortable/App/DefaultData $(DUMMYPROFILE)
 	## Install default extensions and everything from extensions directory
 	for extension in langpack_$(LANGCODE).xpi $(DEFAULT_EXTENSIONS) $(EXTENSIONS_DIR)/*.xpi $(EXTENSIONS_DIR)/*.jar; \
-	  do $(BUNDLE)/FirefoxPortable/App/firefox/tbb-firefox.exe \
-             -profile $(DUMMYPROFILE)/profile \
+	  do $(BUNDLE)/App/firefox/firefox \
+             -profile $(DUMMYPROFILE)/firefox.default \
              -install-global-extension $$extension; \
           done
 	## Delete the dummy profile
