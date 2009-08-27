@@ -22,5 +22,5 @@ echo $DYLD_PRINT_LIBRARIES
 # exec $HOME/bin/vidalia --loglevel debug --logfile vidalia-log \
 # --datadir .config/
 echo "Now attempting to launch the TBB for Linux..."
-exec $HOME/App/vidalia --datadir Data/Vidalia/
+exec ./App/vidalia --datadir Data/Vidalia/
 echo "Everything should be gone!"
