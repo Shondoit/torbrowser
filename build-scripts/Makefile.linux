@@ -372,10 +372,10 @@ else
 	cp $(CONFIG_SRC)/vidalia.conf.ff-linux $(DEST)/Data/Vidalia/vidalia.conf
 endif
 	## Configure Polipo
-	cp $(CONFIG_SRC)/polipo.conf $(DEST)/Data/Polipo
+	cp $(CONFIG_SRC)/polipo.conf $(DEST)/Data/Polipo/polipo.conf
 	## Configure Tor
 	cp $(CONFIG_SRC)/torrc-linux $(DEST)/Data/Tor/torrc
-	cp $(TOR_DIR)/src/config/geoip $(DEST)/Data/Tor
+	cp $(TOR_DIR)/src/config/geoip $(DEST)/Data/Tor/geoip
 
 # We've replaced the custom C program with a shell script for now...
 launcher:
@@ -450,7 +450,7 @@ install-extensions: $(DEFAULT_EXTENSIONS) langpack_$(LANGCODE).xpi
 ## Set the language for Vidalia
 patch-vidalia-language:
 	## Patch Vidalia
-	./patch-vidalia-language.sh $(BUNDLE)/Data/Vidalia/vidalia.conf $(LANGCODE)
+	./patch-vidalia-language.sh $(BUNDLE)/Data/Vidalia/vidalia.conf $(LANGCODE) -n
 
 ## Set the language for Pidgin
 patch-pidgin-language:
@@ -462,8 +462,9 @@ ifeq ($(USE_PIDGIN),1)
 endif
 
 patch-firefox-language:
-	## Patch Firefox prefs.js
-	./patch-firefox-language.sh $(BUNDLE)/FirefoxPortable/App/DefaultData/profile/prefs.js $(LANGCODE)
+	## Patch the default Firefox prefs.js
+	cp $(CONFIG_SRC)/{bookmarks.html,prefs.js} $(BUNDLE)/App/firefox/defaults/profile/
+	./patch-firefox-language.sh $(BUNDLE)/App/firefox/defaults/profile/prefs.js $(LANGCODE) -n
 
 ###
 ### Utilities
