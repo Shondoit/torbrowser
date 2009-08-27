@@ -12,6 +12,14 @@
 ## Parse command line
 FILENAME=$1
 MOZLANG=$2
+SEDARG=$3
+
+# For linux, we tell this to be silent by passing "-n"
+# On other platforms, we pass "-c" when they do nothing
+if [ -z $SEDARG ];
+then
+	SEDARG="-c";
+fi
 
 ## Handle exceptions where Mozilla language definition doesn't equal Vidalia's
 case "$MOZLANG" in
@@ -34,7 +42,8 @@ ORIGFILENAME=$FILENAME.orig
 mv "$FILENAME" "$ORIGFILENAME"
 
 ## Replace LanguageCode value with $LANGCODE
-sed -c "s/\\(LanguageCode=\\).*/\\1$LANGCODE/" "$ORIGFILENAME" > "$FILENAME"
+#sed -c "s/\\(LanguageCode=\\).*/\\1$LANGCODE/" "$ORIGFILENAME" > "$FILENAME"
+sed $SEDARG "s/\\(LanguageCode=\\).*/\\1$LANGCODE/" "$ORIGFILENAME" > "$FILENAME"
 
 ## Remove backup
 rm -f "$ORIGFILENAME"

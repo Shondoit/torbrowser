@@ -12,13 +12,22 @@
 ## Parse command line
 FILENAME=$1
 LANGCODE=$2
+SEDARG=$3
+
+# For linux, we tell this to be silent by passing "-n"
+# On other platforms, we pass "-c" when they do nothing
+if [ -z $SEDARG ];
+then
+	SEDARG="-c";
+fi
 
 ## Backup original file
 ORIGFILENAME=$FILENAME.orig
 mv "$FILENAME" "$ORIGFILENAME"
 
 ## Replace LanguageCode value with $LANGCODE
-sed -c "s/BUNDLELOCALE/$LANGCODE/" "$ORIGFILENAME" > "$FILENAME"
+#sed -c "s/BUNDLELOCALE/$LANGCODE/" "$ORIGFILENAME" > "$FILENAME"
+sed $SEDARG "s/BUNDLELOCALE/$LANGCODE/" "$ORIGFILENAME" > "$FILENAME"
 
 ## Remove backup
 rm -f "$ORIGFILENAME"
