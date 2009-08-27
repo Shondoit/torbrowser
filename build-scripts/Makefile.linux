@@ -1,7 +1,14 @@
 ###
-### Makefile for building Tor USB bundle
+### Makefile for building Tor USB bundle on Gnu/Linux
 ###
 ### Copyright 2007 Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217/>
+### Copyright 2009 Jacob Appelbaum <jacob@appelbaum.net>
+###
+###
+### You want to do the following currently supported activities:
+### make -f Makefile.linux build-all-binaries # This downloads and compiles everything
+### make -f Makefile.linux generic-bundle # This makes a generic bundle
+###
 ### See LICENSE for licensing information
 ###
 ### $Id: Makefile 19973 2009-07-12 02:26:03Z phobos $
@@ -10,6 +17,12 @@
 #####################
 ### Configuration ###
 #####################
+
+## Location of directory for source unpacking
+FETCH_DIR=/tmp/build/
+## Location of directory for prefix/destdir/compiles/etc
+BUILT_DIR=$(FETCH_DIR)/built/
+TBB_FINAL=$(BUILT_DIR)/TBBL/
 
 ## Versions for our source packages
 ZLIB_VER=1.2.3
@@ -43,12 +56,6 @@ TOR_URL=https://www.torproject.org/dist/$(TOR_PACKAGE)
 POLIPO_URL=http://www.pps.jussieu.fr/~jch/software/files/polipo/$(POLIPO_PACKAGE)
 PIDGIN_URL=http://sourceforge.net/projects/pidgin/files/Pidgin/$(PIDGIN_PACKAGE)
 FIREFOX_URL=http://mozilla3.snt.utwente.nl/firefox/releases/$(FIREFOX_VER)/linux-i686/en-US/$(FIREFOX_PACKAGE)
-
-## Location of directory for source unpacking
-FETCH_DIR=/tmp/build/
-## Location of directory for prefix/destdir/compiles/etc
-BUILT_DIR=$(FETCH_DIR)/built/
-TBB_FINAL=$(BUILT_DIR)/TBBL/
 
 fetch-source:
 	-mkdir $(FETCH_DIR)
@@ -91,6 +98,7 @@ build-openssl:
 	cd $(OPENSSL_DIR) && make
 	cd $(OPENSSL_DIR) && make install
 
+# We'll probably want to add '-confirm-license -opensource' at some point
 QT_DIR=$(FETCH_DIR)/qt-x11-opensource-src-$(QT_VER)/
 QT_BUILD_PREFS=-system-zlib -openssl-linked -no-qt3support -fast -release -nomake demos -nomake examples
 QT_OPTS=$(QT_BUILD_PREFS) -prefix $(BUILT_DIR) -I $(BUILT_DIR)/include -I $(BUILT_DIR)/include/openssl/ -L $(BUILT_DIR)/lib/
@@ -104,7 +112,7 @@ VIDALIA_OPTS=-DOPENSSL_LIBRARY_DIR=$(BUILT_DIR)/lib/ -DCMAKE_BUILD_TYPE=debug -D
 build-vidalia:
 	-mkdir $(VIDALIA_DIR)/build
 	cd $(VIDALIA_DIR)/build && cmake $(VIDALIA_OPTS) && make
-	cd $(VIDALIA_DIR)/build DESTDIR=$(BUILT_DIR) make
+	cd $(VIDALIA_DIR)/build && DESTDIR=$(BUILT_DIR) make install
 
 LIBEVENT_DIR=$(FETCH_DIR)/libevent-$(LIBEVENT_VER)/
 LIBEVENT_OPTS=--prefix=$(BUILT_DIR)
@@ -149,7 +157,7 @@ ZLIB=$(COMPILED_LIBS)
 LIBEVENT=$(COMPILED_LIBS)
 
 ## Location of binary bundle components
-VIDALIA=$(COMPILED_BINS)/vidalia
+VIDALIA=$(BUILT_DIR)/usr/local/bin/vidalia
 TOR=$(COMPILED_BINS)/tor
 POLIPO=$(COMPILED_BINS)/polipo
 ## Someday, this will be our custom Firefox
@@ -274,7 +282,7 @@ reallyclean: clean
 ## Install binaries, documentation, FirefoxPortable, PidginPortable, and launcher into $(DEST)
 generic-bundle.stamp:
 	make generic-bundle
-generic-bundle: directory-structure install-binaries install-docs install-firefoxportable install-pidginportable configure-apps launcher
+generic-bundle: directory-structure install-binaries install-docs install-firefox install-pidgin configure-apps launcher
 	touch generic-bundle.stamp
 
 APPDIR=$(DEST)/App
@@ -295,76 +303,81 @@ directory-structure:
 	mkdir -p $(TMPDIR)
 
 ## Package up all the Vidalia and Tor pre-requisites
-## Filenames extracted using Dependency Walker <http://www.dependencywalker.com/>
-install-binaries: 
-	cp $(MING)/mingwm10.dll $(APPDIR)
-	cp $(MING)/libgnurx-0.dll $(APPDIR)
-	cp $(QT)/QtCore4.dll $(QT)/QtGui4.dll \
-           $(QT)/QtNetwork4.dll $(QT)/QtXml4.dll $(APPDIR) 
-	cp $(OPENSSL)/ssleay32.dll $(APPDIR)
-	cp $(OPENSSL)/libeay32.dll $(APPDIR)
-	cp $(VIDALIA)/src/vidalia/vidalia.exe $(APPDIR)
-	cp $(POLIPO)/polipo.exe $(APPDIR)
-	cp $(TOR)/src/or/tor.exe $(TOR)/src/tools/tor-resolve.exe $(APPDIR)
+## Firefox and Pidgin are installed in their own targets
+install-binaries:
+	# A minimal set of Qt libs and the proper symlinks
+	cp $(QT)/libQtCore.so $(QT)/libQtCore.so.4 $(QT)/libQtCore.so.4.5 $(QT)/libQtCore.so.4.5.1 $(LIBSDIR)
+	cp $(QT)/libQtGui.so $(QT)/libQtGui.so.4 $(QT)/libQtGui.so.4.5 $(QT)/libQtGui.so.4.5.1 $(LIBSDIR)
+	cp $(QT)/libQtNetwork.so $(QT)/libQtNetwork.so.4 $(QT)/libQtNetwork.so.4.5 \
+           $(QT)/libQtNetwork.so.4.5.1 $(LIBSDIR)
+	cp $(QT)/libQtXml.so $(QT)/libQtXml.so.4 $(QT)/libQtXml.so.4.5 $(QT)/libQtXml.so.4.5.1 $(LIBSDIR)
+	# zlib
+	cp $(ZLIB)/libz.so $(ZLIB)/libz.so.1 $(ZLIB)/libz.so.1.2.3 $(LIBSDIR)
+	# Libevent
+	cp $(LIBEVENT)/libevent-1.4.so.2 $(LIBEVENT)/libevent-1.4.so.2.1.3 $(LIBEVENT)/libevent_core.so \
+           $(LIBEVENT)/libevent_core-1.4.so.2 $(LIBEVENT)/libevent_core-1.4.so.2.1.3 \
+           $(LIBEVENT)/libevent_extra-1.4.so.2 $(LIBEVENT)/libevent_extra-1.4.so.2.1.3 \
+           $(LIBEVENT)/libevent_extra.so $(LIBEVENT)/libevent.so $(LIBSDIR)
+	# OpenSSL
+	cp $(OPENSSL)/libcrypto.a $(OPENSSL)/libssl.a $(LIBSDIR)
+	# Vidalia
+	cp $(VIDALIA) $(APPDIR)
+	# Polipo
+	cp $(POLIPO) $(APPDIR)
+	# Tor (perhaps we want tor-resolve too?)
+	cp $(TOR) $(APPDIR)
 
+## Fixup
 ## Collect up license files
 install-docs:
 	mkdir -p $(DOCSDIR)/Vidalia
 	mkdir -p $(DOCSDIR)/Tor
 	mkdir -p $(DOCSDIR)/Qt
-	mkdir -p $(DOCSDIR)/MinGW
 	mkdir -p $(DOCSDIR)/Polipo
-	cp $(VIDALIA)/LICENSE* $(VIDALIA)/CREDITS $(DOCSDIR)/Vidalia
-	cp $(TOR)/LICENSE $(TOR)/AUTHORS $(TOR)/README $(DOCSDIR)/Tor
-	cp $(QT)/../LICENSE.GPL* $(QT)/../LICENSE.LGPL $(DOCSDIR)/Qt
-	cp $(MING)/../COPYING $(DOCSDIR)/MinGW
-	cp $(POLIPO)/COPYING  $(POLIPO)/README $(DOCSDIR)/Polipo
+	cp $(VIDALIA_DIR)/LICENSE* $(VIDALIA_DIR)/CREDITS $(DOCSDIR)/Vidalia
+	cp $(TOR_DIR)/LICENSE $(TOR_DIR)/AUTHORS $(TOR_DIR)/README $(DOCSDIR)/Tor
+	cp $(QT_DIR)/LICENSE.GPL* $(QT_DIR)/LICENSE.LGPL $(DOCSDIR)/Qt
+	cp $(POLIPO_DIR)/COPYING  $(POLIPO_DIR)/README $(DOCSDIR)/Polipo
+	# This should be updated to be more generic (version-wise) and more Linux specific
 	cp ../README $(DOCSDIR)/README-TorBrowserBundle
 
-## Copy over FirefoxPortable
-install-firefoxportable:
-	cp -R $(FIREFOX_SRC) $(DEST)/FirefoxPortable
+## Copy over Firefox
+install-firefox:
+	cp -R $(FIREFOX) $(APPDIR)
 
-## Copy over PidginPortable
-install-pidginportable:
+## Copy over Pidgin
+install-pidgin:
 ifeq ($(USE_PIDGIN),1)
-	cp -R $(PIDGIN_SRC) $(DEST)/PidginPortable
+	cp -R $(PIDGIN) $(APPDIR)
 endif
 
-## Configure Firefox, FirefoxPortable, Vidalia, Polipo and Tor
+## Configure Firefox, Vidalia, Polipo and Tor
 configure-apps:
 	## Configure Firefox preferences
-	cp $(CONFIG_SRC)/prefs.js $(DEST)/FirefoxPortable/App/DefaultData/profile/
-	cp $(CONFIG_SRC)/bookmarks.html $(DEST)/FirefoxPortable/App/DefaultData/profile/
-	## Set up alternate launcher
-	mv $(DEST)/FirefoxPortable/App/Firefox/firefox.exe $(DEST)/FirefoxPortable/App/Firefox/tbb-firefox.exe
-	#rm $(DEST)/FirefoxPortable/FirefoxPortable.exe
-	## Configure FirefoxPortable
-	cp $(CONFIG_SRC)/FirefoxPortable.ini $(DEST)/FirefoxPortable
-	cp $(CONFIG_SRC)/FirefoxPortableSettings.ini $(DEST)/FirefoxPortable/Data/settings
-	## Configure PidginPortable
+	mkdir -p $(DEST)/.mozilla/firefox/firefox.default
+	cp -R $(CONFIG_SRC)/firefox-profiles.ini $(DEST)/.mozilla/firefox/profiles.ini
+	cp $(CONFIG_SRC)/{bookmarks.html,prefs.js} $(DEST)/.mozilla/firefox/firefox.default/
+	## Configure Pidgin
 ifeq ($(USE_PIDGIN),1)
-	cp $(CONFIG_SRC)/PidginPortable.ini $(DEST)/PidginPortable
 	mkdir -p $(DEST)/PidginPortable/Data/settings/.purple
 	cp $(CONFIG_SRC)/prefs.xml $(DEST)/PidginPortable/Data/settings/.purple
-	cp $(CONFIG_SRC)/PidginPortableSettings.ini $(DEST)/PidginPortable/Data/settings
 endif
 	## Configure Vidalia
 ifeq ($(USE_PIDGIN),1)
-	cp $(CONFIG_SRC)/vidalia.conf.ff+pidgin $(DEST)/Data/Vidalia/vidalia.conf
+	cp $(CONFIG_SRC)/vidalia.conf.ff+pidgin-linux $(DEST)/Data/Vidalia/vidalia.conf
 else
-	cp $(CONFIG_SRC)/vidalia.conf.ff $(DEST)/Data/Vidalia/vidalia.conf
+	cp $(CONFIG_SRC)/vidalia.conf.ff-linux $(DEST)/Data/Vidalia/vidalia.conf
 endif
 	## Configure Polipo
 	cp $(CONFIG_SRC)/polipo.conf $(DEST)/Data/Polipo
 	## Configure Tor
-	cp $(CONFIG_SRC)/torrc $(DEST)/Data/Tor
-	cp $(TOR)/src/config/geoip $(DEST)/Data/Tor
+	cp $(CONFIG_SRC)/torrc-linux $(DEST)/Data/Tor/torrc
+	cp $(TOR_DIR)/src/config/geoip $(DEST)/Data/Tor
 
+# We've replaced the custom C program with a shell script for now...
 launcher:
-	#echo 'start /b .\\App\\vidalia.exe --datadir .\\Data\\Vidalia\\' > $(DEST)/"Start Tor Browser.bat"
-	cd ../src/RelativeLink/ && $(MAKE)
-	cp ../src/RelativeLink/StartTorBrowserBundle.exe $(DEST)/"Start Tor Browser.exe"
+	cp ../src/RelativeLink/RelativeLink.sh $(DEST)/"Start Tor Browser"
+	chmod +x $(DEST)/"Start Tor Browser"
 
 ##
 ## How to create required extensions
