@@ -6,11 +6,21 @@
 ###
 ###
 ### You want to do the following currently supported activities:
-### make -f Makefile.linux build-all-binaries # This downloads and compiles everything
-### make -f Makefile.linux generic-bundle # This makes a generic bundle
-### make -f Makefile.linux bundle_en-US # This makes the English bundle
-### make -f Makefile.linux bundle_de # This makes the German bundle
-### make -f Makefile.linux compressed-bundle_de # This makes the German compressed bundle
+# This downloads and compiles everything
+### make -f Makefile.linux build-all-binaries
+# This makes a generic bundle
+### make -f Makefile.linux generic-bundle
+# This makes the English bundle
+### make -f Makefile.linux bundle_en-US
+# This makes the German bundle
+### make -f Makefile.linux bundle_de
+# This makes the German compressed bundle
+### make -f Makefile.linux compressed-bundle_de 
+# It's possible you may also want to do:
+### make -f Makefile.linux build-all-binaries
+### make -f Makefile.linux all-compressed-bundles
+### ...
+### Look in tbbl-dist/ for your files.
 ###
 ### See LICENSE for licensing information
 ###
