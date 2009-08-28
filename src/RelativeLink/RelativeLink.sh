@@ -21,7 +21,7 @@ export LDPATH=${HOME}/Lib/
 export LD_LIBRARY_PATH=${HOME}/Lib/
 export DYLD_PRINT_LIBRARIES=1
 
-if [ -n ${debug} ]; then
+if [ ${debug} ]; then
   if [ -n "${surveysays}" ]; then echo "Survey says: $surveysays"; fi
   echo "We're running as PID: $$";
   echo "Attemping to properly configure HOME...";
