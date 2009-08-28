@@ -8,6 +8,8 @@
 ### You want to do the following currently supported activities:
 ### make -f Makefile.linux build-all-binaries # This downloads and compiles everything
 ### make -f Makefile.linux generic-bundle # This makes a generic bundle
+### make -f Makefile.linux bundle_en-US # This makes the English bundle
+### make -f Makefile.linux bundle_de # This makes the German bundle
 ###
 ### See LICENSE for licensing information
 ###
@@ -284,7 +286,7 @@ reallyclean: clean
 ## Install binaries, documentation, FirefoxPortable, PidginPortable, and launcher into $(DEST)
 generic-bundle.stamp:
 	make -f Makefile.linux generic-bundle
-generic-bundle: directory-structure install-binaries install-docs install-firefox install-pidgin configure-apps launcher
+generic-bundle: directory-structure install-binaries install-docs install-firefox install-pidgin configure-apps launcher strip-it-stripper
 	touch generic-bundle.stamp
 
 APPDIR=$(DEST)/App
@@ -383,6 +385,12 @@ endif
 launcher:
 	cp ../src/RelativeLink/RelativeLink.sh $(DEST)/"Start Tor Browser"
 	chmod +x $(DEST)/"Start Tor Browser"
+
+strip-it-stripper:
+	strip $(APPDIR)/tor
+	strip $(APPDIR)/polipo
+	strip $(APPDIR)/vidalia
+	strip $(LIBSDIR)/*
 
 ##
 ## How to create required extensions
