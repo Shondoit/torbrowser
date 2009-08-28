@@ -198,8 +198,8 @@ DISTDIR=tbbl-dist
 
 ## Version and name of the compressed bundle (also used for source)
 VERSION=1.2.4-alpha
-DEFAULT_COMPRESSED_BASENAME=tor-browser-linux-$(VERSION)-
-IM_COMPRESSED_BASENAME=tor-im-browser-linux-$(VERSION)-
+DEFAULT_COMPRESSED_BASENAME=tor-browser-gnu-linux-$(VERSION)-
+IM_COMPRESSED_BASENAME=tor-im-browser-gnu-linux-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
 IM_COMPRESSED_NAME=$(IM_COMPRESSED_BASENAME)$(VERSION)
 
@@ -443,7 +443,7 @@ bundle-localized: bundle-localized_$(LANGCODE).stamp
 compressed-bundle-localized: bundle-localized_$(LANGCODE).stamp
 	-rm -f $(DISTDIR)/$(COMPRESSED_NAME)_$(LANGCODE).tar.gz
 	-mkdir $(DISTDIR)
-	tar -cvzf $(DISTDIR)/$(NAME)_$(LANGCODE)-$(VERSION).tar.gz $(NAME)_$(LANGCODE);
+	tar -cvzf $(DISTDIR)/$(DEFAULT_COMPRESSED_BASENAME)$(LANGCODE).tar.gz $(NAME)_$(LANGCODE);
 
 split-bundle-localized: bundle-localized_$(LANGCODE).stamp
 	rm -fr $(COMPRESSED_NAME)_$(LANGCODE)_split; mkdir $(COMPRESSED_NAME)_$(LANGCODE)_split
