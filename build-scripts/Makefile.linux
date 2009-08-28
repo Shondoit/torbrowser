@@ -178,17 +178,15 @@ SPLITSIZE=1440k
 CONFIG_SRC=config
 
 ## Destination for the generic bundle
-#DEST="Generic Bundle"
 DEST=Generic\ Bundle
 
 ## Name of the bundle"
-#NAME="Tor Browser"
 NAME=Tor\ Browser
 
 ## Version and name of the compressed bundle (also used for source)
 VERSION=1.2.4
-DEFAULT_COMPRESSED_BASENAME=tor-browser-
-IM_COMPRESSED_BASENAME=tor-im-browser-
+DEFAULT_COMPRESSED_BASENAME=tor-browser-linux-
+IM_COMPRESSED_BASENAME=tor-im-browser-linux-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
 IM_COMPRESSED_NAME=$(IM_COMPRESSED_BASENAME)$(VERSION)
 
@@ -428,8 +426,8 @@ bundle-localized_%.stamp:
 bundle-localized: bundle-localized_$(LANGCODE).stamp
 
 compressed-bundle-localized: bundle-localized_$(LANGCODE).stamp
-	rm -f $(COMPRESSED_NAME)_$(LANGCODE).exe
-	cd $(NAME)_$(LANGCODE); $(SEVENZIP) a -sfx7z.sfx ../$(COMPRESSED_NAME)_$(LANGCODE).exe $(NAME)
+	-rm -f $(COMPRESSED_NAME)_$(LANGCODE).tar.gz
+	tar -cvzf $(NAME)_$(LANGCODE).tar.gz $(NAME)_$(LANGCODE);
 
 split-bundle-localized: bundle-localized_$(LANGCODE).stamp
 	rm -fr $(COMPRESSED_NAME)_$(LANGCODE)_split; mkdir $(COMPRESSED_NAME)_$(LANGCODE)_split
@@ -444,8 +442,7 @@ copy-files_%: generic-bundle.stamp
 BUNDLE=$(NAME)_$(LANGCODE)/$(NAME)
 DUMMYPROFILE=$(BUNDLE)/.mozilla/
 install-extensions: $(DEFAULT_EXTENSIONS) langpack_$(LANGCODE).xpi
-	## Make a dummy profile to stop Firefox creating some large files
-	#cp -R $(BUNDLE)/.mozilla/DefaultData $(DUMMYPROFILE)
+	## Use a dummy profile to stop Firefox creating some large files
 	## Install default extensions and everything from extensions directory
 	for extension in langpack_$(LANGCODE).xpi $(DEFAULT_EXTENSIONS) $(EXTENSIONS_DIR)/*.xpi $(EXTENSIONS_DIR)/*.jar; \
           do \
