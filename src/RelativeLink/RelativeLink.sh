@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Gnu/Linux does not really require something like RelativeLink.c
 # However, we do want to have the same look and feel with similiar features.
@@ -7,12 +7,12 @@
 #
 
 echo "Attemping to properly configure HOME..."
-export HOME=$PWD
+export HOME=${PWD}
 echo $HOME
-export LDPATH=$HOME/Lib/
+export LDPATH=${HOME}/Lib/
 echo "Attemping to properly configure LDPATH..."
 echo $LDPATH
-export LD_LIBRARY_PATH=$HOME/Lib/
+export LD_LIBRARY_PATH=${HOME}/Lib/
 echo "Attemping to properly configure LD_LIBRARY_PATH..."
 echo $LD_LIBRARY_PATH
 export DYLD_PRINT_LIBRARIES=1
