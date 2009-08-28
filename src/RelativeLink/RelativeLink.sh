@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Gnu/Linux does not really require something like RelativeLink.c
 # However, we do want to have the same look and feel with similiar features.
