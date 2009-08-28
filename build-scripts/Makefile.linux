@@ -131,7 +131,7 @@ build-tor:
 ## Polipo doesn't use autoconf, so we just have to hack their Makefile
 ## This probably needs to be updated if Polipo ever updates their Makefile
 POLIPO_DIR=$(FETCH_DIR)/polipo-$(POLIPO_VER)/
-POLIPO_MAKEFILE=polipo-Makefile
+POLIPO_MAKEFILE=$(CONFIG_SRC)/polipo-Makefile
 build-polipo:
 	cp $(POLIPO_MAKEFILE) $(POLIPO_DIR)/Makefile
 	cd $(POLIPO_DIR) && make && PREFIX=/tmp/build/built/ make install.binary
