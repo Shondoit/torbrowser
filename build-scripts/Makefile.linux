@@ -181,13 +181,16 @@ CONFIG_SRC=config
 ## Destination for the generic bundle
 DEST=Generic\ Bundle
 
-## Name of the bundle"
+## Name of the bundle
 NAME=Tor\ Browser
 
+## Where shall we put the finished files for distribution?
+DISTDIR=tbbl-dist/
+
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.2.4
-DEFAULT_COMPRESSED_BASENAME=tor-browser-linux-
-IM_COMPRESSED_BASENAME=tor-im-browser-linux-
+VERSION=1.2.4-alpha
+DEFAULT_COMPRESSED_BASENAME=tor-browser-linux-$(VERSION)-
+IM_COMPRESSED_BASENAME=tor-im-browser-linux-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
 IM_COMPRESSED_NAME=$(IM_COMPRESSED_BASENAME)$(VERSION)
 
@@ -263,6 +266,7 @@ all-split-bundles: split-bundle_ar \
 
 clean:
 	rm -fr $(FETCH_DIR)
+	rm -fr $(DISTDIR)
 	rm -fr *.tar.gz
 	rm -fr $(DEST) *.stamp
 	rm -f *~
@@ -428,8 +432,9 @@ bundle-localized_%.stamp:
 bundle-localized: bundle-localized_$(LANGCODE).stamp
 
 compressed-bundle-localized: bundle-localized_$(LANGCODE).stamp
-	-rm -f $(COMPRESSED_NAME)_$(LANGCODE).tar.gz
-	tar -cvzf $(NAME)_$(LANGCODE).tar.gz $(NAME)_$(LANGCODE);
+	-rm -f $(DISTDIR)/$(COMPRESSED_NAME)_$(LANGCODE).tar.gz
+	-mkdir $(DISTDIR)
+	tar -cvzf $(DISTDIR)/$(NAME)_$(LANGCODE)-$(VERSION).tar.gz $(NAME)_$(LANGCODE);
 
 split-bundle-localized: bundle-localized_$(LANGCODE).stamp
 	rm -fr $(COMPRESSED_NAME)_$(LANGCODE)_split; mkdir $(COMPRESSED_NAME)_$(LANGCODE)_split
