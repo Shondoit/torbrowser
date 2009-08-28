@@ -9,7 +9,7 @@
 if [ $1 ]; then debug=$1; echo "Debug enabled!"; fi
 
 # If ${PWD} results in a zero length HOME, we can try something else...
-if [ -n ${PWD} ]; then
+if [ ! "${PWD}" ]; then
   echo "We're hacking around some braindamage...";
   export HOME=`pwd`;
   surveysays="This system has a messed up shell!";
