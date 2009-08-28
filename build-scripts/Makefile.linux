@@ -10,6 +10,7 @@
 ### make -f Makefile.linux generic-bundle # This makes a generic bundle
 ### make -f Makefile.linux bundle_en-US # This makes the English bundle
 ### make -f Makefile.linux bundle_de # This makes the German bundle
+### make -f Makefile.linux compressed-bundle_de # This makes the German compressed bundle
 ###
 ### See LICENSE for licensing information
 ###
@@ -262,6 +263,7 @@ all-split-bundles: split-bundle_ar \
 
 clean:
 	rm -fr $(FETCH_DIR)
+	rm -fr *.tar.gz
 	rm -fr $(DEST) *.stamp
 	rm -f *~
 	rm -fr *.xpi *.jar
