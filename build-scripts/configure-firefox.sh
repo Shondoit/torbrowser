@@ -7,14 +7,16 @@
 ##
 
 STARTDIR="`pwd`";
-BUNDLE=$1
+BUNDLE="$1";
+echo "BUNDLE is: $BUNDLE"
 EXTENSION=$2;
-HOME="`pwd`"/$BUNDLE;
-export $HOME;
 
-FIREFOX=./App/firefox/firefox
-FIREFOX_ARGS=-install-global-extension
-cd $HOME;
+FIREFOX="./App/firefox/firefox";
+FIREFOX_ARGS="-profile firefox -install-global-extension $EXTENSION";
+cd "$BUNDLE";
+export HOME=$PWD;
 echo "We're now in $PWD"
 echo "Attempting to run: $FIREFOX $FIREFOX_ARGS";
+$FIREFOX $FIREFOX_ARGS;
+echo "Firefox said: $?";
 echo
