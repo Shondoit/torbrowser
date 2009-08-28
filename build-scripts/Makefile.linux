@@ -176,10 +176,12 @@ SPLITSIZE=1440k
 CONFIG_SRC=config
 
 ## Destination for the generic bundle
-DEST="Generic Bundle"
+#DEST="Generic Bundle"
+DEST=Generic\ Bundle
 
 ## Name of the bundle"
-NAME="Tor Browser"
+#NAME="Tor Browser"
+NAME=Tor\ Browser
 
 ## Version and name of the compressed bundle (also used for source)
 VERSION=1.2.4
@@ -437,12 +439,9 @@ install-extensions: $(DEFAULT_EXTENSIONS) langpack_$(LANGCODE).xpi
 	## Make a dummy profile to stop Firefox creating some large files
 	#cp -R $(BUNDLE)/.mozilla/DefaultData $(DUMMYPROFILE)
 	## Install default extensions and everything from extensions directory
-	-for extension in langpack_$(LANGCODE).xpi $(DEFAULT_EXTENSIONS) $(EXTENSIONS_DIR)/*.xpi $(EXTENSIONS_DIR)/*.jar; \
-	  do \
-             echo "Attempting to install $$extension" && export HOME=$(BUNDLE) && \
-             ./$(BUNDLE)/App/firefox/firefox \
-             -profile firefox \
-             -install-global-extension $$extension; \
+	for extension in langpack_$(LANGCODE).xpi $(DEFAULT_EXTENSIONS) $(EXTENSIONS_DIR)/*.xpi $(EXTENSIONS_DIR)/*.jar; \
+          do \
+            ./configure-firefox.sh $(BUNDLE) $$extension;\
           done
 	## Delete the dummy profile
 	rm -fr $(DUMMYPROFILE)
