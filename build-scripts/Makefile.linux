@@ -195,7 +195,7 @@ DEST=Generic\ Bundle
 NAME=Tor\ Browser
 
 ## Where shall we put the finished files for distribution?
-DISTDIR=tbbl-dist/
+DISTDIR=tbbl-dist
 
 ## Version and name of the compressed bundle (also used for source)
 VERSION=1.2.4-alpha
@@ -275,7 +275,6 @@ all-split-bundles: split-bundle_ar \
 ##
 
 clean:
-	rm -fr $(FETCH_DIR)
 	rm -fr $(DISTDIR)
 	rm -fr *.tar.gz
 	rm -fr $(DEST) *.stamp
@@ -286,6 +285,7 @@ clean:
 
 ## Also remove the output files
 reallyclean: clean
+	rm -fr $(FETCH_DIR)
 	rm -fr $(IM_COMPRESSED_BASENAME)*_*.exe
 	rm -fr $(IM_COMPRESSED_BASENAME)*_*.rar	
 	rm -fr $(IM_COMPRESSED_BASENAME)*_*_split
