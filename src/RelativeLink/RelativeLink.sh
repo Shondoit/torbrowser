@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Gnu/Linux does not really require something like RelativeLink.c
 # However, we do want to have the same look and feel with similiar features.
@@ -11,17 +11,22 @@ if [ $1 ]; then debug=$1; echo "Debug enabled!"; fi
 # If ${PWD} results in a zero length HOME, we can try something else...
 if [ ! "${PWD}" ]; then
   echo "We're hacking around some braindamage...";
-  export HOME=`pwd`;
+  HOME=`pwd`;
+  export HOME
   surveysays="This system has a messed up shell!";
 else
-  export HOME="${PWD}";
+  HOME="${PWD}";
+  export HOME
 fi
 
-export LDPATH=${HOME}/Lib/
-export LD_LIBRARY_PATH=${HOME}/Lib/
-export DYLD_PRINT_LIBRARIES=1
+LDPATH=${HOME}/Lib/
+export LDPATH
+LD_LIBRARY_PATH=${HOME}/Lib/
+export LD_LIBRARY_PATH
+DYLD_PRINT_LIBRARIES=1
+export DYLD_PRINT_LIBRARIES
 
-if [ ${debug} ]; then
+if [ "${debug}" ]; then
   if [ -n "${surveysays}" ]; then echo "Survey says: $surveysays"; fi
   echo "We're running as PID: $$";
   echo "Attemping to properly configure HOME...";
@@ -48,12 +53,12 @@ if [ ${debug} ]; then
     echo "You appear to be running a problematic program with a PID of: $problem"
   done
 
-  # This is likely unportablt to Mac OS X or other non gnu netstat binaries
-  for port in 8118 9050;
+  # This is likely unportable to Mac OS X or other non gnu netstat binaries
+  for port in "8118" "9050";
   do
-      BOUND=`netstat -tan 2>&1|grep 127.0.0.1:${port}`;
-    if [ ${BOUND} ]; then
-      if [ ${port} == $$ ]; then
+    BOUND=`netstat -tan 2>&1|grep 127.0.0.1:${port}|grep -v TIME_WAIT`;
+    if [ "${BOUND}" ]; then
+      if [ "${port}" == $$ ]; then
         break;
       else
         echo "Likely problem detected: It appears that you have something listening on ${port}";
@@ -66,7 +71,7 @@ if [ ${debug} ]; then
   cd "${HOME}";
   echo "Running Vidalia from: `pwd`";
   exec ./App/vidalia --loglevel debug --logfile vidalia-debug-log \
-  --datadir --datadir Data/Vidalia/
+  --datadir Data/Vidalia/
   echo "Vidalia exited with the following return code: $?";
   exit;
 fi
