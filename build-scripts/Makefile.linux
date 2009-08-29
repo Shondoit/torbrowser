@@ -197,7 +197,7 @@ NAME=Tor\ Browser
 DISTDIR=tbbl-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.2.4-alpha
+VERSION=1.2.4-beta
 DEFAULT_COMPRESSED_BASENAME=tor-browser-gnu-linux-$(VERSION)-
 IM_COMPRESSED_BASENAME=tor-im-browser-gnu-linux-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
