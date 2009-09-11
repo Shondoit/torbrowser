@@ -41,7 +41,7 @@ DEST="Generic Bundle"
 NAME="Tor Browser"
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.2.8-dev
+VERSION=1.2.9
 DEFAULT_COMPRESSED_BASENAME=tor-browser-
 IM_COMPRESSED_BASENAME=tor-im-browser-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
@@ -61,7 +61,7 @@ DEFAULT_EXTENSIONS=torbutton.xpi
 TORBUTTON=https://addons.mozilla.org/en-US/firefox/downloads/latest/2275/addon-2275-latest.xpi?src=addondetail
 
 ## Where to download Mozilla language packs
-MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.0.13/win32/xpi
+MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.0.14/win32/xpi
 
 ## Where Farsi Language Pack can be downloaded from
 FA_LANGPACK=https://addons.mozilla.org/en-US/firefox/downloads/latest/3667/addon-3667-latest.xpi

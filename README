@@ -4,11 +4,11 @@ Tor USB project
 Included applications
 ---------------------
 
-Vidalia 0.2.2
+Vidalia 0.2.4
 Tor 0.2.1.19 (with libevent-1.4.12, zlib-1.2.3 and openssl-0.9.8k) 
 Polipo 1.0.4
-FirefoxPortable 3.0.13
- \_ Firefox 3.0.13
+FirefoxPortable 3.0.14
+ \_ Firefox 3.0.14
     \_ Torbutton 1.2.2
 PidginPortable 2.6.1
  \_ Pidgin 2.6.1
@@ -218,7 +218,7 @@ Changelog
   compile OpenSSL 0.9.8k with Visual C to make dlls
   update Pidgin to 2.6.1
 
-1.2.9:
+1.2.9: Released 2009-09-11
   update Vidalia to 0.2.4
   update Qt to 4.5.2
   update Pidgin to 2.6.2
