@@ -70,6 +70,7 @@ user_pref("general.useragent.vendor", "");
 user_pref("general.useragent.vendorSub", "");
 user_pref("intl.accept_languages", "en-us, en");
 user_pref("intl.charsetmenu.browser.cache", "UTF-8");
+user_pref("network.cookie.cookieBehavior", 1);
 user_pref("network.cookie.lifetimePolicy", 2);
 user_pref("network.cookie.prefsMigrated", true);
 user_pref("network.protocol-handler.warn-external.mailto", true);
