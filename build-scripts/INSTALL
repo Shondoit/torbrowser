@@ -434,15 +434,15 @@ Vidalia (see above).
 
 Download Vidalia:
 
-    http://vidalia-project.net/dist/vidalia-0.2.2.tar.gz
-    http://vidalia-project.net/dist/vidalia-0.2.2.tar.gz.asc
+    https://www.torproject.org/vidalia/dist/vidalia-0.2.4.tar.gz
+    https://www.torproject.org/vidalia/dist/vidalia-0.2.4.tar.gz.asc
 
 Verify the signature.
 
 Unpack Vidalia:
    
-    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/vidalia-0.2.2.tar.gz
-    mv vidalia-0.2.2/ vidalia
+    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/vidalia-0.2.4.tar.gz
+    mv vidalia-0.2.4/ vidalia
 
 Set a proper environment:
 
