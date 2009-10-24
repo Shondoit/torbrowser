@@ -17,11 +17,11 @@ QT=/c/Qt/4.5.2/bin
 OPENSSL=/c/build/openssl-0.9.8k/bin
 
 ## Location of bundle components
-VIDALIA=/c/build/vidalia-0.2.4
+VIDALIA=/c/build/vidalia-0.2.5
 TOR=/c/build/tor-0.2.1.19
 POLIPO=/c/build/polipo-1.0.4
 FIREFOX_SRC=/c/build/FirefoxPortable-3.0.14
-PIDGIN_SRC=/c/build/PidginPortable-2.6.2
+PIDGIN_SRC=/c/build/PidginPortable-2.6.3
 
 ## Location of utility applications
 SEVENZIP="/c/Program Files/7-Zip/7z.exe"
