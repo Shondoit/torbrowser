@@ -20,7 +20,7 @@ OPENSSL=/c/build/openssl-0.9.8k/bin
 VIDALIA=/c/build/vidalia-0.2.5
 TOR=/c/build/tor-0.2.1.20
 POLIPO=/c/build/polipo-1.0.4
-FIREFOX_SRC=/c/build/FirefoxPortable-3.0.14
+FIREFOX_SRC=/c/build/FirefoxPortable-3.0.15
 PIDGIN_SRC=/c/build/PidginPortable-2.6.3
 
 ## Location of utility applications
