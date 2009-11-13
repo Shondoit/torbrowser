@@ -418,11 +418,11 @@ Building Tor
 
 Download, unpack, build and install Tor:
         https://www.torproject.org/download.html
-        https://www.torproject.org/dist/tor-0.2.1.19-rc.tar.gz
-        https://www.torproject.org/dist/tor-0.2.1.19-rc.gz.asc
+        https://www.torproject.org/dist/tor-0.2.1.20-rc.tar.gz
+        https://www.torproject.org/dist/tor-0.2.1.20-rc.gz.asc
         $ cd /c/build/
-        tar -C /c/build -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/tor-0.2.1.19-rc.tar.gz
-        $ cd tor-0.2.1.19-rc/
+        tar -C /c/build -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/tor-0.2.1.20-rc.tar.gz
+        $ cd tor-0.2.1.20-rc/
         ./configure
         make
 
@@ -434,15 +434,15 @@ Vidalia (see above).
 
 Download Vidalia:
 
-    https://www.torproject.org/vidalia/dist/vidalia-0.2.4.tar.gz
-    https://www.torproject.org/vidalia/dist/vidalia-0.2.4.tar.gz.asc
+    https://www.torproject.org/vidalia/dist/vidalia-0.2.6.tar.gz
+    https://www.torproject.org/vidalia/dist/vidalia-0.2.6.tar.gz.asc
 
 Verify the signature.
 
 Unpack Vidalia:
    
-    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/vidalia-0.2.4.tar.gz
-    mv vidalia-0.2.4/ vidalia
+    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/vidalia-0.2.6.tar.gz
+    mv vidalia-0.2.6/ vidalia
 
 Set a proper environment:
 
@@ -551,7 +551,7 @@ Currently the Tor Browser Bundle uses FirefoxPortable binaries.
 
 Download FirefoxPortable:
 
-    http://prdownloads.sourceforge.net/portableapps/FirefoxPortable_3.0.13_English.paf.exe
+    http://prdownloads.sourceforge.net/portableapps/FirefoxPortable_3.0.15_English.paf.exe
 
 Run the installer and select it into: 'C:\build\FirefoxPortable-<version>>'
 
@@ -633,7 +633,7 @@ An example to change the Qt Lib version:
 And then change the Tor version:
 
         From: TOR=/c/build/tor-0.2.0.26-rc
-        To: TOR=/c/build/tor-0.2.1.19
+        To: TOR=/c/build/tor-0.2.1.20
 
 Now you can run "make bundle_LANGUAGE", e.g. "make bundle_en-US".
 
