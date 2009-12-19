@@ -2,7 +2,7 @@
 ### Rough description of ToaST startup procedure
 ### Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217/>
 ###
-### $Id:$
+### $Id$
 ###
 
 Create TorparkMutex

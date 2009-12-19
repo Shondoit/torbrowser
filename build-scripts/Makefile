@@ -20,8 +20,8 @@ OPENSSL=/c/build/openssl-0.9.8l/bin
 VIDALIA=/c/build/vidalia-0.2.6
 TOR=/c/build/tor-0.2.1.20
 POLIPO=/c/build/polipo-1.0.4
-FIREFOX_SRC=/c/build/FirefoxPortable-3.0.15
-PIDGIN_SRC=/c/build/PidginPortable-2.6.3
+FIREFOX_SRC=/c/build/FirefoxPortable-3.5.6
+PIDGIN_SRC=/c/build/PidginPortable-2.6.4
 
 ## Location of utility applications
 SEVENZIP="/c/Program Files/7-Zip/7z.exe"
@@ -41,7 +41,7 @@ DEST="Generic Bundle"
 NAME="Tor Browser"
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.2.10-dev
+VERSION=1.3.0-dev
 DEFAULT_COMPRESSED_BASENAME=tor-browser-
 IM_COMPRESSED_BASENAME=tor-im-browser-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
@@ -60,7 +60,7 @@ DEFAULT_EXTENSIONS=torbutton.xpi
 TORBUTTON=https://addons.mozilla.org/en-US/firefox/downloads/latest/2275/addon-2275-latest.xpi?src=addondetail
 
 ## Where to download Mozilla language packs
-MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.0.14/win32/xpi
+MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.5.6/win32/xpi
 
 ## Where Farsi Language Pack can be downloaded from
 FA_LANGPACK=https://addons.mozilla.org/en-US/firefox/downloads/latest/3667/addon-3667-latest.xpi
