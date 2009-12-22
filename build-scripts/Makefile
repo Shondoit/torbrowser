@@ -18,7 +18,7 @@ OPENSSL=/c/build/openssl-0.9.8l/bin
 
 ## Location of bundle components
 VIDALIA=/c/build/vidalia-0.2.6
-TOR=/c/build/tor-0.2.1.20
+TOR=/c/build/tor-0.2.1.21
 POLIPO=/c/build/polipo-1.0.4
 FIREFOX_SRC=/c/build/FirefoxPortable-3.5.6
 PIDGIN_SRC=/c/build/PidginPortable-2.6.4
