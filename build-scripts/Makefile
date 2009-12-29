@@ -58,7 +58,7 @@ DEFAULT_EXTENSIONS=torbutton.xpi
 
 ## Where to download Torbutton from
 #TORBUTTON=https://addons.mozilla.org/en-US/firefox/downloads/latest/2275/addon-2275-latest.xpi?src=addondetail
-TORBUTTON=http://www.torproject.org/torbutton/torbutton-current.xpi
+TORBUTTON=https://www.torproject.org/torbutton/releases/torbutton-1.2.4.xpi
 
 ## Where to download Mozilla language packs
 MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.5.6/win32/xpi
