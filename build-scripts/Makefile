@@ -18,10 +18,10 @@ OPENSSL=/c/build/openssl-0.9.8l/bin
 
 ## Location of bundle components
 VIDALIA=/c/build/vidalia-0.2.6
-TOR=/c/build/tor-0.2.1.21
+TOR=/c/build/tor-0.2.1.22
 POLIPO=/c/build/polipo-1.0.4
-FIREFOX_SRC=/c/build/FirefoxPortable-3.5.6
-PIDGIN_SRC=/c/build/PidginPortable-2.6.4
+FIREFOX_SRC=/c/build/FirefoxPortable-3.5.7
+PIDGIN_SRC=/c/build/PidginPortable-2.6.5
 
 ## Location of utility applications
 SEVENZIP="/c/Program Files/7-Zip/7z.exe"
@@ -61,7 +61,7 @@ DEFAULT_EXTENSIONS=torbutton.xpi
 TORBUTTON=https://www.torproject.org/torbutton/releases/torbutton-1.2.4.xpi
 
 ## Where to download Mozilla language packs
-MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.5.6/win32/xpi
+MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.5.7/win32/xpi
 
 ## Where Farsi Language Pack can be downloaded from
 FA_LANGPACK=https://addons.mozilla.org/en-US/firefox/downloads/latest/3667/addon-3667-latest.xpi
