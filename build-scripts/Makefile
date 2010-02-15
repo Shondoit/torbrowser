@@ -13,13 +13,13 @@
 
 ## Location of required libraries
 MING=/c/MinGW/bin
-QT=/c/Qt/4.5.2/bin
+QT=/c/Qt/4.6.1/bin
 OPENSSL=/c/build/openssl-0.9.8l/bin
 
 ## Location of bundle components
-VIDALIA=/c/build/vidalia-0.2.6
-TOR=/c/build/tor-0.2.1.22
-POLIPO=/c/build/polipo-1.0.4
+VIDALIA=/c/build/vidalia-0.2.7
+TOR=/c/build/tor-0.2.1.23
+POLIPO=/c/build/polipo-1.0.4.1
 FIREFOX_SRC=/c/build/FirefoxPortable-3.5.7
 PIDGIN_SRC=/c/build/PidginPortable-2.6.5
 
