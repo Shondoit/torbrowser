@@ -13,7 +13,7 @@
 
 ## Location of required libraries
 MING=/c/MinGW/bin
-QT=/c/Qt/4.6.1/bin
+QT=/c/Qt/4.6.2/bin
 OPENSSL=/c/build/openssl-0.9.8l/bin
 
 ## Location of bundle components
