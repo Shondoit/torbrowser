@@ -118,18 +118,18 @@ Installing MinGW
 You need to install MinGW and then MSYS.
 It's useful to read about these two projects:
 
-    http://www.mingw.org/
+  http://www.mingw.org/
 
-For MinGW, download and run MinGW-5.1.4.
+For MinGW, download and run MinGW-5.1.6.
 You can find the proper release on Sourceforge:
 
-    http://sourceforge.net/project/showfiles.php?group_id=2435
+  http://sourceforge.net/projects/mingw/files/
 
-To download MinGW-5.1.4.exe, visit the following URL:
+To download MinGW-5.1.6.exe, visit the following URL:
 
-    http://sourceforge.net/project/showfiles.php?group_id=2435&package_id=240780&release_id=595197
+  http://sourceforge.net/projects/mingw/files/Automated%20MinGW%20Installer/MinGW%205.1.6/MinGW-5.1.6.exe/download
 
-Run MinGW-5.1.4.exe and begin the install. When prompted, select 'Full' as the
+Run MinGW-5.1.6.exe and begin the install. When prompted, select 'Full' as the
 type of install.  If you know better, select individual packages. It is
 expected that you will install MinGW into: C:\MinGW
 
@@ -140,18 +140,13 @@ For tar and other useful commands, you will also need MSYS. The current version
 of this is hellish to find.  In short, visit the MSYS Base System download
 page:
 
-    http://sourceforge.net/project/showfiles.php?group_id=2435&package_id=24963
+  http://sourceforge.net/projects/mingw/files/
 
-I feel that I must be mistaken but it appears that the current release of MSYS
-is labeled as:
+The MSYS-1.0.11.exe download url is:
 
-    msys-1.0.10 Notes (2004-03-16 05:47)
+  http://sourceforge.net/projects/mingw/files/MSYS%20Base%20System/msys-1.0.11/MSYS-1.0.11.exe/download
 
-The MSYS-1.0.10.exe download url is:
-
-    http://downloads.sourceforge.net/mingw/MSYS-1.0.10.exe?modtime=1079444447&big_mirror=1
-
-Download and install MSYS-1.0.10.exe. When prompted, read the license agreement
+Download and install MSYS-1.0.11.exe. When prompted, read the license agreement
 and other documentation.  When asked for an install path, choose: C:\msys\1.0
 
 You will be prompted to do a post install process that will "normalize" your
@@ -161,21 +156,6 @@ prompt that says:
     "Oh joy, you do not have C:MinGW/bin/make.exe. Keep it that way."
 
 Read the MSYS README. Understanding how to use MSYS is important.
-Now that you have installed MSYS, upgrade it to MSYS-1.0.11. Visit the download
-mirror for MSYS:
-
-    http://gd.tuwien.ac.at/gnu/mingw/?fisel=0-9,a-z,A-Z
-
-Download, install the upgrade and unpack it into the / of the MSYS root
-directory:
-
-    http://gd.tuwien.ac.at/gnu/mingw/MSYS-1.0.11-2004.04.30-1.exe
-
-You cannot upgrade in place, you must close MSYS or you will have errors.
-You should have three new files, replace the older files with the 1.0.11
-version:
-
-    mount.exe     msys-1.0.dll  ps.exe
 
 Now you'll need to fix your /etc/fstab because it is broken by default. Make it
 look like so:
@@ -206,28 +186,28 @@ We'll need CMake to build Vidalia.
 
 You can read about different versions on the CMake homepage:
 
-    http://cmake.org/
+  http://cmake.org/
 
-Download version 2.6.2:
+Download version 2.8.0:
 
-    http://www.cmake.org/files/v2.6/cmake-2.6.2-win32-x86.exe
+  http://www.cmake.org/files/v2.8/cmake-2.8.0-win32-x86.exe
 
 Run the installer with Windows Explorer and install into:
     
-    'C:\Program Files\CMake 2.6'
+    'C:\Program Files\CMake 2.8'
 
 Installing Qt
 =============
 
-Download Qt 4.1 or later, we'll use 4.5.2:
+Download Qt 4.3 or later, we'll use 4.6.2:
 
-    http://trolltech.com/developer/downloads/qt/windows
+  http://qt.nokia.com/downloads/windows-cpp
 
 Download and run the installer with Windows Explorer:
 
-    ftp://ftp.trolltech.com/qt/source/qt-win-opensource-4.5.2-mingw.exe
+  http://get.qt.nokia.com/qt/source/qt-win-opensource-4.6.2-mingw.exe
 
-When prompted, install Qt into 'C:\Qt\4.5.2'
+When prompted, install Qt into 'C:\Qt\4.6.2'
 You will be prompted for the install path for your MinGW directory, enter 'C:\MinGW'
 You may have an error about win32api.h being not found. This is not true. You
 have win32api.h and Qt is wrong.  This is a result of the Qt installer not
@@ -281,21 +261,21 @@ Extract them both into you MinGW directory, e.g.
 
 Download Polipo sources:
 
-    http://www.pps.jussieu.fr/~jch/software/files/polipo/polipo-1.0.4.tar.gz
-    http://www.pps.jussieu.fr/~jch/software/files/polipo/polipo-1.0.4.tar.gz.asc
+    http://www.pps.jussieu.fr/~jch/software/files/polipo/polipo-1.0.4.1.tar.gz
+    http://www.pps.jussieu.fr/~jch/software/files/polipo/polipo-1.0.4.1.tar.gz.asc
 
 Verify the PGP signature of the above files by following the developer directions:
 
     http://www.pps.jussieu.fr/~jch/software/pgp-validating.html
 
-Unpack the Polipo source code into /c/build/polipo-1.0.4/ :
+Unpack the Polipo source code into /c/build/polipo-1.0.4.1/ :
 
     cd /c/build/
-    tar -C . -vxzf /c/Documents\ and\ Settings/Administrator/Desktop/polipo-1.0.4.tar.gz
+    tar -C . -vxzf /c/Documents\ and\ Settings/Administrator/Desktop/polipo-1.0.4.1.tar.gz
 
 Download a Tor contributed Polipo specific Makefile:
 
-    https://tor-svn.freehaven.net/svn/tor/trunk/contrib/polipo/Makefile.mingw
+    https://svn.torproject.org/svn/tor/trunk/contrib/polipo/Makefile.mingw
 
 Replace the stock Polipo Makefile with the one above:
 
@@ -334,23 +314,23 @@ Building OpenSSL
 
 Download openssl:
 
-    http://www.openssl.org/source/openssl-0.9.8k.tar.gz
+    http://www.openssl.org/source/openssl-0.9.8l.tar.gz
 
 Unpack it:
 
     cd /c/build/
-    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/openssl-0.9.8k.tar.gz
+    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/openssl-0.9.8l.tar.gz
 
 You should see errors not unlike:
 
-    tar: openssl-0.9.8k/include/openssl/bn.h: Cannot create symlink to `../../crypto/bn/bn.h': No such file or directory
-    tar: openssl-0.9.8k/include/openssl/blowfish.h: Cannot create symlink to `../../crypto/bf/blowfish.h': No such file or directory
-    tar: openssl-0.9.8k/include/openssl/bio.h: Cannot create symlink to `../../crypto/bio/bio.h': No such file or directory
-    tar: openssl-0.9.8k/include/openssl/asn1t.h: Cannot create symlink to `../../crypto/asn1/asn1t.h': No such file or directory
-    tar: openssl-0.9.8k/include/openssl/asn1_mac.h: Cannot create symlink to `../../crypto/asn1/asn1_mac.h': No such file or directory
-    tar: openssl-0.9.8k/include/openssl/asn1.h: Cannot create symlink to `../../crypto/asn1/asn1.h': No such file or directory
-    tar: openssl-0.9.8k/include/openssl/aes.h: Cannot create symlink to `../../crypto/aes/aes.h': No such file or directory
-    tar: openssl-0.9.8k/apps/md4.c: Cannot create symlink to `../crypto/md4/md4.c': No such file or directory
+    tar: openssl-0.9.8l/include/openssl/bn.h: Cannot create symlink to `../../crypto/bn/bn.h': No such file or directory
+    tar: openssl-0.9.8l/include/openssl/blowfish.h: Cannot create symlink to `../../crypto/bf/blowfish.h': No such file or directory
+    tar: openssl-0.9.8l/include/openssl/bio.h: Cannot create symlink to `../../crypto/bio/bio.h': No such file or directory
+    tar: openssl-0.9.8l/include/openssl/asn1t.h: Cannot create symlink to `../../crypto/asn1/asn1t.h': No such file or directory
+    tar: openssl-0.9.8l/include/openssl/asn1_mac.h: Cannot create symlink to `../../crypto/asn1/asn1_mac.h': No such file or directory
+    tar: openssl-0.9.8l/include/openssl/asn1.h: Cannot create symlink to `../../crypto/asn1/asn1.h': No such file or directory
+    tar: openssl-0.9.8l/include/openssl/aes.h: Cannot create symlink to `../../crypto/aes/aes.h': No such file or directory
+    tar: openssl-0.9.8l/apps/md4.c: Cannot create symlink to `../crypto/md4/md4.c': No such file or directory
     tar: Error exit delayed from previous errors
 
 Uncompressing OpenSSL shows a number of errors concerning symlinks. These do
@@ -358,10 +338,10 @@ not appear to have caused a problem.
 
 Now configure the source package:
 
-    cd openssl-0.9.8k/
+    cd openssl-0.9.8l/
     ./config -no-idea -no-rc5 -no-mdc2
 
-Edit '/c/build/openssl-0.9.8k/Makefile' and remove the "test:" and "tests:" sections that follow:
+Edit '/c/build/openssl-0.9.8l/Makefile' and remove the "test:" and "tests:" sections that follow:
 
     test:   tests
 
@@ -393,19 +373,19 @@ And finally, build it - this can take a long time and depends on the speed of yo
 Building libevent
 =================
 
-Next, you'll want to download, unpack, build and install libevent (Version: libevent-1.4.12).
+Next, you'll want to download, unpack, build and install libevent (Version: libevent-1.4.13).
 You can get libevent here:
 
         http://www.monkey.org/~provos/libevent/
-        http://www.monkey.org/~provos/libevent-1.4.12-stable.tar.gz
-        http://www.monkey.org/~provos/libevent-1.4.12-stable.tar.gz.sig
+        http://www.monkey.org/~provos/libevent-1.4.13-stable.tar.gz
+        http://www.monkey.org/~provos/libevent-1.4.13-stable.tar.gz.sig
 
 Verify the signature.
 
 Unpack it:
 
-    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/libevent-1.4.12-stable.tar.gz
-    cd libevent-1.4.12-stable/
+    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/libevent-1.4.13-stable.tar.gz
+    cd libevent-1.4.13-stable/
 
 Configure, build and install:
 
@@ -418,11 +398,11 @@ Building Tor
 
 Download, unpack, build and install Tor:
         https://www.torproject.org/download.html
-        https://www.torproject.org/dist/tor-0.2.1.20-rc.tar.gz
-        https://www.torproject.org/dist/tor-0.2.1.20-rc.gz.asc
+        https://www.torproject.org/dist/tor-0.2.1.23.tar.gz
+        https://www.torproject.org/dist/tor-0.2.1.23.gz.asc
         $ cd /c/build/
-        tar -C /c/build -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/tor-0.2.1.20-rc.tar.gz
-        $ cd tor-0.2.1.20-rc/
+        tar -C /c/build -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/tor-0.2.1.23.tar.gz
+        $ cd tor-0.2.1.23/
         ./configure
         make
 
@@ -434,26 +414,26 @@ Vidalia (see above).
 
 Download Vidalia:
 
-    https://www.torproject.org/vidalia/dist/vidalia-0.2.6.tar.gz
-    https://www.torproject.org/vidalia/dist/vidalia-0.2.6.tar.gz.asc
+    https://www.torproject.org/vidalia/dist/vidalia-0.2.7.tar.gz
+    https://www.torproject.org/vidalia/dist/vidalia-0.2.7.tar.gz.asc
 
 Verify the signature.
 
 Unpack Vidalia:
    
-    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/vidalia-0.2.6.tar.gz
-    mv vidalia-0.2.6/ vidalia
+    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/vidalia-0.2.7.tar.gz
+    mv vidalia-0.2.7/ vidalia
 
 Set a proper environment:
 
     cat << 'EOF' >> /etc/profile
-    export QTDIR="C:\Qt\4.5.2"
-    export PATH=$PATH:/c/Qt/4.5.2/bin
+    export QTDIR="C:\Qt\4.6.2"
+    export PATH=$PATH:/c/Qt/4.6.2/bin
     export PATH=$PATH:/c/Program\ Files/CMake\ 2.6/bin/
     export QMAKESPEC=win32-g++
     EOF
 
-    export PATH=$PATH:/c/Program\ Files/CMake\ 2.6/bin/:/c/MinGW/bin/:/c/Qt/4.5.2/bin/
+    export PATH=$PATH:/c/Program\ Files/CMake\ 2.6/bin/:/c/MinGW/bin/:/c/Qt/4.6.2/bin/
 
 Create the proper MSYS Makefiles and don't forget the '.' at the end!
 
@@ -551,7 +531,7 @@ Currently the Tor Browser Bundle uses FirefoxPortable binaries.
 
 Download FirefoxPortable:
 
-    http://prdownloads.sourceforge.net/portableapps/FirefoxPortable_3.0.15_English.paf.exe
+    http://prdownloads.sourceforge.net/portableapps/FirefoxPortable_3.5.7_English.paf.exe
 
 Run the installer and select it into: 'C:\build\FirefoxPortable-<version>>'
 
@@ -619,7 +599,7 @@ Building the Tor Browser Bundle
 
 Now you'll want to ensure you have the Tor Browser Bundle code checked out into C:\build\
 
-    C:\build>svn co https://tor-svn.freehaven.net/svn/torbrowser/
+    C:\build>svn co https://svn.torproject.org/svn/torbrowser/
 
 Firefox must not be running while you are building the bundle.
 If you're using different versions than the Makefile, you'll want to patch the
@@ -627,13 +607,13 @@ Makefile as mentioned in the Customization section above.
 
 An example to change the Qt Lib version:
 
-        From: QT=/c/Qt/4.3.4/bin
-        To: QT=/c/Qt/4.5.2/bin
+        From: QT=/c/Qt/4.6.2/bin
+        To: QT=/c/Qt/4.6.2/bin
 
 And then change the Tor version:
 
-        From: TOR=/c/build/tor-0.2.0.26-rc
-        To: TOR=/c/build/tor-0.2.1.20
+        From: TOR=/c/build/tor-0.2.1.23
+        To: TOR=/c/build/tor-0.2.1.23
 
 Now you can run "make bundle_LANGUAGE", e.g. "make bundle_en-US".
 
