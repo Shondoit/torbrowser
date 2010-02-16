@@ -325,7 +325,7 @@ SRCDEST=/tmp
 SRCDESTPATH=$(SRCDEST)/$(SRCNAME)
 srcdist:
 	rm -fr $(SRCDESTPATH)
-	svn export https://tor-svn.freehaven.net/svn/torbrowser/trunk/ \
+	svn export https://svn.torproject.org/svn/torbrowser/trunk/ \
                    $(SRCDESTPATH)
 	cd $(SRCDEST); tar --exclude src/archived-patches \
                            --exclude src/current-patches  --exclude src/processtest \
