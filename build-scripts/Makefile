@@ -164,8 +164,7 @@ directory-structure:
 install-binaries: 
 	cp $(MING)/mingwm10.dll $(APPDIR)
 	cp $(MING)/libgnurx-0.dll $(APPDIR)
-	cp $(QT)/QtCore4.dll $(QT)/QtGui4.dll \
-           $(QT)/QtNetwork4.dll $(QT)/QtXml4.dll $(APPDIR) 
+	cp $(QT)/QtCore4.dll $(QT)/QtGui4.dll $(QT)/QtNetwork4.dll $(QT)/QtXml4.dll $(QT)/libgcc_s_dw2-1.dll $(APPDIR) 
 	cp $(OPENSSL)/ssleay32.dll $(APPDIR)
 	cp $(OPENSSL)/libeay32.dll $(APPDIR)
 	cp $(VIDALIA)/src/vidalia/vidalia.exe $(APPDIR)
