@@ -8,6 +8,7 @@
 			<pref name='port' type='int' value='9050'/>
 			<pref name='username' type='string' value=''/>
 			<pref name='password' type='string' value=''/>
+            <pref name='socks4_remotedns' type='bool' value='1'/>
 		</pref>
         <pref name='logging'>
           <pref name='log_ims' type='bool' value='0'/>
