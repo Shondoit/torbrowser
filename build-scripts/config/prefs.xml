@@ -9,6 +9,12 @@
 			<pref name='username' type='string' value=''/>
 			<pref name='password' type='string' value=''/>
 		</pref>
+        <pref name='logging'>
+          <pref name='log_ims' type='bool' value='0'/>
+          <pref name='log_chats' type='bool' value='0'/>
+          <pref name='log_system' type='bool' value='0'/>
+          <pref name='format' type='string' value='txt'/>
+        </pref> 
 	</pref>
 	<pref name='pidgin'>
 		<pref name='plugins'>
