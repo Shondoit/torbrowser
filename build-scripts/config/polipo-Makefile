@@ -41,7 +41,7 @@ CDEBUGFLAGS = -Os -g -Wall
 # LDLIBS = -lwsock32
 
 FILE_DEFINES = -DLOCAL_ROOT=\"$(LOCAL_ROOT)/\" \
-               -DDISK_CACHE_ROOT=\"$(DISK_CACHE_ROOT)/\"
+               -DNO_DISK_CACHE
 
 # You may optionally also add any of the following to DEFINES:
 #
