@@ -16,12 +16,17 @@ MING=/c/MinGW/bin
 QT=/c/Qt/4.6.2/bin
 OPENSSL=/c/build/openssl-0.9.8l/bin
 
+## Versions
+TORBUTTON_VERSION=1.2.4
+FIREFOX_VERSION=3.5.8
+PIDGIN_VERSION=2.6.6
+
 ## Location of bundle components
 VIDALIA=/c/build/vidalia-0.2.7
 TOR=/c/build/tor-0.2.1.24
 POLIPO=/c/build/polipo-1.0.4.1
-FIREFOX_SRC=/c/build/FirefoxPortable-3.5.8
-PIDGIN_SRC=/c/build/PidginPortable-2.6.6
+FIREFOX_SRC=/c/build/FirefoxPortable-$(FIREFOX_VERSION)
+PIDGIN_SRC=/c/build/PidginPortable-$(PIDGIN_VERSION)
 
 ## Location of utility applications
 SEVENZIP="/c/Program Files/7-Zip/7z.exe"
@@ -58,13 +63,13 @@ DEFAULT_EXTENSIONS=torbutton.xpi
 
 ## Where to download Torbutton from
 #TORBUTTON=https://addons.mozilla.org/en-US/firefox/downloads/latest/2275/addon-2275-latest.xpi?src=addondetail
-TORBUTTON=https://www.torproject.org/torbutton/releases/torbutton-1.2.4.xpi
+TORBUTTON=https://www.torproject.org/torbutton/releases/torbutton-$(TORBUTTON_VERSION).xpi
 
 ## Where to download Mozilla language packs
-MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.5.8/win32/xpi
+MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/$(FIREFOX_VERSION)/win32/xpi
 
 ## Where Farsi Language Pack can be downloaded from
-FA_LANGPACK=https://addons.mozilla.org/en-US/firefox/downloads/latest/3667/addon-3667-latest.xpi
+#FA_LANGPACK=https://addons.mozilla.org/en-US/firefox/downloads/latest/3667/addon-3667-latest.xpi
 
 ## Put more extensions here
 EXTENSIONS_DIR=extensions
@@ -241,9 +246,6 @@ torbutton.xpi:
 ## Generic language pack rule
 langpack_%.xpi:
 	$(WGET) -O $@ $(MOZILLA_LANGUAGE)/$*.xpi
-## Persian isn't a supported language by Firefox yet
-langpack_fa-IR.xpi:
-	$(WGET) -O $@ $(FA_LANGPACK)
 ## English comes as default
 langpack_en-US.xpi:
 	touch $@
@@ -267,7 +269,7 @@ bundle-localized: bundle-localized_$(LANGCODE).stamp
 
 compressed-bundle-localized: bundle-localized_$(LANGCODE).stamp
 	rm -f $(COMPRESSED_NAME)_$(LANGCODE).exe
-	cd $(NAME)_$(LANGCODE); $(SEVENZIP) a -sfx7z.sfx ../$(COMPRESSED_NAME)_$(LANGCODE).exe $(NAME)
+	cd $(NAME)_$(LANGCODE); $(SEVENZIP) a -mx9 -sfx7z.sfx ../$(COMPRESSED_NAME)_$(LANGCODE).exe $(NAME)
 
 split-bundle-localized: bundle-localized_$(LANGCODE).stamp
 	rm -fr $(COMPRESSED_NAME)_$(LANGCODE)_split; mkdir $(COMPRESSED_NAME)_$(LANGCODE)_split

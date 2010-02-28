@@ -42,5 +42,5 @@ sed -c "s/PIDGINLOCALE/$LANGCODE/" "$ORIGFILENAME" > "$FILENAME"
 rm -f "$ORIGFILENAME"
 
 ## Remove languages we don't need
-find "$PIDGINLOCALEDIR" -mindepth 1 -maxdepth 1 -not -iname $LANGCODE -print0 | xargs -0 rm -fr
-find "$GTKLOCALEDIR" -mindepth 1 -maxdepth 1 -not -iname $LANGCODE -print0 | xargs -0 rm -fr
+find "$PIDGINLOCALEDIR" -mindepth 1 -maxdepth 1 -not -iname $LANGCODE -exec rm -rf {} \;
+find "$GTKLOCALEDIR" -mindepth 1 -maxdepth 1 -not -iname $LANGCODE -exec rm -rf {} \;
