@@ -99,7 +99,7 @@ all-compressed-bundles: compressed-bundle_ar \
 	compressed-bundle_en-US \
 	compressed-bundle_de \
 	compressed-bundle_es-ES \
-	compressed-bundle_fa-IR \
+	compressed-bundle_fa \
 	compressed-bundle_fr \
 	compressed-bundle_nl \
     compressed-bundle_pl \
@@ -112,7 +112,7 @@ all-split-bundles: split-bundle_ar \
 	split-bundle_en-US \
 	split-bundle_de \
 	split-bundle_es-ES \
-	split-bundle_fa-IR \
+	split-bundle_fa \
 	split-bundle_fr \
 	split-bundle_nl \
     split-bundle_pl \
