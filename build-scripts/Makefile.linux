@@ -32,7 +32,7 @@
 #####################
 
 ## Location of directory for source unpacking
-FETCH_DIR=/home/e/build
+FETCH_DIR=/tmp
 ## Location of directory for prefix/destdir/compiles/etc
 BUILT_DIR=$(FETCH_DIR)/built
 TBB_FINAL=$(BUILT_DIR)/TBBL
