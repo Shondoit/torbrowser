@@ -70,7 +70,7 @@ if [ "${debug}" ]; then
   echo "Starting Vidalia now...";
   cd "${HOME}";
   echo "Running Vidalia from: `pwd`";
-  exec ./App/vidalia --loglevel debug --logfile vidalia-debug-log \
+  ./App/vidalia --loglevel debug --logfile vidalia-debug-log \
   --datadir Data/Vidalia/
   echo "Vidalia exited with the following return code: $?";
   exit;
@@ -78,5 +78,5 @@ fi
 # If we're not in debug mode, we'll jump right here:
 echo "Now attempting to launch the TBB for Linux in ${HOME}..."
 cd "${HOME}";
-exec ./App/vidalia --datadir Data/Vidalia/
+./App/vidalia --datadir Data/Vidalia/
 echo "Everything should be gone!"

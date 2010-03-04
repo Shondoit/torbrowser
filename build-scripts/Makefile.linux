@@ -32,21 +32,26 @@
 #####################
 
 ## Location of directory for source unpacking
-FETCH_DIR=/tmp/build/
+FETCH_DIR=/home/e/build
 ## Location of directory for prefix/destdir/compiles/etc
-BUILT_DIR=$(FETCH_DIR)/built/
-TBB_FINAL=$(BUILT_DIR)/TBBL/
+BUILT_DIR=$(FETCH_DIR)/built
+TBB_FINAL=$(BUILT_DIR)/TBBL
 
 ## Versions for our source packages
 ZLIB_VER=1.2.3
 OPENSSL_VER=0.9.8l
 QT_VER=4.5.3
-VIDALIA_VER=0.2.6
+VIDALIA_VER=0.2.7
 LIBEVENT_VER=1.4.13-stable
-TOR_VER=0.2.1.21
+TOR_VER=0.2.1.24
 POLIPO_VER=1.0.4
 PIDGIN_VER=2.6.4
-FIREFOX_VER=3.5.6
+FIREFOX_VER=3.5.7
+TORBUTTON_VER=1.2.4
+
+## Extension IDs
+FF_VENDOR_ID := \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
+TB_APP_ID := \{e0204bd5-9d31-402b-a99d-a6aa8ffebdca\}
 
 ## File names for the source packages
 ZLIB_PACKAGE=zlib-$(ZLIB_VER).tar.gz
@@ -68,7 +73,7 @@ LIBEVENT_URL=http://www.monkey.org/~provos/$(LIBEVENT_PACKAGE)
 TOR_URL=https://www.torproject.org/dist/$(TOR_PACKAGE)
 POLIPO_URL=http://www.pps.jussieu.fr/~jch/software/files/polipo/$(POLIPO_PACKAGE)
 PIDGIN_URL=http://sourceforge.net/projects/pidgin/files/Pidgin/$(PIDGIN_PACKAGE)
-FIREFOX_URL=http://mozilla3.snt.utwente.nl/firefox/releases/$(FIREFOX_VER)/linux-i686/en-US/$(FIREFOX_PACKAGE)
+FIREFOX_URL=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/$(FIREFOX_VER)/linux-i686/en-US/$(FIREFOX_PACKAGE)
 
 fetch-source:
 	-mkdir $(FETCH_DIR)
@@ -134,7 +139,7 @@ build-libevent:
 	cd $(LIBEVENT_DIR) && make install
 
 TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)/
-TOR_OPTS=--with-openssl-dir=$(BUILT_DIR)/include/openssl --with-zlib-dir=$(BUILT_DIR)/include/ --with-libevent-dir=$(BUILT_DIR)/lib/ --prefix=$(BUILT_DIR)
+TOR_OPTS=--with-openssl-dir=$(BUILT_DIR) --with-zlib-dir=$(BUILT_DIR) --with-libevent-dir=$(BUILT_DIR)/lib/ --prefix=$(BUILT_DIR)
 build-tor:
 	cd $(TOR_DIR) && ./configure $(TOR_OPTS)
 	cd $(TOR_DIR) && make -j2
@@ -146,7 +151,7 @@ POLIPO_DIR=$(FETCH_DIR)/polipo-$(POLIPO_VER)/
 POLIPO_MAKEFILE=$(CONFIG_SRC)/polipo-Makefile
 build-polipo:
 	cp $(POLIPO_MAKEFILE) $(POLIPO_DIR)/Makefile
-	cd $(POLIPO_DIR) && make && PREFIX=/tmp/build/built/ make install.binary
+	cd $(POLIPO_DIR) && make && PREFIX=$(FETCH_DIR)/built/ make install.binary
 
 build-pidgin:
 	echo "We're not building pidgin yet!"
@@ -154,7 +159,8 @@ build-pidgin:
 build-firefox:
 	echo "We're using a prebuilt firefox. Fix this someday!"
 
-build-all-binaries: source-dance build-zlib build-openssl build-qt build-vidalia build-libevent build-tor build-polipo build-pidgin build-firefox
+# source-dance
+build-all-binaries: unpack-source build-zlib build-openssl build-qt build-vidalia build-libevent build-tor build-polipo build-pidgin build-firefox
 	echo "If we're here, we've done something right."
 
 ## Location of compiled libraries
@@ -173,7 +179,7 @@ VIDALIA=$(BUILT_DIR)/usr/local/bin/vidalia
 TOR=$(COMPILED_BINS)/tor
 POLIPO=$(COMPILED_BINS)/polipo
 ## Someday, this will be our custom Firefox
-FIREFOX=$(FETCH_DIR)/firefox
+FIREFOX=$(FETCH_DIR)/Firefox
 PIDGIN=$(COMPILED_BINS)/pidgin
 
 ## Location of utility applications
@@ -214,7 +220,7 @@ DEFAULT_EXTENSIONS=torbutton.xpi
 
 ## Where to download Torbutton from
 #TORBUTTON=https://addons.mozilla.org/en-US/firefox/downloads/latest/2275/addon-2275-latest.xpi?src=addondetail
-TORBUTTON=https://www.torproject.org/torbutton/releases/torbutton-1.2.4.xpi
+TORBUTTON=https://www.torproject.org/torbutton/releases/torbutton-$(TORBUTTON_VER).xpi
 
 ## Where to download Mozilla language packs
 MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/$(FIREFOX_VER)/win32/xpi
@@ -307,7 +313,7 @@ APPDIR=$(DEST)/App
 LIBSDIR=$(DEST)/Lib
 DOCSDIR=$(DEST)/Docs
 DATADIR=$(DEST)/Data
-TMPDIR=$(DEST)/tmp
+TB_TMPDIR=$(DEST)/tmp
 
 ## Build directory structure
 directory-structure: 
@@ -318,17 +324,17 @@ directory-structure:
 	mkdir -p $(DATADIR)/Vidalia
 	mkdir -p $(DATADIR)/Polipo
 	mkdir -p $(DOCSDIR)
-	mkdir -p $(TMPDIR)
+	mkdir -p $(TB_TMPDIR)
 
 ## Package up all the Vidalia and Tor pre-requisites
 ## Firefox and Pidgin are installed in their own targets
 install-binaries:
 	# A minimal set of Qt libs and the proper symlinks
-	cp -d $(QT)/libQtCore.so $(QT)/libQtCore.so.4 $(QT)/libQtCore.so.4.5 $(QT)/libQtCore.so.4.5.1 $(LIBSDIR)
-	cp -d $(QT)/libQtGui.so $(QT)/libQtGui.so.4 $(QT)/libQtGui.so.4.5 $(QT)/libQtGui.so.4.5.1 $(LIBSDIR)
+	cp -d $(QT)/libQtCore.so $(QT)/libQtCore.so.4 $(QT)/libQtCore.so.4.5 $(QT)/libQtCore.so.4.5.3 $(LIBSDIR)
+	cp -d $(QT)/libQtGui.so $(QT)/libQtGui.so.4 $(QT)/libQtGui.so.4.5 $(QT)/libQtGui.so.4.5.3 $(LIBSDIR)
 	cp -d $(QT)/libQtNetwork.so $(QT)/libQtNetwork.so.4 $(QT)/libQtNetwork.so.4.5 \
-           $(QT)/libQtNetwork.so.4.5.1 $(LIBSDIR)
-	cp -d $(QT)/libQtXml.so $(QT)/libQtXml.so.4 $(QT)/libQtXml.so.4.5 $(QT)/libQtXml.so.4.5.1 $(LIBSDIR)
+           $(QT)/libQtNetwork.so.4.5.3 $(LIBSDIR)
+	cp -d $(QT)/libQtXml.so $(QT)/libQtXml.so.4 $(QT)/libQtXml.so.4.5 $(QT)/libQtXml.so.4.5.3 $(LIBSDIR)
 	# zlib
 	cp -d $(ZLIB)/libz.so $(ZLIB)/libz.so.1 $(ZLIB)/libz.so.1.2.3 $(LIBSDIR)
 	# Libevent
@@ -344,6 +350,7 @@ install-binaries:
 	cp $(POLIPO) $(APPDIR)
 	# Tor (perhaps we want tor-resolve too?)
 	cp $(TOR) $(APPDIR)
+	# XXX: Need to add libdbus-glib-1.so.2 to this
 
 ## Fixup
 ## Collect up license files
@@ -363,8 +370,8 @@ install-docs:
 install-firefox:
 	cp -R $(FIREFOX) $(APPDIR)
 	# Due to various issues with a broken libxml2, we'll remove these...
-	rm -f $(APPDIR)/firefox/components/libnkgnomevfs.so
-	rm -f $(APPDIR)/firefox/components/libmozgnome.so
+	rm -f $(APPDIR)/Firefox/components/libnkgnomevfs.so
+	rm -f $(APPDIR)/Firefox/components/libmozgnome.so
 
 ## Copy over Pidgin
 install-pidgin:
@@ -375,9 +382,9 @@ endif
 ## Configure Firefox, Vidalia, Polipo and Tor
 configure-apps:
 	## Configure Firefox preferences
-	mkdir -p $(DEST)/.mozilla/firefox/firefox.default
-	cp -R $(CONFIG_SRC)/firefox-profiles.ini $(DEST)/.mozilla/firefox/profiles.ini
-	cp $(CONFIG_SRC)/{bookmarks.html,prefs.js} $(DEST)/.mozilla/firefox/firefox.default/
+	mkdir -p $(DEST)/.mozilla/Firefox/firefox.default
+	cp -R $(CONFIG_SRC)/firefox-profiles.ini $(DEST)/.mozilla/Firefox/profiles.ini
+	cp $(CONFIG_SRC)/{bookmarks.html,prefs.js} $(DEST)/.mozilla/Firefox/firefox.default/
 	## Configure Pidgin
 ifeq ($(USE_PIDGIN),1)
 	mkdir -p $(DEST)/PidginPortable/Data/settings/.purple
@@ -458,15 +465,15 @@ copy-files_%: generic-bundle.stamp
 
 BUNDLE=$(NAME)_$(LANGCODE)/$(NAME)
 DUMMYPROFILE=$(BUNDLE)/.mozilla/
+
 install-extensions: $(DEFAULT_EXTENSIONS) langpack_$(LANGCODE).xpi
-	## Use a dummy profile to stop Firefox creating some large files
-	## Install default extensions and everything from extensions directory
-	for extension in langpack_$(LANGCODE).xpi $(DEFAULT_EXTENSIONS) $(EXTENSIONS_DIR)/*.xpi $(EXTENSIONS_DIR)/*.jar; \
-          do \
-            ./configure-firefox.sh $(BUNDLE) $$extension;\
-          done
-	## Delete the dummy profile
-	rm -fr $(DUMMYPROFILE)
+	mkdir -p $(BUNDLE)/.mozilla/extensions/$(FF_VENDOR_ID)/$(TB_APP_ID)
+	for extension in *.xpi; \
+		do \
+			cp $$extension $(BUNDLE)/.mozilla/extensions/$(FF_VENDOR_ID)/$(TB_APP_ID)/$$extension.zip; \
+		done
+	cd $(BUNDLE)/.mozilla/extensions/$(FF_VENDOR_ID)/$(TB_APP_ID)/ && \
+	unzip torbutton*zip
 
 ## Set the language for Vidalia
 patch-vidalia-language:
@@ -484,8 +491,8 @@ endif
 
 patch-firefox-language:
 	## Patch the default Firefox prefs.js
-	cp $(CONFIG_SRC)/{bookmarks.html,prefs.js} $(BUNDLE)/App/firefox/defaults/profile/
-	./patch-firefox-language.sh $(BUNDLE)/App/firefox/defaults/profile/prefs.js $(LANGCODE) -e
+	cp $(CONFIG_SRC)/{bookmarks.html,prefs.js} $(BUNDLE)/App/Firefox/defaults/profile/
+	./patch-firefox-language.sh $(BUNDLE)/App/Firefox/defaults/profile/prefs.js $(LANGCODE) -e
 
 ###
 ### Utilities

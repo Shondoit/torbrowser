@@ -1,8 +1,9 @@
 [General]
-BrowserExecutable=./App/firefox/firefox
+BrowserDirectory=.
+BrowserExecutable=firefox
 LanguageCode=en
 ProxyExecutable=./App/polipo
-ProxyExecutableArguments=-c, ./Data/Polipo/polipo.conf
+ProxyExecutableArguments=-c ./Data/Polipo/polipo.conf
 RunProxyAtStart=true
 
 [Tor]

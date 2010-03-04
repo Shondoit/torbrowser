@@ -16,7 +16,7 @@ echo "BUNDLE is: $BUNDLE"
 EXTENSION="$STARTDIR/$2";
 
 # Here's a relative path to our custom Firefox
-FIREFOX="./App/firefox/firefox";
+FIREFOX="./App/Firefox/firefox";
 # Here's what we think should properly install a plugin
 #FIREFOX_ARGS="-profile default -install-global-extension ";
 FIREFOX_ARGS=" -install-global-extension ";
