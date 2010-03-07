@@ -3,7 +3,7 @@
 ###
 ### Copyright 2007 Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217/>
 ### Copyright 2009 Jacob Appelbaum <jacob@appelbaum.net>
-###
+### Copyright 2010 Erinn Clark <erinn@torproject.org>
 ###
 ### You want to do the following currently supported activities:
 # This downloads and compiles everything
@@ -194,10 +194,10 @@ SPLITSIZE=1440k
 CONFIG_SRC=config
 
 ## Destination for the generic bundle
-DEST=Generic\ Bundle
+DEST=generic-bundle
 
 ## Name of the bundle
-NAME=Tor\ Browser
+NAME=tor-browser
 
 ## Where shall we put the finished files for distribution?
 DISTDIR=tbbl-dist
@@ -274,7 +274,7 @@ all-split-bundles: split-bundle_ar \
 	split-bundle_pt-PT \
 	split-bundle_ru \
 	split-bundle_zh-CN \
-	split-bundle_it
+	split-bundle_it 
 
 ##
 ## Cleanup
@@ -323,6 +323,7 @@ directory-structure:
 	mkdir -p $(DATADIR)/Tor
 	mkdir -p $(DATADIR)/Vidalia
 	mkdir -p $(DATADIR)/Polipo
+	mkdir -p $(DATADIR)/profile
 	mkdir -p $(DOCSDIR)
 	mkdir -p $(TB_TMPDIR)
 
@@ -382,9 +383,9 @@ endif
 ## Configure Firefox, Vidalia, Polipo and Tor
 configure-apps:
 	## Configure Firefox preferences
-	mkdir -p $(DEST)/.mozilla/Firefox/firefox.default
-	cp -R $(CONFIG_SRC)/firefox-profiles.ini $(DEST)/.mozilla/Firefox/profiles.ini
-	cp $(CONFIG_SRC)/{bookmarks.html,prefs.js} $(DEST)/.mozilla/Firefox/firefox.default/
+	#mkdir -p $(DEST)/.mozilla/Firefox/firefox.default
+	cp -R $(CONFIG_SRC)/firefox-profiles.ini $(DEST)/Data/profiles.ini
+	cp $(CONFIG_SRC)/{bookmarks.html,prefs.js} $(DEST)/Data/profile
 	## Configure Pidgin
 ifeq ($(USE_PIDGIN),1)
 	mkdir -p $(DEST)/PidginPortable/Data/settings/.purple
@@ -404,8 +405,8 @@ endif
 
 # We've replaced the custom C program with a shell script for now...
 launcher:
-	cp ../src/RelativeLink/RelativeLink.sh $(DEST)/"Start Tor Browser"
-	chmod +x $(DEST)/"Start Tor Browser"
+	cp ../src/RelativeLink/RelativeLink.sh $(DEST)/start-tor-browser
+	chmod +x $(DEST)/start-tor-browser
 
 strip-it-stripper:
 	strip $(APPDIR)/tor
@@ -492,7 +493,9 @@ endif
 patch-firefox-language:
 	## Patch the default Firefox prefs.js
 	cp $(CONFIG_SRC)/{bookmarks.html,prefs.js} $(BUNDLE)/App/Firefox/defaults/profile/
+	cp $(CONFIG_SRC)/{bookmarks.html,prefs.js} $(BUNDLE)/Data/profile
 	./patch-firefox-language.sh $(BUNDLE)/App/Firefox/defaults/profile/prefs.js $(LANGCODE) -e
+	./patch-firefox-language.sh $(BUNDLE)/Data/profile/prefs.js $(LANGCODE) -e
 
 ###
 ### Utilities
