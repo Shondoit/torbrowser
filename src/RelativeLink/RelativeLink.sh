@@ -40,30 +40,21 @@ if [ "${debug}" ]; then
   # This is where we want to look for:
   # firefox, tor, vidalia, privoxy/polipo and other programs like pidgin
   # If they're already running, we should find them and warn the user
-  echo "Attempting to find problem programs with pidof...";
-  echo "We have the followid pidof binary: `which pidof`";
-  FIREFOX=`pidof firefox-bin`
-  TOR=`pidof tor`
-  VIDALIA=`pidof vidalia`
-  PRIVOXY=`pidof privoxy`
-  POLIPO=`pidof polipo`
-
-  for problem in $FIREFOX $TOR $VIDALIA $PRIVOXY $POLIPO
-  do
-    echo "You appear to be running a problematic program with a PID of: $problem"
-  done
+  for process in tor vidalia polipo privoxy
+    do pid=`pidof $process`
+        if [ -n "$pid" ]
+        then
+            echo "$process is already running as PID $pid"
+        fi
+    done
 
   # This is likely unportable to Mac OS X or other non gnu netstat binaries
   for port in "8118" "9050";
   do
-    BOUND=`netstat -tan 2>&1|grep 127.0.0.1:${port}|grep -v TIME_WAIT`;
+    BOUND=`netstat -tan 2>&1|grep 127.0.0.1":${port}[^:]"|grep -v TIME_WAIT`;
     if [ "${BOUND}" ]; then
-      if [ "${port}" == $$ ]; then
-        break;
-      else
         echo "Likely problem detected: It appears that you have something listening on ${port}";
         echo "We think this because of the following: ${BOUND}"
-      fi
     fi
   done
 
