@@ -32,7 +32,7 @@
 #####################
 
 ## Location of directory for source unpacking
-FETCH_DIR=/tmp
+FETCH_DIR=/home/e/build
 ## Location of directory for prefix/destdir/compiles/etc
 BUILT_DIR=$(FETCH_DIR)/built
 TBB_FINAL=$(BUILT_DIR)/TBBL
@@ -402,6 +402,7 @@ endif
 	## Configure Tor
 	cp $(CONFIG_SRC)/torrc-linux $(DEST)/Data/Tor/torrc
 	cp $(TOR_DIR)/src/config/geoip $(DEST)/Data/Tor/geoip
+	chmod 700 $(DEST)/Data/Tor
 
 # We've replaced the custom C program with a shell script for now...
 launcher:
