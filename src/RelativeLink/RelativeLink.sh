@@ -6,17 +6,22 @@
 # it's quite simple to just use a shell script
 #
 # To run in debug mode simply pass --debug
-if [ $1 ]; then debug=$1; echo "Debug enabled!"; fi
+if [ $1 ]
+	then 
+	debug=$1
+	printf "\nDebug enabled.\n\n"
+fi
 
 # If ${PWD} results in a zero length HOME, we can try something else...
-if [ ! "${PWD}" ]; then
-  echo "We're hacking around some braindamage...";
-  HOME=`pwd`;
-  export HOME
-  surveysays="This system has a messed up shell!";
+if [ ! "${PWD}" ]
+	then
+	# "hacking around some braindamage"
+	HOME=`pwd`
+	export HOME
+	surveysays="This system has a messed up shell.\n"
 else
-  HOME="${PWD}";
-  export HOME
+	HOME="${PWD}"
+	export HOME
 fi
 
 LDPATH=${HOME}/Lib/
@@ -26,48 +31,53 @@ export LD_LIBRARY_PATH
 DYLD_PRINT_LIBRARIES=1
 export DYLD_PRINT_LIBRARIES
 
-if [ "${debug}" ]; then
-  if [ -n "${surveysays}" ]; then echo "Survey says: $surveysays"; fi
-  echo "We're running as PID: $$";
-  echo "Attemping to properly configure HOME...";
-  echo $HOME;
-  echo "Attemping to properly configure LDPATH...";
-  echo $LDPATH;
-  echo "Attemping to properly configure LD_LIBRARY_PATH...";
-  echo $LD_LIBRARY_PATH;
-  echo "Attemping to properly configure DYLD_PRINT_LIBRARIES...";
-  echo $DYLD_PRINT_LIBRARIES;
-  # This is where we want to look for:
-  # firefox, tor, vidalia, privoxy/polipo and other programs like pidgin
-  # If they're already running, we should find them and warn the user
-  for process in tor vidalia polipo privoxy
-    do pid=`pidof $process`
+# if any relevant processes are running, inform the user and exit cleanly
+RUNNING=0
+for process in tor vidalia polipo privoxy
+        do pid=`pidof $process`
         if [ -n "$pid" ]
         then
-            echo "$process is already running as PID $pid"
+                printf "\n$process is already running as PID $pid\n\n"
+                RUNNING=1
         fi
-    done
+        done
 
-  # This is likely unportable to Mac OS X or other non gnu netstat binaries
-  for port in "8118" "9050";
-  do
-    BOUND=`netstat -tan 2>&1|grep 127.0.0.1":${port}[^:]"|grep -v TIME_WAIT`;
-    if [ "${BOUND}" ]; then
-        echo "Likely problem detected: It appears that you have something listening on ${port}";
-        echo "We think this because of the following: ${BOUND}"
-    fi
-  done
-
-  echo "Starting Vidalia now...";
-  cd "${HOME}";
-  echo "Running Vidalia from: `pwd`";
-  ./App/vidalia --loglevel debug --logfile vidalia-debug-log \
-  --datadir Data/Vidalia/
-  echo "Vidalia exited with the following return code: $?";
-  exit;
+if [ $RUNNING -eq 1 ]
+        then
+                printf "Please shut down the above process(es) before running Tor Browser Bundle.\n\n"
+        exit 0
 fi
-# If we're not in debug mode, we'll jump right here:
-echo "Now attempting to launch the TBB for Linux in ${HOME}..."
-cd "${HOME}";
+
+
+if [ "${debug}" ]
+	then
+		if [ -n "${surveysays}" ]
+		then 
+		printf "\nSurvey says: $surveysays\n\n"
+		fi
+  	
+		# this is likely unportable to Mac OS X or other non gnu netstat binaries
+  		for port in "8118" "9050"
+  			do
+			BOUND=`netstat -tan 2>&1|grep 127.0.0.1":${port}[^:]"|grep -v TIME_WAIT`
+			if [ "${BOUND}" ]
+			then
+			printf "\nLikely problem detected: It appears that you have something listening on ${port}\n"
+			printf "\nWe think this because of the following: ${BOUND}\n"
+			fi
+		done
+
+		printf "\nStarting Vidalia now\n"
+		cd "${HOME}"
+		printf "\nLaunching Vidalia from: `pwd`\n"
+		./App/vidalia --loglevel debug --logfile vidalia-debug-log \
+		--datadir Data/Vidalia/
+		printf "\nVidalia exited with the following return code: $?\n"
+	exit
+fi
+
+# not in debug mode, run proceed normally
+printf "\nLaunching Tor Browser Bundle for Linux in ${HOME}\n"
+cd "${HOME}"
 ./App/vidalia --datadir Data/Vidalia/
-echo "Everything should be gone!"
+printf "\nExited cleanly. Goodbye.\n"
