@@ -31,6 +31,9 @@
 ### Configuration ###
 #####################
 
+## Architecture
+ARCH_TYPE=$(shell uname -m)
+
 ## Location of directory for source unpacking
 FETCH_DIR=/tmp
 ## Location of directory for prefix/destdir/compiles/etc
@@ -43,15 +46,15 @@ OPENSSL_VER=0.9.8l
 QT_VER=4.5.3
 VIDALIA_VER=0.2.7
 LIBEVENT_VER=1.4.13-stable
-TOR_VER=0.2.1.24
+TOR_VER=0.2.2.10-alpha
 POLIPO_VER=1.0.4
 PIDGIN_VER=2.6.4
-FIREFOX_VER=3.5.7
+OTR_VER=3.2.0
+FIREFOX_VER=3.5.8
 TORBUTTON_VER=1.2.4
 
 ## Extension IDs
-FF_VENDOR_ID := \{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
-TB_APP_ID := \{e0204bd5-9d31-402b-a99d-a6aa8ffebdca\}
+FF_VENDOR_ID:=\{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
 ## File names for the source packages
 ZLIB_PACKAGE=zlib-$(ZLIB_VER).tar.gz
@@ -101,45 +104,49 @@ unpack-source:
 source-dance: fetch-source unpack-source
 	echo "We're ready for building now."
 
-ZLIB_DIR=$(FETCH_DIR)/zlib-$(ZLIB_VER)/
+ZLIB_DIR=$(FETCH_DIR)/zlib-$(ZLIB_VER)
 ZLIB_OPTS=--shared --prefix=$(BUILT_DIR)
 build-zlib:
 	cd $(ZLIB_DIR) && ./configure $(ZLIB_OPTS)
 	cd $(ZLIB_DIR) && make
 	cd $(ZLIB_DIR) && make install
 
-OPENSSL_DIR=$(FETCH_DIR)/openssl-$(OPENSSL_VER)/
-OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -I$(BUILT_DIR)/lib/
+OPENSSL_DIR=$(FETCH_DIR)/openssl-$(OPENSSL_VER)
+ifeq (x86_64,$(ARCH_TYPE))
+OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 shared zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -I$(BUILT_DIR)/lib
+else
+OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -I$(BUILT_DIR)/lib
+endif
 build-openssl:
 	cd $(OPENSSL_DIR) && ./config $(OPENSSL_OPTS)
 	cd $(OPENSSL_DIR) && make depend
 	cd $(OPENSSL_DIR) && make
 	cd $(OPENSSL_DIR) && make install
 
-QT_DIR=$(FETCH_DIR)/qt-x11-opensource-src-$(QT_VER)/
+QT_DIR=$(FETCH_DIR)/qt-x11-opensource-src-$(QT_VER)
 QT_BUILD_PREFS=-system-zlib -confirm-license -opensource -openssl-linked -no-qt3support -fast -release -nomake demos -nomake examples
-QT_OPTS=$(QT_BUILD_PREFS) -prefix $(BUILT_DIR) -I $(BUILT_DIR)/include -I $(BUILT_DIR)/include/openssl/ -L $(BUILT_DIR)/lib/
+QT_OPTS=$(QT_BUILD_PREFS) -prefix $(BUILT_DIR) -I $(BUILT_DIR)/include -I $(BUILT_DIR)/include/openssl/ -L $(BUILT_DIR)/lib
 build-qt:
 	cd $(QT_DIR) && ./configure $(QT_OPTS)
 	cd $(QT_DIR) && make -j2
 	cd $(QT_DIR) && make install
 
-VIDALIA_DIR=$(FETCH_DIR)/vidalia-$(VIDALIA_VER)/
-VIDALIA_OPTS=-DOPENSSL_LIBRARY_DIR=$(BUILT_DIR)/lib/ -DCMAKE_BUILD_TYPE=debug -DQT_QMAKE_EXECUTABLE=$(BUILT_DIR)/bin/qmake ..
+VIDALIA_DIR=$(FETCH_DIR)/vidalia-$(VIDALIA_VER)
+VIDALIA_OPTS=-DOPENSSL_LIBRARY_DIR=$(BUILT_DIR)/lib -DCMAKE_BUILD_TYPE=debug -DQT_QMAKE_EXECUTABLE=$(BUILT_DIR)/bin/qmake ..
 build-vidalia:
 	-mkdir $(VIDALIA_DIR)/build
 	cd $(VIDALIA_DIR)/build && cmake $(VIDALIA_OPTS) && make
 	cd $(VIDALIA_DIR)/build && DESTDIR=$(BUILT_DIR) make install
 
-LIBEVENT_DIR=$(FETCH_DIR)/libevent-$(LIBEVENT_VER)/
+LIBEVENT_DIR=$(FETCH_DIR)/libevent-$(LIBEVENT_VER)
 LIBEVENT_OPTS=--prefix=$(BUILT_DIR)
 build-libevent:
 	cd $(LIBEVENT_DIR) && ./configure $(LIBEVENT_OPTS)
 	cd $(LIBEVENT_DIR) && make -j2
 	cd $(LIBEVENT_DIR) && make install
 
-TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)/
-TOR_OPTS=--with-openssl-dir=$(BUILT_DIR) --with-zlib-dir=$(BUILT_DIR) --with-libevent-dir=$(BUILT_DIR)/lib/ --prefix=$(BUILT_DIR)
+TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)
+TOR_OPTS=--with-openssl-dir=$(BUILT_DIR) --with-zlib-dir=$(BUILT_DIR) --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR)
 build-tor:
 	cd $(TOR_DIR) && ./configure $(TOR_OPTS)
 	cd $(TOR_DIR) && make -j2
@@ -147,7 +154,7 @@ build-tor:
 
 ## Polipo doesn't use autoconf, so we just have to hack their Makefile
 ## This probably needs to be updated if Polipo ever updates their Makefile
-POLIPO_DIR=$(FETCH_DIR)/polipo-$(POLIPO_VER)/
+POLIPO_DIR=$(FETCH_DIR)/polipo-$(POLIPO_VER)
 POLIPO_MAKEFILE=$(CONFIG_SRC)/polipo-Makefile
 build-polipo:
 	cp $(POLIPO_MAKEFILE) $(POLIPO_DIR)/Makefile
@@ -164,7 +171,7 @@ build-all-binaries: unpack-source build-zlib build-openssl build-qt build-vidali
 	echo "If we're here, we've done something right."
 
 ## Location of compiled libraries
-COMPILED_LIBS=$(BUILT_DIR)/lib/
+COMPILED_LIBS=$(BUILT_DIR)/lib
 ## Location of compiled binaries
 COMPILED_BINS=$(BUILT_DIR)/bin/
 
@@ -183,9 +190,7 @@ FIREFOX=$(FETCH_DIR)/Firefox
 PIDGIN=$(COMPILED_BINS)/pidgin
 
 ## Location of utility applications
-#SEVENZIP="/c/Program Files/7-Zip/7z.exe"
 WGET:=$(shell which wget)
-#WINRAR="/c/Program Files/WinRAR/WinRAR.exe"
 
 ## Size of split archive volumes for WinRAR
 SPLITSIZE=1440k
@@ -223,10 +228,7 @@ DEFAULT_EXTENSIONS=torbutton.xpi
 TORBUTTON=https://www.torproject.org/torbutton/releases/torbutton-$(TORBUTTON_VER).xpi
 
 ## Where to download Mozilla language packs
-MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/$(FIREFOX_VER)/win32/xpi
-
-## Where Farsi Language Pack can be downloaded from
-FA_LANGPACK=https://addons.mozilla.org/en-US/firefox/downloads/latest/3667/addon-3667-latest.xpi
+MOZILLA_LANGUAGE=https://releases.mozilla.org/pub/mozilla.org/firefox/releases/$(FIREFOX_VER)/linux-i686/xpi
 
 ## Put more extensions here
 EXTENSIONS_DIR=extensions
@@ -242,6 +244,7 @@ EXTENSIONS_DIR=extensions
 ## Default rule
 ##
 
+#bundle: bundle_en-US
 bundle: bundle_en-US
 
 all-bundles-both:
@@ -250,31 +253,18 @@ all-bundles-both:
 	USE_PIDGIN=0 make -f Makefile.linux all-bundles
 	make -f Makefile.linux clean
 
-all-bundles: all-compressed-bundles all-split-bundles
+all-bundles: all-compressed-bundles
 
 all-compressed-bundles: compressed-bundle_ar \
-	compressed-bundle_en-US \
 	compressed-bundle_de \
 	compressed-bundle_es-ES \
-	compressed-bundle_fa-IR \
+	compressed-bundle_fa \
 	compressed-bundle_fr \
 	compressed-bundle_nl \
 	compressed-bundle_pt-PT \
 	compressed-bundle_ru \
 	compressed-bundle_zh-CN \
 	compressed-bundle_it
-
-all-split-bundles: split-bundle_ar \
-	split-bundle_en-US \
-	split-bundle_de \
-	split-bundle_es-ES \
-	split-bundle_fa-IR \
-	split-bundle_fr \
-	split-bundle_nl \
-	split-bundle_pt-PT \
-	split-bundle_ru \
-	split-bundle_zh-CN \
-	split-bundle_it 
 
 ##
 ## Cleanup
@@ -285,19 +275,9 @@ clean:
 	rm -fr *.tar.gz
 	rm -fr $(DEST) *.stamp
 	rm -f *~
-	rm -fr *.xpi *.jar
+	rm -fr *.xpi *.jar *.zip
 	rm -fr $(NAME)_*
 	cd ../src/RelativeLink/ && $(MAKE) clean
-
-## Also remove the output files
-reallyclean: clean
-	rm -fr $(FETCH_DIR)
-	rm -fr $(IM_COMPRESSED_BASENAME)*_*.exe
-	rm -fr $(IM_COMPRESSED_BASENAME)*_*.rar	
-	rm -fr $(IM_COMPRESSED_BASENAME)*_*_split
-	rm -fr $(DEFAULT_COMPRESSED_BASENAME)*_*.exe
-	rm -fr $(DEFAULT_COMPRESSED_BASENAME)*_*.rar
-	rm -fr $(DEFAULT_COMPRESSED_BASENAME)*_*_split
 
 ##
 ## Generate a non-localized bundle and put in $(DEST)
@@ -351,7 +331,6 @@ install-binaries:
 	cp $(POLIPO) $(APPDIR)
 	# Tor (perhaps we want tor-resolve too?)
 	cp $(TOR) $(APPDIR)
-	# XXX: Need to add libdbus-glib-1.so.2 to this
 
 ## Fixup
 ## Collect up license files
@@ -361,7 +340,7 @@ install-docs:
 	mkdir -p $(DOCSDIR)/Qt
 	mkdir -p $(DOCSDIR)/Polipo
 	cp $(VIDALIA_DIR)/LICENSE* $(VIDALIA_DIR)/CREDITS $(DOCSDIR)/Vidalia
-	cp $(TOR_DIR)/LICENSE $(TOR_DIR)/AUTHORS $(TOR_DIR)/README $(DOCSDIR)/Tor
+	cp $(TOR_DIR)/LICENSE $(TOR_DIR)/README $(DOCSDIR)/Tor
 	cp $(QT_DIR)/LICENSE.GPL* $(QT_DIR)/LICENSE.LGPL $(DOCSDIR)/Qt
 	cp $(POLIPO_DIR)/COPYING  $(POLIPO_DIR)/README $(DOCSDIR)/Polipo
 	# This should be updated to be more generic (version-wise) and more Linux specific
@@ -385,7 +364,8 @@ configure-apps:
 	## Configure Firefox preferences
 	#mkdir -p $(DEST)/.mozilla/Firefox/firefox.default
 	cp -R $(CONFIG_SRC)/firefox-profiles.ini $(DEST)/Data/profiles.ini
-	cp $(CONFIG_SRC)/{bookmarks.html,prefs.js} $(DEST)/Data/profile
+	cp $(CONFIG_SRC)/bookmarks.html $(DEST)/Data/profile
+	cp $(CONFIG_SRC)/prefs.js $(DEST)/Data/profile
 	## Configure Pidgin
 ifeq ($(USE_PIDGIN),1)
 	mkdir -p $(DEST)/PidginPortable/Data/settings/.purple
@@ -426,12 +406,10 @@ torbutton.xpi:
 ## Generic language pack rule
 langpack_%.xpi:
 	$(WGET) -O $@ $(MOZILLA_LANGUAGE)/$*.xpi
-## Persian isn't a supported language by Firefox yet
-langpack_fa-IR.xpi:
-	$(WGET) -O $@ $(FA_LANGPACK)
+
 ## English comes as default
-langpack_en-US.xpi:
-	touch $@
+#langpack_en-US.xpi:
+#	touch $@
 
 ##
 ## Customize the bundle
@@ -441,11 +419,9 @@ bundle_%:
 	LANGCODE=$* make -f Makefile.linux bundle-localized
 compressed-bundle_%:
 	LANGCODE=$* make -f Makefile.linux compressed-bundle-localized
-split-bundle_%:
-	LANGCODE=$* make -f Makefile.linux split-bundle-localized
 
 bundle-localized_%.stamp:
-	make -f Makefile.linux copy-files_$* install-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language
+	make -f Makefile.linux copy-files_$* install-extensions install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language
 	touch bundle-localized_$*.stamp
 
 bundle-localized: bundle-localized_$(LANGCODE).stamp
@@ -455,11 +431,6 @@ compressed-bundle-localized: bundle-localized_$(LANGCODE).stamp
 	-mkdir $(DISTDIR)
 	tar -cvzf $(DISTDIR)/$(DEFAULT_COMPRESSED_BASENAME)$(LANGCODE).tar.gz $(NAME)_$(LANGCODE);
 
-split-bundle-localized: bundle-localized_$(LANGCODE).stamp
-	rm -fr $(COMPRESSED_NAME)_$(LANGCODE)_split; mkdir $(COMPRESSED_NAME)_$(LANGCODE)_split
-	cd $(NAME)_$(LANGCODE); $(WINRAR) a -r -s -ibck -sfx -v$(SPLITSIZE) \
-            ../$(COMPRESSED_NAME)_$(LANGCODE)_split/$(COMPRESSED_NAME)_$(LANGCODE)_split.exe $(NAME)
-
 copy-files_%: generic-bundle.stamp
 	rm -fr $(NAME)_$*
 	mkdir $(NAME)_$*
@@ -468,15 +439,25 @@ copy-files_%: generic-bundle.stamp
 BUNDLE=$(NAME)_$(LANGCODE)/$(NAME)
 DUMMYPROFILE=$(BUNDLE)/.mozilla/
 
-install-extensions: $(DEFAULT_EXTENSIONS) langpack_$(LANGCODE).xpi
-	mkdir -p $(BUNDLE)/.mozilla/extensions/$(FF_VENDOR_ID)/$(TB_APP_ID)
+## This is a little overcomplicated, but I'm keeping it here in case there are
+## extensions we want to use in the future
+install-extensions: $(DEFAULT_EXTENSIONS)
 	for extension in *.xpi; \
 		do \
-			cp $$extension $(BUNDLE)/.mozilla/extensions/$(FF_VENDOR_ID)/$(TB_APP_ID)/$$extension.zip; \
+			cp $$extension $$extension.zip; \
+			ext_id=$$(unzip -p $$extension.zip install.rdf | sed -n '/<em:id>/{s#[^<]*<em:id>\(.*\)</em:id>#\1#p;q}'); \
+			mkdir -p $(BUNDLE)/.mozilla/extensions/$(FF_VENDOR_ID)/$$ext_id; \
+			cp $$extension $(BUNDLE)/.mozilla/extensions/$(FF_VENDOR_ID)/$$ext_id/$$extension.zip; \
+			(cd $(BUNDLE)/.mozilla/extensions/$(FF_VENDOR_ID)/$$ext_id/ && unzip *.zip && rm *.zip); \
 		done
-	cd $(BUNDLE)/.mozilla/extensions/$(FF_VENDOR_ID)/$(TB_APP_ID)/ && \
-	unzip torbutton*zip
 
+## Language extensions need to be handled differently from other extensions
+install-lang-extensions: $(filter-out langpack_en-US.xpi,langpack_$(LANGCODE).xpi)
+ifneq ($(LANGCODE), en-US)
+	mkdir -p $(BUNDLE)/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org
+	cp langpack_$(LANGCODE).xpi $(BUNDLE)/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org/langpack_$(LANGCODE).zip
+	(cd $(BUNDLE)/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org && unzip *.zip && rm *.zip)
+endif
 ## Set the language for Vidalia
 patch-vidalia-language:
 	## Patch Vidalia
@@ -493,8 +474,11 @@ endif
 
 patch-firefox-language:
 	## Patch the default Firefox prefs.js
-	cp $(CONFIG_SRC)/{bookmarks.html,prefs.js} $(BUNDLE)/App/Firefox/defaults/profile/
-	cp $(CONFIG_SRC)/{bookmarks.html,prefs.js} $(BUNDLE)/Data/profile
+	## Don't use {} because they aren't always interpreted correctly. Thanks, sh. 
+	cp $(CONFIG_SRC)/bookmarks.html $(BUNDLE)/App/Firefox/defaults/profile/
+	cp $(CONFIG_SRC)/prefs.js $(BUNDLE)/App/Firefox/defaults/profile/
+	cp $(CONFIG_SRC)/bookmarks.html $(BUNDLE)/Data/profile
+	cp $(CONFIG_SRC)/prefs.js $(BUNDLE)/Data/profile
 	./patch-firefox-language.sh $(BUNDLE)/App/Firefox/defaults/profile/prefs.js $(LANGCODE) -e
 	./patch-firefox-language.sh $(BUNDLE)/Data/profile/prefs.js $(LANGCODE) -e
 
