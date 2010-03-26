@@ -52,6 +52,7 @@ PIDGIN_VER=2.6.4
 OTR_VER=3.2.0
 FIREFOX_VER=3.5.8
 TORBUTTON_VER=1.2.4
+NOSCRIPT_VER=1.9.9.57
 
 ## Extension IDs
 FF_VENDOR_ID:=\{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
@@ -70,7 +71,7 @@ FIREFOX_PACKAGE=firefox-$(FIREFOX_VER).tar.bz2
 ## Location of files for download
 ZLIB_URL=http://www.gzip.org/zlib/$(ZLIB_PACKAGE)
 OPENSSL_URL=https://www.openssl.org/source/$(OPENSSL_PACKAGE)
-QT_URL=ftp://ftp.qtsoftware.com/qt/source/$(QT_PACKAGE)
+QT_URL=ftp://ftp.qt.nokia.com/qt/source/$(QT_PACKAGE)
 VIDALIA_URL=https://www.torproject.org/vidalia/dist/$(VIDALIA_PACKAGE)
 LIBEVENT_URL=http://www.monkey.org/~provos/$(LIBEVENT_PACKAGE)
 TOR_URL=https://www.torproject.org/dist/$(TOR_PACKAGE)
@@ -166,8 +167,7 @@ build-pidgin:
 build-firefox:
 	echo "We're using a prebuilt firefox. Fix this someday!"
 
-# source-dance
-build-all-binaries: unpack-source build-zlib build-openssl build-qt build-vidalia build-libevent build-tor build-polipo build-pidgin build-firefox
+build-all-binaries: source-dance unpack-source build-zlib build-openssl build-qt build-vidalia build-libevent build-tor build-polipo build-pidgin build-firefox
 	echo "If we're here, we've done something right."
 
 ## Location of compiled libraries
@@ -221,12 +221,13 @@ COMPRESSED_NAME=$(DEFAULT_COMPRESSED_NAME)
 endif
 
 ## Extensions to install by default
-DEFAULT_EXTENSIONS=torbutton.xpi
+DEFAULT_EXTENSIONS=torbutton.xpi noscript.xpi betterprivacy.xpi
 
 ## Where to download Torbutton from
 #TORBUTTON=https://addons.mozilla.org/en-US/firefox/downloads/latest/2275/addon-2275-latest.xpi?src=addondetail
 TORBUTTON=https://www.torproject.org/torbutton/releases/torbutton-$(TORBUTTON_VER).xpi
-
+NOSCRIPT=https://secure.informaction.com/download/releases/noscript-$(NOSCRIPT_VER).xpi
+BETTERPRIVACY=https://addons.mozilla.org/en-US/firefox/downloads/latest/6623/addon-6623-latest.xpi
 ## Where to download Mozilla language packs
 MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/$(FIREFOX_VER)/linux-i686/xpi
 
@@ -365,7 +366,7 @@ configure-apps:
 	#mkdir -p $(DEST)/.mozilla/Firefox/firefox.default
 	cp -R $(CONFIG_SRC)/firefox-profiles.ini $(DEST)/Data/profiles.ini
 	cp $(CONFIG_SRC)/bookmarks.html $(DEST)/Data/profile
-	cp $(CONFIG_SRC)/prefs.js $(DEST)/Data/profile
+	cp $(CONFIG_SRC)/linux-prefs.js $(DEST)/Data/profile/prefs.js
 	## Configure Pidgin
 ifeq ($(USE_PIDGIN),1)
 	mkdir -p $(DEST)/PidginPortable/Data/settings/.purple
@@ -403,6 +404,14 @@ strip-it-stripper:
 torbutton.xpi:
 	$(WGET) -O $@ $(TORBUTTON)
 
+## NoScript development version
+noscript.xpi: 
+	$(WGET) -O $@ $(NOSCRIPT)
+
+## BetterPrivacy
+betterprivacy.xpi:
+	$(WGET) -O $@ $(BETTERPRIVACY)
+
 ## Generic language pack rule
 langpack_%.xpi:
 	$(WGET) -O $@ $(MOZILLA_LANGUAGE)/$*.xpi
@@ -421,7 +430,7 @@ compressed-bundle_%:
 	LANGCODE=$* make -f Makefile.linux compressed-bundle-localized
 
 bundle-localized_%.stamp:
-	make -f Makefile.linux copy-files_$* install-extensions install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language
+	make -f Makefile.linux copy-files_$* install-extensions install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language update-extension-pref
 	touch bundle-localized_$*.stamp
 
 bundle-localized: bundle-localized_$(LANGCODE).stamp
@@ -459,6 +468,12 @@ ifneq ($(LANGCODE), en-US)
 	cp langpack_$(LANGCODE).xpi $(BUNDLE)/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org/langpack_$(LANGCODE).zip
 	(cd $(BUNDLE)/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org && unzip *.zip && rm *.zip)
 endif
+
+## Fix prefs.js since extensions.checkCompatibility, false doesn't work
+update-extension-pref:
+	ext_ver=$$(sed -n '/em:version/{s,.*="\(.*\)".*,\1,p;q}' $(BUNDLE)/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org/install.rdf); \
+	sed -i -e "s/BUNDLELOCALE/langpack-$(LANGCODE)@firefox.mozilla.org:$$ext_ver/g" $(BUNDLE)/Data/profile/prefs.js
+
 ## Set the language for Vidalia
 patch-vidalia-language:
 	## Patch Vidalia
@@ -477,28 +492,14 @@ patch-firefox-language:
 	## Patch the default Firefox prefs.js
 	## Don't use {} because they aren't always interpreted correctly. Thanks, sh. 
 	cp $(CONFIG_SRC)/bookmarks.html $(BUNDLE)/App/Firefox/defaults/profile/
-	cp $(CONFIG_SRC)/prefs.js $(BUNDLE)/App/Firefox/defaults/profile/
+	cp $(CONFIG_SRC)/linux-prefs.js $(BUNDLE)/App/Firefox/defaults/profile/prefs.js
 	cp $(CONFIG_SRC)/bookmarks.html $(BUNDLE)/Data/profile
-	cp $(CONFIG_SRC)/prefs.js $(BUNDLE)/Data/profile
+	cp $(CONFIG_SRC)/linux-prefs.js $(BUNDLE)/Data/profile/prefs.js
 	./patch-firefox-language.sh $(BUNDLE)/App/Firefox/defaults/profile/prefs.js $(LANGCODE) -e
 	./patch-firefox-language.sh $(BUNDLE)/Data/profile/prefs.js $(LANGCODE) -e
 
-###
-### Utilities
-###
+## Fix prefs.js since extensions.checkCompatibility, false doesn't work
+update-extension-pref:
+	ext_ver=$$(sed -n '/em:version/{s,.*="\(.*\)".*,\1,p;q}' $(BUNDLE)/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org/install.rdf); \
+	sed -i -e "s/LOCALE/langpack-$(LANGCODE)@firefox.mozilla.org:$$ext_ver/g" $(BUNDLE)/Data/profile/prefs.js
 
-## Copy Firefox preferences from a run of FirefoxPortable to be the default
-apply-prefs:
-	cp $(DEST)/FirefoxPortable/Data/profile/prefs.js $(CONFIG_SRC)
-
-## Export the source code of the bundle
-SRCNAME=$(COMPRESSED_NAME)
-SRCDEST=/tmp
-SRCDESTPATH=$(SRCDEST)/$(SRCNAME)
-srcdist:
-	rm -fr $(SRCDESTPATH)
-	svn export https://tor-svn.freehaven.net/svn/torbrowser/trunk/ \
-                   $(SRCDESTPATH)
-	cd $(SRCDEST); tar --exclude src/archived-patches \
-                           --exclude src/current-patches  --exclude src/processtest \
-                           -czvf $(SRCNAME)-src.tar.gz $(SRCNAME)

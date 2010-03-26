@@ -40,6 +40,8 @@ user_pref("browser.shell.checkDefaultBrowser", false);
 user_pref("browser.startup.homepage", "https://check.torproject.org/?lang=BUNDLELOCALE&small=1");
 user_pref("browser.startup.homepage_override.mstone", "rv:1.9.1.8");
 user_pref("dom.storage.enabled", false);
+user_pref("extensions.checkCompatibility", false);
+user_pref("extensions.checkUpdateSecurity", false);
 user_pref("extensions.lastAppVersion", "3.5.8");
 user_pref("extensions.torbutton.fresh_install", false);
 user_pref("extensions.torbutton.http_port", 8118);
