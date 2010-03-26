@@ -258,6 +258,7 @@ all-bundles: all-compressed-bundles
 
 all-compressed-bundles: compressed-bundle_ar \
 	compressed-bundle_de \
+	compressed-bundle_en-US \
 	compressed-bundle_es-ES \
 	compressed-bundle_fa \
 	compressed-bundle_fr \
