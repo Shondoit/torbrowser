@@ -1,11 +1,14 @@
 #!/bin/sh
 #
-# Gnu/Linux does not really require something like RelativeLink.c
+# GNU/Linux does not really require something like RelativeLink.c
 # However, we do want to have the same look and feel with similiar features.
 # In the future, we may want this to be a C binary with a custom icon but at the moment
 # it's quite simple to just use a shell script
 #
 # To run in debug mode simply pass --debug
+#
+# Copyright 2010 Erinn Clark <erinn@torproject.org>
+
 if [ $1 ]
 	then 
 	debug=$1

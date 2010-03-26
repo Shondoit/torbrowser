@@ -345,7 +345,7 @@ install-docs:
 	cp $(QT_DIR)/LICENSE.GPL* $(QT_DIR)/LICENSE.LGPL $(DOCSDIR)/Qt
 	cp $(POLIPO_DIR)/COPYING  $(POLIPO_DIR)/README $(DOCSDIR)/Polipo
 	# This should be updated to be more generic (version-wise) and more Linux specific
-	cp ../README $(DOCSDIR)/README-TorBrowserBundle
+	cp ../README.Linux $(DOCSDIR)/README-TorBrowserBundle
 
 ## Copy over Firefox
 install-firefox:
@@ -443,10 +443,10 @@ compressed-bundle-localized: bundle-localized_$(LANGCODE).stamp
 
 copy-files_%: generic-bundle.stamp
 	rm -fr $(NAME)_$*
-	mkdir $(NAME)_$*
-	cp -R $(DEST) $(NAME)_$*/$(NAME)
+	#mkdir $(NAME)_$*
+	cp -r $(DEST) $(NAME)_$*
 
-BUNDLE=$(NAME)_$(LANGCODE)/$(NAME)
+BUNDLE=$(NAME)_$(LANGCODE)
 DUMMYPROFILE=$(BUNDLE)/.mozilla/
 
 ## This is a little overcomplicated, but I'm keeping it here in case there are
