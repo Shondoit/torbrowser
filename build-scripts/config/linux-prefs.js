@@ -54,7 +54,7 @@ user_pref("dom.event.contextmenu.enabled", false);
 user_pref("dom.storage.enabled", false);
 user_pref("extensions.checkCompatibility", false);
 user_pref("extensions.checkUpdateSecurity", false);
-user_pref("extensions.enabledItems", "BUNDLELOCALE,{73a6fe31-595d-460b-a920-fcc0f8843232}:1.9.9.57,{e0204bd5-9d31-402b-a99d-a6aa8ffebdca}:1.2.4,{972ce4c6-7e08-4474-a285-3208198ce6fd}:3.5.8");
+user_pref("extensions.enabledItems", "SHPONKA,{73a6fe31-595d-460b-a920-fcc0f8843232}:1.9.9.57,{e0204bd5-9d31-402b-a99d-a6aa8ffebdca}:1.2.4,{972ce4c6-7e08-4474-a285-3208198ce6fd}:3.5.8");
 user_pref("extensions.lastAppVersion", "3.5.8");
 user_pref("extensions.torbutton.fresh_install", false);
 user_pref("extensions.torbutton.http_port", 8118);
