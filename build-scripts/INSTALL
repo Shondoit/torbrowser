@@ -2,7 +2,7 @@
 ### Instructions for building Tor Browser Bundle components
 ###
 ### Copyright 2007 Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217/>
-### Copyright 2008 The Tor Project <https://www.torproject.org/> 
+### Copyright 2008 The Tor Project <https://www.torproject.org/>
 ### See LICENSE for licensing information
 ###
 ### $Id$
@@ -174,7 +174,7 @@ Launch that now. It's found in:
 
 Installing GNU wget is optional. If you installed Python, you do not need to
 install wget.  It is not required as basic wget functionality is implemented in
-Python. Instructions for downloading, compiling and installing wget for MSYS 
+Python. Instructions for downloading, compiling and installing wget for MSYS
 can be found here:
 
     http://www.mingw.org/MinGWiki/index.php/mingwPORT
@@ -193,7 +193,7 @@ Download version 2.8.0:
   http://www.cmake.org/files/v2.8/cmake-2.8.0-win32-x86.exe
 
 Run the installer with Windows Explorer and install into:
-    
+
     'C:\Program Files\CMake 2.8'
 
 Installing Qt
@@ -211,7 +211,7 @@ When prompted, install Qt into 'C:\Qt\4.6.2'
 You will be prompted for the install path for your MinGW directory, enter 'C:\MinGW'
 You may have an error about win32api.h being not found. This is not true. You
 have win32api.h and Qt is wrong.  This is a result of the Qt installer not
-understanding how to count version numbers. This is probably fixed in newer 
+understanding how to count version numbers. This is probably fixed in newer
 versions of Qt. YMMV.
 
 Installing msysDTK
@@ -282,7 +282,7 @@ Replace the stock Polipo Makefile with the one above:
     mv Makefile Makefile-dist-unused
     mv /c/Documents\ and\ Settings/Administrator/Desktop/Makefile.mingw Makefile
 
-Now build Polipo: 
+Now build Polipo:
 
     make
 
@@ -297,7 +297,7 @@ Now we'll download zlib and install it.
 Download the zlib source:
         http://www.zlib.net/zlib-1.2.3.tar.gz
 
-Currently, zlib doesn't have package signatures. We emailed the zlib team and are awaiting a reply. 
+Currently, zlib doesn't have package signatures. We emailed the zlib team and are awaiting a reply.
 
 Extract zlib:
         $ cd /c/build/
@@ -420,7 +420,7 @@ Download Vidalia:
 Verify the signature.
 
 Unpack Vidalia:
-   
+
     tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/vidalia-0.2.7.tar.gz
     mv vidalia-0.2.7/ vidalia
 
@@ -438,7 +438,7 @@ Set a proper environment:
 Create the proper MSYS Makefiles and don't forget the '.' at the end!
 
     cd /c/build/vidalia
-    cmake -G "MSYS Makefiles" . 
+    cmake -G "MSYS Makefiles" .
 
 You may see some errors:
 
@@ -639,7 +639,7 @@ language pack code from:
 
     http://releases.mozilla.org/pub/mozilla.org/firefox/releases/2.0.0.18/win32/xpi
 
-If the Mozilla code differs from the Vidalia one, update 
+If the Mozilla code differs from the Vidalia one, update
 patch-vidalia-language.sh accordingly.
 
 
