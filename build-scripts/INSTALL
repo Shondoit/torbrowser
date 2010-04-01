@@ -533,7 +533,7 @@ Download FirefoxPortable:
 
     http://prdownloads.sourceforge.net/portableapps/FirefoxPortable_3.5.9_English.paf.exe
 
-Run the installer and select it into: 'C:\build\FirefoxPortable-<version>>'
+Run the installer and select it into: 'C:\build\FirefoxPortable-<version>'
 
 If you use FirefoxPortable, you can skip past the following build steps and go directly to the customization section.
 
