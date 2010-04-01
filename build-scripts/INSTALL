@@ -398,11 +398,11 @@ Building Tor
 
 Download, unpack, build and install Tor:
         https://www.torproject.org/download.html
-        https://www.torproject.org/dist/tor-0.2.1.23.tar.gz
-        https://www.torproject.org/dist/tor-0.2.1.23.gz.asc
+        https://www.torproject.org/dist/tor-0.2.1.25.tar.gz
+        https://www.torproject.org/dist/tor-0.2.1.25.gz.asc
         $ cd /c/build/
-        tar -C /c/build -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/tor-0.2.1.23.tar.gz
-        $ cd tor-0.2.1.23/
+        tar -C /c/build -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/tor-0.2.1.25.tar.gz
+        $ cd tor-0.2.1.25/
         ./configure
         make
 
@@ -531,7 +531,7 @@ Currently the Tor Browser Bundle uses FirefoxPortable binaries.
 
 Download FirefoxPortable:
 
-    http://prdownloads.sourceforge.net/portableapps/FirefoxPortable_3.5.7_English.paf.exe
+    http://prdownloads.sourceforge.net/portableapps/FirefoxPortable_3.5.9_English.paf.exe
 
 Run the installer and select it into: 'C:\build\FirefoxPortable-<version>>'
 
@@ -612,8 +612,8 @@ An example to change the Qt Lib version:
 
 And then change the Tor version:
 
-        From: TOR=/c/build/tor-0.2.1.23
-        To: TOR=/c/build/tor-0.2.1.23
+        From: TOR=/c/build/tor-0.2.1.25
+        To: TOR=/c/build/tor-0.2.1.25
 
 Now you can run "make bundle_LANGUAGE", e.g. "make bundle_en-US".
 

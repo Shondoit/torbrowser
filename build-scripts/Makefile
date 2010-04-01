@@ -18,12 +18,12 @@ OPENSSL=/c/build/openssl-0.9.8l/bin
 
 ## Versions
 TORBUTTON_VERSION=1.2.4
-FIREFOX_VERSION=3.5.8
+FIREFOX_VERSION=3.5.9
 PIDGIN_VERSION=2.6.6
 
 ## Location of bundle components
 VIDALIA=/c/build/vidalia-0.2.7
-TOR=/c/build/tor-0.2.1.24
+TOR=/c/build/tor-0.2.1.25
 POLIPO=/c/build/polipo-1.0.4.1
 FIREFOX_SRC=/c/build/FirefoxPortable-$(FIREFOX_VERSION)
 PIDGIN_SRC=/c/build/PidginPortable-$(PIDGIN_VERSION)
