@@ -9,13 +9,15 @@ Tor 0.2.2.10-alpha (with libevent-1.4.13, zlib-1.2.3 and openssl-0.9.8l)
 Polipo 1.0.4.1
 Firefox 3.5.8
  \_ Torbutton 1.2.4
+ |_ NoScript 1.9.9.57
+ |_ BetterPrivacy 1.4.7
 
 Usage
 -----
 
 Extract the bundle with:
 
-tar -xvzf tor-browser-gnu-linux-0.0.1.tar.gz
+tar -xvzf tor-browser-gnu-linux*.tar.gz
 
 This will create a directory named tor-browser_LANG. Click on this directory or
 cd into it and execute the 'start-tor-browser' script. This will start Vidalia.
@@ -27,4 +29,4 @@ To exit, close Firefox. Vidalia will automatically clean up and exit.
 Changelog
 ---------
 
-0.0.1: Initial release (2010-03-25)
+1.0.0: Initial release (2010-03-25)

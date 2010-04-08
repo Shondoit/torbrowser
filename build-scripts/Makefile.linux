@@ -208,7 +208,7 @@ NAME=tor-browser
 DISTDIR=tbbl-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.0.0-dev
+VERSION=1.0.1-dev
 DEFAULT_COMPRESSED_BASENAME=tor-browser-gnu-linux-$(VERSION)-
 IM_COMPRESSED_BASENAME=tor-im-browser-gnu-linux-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
@@ -263,6 +263,7 @@ all-compressed-bundles: compressed-bundle_ar \
 	compressed-bundle_fa \
 	compressed-bundle_fr \
 	compressed-bundle_nl \
+	compressed-bundle_pl \
 	compressed-bundle_pt-PT \
 	compressed-bundle_ru \
 	compressed-bundle_zh-CN \
@@ -302,6 +303,7 @@ directory-structure:
 	rm -fr $(DEST)
 	mkdir -p $(APPDIR)
 	mkdir -p $(LIBSDIR)
+	mkdir -p $(LIBSDIR)/libz
 	mkdir -p $(DATADIR)/Tor
 	mkdir -p $(DATADIR)/Vidalia
 	mkdir -p $(DATADIR)/Polipo
@@ -319,7 +321,7 @@ install-binaries:
            $(QT)/libQtNetwork.so.4.5.3 $(LIBSDIR)
 	cp -d $(QT)/libQtXml.so $(QT)/libQtXml.so.4 $(QT)/libQtXml.so.4.5 $(QT)/libQtXml.so.4.5.3 $(LIBSDIR)
 	# zlib
-	cp -d $(ZLIB)/libz.so $(ZLIB)/libz.so.1 $(ZLIB)/libz.so.1.2.3 $(LIBSDIR)
+	cp -d $(ZLIB)/libz.so $(ZLIB)/libz.so.1 $(ZLIB)/libz.so.1.2.3 $(LIBSDIR)/libz
 	# Libevent
 	cp -d $(LIBEVENT)/libevent-1.4.so.2 $(LIBEVENT)/libevent-1.4.so.2.1.3 $(LIBEVENT)/libevent_core.so \
            $(LIBEVENT)/libevent_core-1.4.so.2 $(LIBEVENT)/libevent_core-1.4.so.2.1.3 \
@@ -395,7 +397,8 @@ strip-it-stripper:
 	strip $(APPDIR)/tor
 	strip $(APPDIR)/polipo
 	strip $(APPDIR)/vidalia
-	strip $(LIBSDIR)/*
+	strip $(LIBSDIR)/*.so*
+	strip $(LIBSDIR)/libz/*.so*
 
 ##
 ## How to create required extensions
@@ -470,11 +473,6 @@ ifneq ($(LANGCODE), en-US)
 	(cd $(BUNDLE)/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org && unzip *.zip && rm *.zip)
 endif
 
-## Fix prefs.js since extensions.checkCompatibility, false doesn't work
-update-extension-pref:
-	ext_ver=$$(sed -n '/em:version/{s,.*="\(.*\)".*,\1,p;q}' $(BUNDLE)/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org/install.rdf); \
-	sed -i -e "s/BUNDLELOCALE/langpack-$(LANGCODE)@firefox.mozilla.org:$$ext_ver/g" $(BUNDLE)/Data/profile/prefs.js
-
 ## Set the language for Vidalia
 patch-vidalia-language:
 	## Patch Vidalia
@@ -502,5 +500,5 @@ patch-firefox-language:
 ## Fix prefs.js since extensions.checkCompatibility, false doesn't work
 update-extension-pref:
 	ext_ver=$$(sed -n '/em:version/{s,.*="\(.*\)".*,\1,p;q}' $(BUNDLE)/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org/install.rdf); \
-	sed -i -e "s/LOCALE/langpack-$(LANGCODE)@firefox.mozilla.org:$$ext_ver/g" $(BUNDLE)/Data/profile/prefs.js
+	sed -i -e "s/SHPONKA/langpack-$(LANGCODE)@firefox.mozilla.org:$$ext_ver/g" $(BUNDLE)/Data/profile/prefs.js
 

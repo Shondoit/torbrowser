@@ -9,15 +9,13 @@
 #
 # Copyright 2010 Erinn Clark <erinn@torproject.org>
 
-if [ $1 ]
-	then 
+if [ $1 ]; then 
 	debug=$1
 	printf "\nDebug enabled.\n\n"
 fi
 
 # If ${PWD} results in a zero length HOME, we can try something else...
-if [ ! "${PWD}" ]
-	then
+if [ ! "${PWD}" ]; then
 	# "hacking around some braindamage"
 	HOME=`pwd`
 	export HOME
@@ -27,9 +25,14 @@ else
 	export HOME
 fi
 
+if ldd ./App/Firefox/firefox-bin | grep -q "libz\.so\.1.*not found"; then
+	LD_LIBRARY_PATH=${HOME}/Lib:${HOME}/Lib/libz
+else
+	LD_LIBRARY_PATH=${HOME}/Lib
+fi
+
 LDPATH=${HOME}/Lib/
 export LDPATH
-LD_LIBRARY_PATH=${HOME}/Lib/
 export LD_LIBRARY_PATH
 DYLD_PRINT_LIBRARIES=1
 export DYLD_PRINT_LIBRARIES
@@ -38,33 +41,28 @@ export DYLD_PRINT_LIBRARIES
 RUNNING=0
 for process in tor vidalia polipo privoxy
         do pid=`pidof $process`
-        if [ -n "$pid" ]
-        then
-                printf "\n$process is already running as PID $pid\n\n"
-                RUNNING=1
-        fi
-        done
+        if [ -n "$pid" ]; then
+		printf "\n$process is already running as PID $pid\n\n"
+		RUNNING=1
+	fi
+	done
 
-if [ $RUNNING -eq 1 ]
-        then
-                printf "Please shut down the above process(es) before running Tor Browser Bundle.\n\n"
-        exit 0
+if [ $RUNNING -eq 1 ]; then
+	printf "Please shut down the above process(es) before running Tor Browser Bundle.\n\n"
+	exit 0
 fi
 
 
-if [ "${debug}" ]
-	then
-		if [ -n "${surveysays}" ]
-		then 
+if [ "${debug}" ]; then
+	if [ -n "${surveysays}" ]; then 
 		printf "\nSurvey says: $surveysays\n\n"
-		fi
+	fi
   	
-		# this is likely unportable to Mac OS X or other non gnu netstat binaries
+		# this is likely unportable to Mac OS X or other netstat binaries
   		for port in "8118" "9050"
   			do
 			BOUND=`netstat -tan 2>&1|grep 127.0.0.1":${port}[^:]"|grep -v TIME_WAIT`
-			if [ "${BOUND}" ]
-			then
+			if [ "${BOUND}" ]; then
 			printf "\nLikely problem detected: It appears that you have something listening on ${port}\n"
 			printf "\nWe think this because of the following: ${BOUND}\n"
 			fi
