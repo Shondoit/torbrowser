@@ -3,29 +3,23 @@
 ### Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217/>
 ###
 
-Vidalia modifications
----------------------
-
-- Prevent user from starting Firefox manually while Tor is still
-  starting up
-  OR (preferably)
-- Allow normal Firefox and Tor Browser to co-exist safely
-[mid priority]
-
-- Make Vidalia kill Firefox when it exits. Currently Vidalia
-  terminates the process, but killing FirefoxPortable does not end Firefox.
-  Either we could kill firefox.exe directly, or wait until Vidalia
-  launches Firefox.
-  Let's wait until Vidalia launches Firefox directly. -RD
-
 Firefox modifications
 ---------------------
 
+- Apply chrisd's SOCKS patch to remove the need for an http proxy
+  altogether. chrisd's patch is linked here,
+https://bugzilla.mozilla.org/show_bug.cgi?id=280661
+
 - Produce new branding so we don't infringe on the Mozilla trademarks
 [ Instructions here http://kb.mozillazine.org/Rebranding_Firefox ]
+[ We've sent 3 emails with no response so far.  -Andrew]
 [mid priority]
 
 - Get FirefoxPortable building
+OR (preferably)
+  Build our own firefox with our desired customizations
+OR (possibly better)
+  Scrap Firefox and switch to a browser with Tor integration.
 [mid priority]
 
 - Eventually try to remove NSIS dependency for FirefoxPortable and
@@ -103,12 +97,6 @@ General
 
   A forum post requesting package signatures have been posted for 7zip:
   http://sourceforge.net/forum/message.php?msg_id=4982530
-
-Questions
-=========
-
-- Firefox 3 will not support Windows prior to XP. Is this a problem for
-our target audience?
 
 Done
 ====
@@ -260,3 +248,19 @@ portable bundle ]
 - Come up with a new name
 [top priority]
 
+Vidalia modifications
+---------------------
+
+- Prevent user from starting Firefox manually while Tor is still
+  starting up
+  OR (preferably)
+- Allow normal Firefox and Tor Browser to co-exist safely
+[mid priority]
+
+- Make Vidalia kill Firefox when it exits. Currently Vidalia
+  terminates the process, but killing FirefoxPortable does not end Firefox.
+  Either we could kill firefox.exe directly, or wait until Vidalia
+  launches Firefox.
+
+- Firefox 3 will not support Windows prior to XP. Is this a problem for
+  our userbase?  [Turns out, no -Andrew]
