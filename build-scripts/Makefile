@@ -17,12 +17,12 @@ QT=/c/Qt/4.6.2/bin
 OPENSSL=/c/build/openssl-0.9.8l/bin
 
 ## Versions
-TORBUTTON_VERSION=1.2.4
+TORBUTTON_VERSION=1.2.5
 FIREFOX_VERSION=3.5.9
 PIDGIN_VERSION=2.6.6
 
 ## Location of bundle components
-VIDALIA=/c/build/vidalia-0.2.7
+VIDALIA=/c/build/vidalia-0.2.8
 TOR=/c/build/tor-0.2.1.25
 POLIPO=/c/build/polipo-1.0.4.1
 FIREFOX_SRC=/c/build/FirefoxPortable-$(FIREFOX_VERSION)
@@ -106,7 +106,8 @@ all-compressed-bundles: compressed-bundle_ar \
 	compressed-bundle_pt-PT \
 	compressed-bundle_ru \
 	compressed-bundle_zh-CN \
-	compressed-bundle_it
+	compressed-bundle_it \
+    compressed-bundle_vi
 
 all-split-bundles: split-bundle_ar \
 	split-bundle_en-US \
@@ -119,7 +120,8 @@ all-split-bundles: split-bundle_ar \
 	split-bundle_pt-PT \
 	split-bundle_ru \
 	split-bundle_zh-CN \
-	split-bundle_it
+	split-bundle_it \
+    split-bundle_vi
 
 ##
 ## Cleanup
