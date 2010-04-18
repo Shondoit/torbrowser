@@ -44,14 +44,14 @@ TBB_FINAL=$(BUILT_DIR)/TBBL
 ZLIB_VER=1.2.3
 OPENSSL_VER=0.9.8l
 QT_VER=4.5.3
-VIDALIA_VER=0.2.7
+VIDALIA_VER=0.2.8
 LIBEVENT_VER=1.4.13-stable
-TOR_VER=0.2.2.10-alpha
-POLIPO_VER=1.0.4
+TOR_VER=0.2.2.11-alpha
+POLIPO_VER=1.0.4.1
 PIDGIN_VER=2.6.4
 OTR_VER=3.2.0
 FIREFOX_VER=3.5.8
-TORBUTTON_VER=1.2.4
+TORBUTTON_VER=1.2.5
 NOSCRIPT_VER=1.9.9.57
 
 ## Extension IDs
@@ -267,7 +267,8 @@ all-compressed-bundles: compressed-bundle_ar \
 	compressed-bundle_pt-PT \
 	compressed-bundle_ru \
 	compressed-bundle_zh-CN \
-	compressed-bundle_it
+	compressed-bundle_it \
+	compressed-bundle_vi
 
 ##
 ## Cleanup
