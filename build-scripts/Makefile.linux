@@ -46,7 +46,7 @@ OPENSSL_VER=0.9.8l
 QT_VER=4.5.3
 VIDALIA_VER=0.2.8
 LIBEVENT_VER=1.4.13-stable
-TOR_VER=0.2.2.12-alpha
+TOR_VER=0.2.2.13-alpha
 POLIPO_VER=1.0.4.1
 PIDGIN_VER=2.6.4
 OTR_VER=3.2.0
@@ -208,7 +208,7 @@ NAME=tor-browser
 DISTDIR=tbbl-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.0.3-dev
+VERSION=1.0.4-dev
 DEFAULT_COMPRESSED_BASENAME=tor-browser-gnu-linux-$(VERSION)-
 IM_COMPRESSED_BASENAME=tor-im-browser-gnu-linux-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
