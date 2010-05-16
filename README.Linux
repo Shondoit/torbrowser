@@ -29,6 +29,10 @@ To exit, close Firefox. Vidalia will automatically clean up and exit.
 Changelog
 ---------
 
+1.0.5: Released 2010-05-15
+       Fix missing OpenSSL shared library bug
+       (thanks to bee at http://honeybeenet.altervista.org/homepage/)
+
 1.0.4: Released 2010-04-24
        Update Tor to 0.2.2.13-alpha
 

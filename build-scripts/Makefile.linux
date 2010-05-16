@@ -35,7 +35,7 @@
 ARCH_TYPE=$(shell uname -m)
 
 ## Location of directory for source unpacking
-FETCH_DIR=/tmp
+FETCH_DIR=/home/e/build
 ## Location of directory for prefix/destdir/compiles/etc
 BUILT_DIR=$(FETCH_DIR)/built
 TBB_FINAL=$(BUILT_DIR)/TBBL
@@ -113,11 +113,7 @@ build-zlib:
 	cd $(ZLIB_DIR) && make install
 
 OPENSSL_DIR=$(FETCH_DIR)/openssl-$(OPENSSL_VER)
-ifeq (x86_64,$(ARCH_TYPE))
 OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 shared zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -I$(BUILT_DIR)/lib
-else
-OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -I$(BUILT_DIR)/lib
-endif
 build-openssl:
 	cd $(OPENSSL_DIR) && ./config $(OPENSSL_OPTS)
 	cd $(OPENSSL_DIR) && make depend
@@ -166,8 +162,8 @@ build-pidgin:
 
 build-firefox:
 	echo "We're using a prebuilt firefox. Fix this someday!"
-
-build-all-binaries: source-dance unpack-source build-zlib build-openssl build-qt build-vidalia build-libevent build-tor build-polipo build-pidgin build-firefox
+# source-dance unpack-source
+build-all-binaries: build-zlib build-openssl build-qt build-vidalia build-libevent build-tor build-polipo build-pidgin build-firefox
 	echo "If we're here, we've done something right."
 
 ## Location of compiled libraries
@@ -208,7 +204,7 @@ NAME=tor-browser
 DISTDIR=tbbl-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.0.4-dev
+VERSION=1.0.5-dev
 DEFAULT_COMPRESSED_BASENAME=tor-browser-gnu-linux-$(VERSION)-
 IM_COMPRESSED_BASENAME=tor-im-browser-gnu-linux-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
@@ -224,7 +220,6 @@ endif
 DEFAULT_EXTENSIONS=torbutton.xpi noscript.xpi betterprivacy.xpi
 
 ## Where to download Torbutton from
-#TORBUTTON=https://addons.mozilla.org/en-US/firefox/downloads/latest/2275/addon-2275-latest.xpi?src=addondetail
 TORBUTTON=https://www.torproject.org/torbutton/releases/torbutton-$(TORBUTTON_VER).xpi
 NOSCRIPT=https://secure.informaction.com/download/releases/noscript-$(NOSCRIPT_VER).xpi
 BETTERPRIVACY=https://addons.mozilla.org/en-US/firefox/downloads/latest/6623/addon-6623-latest.xpi
@@ -329,7 +324,9 @@ install-binaries:
            $(LIBEVENT)/libevent_extra-1.4.so.2 $(LIBEVENT)/libevent_extra-1.4.so.2.1.3 \
            $(LIBEVENT)/libevent_extra.so $(LIBEVENT)/libevent.so $(LIBSDIR)
 	# OpenSSL
-	cp $(OPENSSL)/libcrypto.a $(OPENSSL)/libssl.a $(LIBSDIR)
+	cp -d $(OPENSSL)/libcrypto.a $(OPENSSL)/libssl.a $(OPENSSL)/libssl.so* $(OPENSSL)/libcrypto.so* $(LIBSDIR)
+	#chmod 644 $(LIBSDIR)/libcrypto.so*
+	#chmod 644 $(LIBSDIR)/libssl.so*
 	# Vidalia
 	cp $(VIDALIA) $(APPDIR)
 	# Polipo
@@ -407,8 +404,7 @@ strip-it-stripper:
 
 ## Torbutton development version
 torbutton.xpi:
-	cp /home/e/torbutton-1.2.5.xpi torbutton.xpi
-	#$(WGET) -O $@ $(TORBUTTON)
+	$(WGET) -O $@ $(TORBUTTON)
 
 ## NoScript development version
 noscript.xpi: 
