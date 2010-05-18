@@ -1,8 +1,8 @@
 ###
-### Makefile for building Tor USB bundle on Gnu/Linux
+### Makefile for building Tor USB bundle on Mac OS X
 ###
 ### Copyright 2007 Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217/>
-### Copyright 2009 Jacob Appelbaum <jacob@appelbaum.net>
+### Copyright 2009, 2010 Jacob Appelbaum <jacob@appelbaum.net>
 ### Copyright 2010 Erinn Clark <erinn@torproject.org>
 ###
 ### You want to do the following currently supported activities:
@@ -20,7 +20,7 @@
 ### make -f Makefile.osx build-all-binaries
 ### make -f Makefile.osx all-compressed-bundles
 ### ...
-### Look in tbbl-dist/ for your files.
+### Look in tbbosx-dist/ for your files.
 ###
 ### See LICENSE for licensing information
 ###
@@ -207,7 +207,7 @@ DEST=generic-bundle
 NAME=tor-browser
 
 ## Where shall we put the finished files for distribution?
-DISTDIR=tbbl-dist
+DISTDIR=tbbosx-dist
 
 ## Version and name of the compressed bundle (also used for source)
 VERSION=1.0.0-dev
