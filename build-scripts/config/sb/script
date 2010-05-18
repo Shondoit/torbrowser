@@ -1,0 +1,11 @@
+#!/bin/bash
+username=$(whoami)
+processed_template_location=$(mktemp -d -t firefox-sandbox)
+DIR=`pwd`
+sed -e "s/%%username%%/${username}/g" -e "s=%%PATH%%=${processed_template_location}/=g" ${DIR}/firefox-profile.sb > ${processed_template_location}/firefox-profile.sb
+sed -e "s/%%username%%/${username}/g" ${DIR}/flashplugin.sb > ${processed_template_location}/flashplugin.sb
+sed -e "s/%%username%%/${username}/g" ${DIR}/javaplugin.sb > ${processed_template_location}/javaplugin.sb
+
+cd ${processed_template_location}
+/usr/bin/sandbox-exec -f "${processed_template_location}/firefox-profile.sb" "/usr/bin/basename" &> /dev/null
+/usr/bin/sandbox-exec -f "${processed_template_location}/firefox-profile.sb" "/Applications/Firefox.app/Contents/MacOS/firefox-bin" 

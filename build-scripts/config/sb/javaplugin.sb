@@ -1,0 +1,27 @@
+; This file is suposed to be included in the ironfox sb
+; profile to provide java. Note that java is most likely
+; heavily restricted.
+(version 1)
+(deny default)
+(debug deny)
+
+(allow file-read-data
+       (subpath "/Users/%%username%%/Library/Caches/Java")  
+       (subpath "/Users/%%username%%/Library/Java")  
+       (subpath "/Users/%%username%%/Library/Logs")  
+       (subpath "/Library/Java") 
+       (literal "/dev/random"))  
+
+(allow file-read-metadata
+       (literal "/dev/random")  
+       (subpath "/Users/%%username%%/Library/Caches/Java")  
+       (subpath "/Users/%%username%%/Library/Java")  
+       (subpath "/Users/%%username%%/Library/Logs")  
+       (subpath "/Library/Java")) 
+
+(allow file-write-data
+       (literal "/dev/null"))  
+
+(allow file-write*
+        (literal "/Users/%%username%%/Library/Logs/Java Console.log") 
+        (subpath "/Users/%%username%%/Library/Caches/Java")) 

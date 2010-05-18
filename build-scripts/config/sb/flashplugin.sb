@@ -1,0 +1,14 @@
+; This file is a subinclude to IronFox to allow it to do
+; flash.
+(version 1)
+(deny default)
+(debug deny)
+
+(allow file-read-data
+       (subpath "/Library/Application Support/Macromedia") 
+       (subpath "/Users/%%username%%/Library/Preferences/Macromedia/Flash Player")) 
+(allow file-read-metadata
+       (subpath "/Library/Application Support/Macromedia") 
+       (subpath "/Users/%%username%%/Library/Preferences/Macromedia/Flash Player")) 
+(allow file-write*
+        (subpath "/Users/%%username%%/Library/Preferences/Macromedia/Flash Player"))
