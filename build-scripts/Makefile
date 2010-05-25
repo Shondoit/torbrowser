@@ -22,7 +22,7 @@ FIREFOX_VERSION=3.5.9
 PIDGIN_VERSION=2.6.6
 
 ## Location of bundle components
-VIDALIA=/c/build/vidalia-0.2.7
+VIDALIA=/c/build/vidalia-0.2.9
 TOR=/c/build/tor-0.2.1.26
 POLIPO=/c/build/polipo-1.0.4.1
 FIREFOX_SRC=/c/build/FirefoxPortable-$(FIREFOX_VERSION)
