@@ -41,43 +41,46 @@ BUILT_DIR=$(FETCH_DIR)/built
 TBB_FINAL=$(BUILT_DIR)/TBBL
 
 ## Versions for our source packages
-ZLIB_VER=1.2.3
-OPENSSL_VER=0.9.8l
-QT_VER=4.5.3
-VIDALIA_VER=0.2.8
-LIBEVENT_VER=1.4.13-stable
-TOR_VER=0.2.2.13-alpha
-POLIPO_VER=1.0.4.1
-PIDGIN_VER=2.6.4
-OTR_VER=3.2.0
 FIREFOX_VER=3.5.8
+LIBEVENT_VER=1.4.13-stable
+LIBPNG_VER=1.4.2
+NOSCRIPT_VER=1.9.9.80
+OPENSSL_VER=0.9.8l
+OTR_VER=3.2.0
+PIDGIN_VER=2.6.4
+POLIPO_VER=1.0.4.1
+QT_VER=4.6.2
+TOR_VER=0.2.2.13-alpha
 TORBUTTON_VER=1.2.5
-NOSCRIPT_VER=1.9.9.57
+VIDALIA_VER=0.2.9
+ZLIB_VER=1.2.3
 
 ## Extension IDs
 FF_VENDOR_ID:=\{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
 ## File names for the source packages
-ZLIB_PACKAGE=zlib-$(ZLIB_VER).tar.gz
-OPENSSL_PACKAGE=openssl-$(OPENSSL_VER).tar.gz
-QT_PACKAGE=qt-x11-opensource-src-$(QT_VER).tar.gz
-VIDALIA_PACKAGE=vidalia-$(VIDALIA_VER).tar.gz
-LIBEVENT_PACKAGE=libevent-$(LIBEVENT_VER).tar.gz
-TOR_PACKAGE=tor-$(TOR_VER).tar.gz
-POLIPO_PACKAGE=polipo-$(POLIPO_VER).tar.gz
-PIDGIN_PACKAGE=pidgin-$(PIDGIN_VER).tar.bz2
 FIREFOX_PACKAGE=firefox-$(FIREFOX_VER).tar.bz2
+LIBEVENT_PACKAGE=libevent-$(LIBEVENT_VER).tar.gz
+LIBPNG_PACKAGE=libpng-$(LIBPNG_VER).tar.gz
+OPENSSL_PACKAGE=openssl-$(OPENSSL_VER).tar.gz
+PIDGIN_PACKAGE=pidgin-$(PIDGIN_VER).tar.bz2
+POLIPO_PACKAGE=polipo-$(POLIPO_VER).tar.gz
+QT_PACKAGE=qt-everywhere-opensource-src-$(QT_VER).tar.gz
+TOR_PACKAGE=tor-$(TOR_VER).tar.gz
+VIDALIA_PACKAGE=vidalia-$(VIDALIA_VER).tar.gz
+ZLIB_PACKAGE=zlib-$(ZLIB_VER).tar.gz
 
 ## Location of files for download
-ZLIB_URL=http://www.gzip.org/zlib/$(ZLIB_PACKAGE)
-OPENSSL_URL=https://www.openssl.org/source/$(OPENSSL_PACKAGE)
-QT_URL=ftp://ftp.qt.nokia.com/qt/source/$(QT_PACKAGE)
-VIDALIA_URL=https://www.torproject.org/vidalia/dist/$(VIDALIA_PACKAGE)
-LIBEVENT_URL=http://www.monkey.org/~provos/$(LIBEVENT_PACKAGE)
-TOR_URL=https://www.torproject.org/dist/$(TOR_PACKAGE)
-POLIPO_URL=http://www.pps.jussieu.fr/~jch/software/files/polipo/$(POLIPO_PACKAGE)
-PIDGIN_URL=http://sourceforge.net/projects/pidgin/files/Pidgin/$(PIDGIN_PACKAGE)
 FIREFOX_URL=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/$(FIREFOX_VER)/linux-i686/en-US/$(FIREFOX_PACKAGE)
+LIBEVENT_URL=http://www.monkey.org/~provos/$(LIBEVENT_PACKAGE)
+LIBPNG_URL=http://download.sourceforge.net/libpng/$(LIBPNG_PACKAGE).tar.gz
+OPENSSL_URL=https://www.openssl.org/source/$(OPENSSL_PACKAGE)
+PIDGIN_URL=http://sourceforge.net/projects/pidgin/files/Pidgin/$(PIDGIN_PACKAGE)
+POLIPO_URL=http://www.pps.jussieu.fr/~jch/software/files/polipo/$(POLIPO_PACKAGE)
+QT_URL=ftp://ftp.qt.nokia.com/qt/source/$(QT_PACKAGE)
+TOR_URL=https://www.torproject.org/dist/$(TOR_PACKAGE)
+VIDALIA_URL=https://www.torproject.org/vidalia/dist/$(VIDALIA_PACKAGE)
+ZLIB_URL=http://www.gzip.org/zlib/$(ZLIB_PACKAGE)
 
 fetch-source:
 	-mkdir $(FETCH_DIR)
@@ -120,12 +123,12 @@ build-openssl:
 	cd $(OPENSSL_DIR) && make
 	cd $(OPENSSL_DIR) && make install
 
-QT_DIR=$(FETCH_DIR)/qt-x11-opensource-src-$(QT_VER)
+QT_DIR=$(FETCH_DIR)/qt-everywhere-opensource-src-$(QT_VER)
 QT_BUILD_PREFS=-system-zlib -confirm-license -opensource -openssl-linked -no-qt3support -fast -release -nomake demos -nomake examples
 QT_OPTS=$(QT_BUILD_PREFS) -prefix $(BUILT_DIR) -I $(BUILT_DIR)/include -I $(BUILT_DIR)/include/openssl/ -L $(BUILT_DIR)/lib
 build-qt:
 	cd $(QT_DIR) && ./configure $(QT_OPTS)
-	cd $(QT_DIR) && make -j2
+	cd $(QT_DIR) && make
 	cd $(QT_DIR) && make install
 
 VIDALIA_DIR=$(FETCH_DIR)/vidalia-$(VIDALIA_VER)
@@ -141,6 +144,13 @@ build-libevent:
 	cd $(LIBEVENT_DIR) && ./configure $(LIBEVENT_OPTS)
 	cd $(LIBEVENT_DIR) && make -j2
 	cd $(LIBEVENT_DIR) && make install
+
+LIBPNG_DIR=$(FETCH_DIR)/libpng-$(LIBPNG_VER)
+LIBPNG_OPTS=--prefix=$(BUILT_DIR)
+build-libpng:
+	cd $(LIBPNG_DIR) && ./configure $(LIBPNG_OPTS)
+	cd $(LIBPNG_DIR) && make
+	cd $(LIBPNG_DIR) && make install
 
 TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)
 TOR_OPTS=--with-openssl-dir=$(BUILT_DIR) --with-zlib-dir=$(BUILT_DIR) --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR)
@@ -172,15 +182,16 @@ COMPILED_LIBS=$(BUILT_DIR)/lib
 COMPILED_BINS=$(BUILT_DIR)/bin/
 
 ## Location of the libraries we've built
-QT=$(COMPILED_LIBS)
-OPENSSL=$(COMPILED_LIBS)
-ZLIB=$(COMPILED_LIBS)
 LIBEVENT=$(COMPILED_LIBS)
+LIBPNG=$(COMPILED_LIBS)
+OPENSSL=$(COMPILED_LIBS)
+QT=$(COMPILED_LIBS)
+ZLIB=$(COMPILED_LIBS)
 
 ## Location of binary bundle components
-VIDALIA=$(BUILT_DIR)/usr/local/bin/vidalia
-TOR=$(COMPILED_BINS)/tor
 POLIPO=$(COMPILED_BINS)/polipo
+TOR=$(COMPILED_BINS)/tor
+VIDALIA=$(BUILT_DIR)/usr/local/bin/vidalia
 ## Someday, this will be our custom Firefox
 FIREFOX=$(FETCH_DIR)/Firefox
 PIDGIN=$(COMPILED_BINS)/pidgin
@@ -204,8 +215,8 @@ NAME=tor-browser
 DISTDIR=tbbl-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.0.5-dev
-DEFAULT_COMPRESSED_BASENAME=tor-browser-gnu-linux-$(VERSION)-
+VERSION=1.0.6-dev
+DEFAULT_COMPRESSED_BASENAME=tor-browser-gnu-linux-$(ARCH_TYPE)-$(VERSION)-
 IM_COMPRESSED_BASENAME=tor-im-browser-gnu-linux-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
 IM_COMPRESSED_NAME=$(IM_COMPRESSED_BASENAME)$(VERSION)
@@ -311,11 +322,11 @@ directory-structure:
 ## Firefox and Pidgin are installed in their own targets
 install-binaries:
 	# A minimal set of Qt libs and the proper symlinks
-	cp -d $(QT)/libQtCore.so $(QT)/libQtCore.so.4 $(QT)/libQtCore.so.4.5 $(QT)/libQtCore.so.4.5.3 $(LIBSDIR)
-	cp -d $(QT)/libQtGui.so $(QT)/libQtGui.so.4 $(QT)/libQtGui.so.4.5 $(QT)/libQtGui.so.4.5.3 $(LIBSDIR)
-	cp -d $(QT)/libQtNetwork.so $(QT)/libQtNetwork.so.4 $(QT)/libQtNetwork.so.4.5 \
-           $(QT)/libQtNetwork.so.4.5.3 $(LIBSDIR)
-	cp -d $(QT)/libQtXml.so $(QT)/libQtXml.so.4 $(QT)/libQtXml.so.4.5 $(QT)/libQtXml.so.4.5.3 $(LIBSDIR)
+	cp -d $(QT)/libQtCore.so $(QT)/libQtCore.so.4 $(QT)/libQtCore.so.4.6 $(QT)/libQtCore.so.4.6.2 $(LIBSDIR)
+	cp -d $(QT)/libQtGui.so $(QT)/libQtGui.so.4 $(QT)/libQtGui.so.4.6 $(QT)/libQtGui.so.4.6.2 $(LIBSDIR)
+	cp -d $(QT)/libQtNetwork.so $(QT)/libQtNetwork.so.4 $(QT)/libQtNetwork.so.4.6 \
+           $(QT)/libQtNetwork.so.4.6.2 $(LIBSDIR)
+	cp -d $(QT)/libQtXml.so $(QT)/libQtXml.so.4 $(QT)/libQtXml.so.4.6 $(QT)/libQtXml.so.4.6.2 $(LIBSDIR)
 	# zlib
 	cp -d $(ZLIB)/libz.so $(ZLIB)/libz.so.1 $(ZLIB)/libz.so.1.2.3 $(LIBSDIR)/libz
 	# Libevent
@@ -323,10 +334,10 @@ install-binaries:
            $(LIBEVENT)/libevent_core-1.4.so.2 $(LIBEVENT)/libevent_core-1.4.so.2.1.3 \
            $(LIBEVENT)/libevent_extra-1.4.so.2 $(LIBEVENT)/libevent_extra-1.4.so.2.1.3 \
            $(LIBEVENT)/libevent_extra.so $(LIBEVENT)/libevent.so $(LIBSDIR)
+	# libpng
+	cp -d $(LIBPNG)/libpng14.so* $(LIBSDIR) 
 	# OpenSSL
 	cp -d $(OPENSSL)/libcrypto.a $(OPENSSL)/libssl.a $(OPENSSL)/libssl.so* $(OPENSSL)/libcrypto.so* $(LIBSDIR)
-	#chmod 644 $(LIBSDIR)/libcrypto.so*
-	#chmod 644 $(LIBSDIR)/libssl.so*
 	# Vidalia
 	cp $(VIDALIA) $(APPDIR)
 	# Polipo
