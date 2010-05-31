@@ -11,6 +11,7 @@ Firefox 3.5.8
  \_ Torbutton 1.2.5
  |_ NoScript 1.9.9.80
  |_ BetterPrivacy 1.4.7
+ |_ HTTPS Everywhere 0.0.2
 
 Usage
 -----
@@ -28,6 +29,14 @@ To exit, close Firefox. Vidalia will automatically clean up and exit.
 
 Changelog
 ---------
+
+1.0.6: Released 2010-05-31
+       Add arch to tarball name so there's no collision
+       Add libpng for Arch Linux
+       Add HTTPS Everywhere extension
+       Update Qt to 4.6.2
+       Update Vidalia to 0.2.9
+       Update NoScript to 1.9.9.80
 
 1.0.5: Released 2010-05-15
        Fix missing OpenSSL shared library bug
