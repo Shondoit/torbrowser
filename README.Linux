@@ -30,6 +30,9 @@ To exit, close Firefox. Vidalia will automatically clean up and exit.
 Changelog
 ---------
 
+1.0.7: Released 2010-06-01
+       Rebuild everything against an older glibc so it'll run on more distros
+
 1.0.6: Released 2010-05-31
        Add arch to tarball name so there's no collision
        Add libpng for Arch Linux
