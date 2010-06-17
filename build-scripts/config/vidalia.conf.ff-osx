@@ -1,0 +1,27 @@
+[General]
+BrowserDirectory=.
+BrowserExecutable=firefox-bin
+LanguageCode=es
+ProxyExecutable=./Contents/MacOS/polipo
+ProxyExecutableArguments=-c ./Contents/Resources/Data/Polipo/polipo.conf
+RunProxyAtStart=true
+
+[Tor]
+ControlPort=9051
+TorExecutable=./Contents/MacOS/tor
+Torrc=./Contents/Resources/Data/Tor/torrc
+
+[MessageLog]
+Geometry=@ByteArray(\x1\xd9\xd0\xcb\0\x1\0\0\0\0\x1@\0\0\0\xda\0\0\x3\xf9\0\0\x3`\0\0\x1@\0\0\0\xf0\0\0\x3\xf9\0\0\x3`\0\0\0\0\0\0)
+
+[ConfigDialog]
+Geometry=@ByteArray(\x1\xd9\xd0\xcb\0\x1\0\0\0\0\x1@\0\0\0\xda\0\0\x3\x97\0\0\x2\x7f\0\0\x1@\0\0\0\xf0\0\0\x3\x97\0\0\x2\x7f\0\0\0\0\0\0)
+
+[BandwidthGraph]
+Geometry=@ByteArray(\x1\xd9\xd0\xcb\0\x1\0\0\0\0\0\0\0\0\0\0\0\0\x1\x1a\0\0\0.\0\0\0\0\0\0\0\0\0\0\x1\x1a\0\0\0.\0\0\0\0\0\0)
+
+[NetViewer]
+Geometry=@ByteArray(\x1\xd9\xd0\xcb\0\x1\0\0\0\0\x1@\0\0\0\xda\0\0\x4\x8b\0\0\x3\x43\0\0\x1@\0\0\0\xf0\0\0\x4\x8b\0\0\x3\x43\0\0\0\0\0\0)
+
+[MainWindow]
+Geometry=@ByteArray(\x1\xd9\xd0\xcb\0\x1\0\0\0\0\x1|\0\0\0\xa4\0\0\x3\x82\0\0\x2\x61\0\0\x1|\0\0\0\xba\0\0\x3\x82\0\0\x2\x61\0\0\0\0\0\0)
