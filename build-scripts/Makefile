@@ -19,7 +19,7 @@ OPENSSL=/c/build/openssl-0.9.8l/bin
 ## Versions
 TORBUTTON_VERSION=1.2.5
 FIREFOX_VERSION=3.5.10
-PIDGIN_VERSION=2.7.1
+PIDGIN_VERSION=2.7.1r2
 
 ## Location of bundle components
 VIDALIA=/c/build/vidalia-0.2.9
