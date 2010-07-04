@@ -398,11 +398,11 @@ Building Tor
 
 Download, unpack, build and install Tor:
         https://www.torproject.org/download.html
-        https://www.torproject.org/dist/tor-0.2.1.25.tar.gz
-        https://www.torproject.org/dist/tor-0.2.1.25.gz.asc
+        https://www.torproject.org/dist/tor-0.2.1.26.tar.gz
+        https://www.torproject.org/dist/tor-0.2.1.26.gz.asc
         $ cd /c/build/
-        tar -C /c/build -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/tor-0.2.1.25.tar.gz
-        $ cd tor-0.2.1.25/
+        tar -C /c/build -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/tor-0.2.1.26.tar.gz
+        $ cd tor-0.2.1.26/
         ./configure
         make
 
@@ -414,26 +414,26 @@ Vidalia (see above).
 
 Download Vidalia:
 
-    https://www.torproject.org/vidalia/dist/vidalia-0.2.7.tar.gz
-    https://www.torproject.org/vidalia/dist/vidalia-0.2.7.tar.gz.asc
+    https://www.torproject.org/vidalia/dist/vidalia-0.2.9.tar.gz
+    https://www.torproject.org/vidalia/dist/vidalia-0.2.9.tar.gz.asc
 
 Verify the signature.
 
 Unpack Vidalia:
 
-    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/vidalia-0.2.7.tar.gz
-    mv vidalia-0.2.7/ vidalia
+    tar -C /c/build/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/vidalia-0.2.9.tar.gz
+    mv vidalia-0.2.9/ vidalia
 
 Set a proper environment:
 
     cat << 'EOF' >> /etc/profile
     export QTDIR="C:\Qt\4.6.2"
     export PATH=$PATH:/c/Qt/4.6.2/bin
-    export PATH=$PATH:/c/Program\ Files/CMake\ 2.6/bin/
+    export PATH=$PATH:/c/Program\ Files/CMake\ 2.8/bin/
     export QMAKESPEC=win32-g++
     EOF
 
-    export PATH=$PATH:/c/Program\ Files/CMake\ 2.6/bin/:/c/MinGW/bin/:/c/Qt/4.6.2/bin/
+    export PATH=$PATH:/c/Program\ Files/CMake\ 2.8/bin/:/c/MinGW/bin/:/c/Qt/4.6.2/bin/
 
 Create the proper MSYS Makefiles and don't forget the '.' at the end!
 
@@ -531,7 +531,7 @@ Currently the Tor Browser Bundle uses FirefoxPortable binaries.
 
 Download FirefoxPortable:
 
-    http://prdownloads.sourceforge.net/portableapps/FirefoxPortable_3.5.9_English.paf.exe
+    http://prdownloads.sourceforge.net/portableapps/FirefoxPortable_3.5.10_English.paf.exe
 
 Run the installer and select it into: 'C:\build\FirefoxPortable-<version>'
 
@@ -612,8 +612,8 @@ An example to change the Qt Lib version:
 
 And then change the Tor version:
 
-        From: TOR=/c/build/tor-0.2.1.25
-        To: TOR=/c/build/tor-0.2.1.25
+        From: TOR=/c/build/tor-0.2.1.26
+        To: TOR=/c/build/tor-0.2.1.26
 
 Now you can run "make bundle_LANGUAGE", e.g. "make bundle_en-US".
 
@@ -632,12 +632,13 @@ Currently supported language codes are:
  - pl
  - pt-PT
  - ru
+ - vi
  - zh-CN
 
 New languages can be added by finding out the appropriate Mozilla
 language pack code from:
 
-    http://releases.mozilla.org/pub/mozilla.org/firefox/releases/2.0.0.18/win32/xpi
+    http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.5.10/win32/xpi
 
 If the Mozilla code differs from the Vidalia one, update
 patch-vidalia-language.sh accordingly.

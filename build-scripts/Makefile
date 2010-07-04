@@ -25,8 +25,8 @@ PIDGIN_VERSION=2.7.1r2
 VIDALIA=/c/build/vidalia-0.2.9
 TOR=/c/build/tor-0.2.1.26
 POLIPO=/c/build/polipo-1.0.4.1
-FIREFOX_SRC=/c/build/FirefoxPortable-$(FIREFOX_VERSION)
-PIDGIN_SRC=/c/build/PidginPortable-$(PIDGIN_VERSION)
+FIREFOX_SRC=/c/build/FirefoxPortable
+PIDGIN_SRC=/c/build/PidginPortable
 
 ## Location of utility applications
 SEVENZIP="/c/Program Files/7-Zip/7z.exe"
@@ -46,7 +46,7 @@ DEST="Generic Bundle"
 NAME="Tor Browser"
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.3.7-dev
+VERSION=1.3.7
 DEFAULT_COMPRESSED_BASENAME=tor-browser-
 IM_COMPRESSED_BASENAME=tor-im-browser-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
@@ -88,8 +88,8 @@ EXTENSIONS_DIR=extensions
 bundle: bundle_en-US
 
 all-bundles-both:
-	USE_PIDGIN=1 make all-bundles
-	make clean
+#	USE_PIDGIN=1 make all-bundles
+#	make clean
 	USE_PIDGIN=0 make all-bundles
 	make clean
 
@@ -308,7 +308,7 @@ patch-pidgin-language:
 ifeq ($(USE_PIDGIN),1)
 	./patch-pidgin-language.sh $(BUNDLE)/PidginPortable/Data/settings/PidginPortableSettings.ini $(LANGCODE) \
                                    $(BUNDLE)/PidginPortable/App/Pidgin/locale \
-                                   $(BUNDLE)/PidginPortable/App/GTK/share/locale
+                                   $(BUNDLE)/PidginPortable/App/Pidgin/Gtk/share/locale
 endif
 
 patch-firefox-language:
