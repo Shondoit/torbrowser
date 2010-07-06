@@ -7,11 +7,11 @@ Included applications
 Vidalia 0.2.9 (with Qt 4.6.2)
 Tor 0.2.2.13-alpha (with libevent-1.4.13, zlib-1.2.3 and openssl-0.9.8l) 
 Polipo 1.0.4.1
-Firefox 3.5.8
+Firefox 3.5.10
  \_ Torbutton 1.2.5
  |_ NoScript 1.9.9.80
  |_ BetterPrivacy 1.4.7
- |_ HTTPS Everywhere 0.0.2
+ |_ HTTPS Everywhere 0.2.1
 
 Usage
 -----
@@ -29,6 +29,11 @@ To exit, close Firefox. Vidalia will automatically clean up and exit.
 
 Changelog
 ---------
+
+1.0.8: Released 2010-07-05
+       Update libpng to 1.4.3 (see CVE-2010-1205)
+       Update Firefox to 3.5.10
+       Update HTTPS Everywhere to 0.2.1
 
 1.0.7: Released 2010-06-01
        Rebuild everything against an older glibc so it'll run on more distros
