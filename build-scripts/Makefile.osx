@@ -191,7 +191,7 @@ VIDALIA=$(BUILT_DIR)/usr/local/bin/Vidalia.app/Contents/MacOS/Vidalia
 TOR=$(COMPILED_BINS)/tor
 POLIPO=$(COMPILED_BINS)/polipo
 ## Someday, this will be our custom Firefox
-FIREFOX=$(FETCH_DIR)/Firefox
+FIREFOX=$(FETCH_DIR)/Firefox.app
 PIDGIN=$(COMPILED_BINS)/pidgin
 
 ## Location of utility applications
@@ -226,7 +226,9 @@ COMPRESSED_NAME=$(DEFAULT_COMPRESSED_NAME)
 endif
 
 ## Extensions to install by default
-DEFAULT_EXTENSIONS=torbutton.xpi noscript.xpi betterprivacy.xpi
+DEFAULT_EXTENSIONS=torbutton.xpi
+#betterprivacy.xpi
+#noscript.xpi
 
 ## Where to download Torbutton from
 #TORBUTTON=https://addons.mozilla.org/en-US/firefox/downloads/latest/2275/addon-2275-latest.xpi?src=addondetail
@@ -234,7 +236,7 @@ TORBUTTON=http://www.torproject.org/torbutton/releases/torbutton-$(TORBUTTON_VER
 NOSCRIPT=http://secure.informaction.com/download/releases/noscript-$(NOSCRIPT_VER).xpi
 BETTERPRIVACY=http://addons.mozilla.org/en-US/firefox/downloads/latest/6623/addon-6623-latest.xpi
 ## Where to download Mozilla language packs
-MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/$(FIREFOX_VER)/linux-i686/xpi
+MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.6.4/linux-i686/xpi
 
 ## Put more extensions here
 EXTENSIONS_DIR=extensions
@@ -306,22 +308,31 @@ TB_TMPDIR=$(DEST)/Contents/SharedSupport
 directory-structure: 
 	rm -fr $(DEST)
 	mkdir -p $(APPDIR)
+	mkdir -p $(APPDIR)/Firefox.app/Contents/MacOS/Data/profile
+	mkdir -p $(APPDIR)/Firefox.app/Contents/MacOS/Data/plugins
 	mkdir -p $(LIBSDIR)
 	mkdir -p $(DATADIR)/Tor
 	mkdir -p $(DATADIR)/Vidalia
 	mkdir -p $(DATADIR)/Polipo
-	mkdir -p $(DATADIR)/profile
 	mkdir -p $(DOCSDIR)
 	mkdir -p $(TB_TMPDIR)
 
 ## Package up all the Vidalia and Tor pre-requisites
 ## Firefox and Pidgin are installed in their own targets
 install-qt:
+	mkdir -p $(BUNDLE)/Contents/Frameworks/QtGui.framework/Versions/4
+	mkdir -p $(BUNDLE)/Contents/Frameworks/QtCore.framework/Versions/4
+	mkdir -p $(BUNDLE)/Contents/Frameworks/QtNetwork.framework/Versions/4
+	mkdir -p $(BUNDLE)/Contents/Frameworks/QtXml.framework/Versions/4
 	# copy the frameworks
-	cp -R /Library/Frameworks/QtGui.framework $(BUNDLE)/Contents/Frameworks
-	cp -R /Library/Frameworks/QtCore.framework $(BUNDLE)/Contents/Frameworks
-	cp -R /Library/Frameworks/QtNetwork.framework $(BUNDLE)/Contents/Frameworks
-	cp -R /Library/Frameworks/QtXml.framework $(BUNDLE)/Contents/Frameworks
+	cp -R /Library/Frameworks/QtGui.framework/QtGui $(BUNDLE)/Contents/Frameworks/QtGui.framework/
+	cp -R /Library/Frameworks/QtGui.framework/Versions/4/QtGui $(BUNDLE)/Contents/Frameworks/QtGui.framework/Versions/4
+	cp -R /Library/Frameworks/QtCore.framework/QtCore $(BUNDLE)/Contents/Frameworks/QtCore.framework/
+	cp -R /Library/Frameworks/QtCore.framework/Versions/4/QtCore $(BUNDLE)/Contents/Frameworks/QtCore.framework/Versions/4
+	cp -R /Library/Frameworks/QtNetwork.framework/QtNetwork $(BUNDLE)/Contents/Frameworks/QtNetwork.framework/
+	cp -R /Library/Frameworks/QtNetwork.framework/Versions/4/QtNetwork $(BUNDLE)/Contents/Frameworks/QtNetwork.framework/Versions/4
+	cp -R /Library/Frameworks/QtXml.framework/QtXml $(BUNDLE)/Contents/Frameworks/QtXml.framework/
+	cp -R /Library/Frameworks/QtXml.framework/Versions/4/QtXml $(BUNDLE)/Contents/Frameworks/QtXml.framework/Versions/4
 	# do the funky install_name_tool chicken dance for Qt framework & Vidalia
 	install_name_tool -id @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
 	$(BUNDLE)/Contents/Frameworks/QtCore.framework/Versions/4/QtCore
@@ -352,9 +363,9 @@ install-binaries:
 	cp -R $(LIBEVENT)/libevent.a  $(LIBEVENT)/libevent_core.a $(LIBEVENT)/libevent_extra.a \
 	   $(LIBEVENT)/libevent.la $(LIBEVENT)/libevent_core.la $(LIBEVENT)/libevent_extra.la $(LIBSDIR)
 	# OpenSSL
-	#cp -R $(OPENSSL)/libcrypto.dylib $(OPENSSL)/libcrypto.0.9.7.dylib $(OPENSSL)/libssl.dylib \
+	cp -R $(OPENSSL)/libcrypto.dylib $(OPENSSL)/libcrypto.0.9.7.dylib $(OPENSSL)/libssl.dylib \
 	   $(OPENSSL)/libssl.0.9.7.dylib $(LIBSDIR)
-	cp -R $(OPENSSL)/libcrypto* $(OPENSSL)/libssl* $(LIBSDIR)
+	#cp -R $(OPENSSL)/libcrypto* $(OPENSSL)/libssl* $(LIBSDIR)
 	# Vidalia
 	cp $(VIDALIA) $(APPDIR)
 	# Polipo
@@ -380,8 +391,8 @@ install-docs:
 install-firefox:
 	cp -R $(FIREFOX) $(APPDIR)
 	# Due to various issues with a broken libxml2, we'll remove these...
-	rm -f $(APPDIR)/Firefox/components/libnkgnomevfs.so
-	rm -f $(APPDIR)/Firefox/components/libmozgnome.so
+	#rm -f $(APPDIR)/Firefox/components/libnkgnomevfs.so
+	#rm -f $(APPDIR)/Firefox/components/libmozgnome.so
 
 ## Copy over Pidgin
 install-pidgin:
@@ -393,10 +404,12 @@ endif
 configure-apps:
 	## Configure Firefox preferences
 	#mkdir -p $(DEST)/.mozilla/Firefox/firefox.default
-	cp -R $(CONFIG_SRC)/firefox-profiles.ini $(DEST)/Contents/Resources/Data/profiles.ini
-	cp $(CONFIG_SRC)/bookmarks.html $(DEST)/Contents/Resources/Data/profile
-	cp $(CONFIG_SRC)/linux-prefs.js $(DEST)/Contents/Resources/Data/profile/prefs.js
+	cp -R $(CONFIG_SRC)/firefox-profiles.ini $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profiles.ini
+	cp $(CONFIG_SRC)/bookmarks.html $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile
+	cp $(CONFIG_SRC)/linux-prefs.js $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/prefs.js
 	cp $(CONFIG_SRC)/Info.plist $(DEST)/Contents
+	cp $(CONFIG_SRC)/PkgInfo $(DEST)/Contents
+	cp $(CONFIG_SRC)/qt.conf $(DEST)/Contents/Resources
 	## Configure Pidgin
 ifeq ($(USE_PIDGIN),1)
 	mkdir -p $(DEST)/PidginPortable/Data/settings/.purple
@@ -411,7 +424,7 @@ endif
 	## Configure Polipo
 	cp $(CONFIG_SRC)/polipo.conf $(DEST)/Contents/Resources/Data/Polipo/polipo.conf
 	## Configure Tor
-	cp $(CONFIG_SRC)/torrc-linux $(DEST)/Contents/Resources/Data/Tor/torrc
+	cp $(CONFIG_SRC)/torrc-osx $(DEST)/Contents/Resources/Data/Tor/torrc
 	cp $(TOR_DIR)/src/config/geoip $(DEST)/Contents/Resources/Data/Tor/geoip
 	chmod 700 $(DATADIR)/Tor
 
@@ -423,7 +436,7 @@ launcher:
 strip-it-stripper:
 	strip $(APPDIR)/tor
 	strip $(APPDIR)/polipo
-	strip $(APPDIR)/Vidalia
+	#strip $(APPDIR)/Vidalia
 	#strip $(LIBSDIR)/*
 
 ##
@@ -458,7 +471,6 @@ bundle_%:
 	LANGCODE=$* make -f Makefile.osx bundle-localized
 compressed-bundle_%:
 	LANGCODE=$* make -f Makefile.osx compressed-bundle-localized
-
 bundle-localized_%.stamp:
 	make -f Makefile.osx copy-files_$* install-extensions install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language update-extension-pref final
 	touch bundle-localized_$*.stamp
@@ -486,17 +498,17 @@ install-extensions: $(DEFAULT_EXTENSIONS)
 		do \
 			cp $$extension $$extension.zip; \
 			ext_id=$$(unzip -p $$extension.zip install.rdf | sed -n '/<em:id>/{s#[^<]*<em:id>\(.*\)</em:id>#\1#p;q;}'); \
-			mkdir -p $(BUNDLE)/Library/Application\ Support/Mozilla/Extensions/$(FF_VENDOR_ID)/$$ext_id; \
-			cp $$extension $(BUNDLE)/Library/Application\ Support/Mozilla/Extensions/$(FF_VENDOR_ID)/$$ext_id/$$extension.zip; \
-			(cd $(BUNDLE)/Library/Application\ Support/Mozilla/Extensions/$(FF_VENDOR_ID)/$$ext_id/ && unzip *.zip && rm *.zip); \
+			mkdir -p $(BUNDLE)/Library/Application\ Support/$(FF_VENDOR_ID)/Extensions/$$ext_id; \
+			cp $$extension $(BUNDLE)/Library/Application\ Support/$(FF_VENDOR_ID)/Extensions/$$ext_id/$$extension.zip; \
+			(cd $(BUNDLE)/Library/Application\ Support/$(FF_VENDOR_ID)/Extensions/$$ext_id/ && unzip *.zip && rm *.zip); \
 		done
 
 ## Language extensions need to be handled differently from other extensions
 install-lang-extensions: $(filter-out langpack_en-US.xpi,langpack_$(LANGCODE).xpi)
 ifneq ($(LANGCODE), en-US)
-	mkdir -p $(BUNDLE)/Contents/Resources/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org
-	cp langpack_$(LANGCODE).xpi $(BUNDLE)/Contents/Resources/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org/langpack_$(LANGCODE).zip
-	(cd $(BUNDLE)/Contents/Resources/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org && unzip *.zip && rm *.zip)
+	mkdir -p $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/default/langpack-$(LANGCODE)@firefox.mozilla.org
+	cp langpack_$(LANGCODE).xpi $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/default/langpack-$(LANGCODE)@firefox.mozilla.org/langpack_$(LANGCODE).zip
+	(cd $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/default/langpack-$(LANGCODE)@firefox.mozilla.org && unzip *.zip && rm *.zip)
 endif
 
 ## Set the language for Vidalia
@@ -516,16 +528,17 @@ endif
 patch-firefox-language:
 	## Patch the default Firefox prefs.js
 	## Don't use {} because they aren't always interpreted correctly. Thanks, sh. 
-	cp $(CONFIG_SRC)/bookmarks.html $(BUNDLE)/Contents/MacOS/Firefox/defaults/profile/
-	cp $(CONFIG_SRC)/linux-prefs.js $(BUNDLE)/Contents/MacOS/Firefox/defaults/profile/prefs.js
-	cp $(CONFIG_SRC)/bookmarks.html $(BUNDLE)/Contents/Resources/Data/profile
-	cp $(CONFIG_SRC)/linux-prefs.js $(BUNDLE)/Contents/Resources/Data/profile/prefs.js
-	./patch-firefox-language.sh $(BUNDLE)/Contents/MacOS/Firefox/defaults/profile/prefs.js $(LANGCODE) -e
+	cp $(CONFIG_SRC)/bookmarks.html $(BUNDLE)/Contents/MacOS/Firefox.app/Contents/MacOS/defaults/profile/
+	cp $(CONFIG_SRC)/linux-prefs.js $(BUNDLE)/Contents/MacOS/Firefox.app/Contents/MacOS/defaults/profile/prefs.js
+	cp $(CONFIG_SRC)/bookmarks.html $(BUNDLE)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile
+	cp $(CONFIG_SRC)/linux-prefs.js $(BUNDLE)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/prefs.js
+	./patch-firefox-language.sh $(BUNDLE)/Contents/MacOS/Firefox.app/Contents/MacOS/defaults/profile/prefs.js $(LANGCODE) -e
+	./patch-firefox-language.sh $(BUNDLE)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/prefs.js $(LANGCODE) -e
 
 ## Fix prefs.js since extensions.checkCompatibility, false doesn't work
 update-extension-pref:
-	ext_ver=$$(sed -n '/em:version/{s,.*="\(.*\)".*,\1,p;q;}' $(BUNDLE)/Contents/Resources/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org/install.rdf); \
-	sed -i -e "s/SHPONKA/langpack-$(LANGCODE)@firefox.mozilla.org:$$ext_ver/g" $(BUNDLE)/Contents/Resources/Data/profile/prefs.js
+	ext_ver=$$(sed -n '/em:version/{s,.*="\(.*\)".*,\1,p;q;}' $(BUNDLE)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org/install.rdf); \
+	sed -i -e "s/SHPONKA/langpack-$(LANGCODE)@firefox.mozilla.org:$$ext_ver/g" $(BUNDLE)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/prefs.js
 
 final: install-qt
 	mv $(BUNDLE) $(BUNDLE).app

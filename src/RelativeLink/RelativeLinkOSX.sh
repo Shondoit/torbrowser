@@ -16,10 +16,7 @@ fi
 
 # If ${PWD} results in a zero length HOME, we can try something else...
 HOME="${0%%Contents/MacOS/TorBrowserBundle}"
-export $HOME
-
-#echo $(date) $HOME >/tmp/testlog
-echo $HOME $(date) /tmp/testlog
+export HOME
 
 DYLD_LIBRARY_PATH=${HOME}/Contents/Frameworks
 export LDPATH
@@ -54,5 +51,4 @@ fi
 # not in debug mode, run proceed normally
 printf "\nLaunching Tor Browser Bundle for Linux in ${HOME}\n"
 cd "${HOME}"
-exec "$HOME/Contents/MacOS/Vidalia --datadir $HOME/Contents/Resources/Data/Vidalia/"
-printf "\nExited cleanly. Goodbye.\n"
+$HOME/Contents/MacOS/Vidalia --datadir $HOME/Contents/Resources/Data/Vidalia/
