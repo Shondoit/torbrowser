@@ -316,9 +316,36 @@ directory-structure:
 
 ## Package up all the Vidalia and Tor pre-requisites
 ## Firefox and Pidgin are installed in their own targets
-install-binaries:
-	# A minimal set of Qt libs and the proper symlinks
-	cp -R $(QT)/libQtCore* $(QT)/libQtGui* $(QT)/libQtNetwork* $(QT)/libQtXml* $(LIBSDIR) 
+install-qt:
+	# copy the frameworks
+	cp -R /Library/Frameworks/QtGui.framework $(BUNDLE)/Contents/Frameworks
+	cp -R /Library/Frameworks/QtCore.framework $(BUNDLE)/Contents/Frameworks
+	cp -R /Library/Frameworks/QtNetwork.framework $(BUNDLE)/Contents/Frameworks
+	cp -R /Library/Frameworks/QtXml.framework $(BUNDLE)/Contents/Frameworks
+	# do the funky install_name_tool chicken dance for Qt framework & Vidalia
+	install_name_tool -id @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
+	$(BUNDLE)/Contents/Frameworks/QtCore.framework/Versions/4/QtCore
+	install_name_tool -id @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui \
+	$(BUNDLE)/Contents/Frameworks/QtGui.framework/Versions/4/QtGui
+	install_name_tool -change QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
+	$(BUNDLE)/Contents/Frameworks/QtGui.framework/Versions/4/QtGui
+	install_name_tool -id @executable_path/../Frameworks/QtNetwork.framework/Versions/4/QtNetwork \
+	$(BUNDLE)/Contents/Frameworks/QtNetwork.framework/Versions/4/QtNetwork
+	install_name_tool -change QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
+	$(BUNDLE)/Contents/Frameworks/QtNetwork.framework/Versions/4/QtNetwork
+	install_name_tool -id @executable_path/../Frameworks/QtXml.framework/Versions/4/QtXml \
+	$(BUNDLE)/Contents/Frameworks/QtXml.framework/Versions/4/QtXml
+	install_name_tool -change QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
+	$(BUNDLE)/Contents/Frameworks/QtXml.framework/Versions/4/QtXml
+	install_name_tool -change QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
+	$(BUNDLE)/Contents/MacOS/Vidalia
+	install_name_tool -change QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui \
+	$(BUNDLE)/Contents/MacOS/Vidalia
+	install_name_tool -change QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork.framework/Versions/4/QtNetwork \
+	$(BUNDLE)/Contents/MacOS/Vidalia
+	install_name_tool -change QtXml.framework/Versions/4/QtXml @executable_path/../Frameworks/QtXml.framework/Versions/4/QtXml \
+	$(BUNDLE)/Contents/MacOS/Vidalia
+install-binaries: 
 	# zlib
 	cp -R $(ZLIB)/libz.1.2.3.dylib $(ZLIB)/libz.1.dylib $(ZLIB)/libz.dylib $(LIBSDIR)
 	# Libevent
@@ -390,7 +417,7 @@ endif
 
 # We've replaced the custom C program with a shell script for now...
 launcher:
-	cp ../src/RelativeLink/RelativeLink.sh $(DEST)/Contents/MacOS/TorBrowserBundle
+	cp ../src/RelativeLink/RelativeLinkOSX.sh $(DEST)/Contents/MacOS/TorBrowserBundle
 	chmod +x $(DEST)/Contents/MacOS/TorBrowserBundle
 
 strip-it-stripper:
@@ -433,7 +460,7 @@ compressed-bundle_%:
 	LANGCODE=$* make -f Makefile.osx compressed-bundle-localized
 
 bundle-localized_%.stamp:
-	make -f Makefile.osx copy-files_$* install-extensions install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language update-extension-pref
+	make -f Makefile.osx copy-files_$* install-extensions install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language update-extension-pref final
 	touch bundle-localized_$*.stamp
 
 bundle-localized: bundle-localized_$(LANGCODE).stamp
@@ -500,3 +527,5 @@ update-extension-pref:
 	ext_ver=$$(sed -n '/em:version/{s,.*="\(.*\)".*,\1,p;q;}' $(BUNDLE)/Contents/Resources/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org/install.rdf); \
 	sed -i -e "s/SHPONKA/langpack-$(LANGCODE)@firefox.mozilla.org:$$ext_ver/g" $(BUNDLE)/Contents/Resources/Data/profile/prefs.js
 
+final: install-qt
+	mv $(BUNDLE) $(BUNDLE).app
