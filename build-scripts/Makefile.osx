@@ -390,8 +390,8 @@ endif
 
 # We've replaced the custom C program with a shell script for now...
 launcher:
-	cp ../src/RelativeLink/RelativeLink.sh $(DEST)/start-tor-browser
-	chmod +x $(DEST)/start-tor-browser
+	cp ../src/RelativeLink/RelativeLink.sh $(DEST)/Contents/MacOS/TorBrowserBundle
+	chmod +x $(DEST)/Contents/MacOS/TorBrowserBundle
 
 strip-it-stripper:
 	strip $(APPDIR)/tor
