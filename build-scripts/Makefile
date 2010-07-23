@@ -88,8 +88,8 @@ EXTENSIONS_DIR=extensions
 bundle: bundle_en-US
 
 all-bundles-both:
-#	USE_PIDGIN=1 make all-bundles
-#	make clean
+	USE_PIDGIN=1 make all-bundles
+	make clean
 	USE_PIDGIN=0 make all-bundles
 	make clean
 
