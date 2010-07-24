@@ -132,4 +132,7 @@ Edit https://tor-svn.freehaven.net/svn/website/trunk/include/versions.wmi
 Update version-torbrowser* with the versions of the bundles and
 components
 
-Ask Roger to publish the website
+Ask Roger, Andrew, Sebastian, or Erinn to publish the website
+
+Andrew or Erinn can upload the binaries to archive.torproject.org in the
+right directory.
