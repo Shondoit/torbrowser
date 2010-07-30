@@ -133,7 +133,7 @@ build-qt:
 	cd $(QT_DIR) && make install
 
 VIDALIA_DIR=$(FETCH_DIR)/vidalia-$(VIDALIA_VER)
-VIDALIA_OPTS=-DOSX_TIGER_COMPAT=1 -DOPENSSL_LIBRARY_DIR=$(BUILT_DIR)/lib -DCMAKE_BUILD_TYPE=debug ..
+VIDALIA_OPTS=-DOSX_TIGER_COMPAT=1 -DCMAKE_OSX_ARCHITECTURES=i386 -DOPENSSL_LIBRARY_DIR=$(BUILT_DIR)/lib -DCMAKE_BUILD_TYPE=debug ..
 build-vidalia:
 	export MACOSX_DEPLOYMENT_TARGET=10.4
 	-mkdir $(VIDALIA_DIR)/build
@@ -384,6 +384,7 @@ install-docs:
 	cp $(TOR_DIR)/LICENSE $(TOR_DIR)/README $(DOCSDIR)/Tor
 	cp $(QT_DIR)/LICENSE.GPL* $(QT_DIR)/LICENSE.LGPL $(DOCSDIR)/Qt
 	cp $(POLIPO_DIR)/COPYING  $(POLIPO_DIR)/README $(DOCSDIR)/Polipo
+	cp ../LICENSE $(DEST)
 	# This should be updated to be more generic (version-wise) and more Linux specific
 	cp ../README.Linux $(DOCSDIR)/README-TorBrowserBundle
 

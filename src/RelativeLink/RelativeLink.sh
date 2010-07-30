@@ -7,7 +7,7 @@
 #
 # To run in debug mode simply pass --debug
 #
-# Copyright 2010 Erinn Clark <erinn@torproject.org>
+# Copyright 2010 The Tor Project.  See LICENSE for licensing information.
 
 if [ $1 ]; then 
 	debug=$1
