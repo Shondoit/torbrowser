@@ -5,13 +5,13 @@ Included applications
 ---------------------
 
 Vidalia 0.2.9 (with Qt 4.6.2)
-Tor 0.2.2.13-alpha (with libevent-1.4.13, zlib-1.2.3 and openssl-0.9.8l) 
+Tor 0.2.2.15-alpha (with libevent-1.4.13, zlib-1.2.3 and openssl-0.9.8l) 
 Polipo 1.0.4.1
-Firefox 3.5.10
+Firefox 3.6.8
  \_ Torbutton 1.2.5
- |_ NoScript 1.9.9.80
- |_ BetterPrivacy 1.4.7
- |_ HTTPS Everywhere 0.2.1
+ |_ NoScript 2.0.2.3
+ |_ BetterPrivacy 1.48.3
+ |_ HTTPS Everywhere 0.2.2
 
 Usage
 -----
@@ -30,38 +30,50 @@ To exit, close Firefox. Vidalia will automatically clean up and exit.
 Changelog
 ---------
 
-1.0.8: Released 2010-07-05
-       Update libpng to 1.4.3 (see CVE-2010-1205)
-       Update Firefox to 3.5.10
-       Update HTTPS Everywhere to 0.2.1
+1.0.10: Release 2010-08-20
+        Update Tor to 0.2.2.15-alpha
+        Update Firefox to 3.6.8 
+          (Mozilla is not doing security and stability updates 
+           for 3.5.x after August 2010)
+        Update NoScript to 2.0.2.3
+        Update BetterPrivacy to 1.48.3
+        Update HTTPS Everywhere to 0.2.2        
 
-1.0.7: Released 2010-06-01
-       Rebuild everything against an older glibc so it'll run on more distros
+1.0.9:  Released 2010-07-13
+        Update Tor to 0.2.2.14-alpha
 
-1.0.6: Released 2010-05-31
-       Add arch to tarball name so there's no collision
-       Add libpng for Arch Linux
-       Add HTTPS Everywhere extension
-       Update Qt to 4.6.2
-       Update Vidalia to 0.2.9
-       Update NoScript to 1.9.9.80
+1.0.8:  Released 2010-07-05
+        Update libpng to 1.4.3 (see CVE-2010-1205)
+        Update Firefox to 3.5.10
+        Update HTTPS Everywhere to 0.2.1
 
-1.0.5: Released 2010-05-15
-       Fix missing OpenSSL shared library bug
-       (thanks to bee at http://honeybeenet.altervista.org/homepage/)
+1.0.7:  Released 2010-06-01
+        Rebuild everything against an older glibc so it'll run on more distros
 
-1.0.4: Released 2010-04-24
-       Update Tor to 0.2.2.13-alpha
+1.0.6:  Released 2010-05-31
+        Add arch to tarball name so there's no collision
+        Add libpng for Arch Linux
+        Add HTTPS Everywhere extension
+        Update Qt to 4.6.2
+        Update Vidalia to 0.2.9
+        Update NoScript to 1.9.9.80
 
-1.0.3: Released 2010-04-20
-       Update Tor to 0.2.2.12-alpha
+1.0.5:  Released 2010-05-15
+        Fix missing OpenSSL shared library bug
+        (thanks to bee at http://honeybeenet.altervista.org/homepage/)
 
-1.0.2: Released 2010-04-18
-       Update Tor to 0.2.2.10-alpha
-       Update to Vidalia 0.2.8
+1.0.4:  Released 2010-04-24
+        Update Tor to 0.2.2.13-alpha
 
-1.0.1: Released 2010-04-08
-       Stop TBB from crashing when it tries to download files
-       Update Torbutton to 1.2.5
+1.0.3:  Released 2010-04-20
+        Update Tor to 0.2.2.12-alpha
 
-1.0.0: Initial release (2010-03-25)
+1.0.2:  Released 2010-04-18
+        Update Tor to 0.2.2.10-alpha
+        Update to Vidalia 0.2.8
+
+1.0.1:  Released 2010-04-08
+        Stop TBB from crashing when it tries to download files
+        Update Torbutton to 1.2.5
+
+1.0.0:  Initial release (2010-03-25)
