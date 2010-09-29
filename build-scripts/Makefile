@@ -12,21 +12,21 @@
 #####################
 
 ## Location of required libraries
-MING=/c/MinGW/bin
+MING=/c/c/mingw/bin
 QT=/c/Qt/4.6.2/bin
-OPENSSL=/c/build/openssl-0.9.8l/bin
+OPENSSL=/c/OpenSSL/bin
 
 ## Versions
 TORBUTTON_VERSION=1.2.5
-FIREFOX_VERSION=3.5.11
-PIDGIN_VERSION=2.7.2
+FIREFOX_VERSION=3.6.10
+PIDGIN_VERSION=2.7.3
 
 ## Location of bundle components
-VIDALIA=/c/build/vidalia-0.2.9
+VIDALIA=/c/build/vidalia-0.2.10
 TOR=/c/build/tor-0.2.1.26
 POLIPO=/c/build/polipo-1.0.4.1
-FIREFOX_SRC=/c/build/FirefoxPortable
-PIDGIN_SRC=/c/build/PidginPortable
+FIREFOX_SRC=/c/build/FirefoxPortable-3.6.10
+PIDGIN_SRC=/c/build/PidginPortable-2.7.3
 
 ## Location of utility applications
 SEVENZIP="/c/Program Files/7-Zip/7z.exe"
@@ -46,7 +46,7 @@ DEST="Generic Bundle"
 NAME="Tor Browser"
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.3.10-dev
+VERSION=1.3.10
 DEFAULT_COMPRESSED_BASENAME=tor-browser-
 IM_COMPRESSED_BASENAME=tor-im-browser-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
@@ -285,16 +285,13 @@ copy-files_%: generic-bundle.stamp
 
 BUNDLE=$(NAME)_$(LANGCODE)/$(NAME)
 DUMMYPROFILE=$(BUNDLE)/FirefoxPortable/App/DummyProfile
-install-extensions: $(DEFAULT_EXTENSIONS) langpack_$(LANGCODE).xpi
+install-extensions: $(filter-out langpack_en-US.xpi,langpack_$(LANGCODE).xpi)
 	## Make a dummy profile to stop Firefox creating some large files
 	cp -R $(BUNDLE)/FirefoxPortable/App/DefaultData $(DUMMYPROFILE)
-	## Install default extensions and everything from extensions directory
-	for extension in langpack_$(LANGCODE).xpi $(DEFAULT_EXTENSIONS) $(EXTENSIONS_DIR)/*.xpi $(EXTENSIONS_DIR)/*.jar; \
-	  do $(BUNDLE)/FirefoxPortable/App/firefox/tbb-firefox.exe \
-             -profile $(DUMMYPROFILE)/profile \
-             -install-global-extension $$extension; \
-          done
-	## Delete the dummy profile
+ifneq ($(LANGCODE), en-US)
+	mv langpack_$(LANGCODE).xpi $(BUNDLE)/FirefoxPortable/App/Firefox/distribution/bundles/langpack-$(LANGCODE)\@firefox.mozilla.org.zip
+	$(SEVENZIP) x -o$(BUNDLE)/FirefoxPortable/App/Firefox/distribution/bundles/langpack-$(LANGCODE)\@firefox.mozilla.org $(BUNDLE)/FirefoxPortable/App/Firefox/distribution/bundles/langpack-$(LANGCODE)\@firefox.mozilla.org.zip
+endif
 	rm -fr $(DUMMYPROFILE)
 
 ## Set the language for Vidalia
