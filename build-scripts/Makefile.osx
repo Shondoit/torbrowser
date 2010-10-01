@@ -368,21 +368,24 @@ configure-apps:
 	cp $(CONFIG_SRC)/Info.plist $(DEST)/Contents
 	cp $(CONFIG_SRC)/PkgInfo $(DEST)/Contents
 	cp $(CONFIG_SRC)/qt.conf $(DEST)/Contents/Resources
+	cp $(CONFIG_SRC)/vidalia.icns $(DEST)/Contents/Resources
 	## Configure Pidgin
 ifeq ($(USE_PIDGIN),1)
 	mkdir -p $(DEST)/PidginPortable/Data/settings/.purple
 	cp $(CONFIG_SRC)/prefs.xml $(DEST)/PidginPortable/Data/settings/.purple
 endif
 	## Configure Vidalia
+	mkdir -p $(DEST)/Library/Vidalia
 ifeq ($(USE_PIDGIN),1)
-	cp $(CONFIG_SRC)/vidalia.conf.ff+pidgin-osx $(DEST)/Contents/Resources/Data/Vidalia/vidalia.conf
+	cp $(CONFIG_SRC)/vidalia.conf.ff+pidgin-osx $(DEST)/Library/Vidalia/vidalia.conf
 else
-	cp $(CONFIG_SRC)/vidalia.conf.ff-osx $(DEST)/Contents/Resources/Data/Vidalia/vidalia.conf
+	cp $(CONFIG_SRC)/vidalia.conf.ff-osx $(DEST)/Library/Vidalia/vidalia.conf
 endif
 	## Configure Polipo
 	cp $(CONFIG_SRC)/polipo.conf $(DEST)/Contents/Resources/Data/Polipo/polipo.conf
 	## Configure Tor
-	cp $(CONFIG_SRC)/torrc-osx $(DEST)/Contents/Resources/Data/Tor/torrc
+	#cp $(CONFIG_SRC)/torrc-osx $(DEST)/Contents/Resources/Data/Tor/torrc
+	cp $(CONFIG_SRC)/torrc-osx $(DEST)/Library/Vidalia/torrc
 	cp $(TOR_DIR)/src/config/geoip $(DEST)/Contents/Resources/Data/Tor/geoip
 	chmod 700 $(DATADIR)/Tor
 
@@ -464,15 +467,26 @@ install-extensions: $(DEFAULT_EXTENSIONS)
 ## Language extensions need to be handled differently from other extensions
 install-lang-extensions: $(filter-out langpack_en-US.xpi,langpack_$(LANGCODE).xpi)
 ifneq ($(LANGCODE), en-US)
-	mkdir -p $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/default/langpack-$(LANGCODE)@firefox.mozilla.org
-	cp langpack_$(LANGCODE).xpi $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/default/langpack-$(LANGCODE)@firefox.mozilla.org/langpack_$(LANGCODE).zip
-	(cd $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/default/langpack-$(LANGCODE)@firefox.mozilla.org && unzip *.zip && rm *.zip)
+	mkdir -p $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org
+	cp langpack_$(LANGCODE).xpi $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org/langpack_$(LANGCODE).zip
+	(cd $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org && unzip *.zip && rm *.zip)
 endif
+
+# OS X needs a different kind of extension installation for httpseverywhere
+install-httpseverywhere: httpseverywhere.xpi
+	mkdir -p $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/https-everywhere@eff.org
+	cp httpseverywhere.xpi $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/https-everywhere@eff.org/httpseverywhere.zip
+	(cd $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/https-everywhere@eff.org && unzip *.zip && rm *.zip && rm *tmp)
+	
+install-noscript: noscript.xpi
+	mkdir -p $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/\{73a6fe31-595d-460b-a920-fcc0f8843232\}
+	cp noscript.xpi $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/\{73a6fe31-595d-460b-a920-fcc0f8843232\}/noscript.zip
+	(cd $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/\{73a6fe31-595d-460b-a920-fcc0f8843232\} && unzip *.zip && rm *.zip)
 
 ## Set the language for Vidalia
 patch-vidalia-language:
 	## Patch Vidalia
-	./patch-vidalia-language.sh $(BUNDLE)/Contents/Resources/Data/Vidalia/vidalia.conf $(LANGCODE) -e
+	./patch-vidalia-language.sh $(BUNDLE)/Library/Vidalia/vidalia.conf $(LANGCODE) -e
 
 ## Set the language for Pidgin
 patch-pidgin-language:
@@ -486,17 +500,14 @@ endif
 patch-firefox-language:
 	## Patch the default Firefox prefs.js
 	## Don't use {} because they aren't always interpreted correctly. Thanks, sh. 
-	cp $(CONFIG_SRC)/bookmarks.html $(BUNDLE)/Contents/MacOS/Firefox.app/Contents/MacOS/defaults/profile/
-	cp $(CONFIG_SRC)/linux-prefs.js $(BUNDLE)/Contents/MacOS/Firefox.app/Contents/MacOS/defaults/profile/prefs.js
-	cp $(CONFIG_SRC)/bookmarks.html $(BUNDLE)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile
-	cp $(CONFIG_SRC)/linux-prefs.js $(BUNDLE)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/prefs.js
-	./patch-firefox-language.sh $(BUNDLE)/Contents/MacOS/Firefox.app/Contents/MacOS/defaults/profile/prefs.js $(LANGCODE) -e
-	./patch-firefox-language.sh $(BUNDLE)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/prefs.js $(LANGCODE) -e
+	cp $(CONFIG_SRC)/linux-prefs.js $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
+	cp $(CONFIG_SRC)/bookmarks.html $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile
+	./patch-firefox-language.sh $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js $(LANGCODE) -e
 
 ## Fix prefs.js since extensions.checkCompatibility, false doesn't work
 update-extension-pref:
-	ext_ver=$$(sed -n '/em:version/{s,.*="\(.*\)".*,\1,p;q;}' $(BUNDLE)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org/install.rdf); \
-	sed -i -e "s/SHPONKA/langpack-$(LANGCODE)@firefox.mozilla.org:$$ext_ver/g" $(BUNDLE)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/prefs.js
+	ext_ver=$$(sed -n '/em:version/{s,.*="\(.*\)".*,\1,p;q;}' $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org/install.rdf); \
+	sed -i -e "s/SHPONKA/langpack-$(LANGCODE)@firefox.mozilla.org:$$ext_ver/g" $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
 
-final: install-qt
+final: 
 	mv $(BUNDLE) $(BUNDLE).app
