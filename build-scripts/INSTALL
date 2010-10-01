@@ -29,6 +29,7 @@ Contents
 - Building Vidalia
 - Unpacking PidginPortable
 - Building Firefox or Unpacking Firefox Portable
+- Adding extensions to Firefox Portable (3.6.x series)
 - Customizing and Building the Tor Browser Bundle
 
 An Introduction to Building Tor Browser Bundle
@@ -539,6 +540,18 @@ If you use FirefoxPortable, you can skip past the following build steps and go d
 
 Eventually it should use a custom build of Firefox. The following is a set of notes on building Firefox.
 
+Adding extensions to Firefox Portable
+=====================================
+
+To ship extensions with Firefox (Portable or otherwise) on Windows, do the following:
+- Create a directory in FirefoxPortable/App/Firefox/distribution/bundles.
+- Download the extensions you want into this directory. Currently the Tor
+  Browser Bundle is using Torbutton, HTTPS Everywhere, Better Privacy, and NoScript 
+- Make directories named after the extension ID of the extension. For
+  Torbutton, this is {e0204bd5-9d31-402b-a99d-a6aa8ffebdca}. The others can be
+  found inside their respective .xpis, in install.rdf.
+- Copy the .xpi into the directory with its extension ID and unzip it with 7zip.
+
 Tested compilers for building Firefox
 =====================================
 
@@ -590,9 +603,6 @@ The locations of Qt, MinGW32, the Vidalia/Tor build directory, 7zip,
 FirefoxPortable can be altered in Makefile. The WGET variable should
 be either set to the location of a wget binary, or a command line for
 executing pyget.py under the installed Python interpreter.
-
-To install additional Firefox extensions, place the .xpi file in the
-build-scripts/extensions directory before building the bundle.
 
 Building the Tor Browser Bundle
 ===============================
