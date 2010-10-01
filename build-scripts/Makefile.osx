@@ -113,10 +113,9 @@ OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 shared zlib --prefix=$(BUILT_DIR) --openss
 build-openssl:
 	cd $(OPENSSL_DIR) && ./config $(OPENSSL_OPTS)
 	cd $(OPENSSL_DIR) && make depend
-	cd $(OPENSSL_DIR) && make CFLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk -arch ppc\
-	-arch i386 -arch ppc64 -arch x86_64" \ 
-	LDFLAGS="-syslibroot /Developer/SDKs/MacOSX10.5.sdk \
-	-arch ppc -arch i386 -arch ppc64 -arch x86_64"
+	cd $(OPENSSL_DIR) && CC=/usr/bin/gcc-4.0 \
+	CFLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk" \
+	LDFLAGS="-syslibroot /Developer/SDKs/MacOSX10.5.sdk" make
 	cd $(OPENSSL_DIR) && make install
 
 QT_DIR=$(FETCH_DIR)/qt-everywhere-opensource-src-$(QT_VER)
@@ -133,7 +132,8 @@ VIDALIA_OPTS=-DOSX_TIGER_COMPAT=1 -DCMAKE_OSX_ARCHITECTURES=i386 -DOPENSSL_LIBRA
 build-vidalia:
 	export MACOSX_DEPLOYMENT_TARGET=10.4
 	-mkdir $(VIDALIA_DIR)/build
-	cd $(VIDALIA_DIR)/build && cmake $(VIDALIA_OPTS) && make
+	cd $(VIDALIA_DIR)/build && cmake $(VIDALIA_OPTS) \
+	&& make && make dist-osx-libraries
 	cd $(VIDALIA_DIR)/build && DESTDIR=$(BUILT_DIR) make install
 
 LIBEVENT_DIR=$(FETCH_DIR)/libevent-$(LIBEVENT_VER)
@@ -160,7 +160,8 @@ POLIPO_DIR=$(FETCH_DIR)/polipo-$(POLIPO_VER)
 POLIPO_MAKEFILE=$(CONFIG_SRC)/polipo-Makefile
 build-polipo:
 	cp $(POLIPO_MAKEFILE) $(POLIPO_DIR)/Makefile
-	cd $(POLIPO_DIR) && make && PREFIX=$(FETCH_DIR)/built/ make install.binary
+	cd $(POLIPO_DIR) && make CFLAGS="-mmacosx-version-min=10.4" \
+	&& PREFIX=$(FETCH_DIR)/built/ make install.binary
 
 build-pidgin:
 	echo "We're not building pidgin yet!"
@@ -168,7 +169,7 @@ build-pidgin:
 build-firefox:
 	echo "We're using a prebuilt firefox. Fix this someday!"
 
-build-all-binaries: build-zlib build-openssl build-qt build-vidalia build-libevent build-tor build-polipo build-pidgin build-firefox
+build-all-binaries: build-zlib build-openssl build-vidalia build-libevent build-tor build-polipo
 	echo "If we're here, we've done something right."
 
 ## Location of compiled libraries
@@ -183,7 +184,7 @@ ZLIB=$(COMPILED_LIBS)
 LIBEVENT=$(COMPILED_LIBS)
 
 ## Location of binary bundle components
-VIDALIA=$(BUILT_DIR)/usr/local/bin/Vidalia.app/Contents/MacOS/Vidalia
+VIDALIA=$(BUILT_DIR)/usr/local/bin/Vidalia.app/
 TOR=$(COMPILED_BINS)/tor
 POLIPO=$(COMPILED_BINS)/polipo
 ## Someday, this will be our custom Firefox
@@ -313,43 +314,6 @@ directory-structure:
 
 ## Package up all the Vidalia and Tor pre-requisites
 ## Firefox and Pidgin are installed in their own targets
-install-qt:
-	mkdir -p $(BUNDLE)/Contents/Frameworks/QtGui.framework/Versions/4
-	mkdir -p $(BUNDLE)/Contents/Frameworks/QtCore.framework/Versions/4
-	mkdir -p $(BUNDLE)/Contents/Frameworks/QtNetwork.framework/Versions/4
-	mkdir -p $(BUNDLE)/Contents/Frameworks/QtXml.framework/Versions/4
-	# copy the frameworks
-	cp -R /Library/Frameworks/QtGui.framework/QtGui $(BUNDLE)/Contents/Frameworks/QtGui.framework/
-	cp -R /Library/Frameworks/QtGui.framework/Versions/4/QtGui $(BUNDLE)/Contents/Frameworks/QtGui.framework/Versions/4
-	cp -R /Library/Frameworks/QtCore.framework/QtCore $(BUNDLE)/Contents/Frameworks/QtCore.framework/
-	cp -R /Library/Frameworks/QtCore.framework/Versions/4/QtCore $(BUNDLE)/Contents/Frameworks/QtCore.framework/Versions/4
-	cp -R /Library/Frameworks/QtNetwork.framework/QtNetwork $(BUNDLE)/Contents/Frameworks/QtNetwork.framework/
-	cp -R /Library/Frameworks/QtNetwork.framework/Versions/4/QtNetwork $(BUNDLE)/Contents/Frameworks/QtNetwork.framework/Versions/4
-	cp -R /Library/Frameworks/QtXml.framework/QtXml $(BUNDLE)/Contents/Frameworks/QtXml.framework/
-	cp -R /Library/Frameworks/QtXml.framework/Versions/4/QtXml $(BUNDLE)/Contents/Frameworks/QtXml.framework/Versions/4
-	# do the funky install_name_tool chicken dance for Qt framework & Vidalia
-	install_name_tool -id @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
-	$(BUNDLE)/Contents/Frameworks/QtCore.framework/Versions/4/QtCore
-	install_name_tool -id @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui \
-	$(BUNDLE)/Contents/Frameworks/QtGui.framework/Versions/4/QtGui
-	install_name_tool -change QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
-	$(BUNDLE)/Contents/Frameworks/QtGui.framework/Versions/4/QtGui
-	install_name_tool -id @executable_path/../Frameworks/QtNetwork.framework/Versions/4/QtNetwork \
-	$(BUNDLE)/Contents/Frameworks/QtNetwork.framework/Versions/4/QtNetwork
-	install_name_tool -change QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
-	$(BUNDLE)/Contents/Frameworks/QtNetwork.framework/Versions/4/QtNetwork
-	install_name_tool -id @executable_path/../Frameworks/QtXml.framework/Versions/4/QtXml \
-	$(BUNDLE)/Contents/Frameworks/QtXml.framework/Versions/4/QtXml
-	install_name_tool -change QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
-	$(BUNDLE)/Contents/Frameworks/QtXml.framework/Versions/4/QtXml
-	install_name_tool -change QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore \
-	$(BUNDLE)/Contents/MacOS/Vidalia
-	install_name_tool -change QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui \
-	$(BUNDLE)/Contents/MacOS/Vidalia
-	install_name_tool -change QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork.framework/Versions/4/QtNetwork \
-	$(BUNDLE)/Contents/MacOS/Vidalia
-	install_name_tool -change QtXml.framework/Versions/4/QtXml @executable_path/../Frameworks/QtXml.framework/Versions/4/QtXml \
-	$(BUNDLE)/Contents/MacOS/Vidalia
 install-binaries: 
 	# zlib
 	cp -R $(ZLIB)/libz.1.2.3.dylib $(ZLIB)/libz.1.dylib $(ZLIB)/libz.dylib $(LIBSDIR)
@@ -357,11 +321,11 @@ install-binaries:
 	cp -R $(LIBEVENT)/libevent.a  $(LIBEVENT)/libevent_core.a $(LIBEVENT)/libevent_extra.a \
 	   $(LIBEVENT)/libevent.la $(LIBEVENT)/libevent_core.la $(LIBEVENT)/libevent_extra.la $(LIBSDIR)
 	# OpenSSL
-	cp -R $(OPENSSL)/libcrypto.dylib $(OPENSSL)/libcrypto.0.9.7.dylib $(OPENSSL)/libssl.dylib \
-	   $(OPENSSL)/libssl.0.9.7.dylib $(LIBSDIR)
+	cp -R $(OPENSSL)/libcrypto.dylib $(OPENSSL)/libcrypto.0.9.8.dylib $(OPENSSL)/libssl.dylib \
+	   $(OPENSSL)/libssl.0.9.8.dylib $(LIBSDIR)
 	#cp -R $(OPENSSL)/libcrypto* $(OPENSSL)/libssl* $(LIBSDIR)
 	# Vidalia
-	cp $(VIDALIA) $(APPDIR)
+	cp -R $(VIDALIA) $(APPDIR)/Vidalia.app
 	# Polipo
 	cp $(POLIPO) $(APPDIR)
 	# Tor (perhaps we want tor-resolve too?)
@@ -430,7 +394,7 @@ launcher:
 strip-it-stripper:
 	strip $(APPDIR)/tor
 	strip $(APPDIR)/polipo
-	#strip $(APPDIR)/Vidalia
+	strip $(APPDIR)/Vidalia.app/Contents/MacOS/Vidalia
 	#strip $(LIBSDIR)/*
 
 ##
