@@ -9,9 +9,9 @@
 	<key>CFBundleExecutable</key>
 	<string>TorBrowserBundle</string>
 	<key>CFBundleGetInfoString</key>
-	<string>Tor Browser Bundle 1.0 Copyright 2010 Erinn Clark</string>
+	<string>Tor Browser Bundle 1.0 Copyright 2010 The Tor Project</string>
 	<key>CFBundleIconFile</key>
-	<string>appIcon.icns</string>
+	<string>vidalia.icns</string>
 	<key>CFBundleIdentifier</key>
 	<string>org.torproject.TorBrowserBundle</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -35,7 +35,7 @@
 	<key>NSAppleScriptEnabled</key>
 	<false/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Tor Browser Bundle 1.0 Copyright 2010 Erinn Clark</string>
+	<string>Tor Browser Bundle 1.0 Copyright 2010 The Tor Project</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>

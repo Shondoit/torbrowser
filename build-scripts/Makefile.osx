@@ -41,18 +41,20 @@ BUILT_DIR=$(FETCH_DIR)/built
 TBB_FINAL=$(BUILT_DIR)/TBBL
 
 ## Versions for our source packages
-ZLIB_VER=1.2.3
-OPENSSL_VER=0.9.7l
-QT_VER=4.6.2
-VIDALIA_VER=0.2.9
+HTTPSEVERY_VER=0.2.2
+FIREFOX_VER=3.6.9
 LIBEVENT_VER=1.4.13-stable
-TOR_VER=0.2.2.13-alpha
-POLIPO_VER=1.0.4.1
-PIDGIN_VER=2.6.4
+LIBPNG_VER=1.4.3
+NOSCRIPT_VER=2.0.2.3
+OPENSSL_VER=0.9.8l
 OTR_VER=3.2.0
-FIREFOX_VER=3.6.3
+PIDGIN_VER=2.6.4
+POLIPO_VER=1.0.4.1
+QT_VER=4.6.2
+TOR_VER=0.2.2.16-alpha
 TORBUTTON_VER=1.2.5
-NOSCRIPT_VER=1.9.9.80
+VIDALIA_VER=0.2.10
+ZLIB_VER=1.2.3
 
 ## Extension IDs
 FF_VENDOR_ID:=\{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
@@ -83,24 +85,18 @@ fetch-source:
 	-mkdir $(FETCH_DIR)
 	$(WGET) --directory-prefix=$(FETCH_DIR) $(ZLIB_URL)
 	$(WGET) --directory-prefix=$(FETCH_DIR) $(OPENSSL_URL)
-	$(WGET) --directory-prefix=$(FETCH_DIR) $(QT_URL)
 	$(WGET) --directory-prefix=$(FETCH_DIR) $(VIDALIA_URL)
 	$(WGET) --directory-prefix=$(FETCH_DIR) $(LIBEVENT_URL)
 	$(WGET) --directory-prefix=$(FETCH_DIR) $(TOR_URL)
 	$(WGET) --directory-prefix=$(FETCH_DIR) $(POLIPO_URL)
-	$(WGET) --directory-prefix=$(FETCH_DIR) $(PIDGIN_URL)
-	$(WGET) --directory-prefix=$(FETCH_DIR) $(FIREFOX_URL)
 
 unpack-source:
 	cd $(FETCH_DIR) && tar -xvzf $(ZLIB_PACKAGE)
 	cd $(FETCH_DIR) && tar -xvzf $(OPENSSL_PACKAGE)
-	cd $(FETCH_DIR) && tar -xvzf $(QT_PACKAGE)
 	cd $(FETCH_DIR) && tar -xvzf $(VIDALIA_PACKAGE)
 	cd $(FETCH_DIR) && tar -xvzf $(LIBEVENT_PACKAGE)
 	cd $(FETCH_DIR) && tar -xvzf $(TOR_PACKAGE)
 	cd $(FETCH_DIR) && tar -xvzf $(POLIPO_PACKAGE)
-	cd $(FETCH_DIR) && tar -xvjf $(PIDGIN_PACKAGE)
-	cd $(FETCH_DIR) && tar -xvjf $(FIREFOX_PACKAGE)
 
 source-dance: fetch-source unpack-source
 	echo "We're ready for building now."
@@ -213,10 +209,10 @@ NAME=TorBrowser
 DISTDIR=tbbosx-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.0.0-dev
+VERSION=1.0.1-dev
 DEFAULT_COMPRESSED_BASENAME=TorBrowser-$(VERSION)-
 IM_COMPRESSED_BASENAME=TorBrowser-IM-$(VERSION)-
-DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
+DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)$(ARCH_TYPE)
 IM_COMPRESSED_NAME=$(IM_COMPRESSED_BASENAME)$(VERSION)
 
 ifeq ($(USE_PIDGIN),1)
@@ -227,16 +223,13 @@ endif
 
 ## Extensions to install by default
 DEFAULT_EXTENSIONS=torbutton.xpi
-#betterprivacy.xpi
-#noscript.xpi
 
 ## Where to download Torbutton from
-#TORBUTTON=https://addons.mozilla.org/en-US/firefox/downloads/latest/2275/addon-2275-latest.xpi?src=addondetail
-TORBUTTON=http://www.torproject.org/torbutton/releases/torbutton-$(TORBUTTON_VER).xpi
-NOSCRIPT=http://secure.informaction.com/download/releases/noscript-$(NOSCRIPT_VER).xpi
-BETTERPRIVACY=http://addons.mozilla.org/en-US/firefox/downloads/latest/6623/addon-6623-latest.xpi
+TORBUTTON=https://www.torproject.org/torbutton/releases/torbutton-$(TORBUTTON_VER).xpi
+NOSCRIPT=https://secure.informaction.com/download/releases/noscript-$(NOSCRIPT_VER).xpi
+HTTPSEVERYWHERE=https://eff.org/files/https-everywhere-$(HTTPSEVERY_VER).xpi
 ## Where to download Mozilla language packs
-MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/3.6.4/linux-i686/xpi
+MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/latest/mac/xpi
 
 ## Put more extensions here
 EXTENSIONS_DIR=extensions
@@ -270,6 +263,7 @@ all-compressed-bundles: compressed-bundle_ar \
 	compressed-bundle_fa \
 	compressed-bundle_fr \
 	compressed-bundle_nl \
+	compressed-bundle_pl \
 	compressed-bundle_pt-PT \
 	compressed-bundle_ru \
 	compressed-bundle_zh-CN \
@@ -385,8 +379,7 @@ install-docs:
 	cp $(QT_DIR)/LICENSE.GPL* $(QT_DIR)/LICENSE.LGPL $(DOCSDIR)/Qt
 	cp $(POLIPO_DIR)/COPYING  $(POLIPO_DIR)/README $(DOCSDIR)/Polipo
 	cp ../LICENSE $(DEST)
-	# This should be updated to be more generic (version-wise) and more Linux specific
-	cp ../README.Linux $(DOCSDIR)/README-TorBrowserBundle
+	cp ../README.OSX $(DEST)/README-TorBrowserBundle
 
 ## Copy over Firefox
 install-firefox:
@@ -452,9 +445,9 @@ torbutton.xpi:
 noscript.xpi: 
 	$(WGET) --no-check-certificate -O $@ $(NOSCRIPT)
 
-## BetterPrivacy
-betterprivacy.xpi:
-	$(WGET) --no-check-certificate -O $@ $(BETTERPRIVACY)
+## HTTPS Everywhere
+httpseverywhere.xpi:
+	$(WGET) --no-check-certificate -O $@ $(HTTPSEVERYWHERE)
 
 ## Generic language pack rule
 langpack_%.xpi:
