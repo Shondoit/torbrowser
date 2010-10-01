@@ -1,0 +1,29 @@
+Tor Browser Bundle for Mac OS X
+===============
+
+Included applications
+---------------------
+
+Vidalia 0.2.10 (with Qt 4.6.2)
+Tor 0.2.2.16-alpha (with libevent-1.4.13, zlib-1.2.3 and openssl-0.9.8l) 
+Polipo 1.0.4.1
+Firefox (Namoroka)i 3.6.9
+ \_ Torbutton 1.2.5
+ |_ NoScript 2.0.2.3
+ |_ HTTPS-Everywhere 0.2.2
+
+Usage
+-----
+
+Unzip the TorBrowser zip file that you downloaded. Click on the
+TorBrowser_LANG.app inside will launch Vidalia and then Firefox.
+
+To exit, close Firefox and Vidalia.
+
+Changelog
+---------
+
+1.0.1: Released 2010-09-18
+       Update Tor to 0.2.2.16-alpha
+
+1.0.0: Initial release (2010-09-15)
