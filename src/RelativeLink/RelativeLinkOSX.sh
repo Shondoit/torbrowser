@@ -35,4 +35,4 @@ fi
 # not in debug mode, run proceed normally
 printf "\nLaunching Tor Browser Bundle for Linux in ${HOME}\n"
 cd "${HOME}"
-$HOME/Contents/MacOS/Vidalia --datadir $HOME/Contents/Resources/Data/Vidalia/
+open $HOME/Contents/MacOS/Vidalia.app
