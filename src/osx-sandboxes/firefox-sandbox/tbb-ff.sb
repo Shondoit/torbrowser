@@ -1,0 +1,81 @@
+(version 1)
+
+(deny default)
+; help with debug.
+(deny file-read-metadata (subpath "/Applications") (with no-log))
+(deny file-read-metadata (subpath "/Developer") (with no-log))
+(deny file-read-metadata (subpath "/Users/andreas/Library") (with no-log))
+
+(allow file-ioctl
+       (literal "/dev/urandom")
+       (literal "/dev/dtracehelper"))
+(allow network-outbound  
+	(remote tcp "localhost:8118"))
+(allow file-read-data file-read-metadata
+       (literal "/Library/Preferences/com.apple.HIToolbox.plist")
+       (literal "/Library/Preferences/.GlobalPreferences.plist")
+       (subpath "FIREFOXDIR/Contents")
+       (subpath "LIBRARYDIR/Application Support/Firefox/Profiles/profile")
+       (subpath "/System")
+       (subpath "TMPDIR") ;; macosx shellenv. 
+       (subpath "/usr/lib")
+       (literal "/private/etc/passwd")
+       (subpath "/Library/Fonts")
+       (literal "/dev/null")
+       (subpath "/usr/share")
+       (literal "/dev/urandom"))
+	
+
+(allow file-read-data 
+       (literal "FIREFOXDIR")
+       (literal "/Users/andreas/Downloads/tor/TorBrowser_en-US.app")
+       (literal "/dev/dtracehelper"))
+
+(allow file-read-metadata
+       (literal "/")
+       (literal "FIREFOXDIR")
+       (literal "LIBRARYDIR/Application Support/Firefox/Profiles")
+       (literal "LIBRARYDIR/Application Support/Firefox")
+       (literal "LIBRARYDIR/Application Support")
+       (literal "LIBRARYDIR")
+       (literal "/etc")
+       (literal "/var")
+       (literal "/tmp")
+       (literal "/private/tmp")
+       (literal "/private/var/tmp")
+       (literal "/private/etc/localtime"))
+
+(allow file-write* (subpath "LIBRARYDIR/Application Support/Firefox/Profiles/profile"))
+	
+(allow file-write-data
+       (subpath "TMPDIR") ;; macosx shellenv, we will fix this later
+       (literal "/dev/dtracehelper"))
+
+(allow ipc-posix-shm)
+
+(allow mach-lookup
+       (global-name "com.apple.CoreServices.coreservicesd")
+       (global-name "com.apple.SecurityServer")
+       (global-name "com.apple.SystemConfiguration.configd")
+       (global-name "com.apple.distributed_notifications.2")
+       (global-name "com.apple.dock.server")
+       (global-name "com.apple.system.DirectoryService.libinfo_v1")
+       (global-name "com.apple.system.DirectoryService.membership_v1")
+       (global-name "com.apple.system.logger")
+       (global-name "com.apple.system.notification_center")
+       (global-name "com.apple.FontObjectsServer")
+       (global-name "com.apple.FontServer")
+       (global-name "com.apple.pasteboard.1")
+       (global-name "com.apple.windowserver.active")
+       (global-name "com.apple.tsm.uiserver")
+       (global-name "com.apple.windowserver.session"))
+
+(allow process-exec
+	;; netstat needed for entropy. part of lib_nss.
+       (literal "/usr/sbin/netstat")
+       (literal "FIREFOXDIR/Contents/MacOS/firefox-bin2"))
+(allow process-fork)
+
+(allow sysctl-read)
+
+(allow system-socket)

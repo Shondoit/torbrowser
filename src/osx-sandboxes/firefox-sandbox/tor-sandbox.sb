@@ -1,0 +1,96 @@
+
+(version 1)
+
+(deny default)
+; help with debug.
+(deny file-read-metadata (subpath "/Applications") (with no-log))
+(deny file-read-metadata (subpath "/Developer") (with no-log))
+(deny file-read-metadata (subpath "/Users/andreas/Library") (with no-log))
+
+(allow file-ioctl
+       (literal "/dev/urandom")
+       (literal "/dev/dtracehelper"))
+(allow network-outbound  
+	(remote tcp "localhost:8118"))
+(allow file-read-data file-read-metadata
+       (literal "/Library/Preferences/com.apple.HIToolbox.plist")
+       (literal "/Library/Preferences/.GlobalPreferences.plist")
+       (subpath "/Users/andreas/Downloads/tor/TorBrowser_en-US.app/Contents/MacOS/Firefox.app/Contents")
+       (subpath "/Users/andreas/Downloads/tor/TorBrowser_en-US.app/Library/Application Support/Firefox/Profiles/profile")
+       (subpath "/System")
+       (subpath "/var/folders/om/omS0C5yXH1ynktSqdi9Et++++yY/-Tmp-") ;; macosx shellenv. 
+       (subpath "/usr/lib")
+       (literal "/private/etc/passwd")
+       (subpath "/Library/Fonts")
+       (literal "/dev/null")
+       (subpath "/usr/share")
+       (literal "/dev/urandom"))
+	
+
+(allow file-read-data 
+       (literal "/Users/andreas/Downloads/tor/TorBrowser_en-US.app/Contents/MacOS/Firefox.app")
+       (literal "/Users/andreas/Downloads/tor/TorBrowser_en-US.app")
+       (literal "/dev/dtracehelper"))
+
+(allow file-read-metadata
+       (literal "/")
+       (literal "/Users/andreas/Downloads/tor/TorBrowser_en-US.app/Contents/MacOS/Firefox.app")
+       (literal "/Users/andreas/Downloads/tor/TorBrowser_en-US.app/Library/Application Support/Firefox/Profiles")
+       (literal "/Users/andreas/Downloads/tor/TorBrowser_en-US.app/Library/Application Support/Firefox")
+       (literal "/Users/andreas/Downloads/tor/TorBrowser_en-US.app/Library/Application Support")
+       (literal "/Users/andreas/Downloads/tor/TorBrowser_en-US.app/Library")
+       (literal "/etc")
+       (literal "/var")
+       (literal "/tmp")
+       (literal "/private/tmp")
+       (literal "/private/var/tmp")
+       (literal "/private/etc/localtime"))
+
+(allow file-write* (subpath "/Users/andreas/Downloads/tor/TorBrowser_en-US.app/Library/Application Support/Firefox/Profiles/profile"))
+	
+(allow file-write-data
+       (subpath "/var/folders/om/omS0C5yXH1ynktSqdi9Et++++yY/-Tmp-") ;; macosx shellenv, we will fix this later
+       (literal "/dev/dtracehelper"))
+
+(allow ipc-posix-shm)
+
+(allow mach-lookup
+       (global-name "com.apple.CoreServices.coreservicesd")
+       (global-name "com.apple.SecurityServer")
+       (global-name "com.apple.SystemConfiguration.configd")
+       (global-name "com.apple.distributed_notifications.2")
+       (global-name "com.apple.dock.server")
+       (global-name "com.apple.system.DirectoryService.libinfo_v1")
+       (global-name "com.apple.system.DirectoryService.membership_v1")
+       (global-name "com.apple.system.logger")
+       (global-name "com.apple.system.notification_center")
+       (global-name "com.apple.FontObjectsServer")
+       (global-name "com.apple.FontServer")
+       (global-name "com.apple.pasteboard.1")
+       (global-name "com.apple.windowserver.active")
+       (global-name "com.apple.tsm.uiserver")
+       (global-name "com.apple.windowserver.session"))
+
+(allow process-exec
+	;; netstat needed for entropy. part of lib_nss.
+       (literal "/usr/sbin/netstat")
+       (literal "/Users/andreas/Downloads/tor/TorBrowser_en-US.app/Contents/MacOS/Firefox.app/Contents/MacOS/firefox-bin2"))
+(allow process-fork)
+
+(allow sysctl-read)
+
+(allow system-socket)
+(allow file-read-metadata (literal "/Users/andreas/Downloads/tor/TorBrowser_en-US.app/Contents/MacOS/Firefox.app/Contents/MacOS"))
+(allow file-read-metadata (literal "/Users/andreas/Downloads/tor/TorBrowser_en-US.app/Contents/MacOS/Firefox.app/Contents"))
+(allow file-read-metadata (literal "/Users/andreas/Downloads/tor/TorBrowser_en-US.app/Contents/MacOS/Firefox.app"))
+(allow file-read-metadata (literal "/Users/andreas/Downloads/tor/TorBrowser_en-US.app/Contents/MacOS"))
+(allow file-read-metadata (literal "/Users/andreas/Downloads/tor/TorBrowser_en-US.app/Contents"))
+(allow file-read-metadata (literal "/Users/andreas/Downloads/tor/TorBrowser_en-US.app"))
+(allow file-read-metadata (literal "/Users/andreas/Downloads/tor"))
+(allow file-read-metadata (literal "/Users/andreas/Downloads"))
+(allow file-read-metadata (literal "/Users/andreas"))
+(allow file-read-metadata (literal "/Users"))
+(allow file-read-metadata (literal "/"))
+(allow file-read-data (literal "/Users/andreas/Downloads/tor/TorBrowser_en-US.app"))
+(allow file-read-data (literal "/Users/andreas/Downloads/tor/TorBrowser_en-US.app/Contents/MacOS"))
+(allow file-read-data (literal "/Users/andreas/Downloads/tor/TorBrowser_en-US.app/Contents"))

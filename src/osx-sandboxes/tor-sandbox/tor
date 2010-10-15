@@ -1,0 +1,42 @@
+#!/bin/bash
+# tbb launchit script.
+# this script launches tor within the macosx sandbox.
+# as we do not know where the user will install the tbb, we need 
+# to do some search and replace. 
+#
+# Also, we will need to accept arguments comming from vidalia.
+# 
+SW_VERS=/usr/bin/sw_vers
+CUT=/usr/bin/cut
+LSOF=/usr/sbin/lsof
+AWK=/usr/bin/awk
+TAIL=/usr/bin/tail
+SED=/usr/bin/sed
+
+#find out osx version. 
+
+VERSION=`$SW_VERS -productVersion| $CUT -f1,2 -d .`
+
+if [ "$VERSION"x = "10.6"x ]; then
+	#we know we use 10.6 fix the sandbox, do some search and replace
+	#and find current dir and the rebuild the sandbox
+
+	#determine current dir.
+	DIR=`$LSOF -p $$|$TAIL -1| $AWK '{ print $NF }' | $SED s/[^/]*$//`
+	TDIR=`echo $DIR| $SED -e 's=Contents/MacOS/==g'`
+	TORAPPDIR=`echo $TDIR | $SED -e 's/\/$//g'`
+	#nuke the old sandbox
+	echo > $DIR/tor-sandbox/tor-bin.sb
+	#fix some stuff in the sandbox
+	$SED -e "s=TORAPPDIR=$TORAPPDIR=g" $DIR/tor-sandbox/tor-enforce.sb >> $DIR/tor-sandbox/tor-bin.sb	
+	/usr/bin/sandbox-exec -f $DIR/tor-sandbox/tor-bin.sb ${DIR}/tor-bin $@ 
+fi
+
+if [ "$VERSION"x = "10.5"x ]; then
+	#10.5 use the policy written for 10.5 
+	echo "no support for 10.5 yet."
+
+fi
+
+
+
