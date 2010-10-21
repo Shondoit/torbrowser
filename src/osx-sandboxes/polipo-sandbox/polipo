@@ -29,7 +29,7 @@
 # written by andreas@romab.com
 
 # tbb launchit script.
-# this script launches tor within the macosx sandbox.
+# this script launches polipo within the macosx sandbox.
 # as we do not know where the user will install the tbb, we need 
 # to do some search and replace. 
 #
@@ -45,7 +45,6 @@ SED=/usr/bin/sed
 #find out osx version. 
 
 VERSION=`$SW_VERS -productVersion| $CUT -f1,2 -d .`
-#determine current dir.
 DIR=`$LSOF -p $$|$TAIL -1| $AWK '{ print $NF }' | $SED s/[^/]*$//`
 TDIR=`echo $DIR| $SED -e 's=Contents/MacOS/==g'`
 TORAPPDIR=`echo $TDIR | $SED -e 's/\/$//g'`
@@ -53,18 +52,19 @@ TORAPPDIR=`echo $TDIR | $SED -e 's/\/$//g'`
 if [ "$VERSION"x = "10.6"x ]; then
 	#we know we use 10.6 fix the sandbox, do some search and replace
 	#and find current dir and the rebuild the sandbox
+
+	#determine current dir.
 	#nuke the old sandbox
-	echo > $DIR/tor-sandbox/tor-bin.sb
+	echo > $DIR/polipo-sandbox/polipo-bin.sb
 	#fix some stuff in the sandbox
-	$SED -e "s=TORAPPDIR=$TORAPPDIR=g" $DIR/tor-sandbox/tor-enforce.sb >> $DIR/tor-sandbox/tor-bin.sb	
-	/usr/bin/sandbox-exec -f $DIR/tor-sandbox/tor-bin.sb ${DIR}/tor-bin $@ 
+	$SED -e "s=POLIPODIR=$TORAPPDIR=g" $DIR/polipo-sandbox/polipo.sb >> $DIR/polipo-sandbox/polipo-bin.sb	
+	/usr/bin/sandbox-exec -f $DIR/polipo-sandbox/polipo-bin.sb ${DIR}/polipo-bin $@ 
 fi
 
 if [ "$VERSION"x = "10.5"x ]; then
 	#10.5 use the policy written for 10.5 
 	#nuke the old sandbox
-	echo > $DIR/tor-sandbox/tor-bin.sb
-	#fix some stuff in the sandbox
-	$SED -e "s=TORAPPDIR=$TORAPPDIR=g" $DIR/tor-sandbox/tor-enforce-10.5.sb >> $DIR/tor-sandbox/tor-bin.sb	
-	/usr/bin/sandbox-exec -f $DIR/tor-sandbox/tor-bin.sb ${DIR}/tor-bin $@ 
+	echo > $DIR/polipo-sandbox/polipo-bin.sb
+	$SED -e "s=POLIPODIR=$TORAPPDIR=g" $DIR/polipo-sandbox/polipo-10.5.sb >> $DIR/polipo-sandbox/polipo-bin.sb	
+	/usr/bin/sandbox-exec -f $DIR/polipo-sandbox/polipo-bin.sb ${DIR}/polipo-bin $@ 
 fi

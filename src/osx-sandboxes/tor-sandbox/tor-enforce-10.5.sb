@@ -30,9 +30,7 @@
 (version 1)
 
 (deny default)
-
-(allow file-ioctl
-       (literal "/dev/dtracehelper"))
+(debug deny)
 
 (allow file-read-data file-read-metadata
        (literal "TORAPPDIR/Contents/Frameworks/libcrypto.0.9.8.dylib")
@@ -41,24 +39,24 @@
        (literal "TORAPPDIR/TorBrowser_en-US.app/.tor/state")
        (literal "TORAPPDIR/Contents/MacOS/torrc")
        (literal "TORAPPDIR/.tor/state")
+       (literal "TORAPPDIR/.tor/state.tmp")
        (literal "TORAPPDIR/.tor/cached-descriptors.new"))
 
 (allow file-read-data
        (literal "TORAPPDIR/.tor/cached-certs")
        (literal "TORAPPDIR/.tor/cached-consensus")
        (literal "TORAPPDIR/.tor/cached-descriptors")
-       (literal "TORAPPDIR/.tor/cached-descriptors.new")
        (literal "TORAPPDIR/.tor/lock")
        (literal "/dev/dtracehelper")
        (literal "/dev/null")
        (literal "/dev/urandom")
-       (subpath "/usr/share"))
+       (regex "^/usr/share/.*"))
 
 (allow file-read-metadata
        (literal "TORAPPDIR/.tor")
        (literal "/etc")
        (literal "/private/etc/localtime")
-       (subpath "/usr/lib"))
+       (regex "^/usr/lib/.*"))
 
 (allow file-write*
        (literal "TORAPPDIR/.tor/cached-descriptors")
@@ -81,8 +79,10 @@
        (global-name "com.apple.system.notification_center"))
 
 (allow network-inbound
-       (local tcp "localhost:9050")
-       (local tcp "localhost:9051"))
+       ; we do want to be more specific than this.
+       ;(to tcp4 "*:9050")
+       ;(to tcp4 "*:9051"))
+       (to tcp4 "*:*"))
 
 (allow network-outbound)
 ;       (remote tcp "*:*")) 

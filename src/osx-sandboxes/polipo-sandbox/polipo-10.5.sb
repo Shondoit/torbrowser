@@ -1,4 +1,4 @@
-;; MacOSX Sandbox profile for bundled tor
+;; MacOSX Sandbox profile for bundled polipo
 ;;
 ;; Copyright 2010 Robert Malmgren AB. All rights reserved.
 ;;
@@ -30,66 +30,41 @@
 (version 1)
 
 (deny default)
-
-(allow file-ioctl
-       (literal "/dev/dtracehelper"))
-
-(allow file-read-data file-read-metadata
-       (literal "TORAPPDIR/Contents/Frameworks/libcrypto.0.9.8.dylib")
-       (literal "TORAPPDIR/Contents/Frameworks/libssl.0.9.8.dylib")
-       (literal "TORAPPDIR/Contents/Frameworks/libz.1.dylib")
-       (literal "TORAPPDIR/TorBrowser_en-US.app/.tor/state")
-       (literal "TORAPPDIR/Contents/MacOS/torrc")
-       (literal "TORAPPDIR/.tor/state")
-       (literal "TORAPPDIR/.tor/cached-descriptors.new"))
+(debug deny)
 
 (allow file-read-data
-       (literal "TORAPPDIR/.tor/cached-certs")
-       (literal "TORAPPDIR/.tor/cached-consensus")
-       (literal "TORAPPDIR/.tor/cached-descriptors")
-       (literal "TORAPPDIR/.tor/cached-descriptors.new")
-       (literal "TORAPPDIR/.tor/lock")
+       (literal "POLIPODIR/Contents/Resources/Data/Polipo/polipo.conf")
        (literal "/dev/dtracehelper")
        (literal "/dev/null")
        (literal "/dev/urandom")
-       (subpath "/usr/share"))
+       (literal "/private/var/run/resolv.conf")
+       (regex "^/usr/share/.*"))
 
 (allow file-read-metadata
-       (literal "TORAPPDIR/.tor")
        (literal "/etc")
        (literal "/private/etc/localtime")
-       (subpath "/usr/lib"))
-
-(allow file-write*
-       (literal "TORAPPDIR/.tor/cached-descriptors")
-       (literal "TORAPPDIR/.tor/cached-descriptors.new")
-       (literal "TORAPPDIR/.tor/cached-descriptors.new.tmp")
-       (literal "TORAPPDIR/.tor/cached-descriptors.tmp")
-       (literal "TORAPPDIR/.tor/cached-descriptors.tmp.tmp")
-       (literal "TORAPPDIR/.tor/cached-consensus")
-       (literal "TORAPPDIR/.tor/cached-consensus.tmp")
-       (literal "TORAPPDIR/.tor/state")
-       (literal "TORAPPDIR/.tor/state.tmp"))
+       (literal "/private/etc/resolv.conf")
+       (literal "/var")
+       (regex "^/usr/lib/*"))
 
 (allow file-write-data
-       (literal "TORAPPDIR/.tor/lock")
        (literal "/dev/dtracehelper"))
 
 (allow ipc-posix-shm)
 
 (allow mach-lookup
+       (global-name "com.apple.system.DirectoryService.libinfo_v1")
+       (global-name "com.apple.system.DirectoryService.membership_v1")
        (global-name "com.apple.system.notification_center"))
 
-(allow network-inbound
-       (local tcp "localhost:9050")
-       (local tcp "localhost:9051"))
+(allow network-inbound)
+	; doesnt work for some reason.
+        ;(to tcp "localhost:8118"))
 
-(allow network-outbound)
-;       (remote tcp "*:*")) 
-; we need to allow any port (but as tor in relay mode might need udp)
-
+(allow network-outbound
+       (to tcp "localhost:9050"))
 
 (allow process-exec
-       (literal "TORAPPDIR/Contents/MacOS/tor-bin"))
+       (literal "POLIPODIR/Contents/MacOS/polipo-bin"))
 
 (allow sysctl-read)

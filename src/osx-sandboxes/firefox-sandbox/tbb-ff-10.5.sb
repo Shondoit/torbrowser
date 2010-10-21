@@ -31,26 +31,23 @@
 
 (deny default)
 ; help with debug.
-(deny file-read-metadata (subpath "/Applications") (with no-log))
-(deny file-read-metadata (subpath "/Developer") (with no-log))
+(debug deny)
 
-(allow file-ioctl
-       (literal "/dev/urandom")
-       (literal "/dev/dtracehelper"))
-(allow network-outbound  
-	(remote tcp "localhost:8118"))
+(allow network-outbound)
 (allow file-read-data file-read-metadata
        (literal "/Library/Preferences/com.apple.HIToolbox.plist")
        (literal "/Library/Preferences/.GlobalPreferences.plist")
-       (subpath "FIREFOXDIR/Contents")
-       (subpath "LIBRARYDIR/Application Support/Firefox/Profiles/profile")
-       (subpath "/System")
-       (subpath "TMPDIR") ;; macosx shellenv. 
-       (subpath "/usr/lib")
+       (regex "^FIREFOXDIR/Contents/.*")
+       (literal "FIREFOXDIR/Contents")
+       (regex "^LIBRARYDIR/Application Support/Firefox/Profiles/profile/.*")
+       (literal "LIBRARYDIR/Application Support/Firefox/Profiles/profile")
+       (regex "^/System/.*")
+;       (regex "^TMPDIR/.*") ;; macosx shellenv. 
+       (regex "^/usr/lib/.*")
        (literal "/private/etc/passwd")
-       (subpath "/Library/Fonts")
+       (regex "^/Library/Fonts/.*")
        (literal "/dev/null")
-       (subpath "/usr/share")
+       (regex "^/usr/share/.*")
        (literal "/dev/urandom"))
 	
 
@@ -72,10 +69,10 @@
        (literal "/private/var/tmp")
        (literal "/private/etc/localtime"))
 
-(allow file-write* (subpath "LIBRARYDIR/Application Support/Firefox/Profiles/profile"))
+(allow file-write* (regex "^LIBRARYDIR/Application Support/Firefox/Profiles/profile/.*"))
 	
 (allow file-write-data
-       (subpath "TMPDIR") ;; macosx shellenv, we will fix this later
+;       (regex "^TMPDIR/.*") ;; macosx shellenv, we will fix this later
        (literal "/dev/dtracehelper"))
 
 (allow ipc-posix-shm)
@@ -95,6 +92,7 @@
        (global-name "com.apple.pasteboard.1")
        (global-name "com.apple.windowserver.active")
        (global-name "com.apple.tsm.uiserver")
+       (global-name "com.apple.DiskArbitration.diskarbitrationd")
        (global-name "com.apple.windowserver.session"))
 
 (allow process-exec
@@ -104,5 +102,3 @@
 (allow process-fork)
 
 (allow sysctl-read)
-
-(allow system-socket)
