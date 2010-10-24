@@ -29,8 +29,11 @@ FIREFOX_SRC=/c/build/FirefoxPortable-3.6.10
 PIDGIN_SRC=/c/build/PidginPortable-2.7.3
 
 ## Location of utility applications
+PWD:=$(shell pwd)
+PYTHON=/c/Python25/python.exe
 SEVENZIP="/c/Program Files/7-Zip/7z.exe"
-WGET:=/c/Python25/python.exe $(shell pwd)/pyget.py
+WGET=$(PYTHON) $(PWD)/pyget.py
+VIRUSSCAN=$(PYTHON) $(PWD)/virus-scan.py
 WINRAR="/c/Program Files/WinRAR/WinRAR.exe"
 
 ## Size of split archive volumes for WinRAR
@@ -142,6 +145,16 @@ reallyclean: clean
 	rm -fr $(DEFAULT_COMPRESSED_BASENAME)*_*.exe
 	rm -fr $(DEFAULT_COMPRESSED_BASENAME)*_*.rar
 	rm -fr $(DEFAULT_COMPRESSED_BASENAME)*_*_split
+
+##
+## Scan .exe files against VirusTotal to check for false positives
+##
+
+virus-scan:
+	$(VIRUSSCAN) $(VIDALIA)/src/vidalia/vidalia.exe
+	$(VIRUSSCAN) $(POLIPO)/polipo.exe
+	$(VIRUSSCAN) $(TOR)/src/or/tor.exe 
+	$(VIRUSSCAN) $(TOR)/src/tools/tor-resolve.exe
 
 ##
 ## Generate a non-localized bundle and put in $(DEST)
