@@ -151,4 +151,5 @@ user_pref("noscript.showUntrusted", false);
 user_pref("noscript.subscription.lastCheck", -1723345640);
 user_pref("noscript.temp", "");
 user_pref("noscript.untrusted", "");
+user_pref("noscript.ABE.wanIpAsLocal", false);
 user_pref("noscript.version", "2.0.3.2");
