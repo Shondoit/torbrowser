@@ -42,7 +42,7 @@ TBB_FINAL=$(BUILT_DIR)/TBBL
 
 ## Versions for our source packages
 HTTPSEVERY_VER=0.2.2
-FIREFOX_VER=3.6.9
+FIREFOX_VER=3.6.11
 LIBEVENT_VER=1.4.13-stable
 LIBPNG_VER=1.4.3
 NOSCRIPT_VER=2.0.2.3
@@ -51,7 +51,7 @@ OTR_VER=3.2.0
 PIDGIN_VER=2.6.4
 POLIPO_VER=1.0.4.1
 QT_VER=4.6.2
-TOR_VER=0.2.2.16-alpha
+TOR_VER=0.2.2.17-alpha
 TORBUTTON_VER=1.2.5
 VIDALIA_VER=0.2.10
 ZLIB_VER=1.2.3
@@ -210,7 +210,7 @@ NAME=TorBrowser
 DISTDIR=tbbosx-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.0.1-dev
+VERSION=1.0.3-dev
 DEFAULT_COMPRESSED_BASENAME=TorBrowser-$(VERSION)-
 IM_COMPRESSED_BASENAME=TorBrowser-IM-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)$(ARCH_TYPE)
@@ -228,6 +228,7 @@ DEFAULT_EXTENSIONS=torbutton.xpi
 ## Where to download Torbutton from
 TORBUTTON=https://www.torproject.org/torbutton/releases/torbutton-$(TORBUTTON_VER).xpi
 NOSCRIPT=https://secure.informaction.com/download/releases/noscript-$(NOSCRIPT_VER).xpi
+BETTERPRIVACY=https://addons.mozilla.org/en-US/firefox/downloads/latest/6623/addon-6623-latest.xpi
 HTTPSEVERYWHERE=https://eff.org/files/https-everywhere-$(HTTPSEVERY_VER).xpi
 ## Where to download Mozilla language packs
 MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/latest/mac/xpi
@@ -364,7 +365,7 @@ configure-apps:
 	#mkdir -p $(DEST)/.mozilla/Firefox/firefox.default
 	cp -R $(CONFIG_SRC)/firefox-profiles.ini $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profiles.ini
 	cp $(CONFIG_SRC)/bookmarks.html $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile
-	cp $(CONFIG_SRC)/linux-prefs.js $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/prefs.js
+	cp $(CONFIG_SRC)/prefs.js $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/prefs.js
 	cp $(CONFIG_SRC)/Info.plist $(DEST)/Contents
 	cp $(CONFIG_SRC)/PkgInfo $(DEST)/Contents
 	cp $(CONFIG_SRC)/qt.conf $(DEST)/Contents/Resources
@@ -408,6 +409,10 @@ strip-it-stripper:
 torbutton.xpi:
 	$(WGET) --no-check-certificate -O $@ $(TORBUTTON)
 
+## BetterPrivacy
+betterprivacy.xpi:
+	$(WGET) --no-check-certificate -O $@ $(BETTERPRIVACY)
+
 ## NoScript development version
 noscript.xpi: 
 	$(WGET) --no-check-certificate -O $@ $(NOSCRIPT)
@@ -433,7 +438,7 @@ bundle_%:
 compressed-bundle_%:
 	LANGCODE=$* make -f Makefile.osx compressed-bundle-localized
 bundle-localized_%.stamp:
-	make -f Makefile.osx copy-files_$* install-extensions install-httpseverywhere install-noscript install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language update-extension-pref final
+	make -f Makefile.osx copy-files_$* install-extensions install-betterprivacy install-httpseverywhere install-noscript install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language update-extension-pref final
 	touch bundle-localized_$*.stamp
 
 bundle-localized: bundle-localized_$(LANGCODE).stamp
@@ -473,7 +478,11 @@ ifneq ($(LANGCODE), en-US)
 	(cd $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org && unzip *.zip && rm *.zip)
 endif
 
-# OS X needs a different kind of extension installation for httpseverywhere
+install-betterprivacy: betterprivacy.xpi
+	mkdir -p $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\}
+	cp betterprivacy.xpi $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\}/betterprivacy.zip
+	(cd $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\} && unzip *.zip && rm *.zip)
+	
 install-httpseverywhere: httpseverywhere.xpi
 	mkdir -p $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/https-everywhere@eff.org
 	cp httpseverywhere.xpi $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/https-everywhere@eff.org/httpseverywhere.zip
@@ -501,7 +510,7 @@ endif
 patch-firefox-language:
 	## Patch the default Firefox prefs.js
 	## Don't use {} because they aren't always interpreted correctly. Thanks, sh. 
-	cp $(CONFIG_SRC)/linux-prefs.js $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
+	cp $(CONFIG_SRC)/prefs.js $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
 	cp $(CONFIG_SRC)/bookmarks.html $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile
 	./patch-firefox-language.sh $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js $(LANGCODE) -e
 
