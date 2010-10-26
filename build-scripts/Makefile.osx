@@ -77,7 +77,7 @@ QT_URL=ftp://ftp.qt.nokia.com/qt/source/$(QT_PACKAGE)
 VIDALIA_URL=http://www.torproject.org/vidalia/dist/$(VIDALIA_PACKAGE)
 LIBEVENT_URL=http://www.monkey.org/~provos/$(LIBEVENT_PACKAGE)
 TOR_URL=http://www.torproject.org/dist/$(TOR_PACKAGE)
-POLIPO_URL=http://www.pps.jussieu.fr/~jch/software/files/polipo/$(POLIPO_PACKAGE)
+POLIPO_URL=http://freehaven.net/~chrisd/polipo/$(POLIPO_PACKAGE)
 PIDGIN_URL=http://sourceforge.net/projects/pidgin/files/Pidgin/$(PIDGIN_PACKAGE)
 #FIREFOX_URL=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/$(FIREFOX_VER)/linux-i686/en-US/$(FIREFOX_PACKAGE)
 
