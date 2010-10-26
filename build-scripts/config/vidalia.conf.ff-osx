@@ -9,4 +9,4 @@ RunProxyAtStart=true
 [Tor]
 ControlPort=9051
 TorExecutable=../../Contents/MacOS/tor
-Torrc=./torrc
+Torrc=../../Library/Vidalia/torrc
