@@ -18,15 +18,15 @@ OPENSSL=/c/OpenSSL/bin
 
 ## Versions
 TORBUTTON_VERSION=1.2.5
-FIREFOX_VERSION=3.6.10
-PIDGIN_VERSION=2.7.3
+FIREFOX_VERSION=3.6.11
+PIDGIN_VERSION=2.7.4
 
 ## Location of bundle components
 VIDALIA=/c/build/vidalia-0.2.10
 TOR=/c/build/tor-0.2.1.26
 POLIPO=/c/build/polipo-1.0.4.1
-FIREFOX_SRC=/c/build/FirefoxPortable-3.6.10
-PIDGIN_SRC=/c/build/PidginPortable-2.7.3
+FIREFOX_SRC=/c/build/FirefoxPortable-3.6.11
+PIDGIN_SRC=/c/build/PidginPortable-2.7.4
 
 ## Location of utility applications
 PWD:=$(shell pwd)
@@ -49,7 +49,7 @@ DEST="Generic Bundle"
 NAME="Tor Browser"
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.3.10
+VERSION=1.3.11
 DEFAULT_COMPRESSED_BASENAME=tor-browser-
 IM_COMPRESSED_BASENAME=tor-im-browser-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
@@ -339,8 +339,8 @@ SRCDEST=/tmp
 SRCDESTPATH=$(SRCDEST)/$(SRCNAME)
 srcdist:
 	rm -fr $(SRCDESTPATH)
-	svn export https://svn.torproject.org/svn/torbrowser/trunk/ \
-                   $(SRCDESTPATH)
+	git clone git://git.torproject.org/torbrowser.git \
+		$(SRCDESTPATH)
 	cd $(SRCDEST); tar --exclude src/archived-patches \
-                           --exclude src/current-patches  --exclude src/processtest \
-                           -czvf $(SRCNAME)-src.tar.gz $(SRCNAME)
+		--exclude src/current-patches  --exclude src/processtest \
+		--exclude .git -czvf $(SRCNAME)-src.tar.gz $(SRCNAME)
