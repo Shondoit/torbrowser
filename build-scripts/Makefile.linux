@@ -42,7 +42,7 @@ TBB_FINAL=$(BUILT_DIR)/TBBL
 
 ## Versions for our source packages
 HTTPSEVERY_VER=0.2.2
-FIREFOX_VER=3.6.11
+FIREFOX_VER=3.6.12
 LIBEVENT_VER=1.4.13-stable
 LIBPNG_VER=1.4.3
 NOSCRIPT_VER=2.0.2.3
@@ -216,7 +216,7 @@ NAME=tor-browser
 DISTDIR=tbbl-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.0.14-dev
+VERSION=1.0.15-dev
 DEFAULT_COMPRESSED_BASENAME=tor-browser-gnu-linux-$(ARCH_TYPE)-$(VERSION)-
 IM_COMPRESSED_BASENAME=tor-im-browser-gnu-linux-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
