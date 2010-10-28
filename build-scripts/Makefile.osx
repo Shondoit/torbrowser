@@ -465,9 +465,9 @@ install-extensions: $(DEFAULT_EXTENSIONS)
 		do \
 			cp $$extension $$extension.zip; \
 			ext_id=$$(unzip -p $$extension.zip install.rdf | sed -n '/<em:id>/{s#[^<]*<em:id>\(.*\)</em:id>#\1#p;q;}'); \
-			mkdir -p $(BUNDLE)/Library/Application\ Support/$(FF_VENDOR_ID)/Extensions/$$ext_id; \
-			cp $$extension $(BUNDLE)/Library/Application\ Support/$(FF_VENDOR_ID)/Extensions/$$ext_id/$$extension.zip; \
-			(cd $(BUNDLE)/Library/Application\ Support/$(FF_VENDOR_ID)/Extensions/$$ext_id/ && unzip *.zip && rm *.zip); \
+			mkdir -p $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/$$ext_id; \
+			cp $$extension $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/$$ext_id/$$extension.zip; \
+			(cd $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/$$ext_id/ && unzip *.zip && rm *.zip); \
 		done
 
 ## Language extensions need to be handled differently from other extensions
