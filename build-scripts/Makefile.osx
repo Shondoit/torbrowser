@@ -255,6 +255,10 @@ all-bundles-both:
 	make -f Makefile.osx clean
 	USE_PIDGIN=0 make -f Makefile.osx all-bundles
 	make -f Makefile.osx clean
+	USE_SANDBOX=1 make -f Makefile.osx all-bundles
+	make -f Makefile.osx clean
+	USE_SANDBOX=0 make -f Makefile.osx all-bundles
+	make -f Makefile.osx clean
 
 all-bundles: all-compressed-bundles
 
@@ -377,8 +381,8 @@ ifeq ($(USE_PIDGIN),1)
 endif
 	## Configure Vidalia
 	mkdir -p $(DEST)/Library/Vidalia
-ifeq ($(USE_PIDGIN),1)
-	cp $(CONFIG_SRC)/vidalia.conf.ff+pidgin-osx $(DEST)/Library/Vidalia/vidalia.conf
+ifeq ($(USE_SANDBOX),1)
+	cp $(CONFIG_SRC)/vidalia.conf.ff-osx-sandbox $(DEST)/Library/Vidalia/vidalia.conf
 else
 	cp $(CONFIG_SRC)/vidalia.conf.ff-osx $(DEST)/Library/Vidalia/vidalia.conf
 endif
