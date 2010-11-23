@@ -5,7 +5,7 @@ Included applications
 ---------------------
 
 Vidalia 0.2.10 (with Qt 4.6.2)
-Tor 0.2.2.18-alpha (with libevent-1.4.13, zlib-1.2.3 and openssl-0.9.8p) 
+Tor 0.2.2.19-alpha (with libevent-1.4.13, zlib-1.2.3 and openssl-0.9.8p) 
 Polipo 1.0.4.1
 Firefox (Namoroka) 3.6.12
  \_ Torbutton 1.2.5
@@ -23,6 +23,9 @@ To exit, close Firefox and Vidalia.
 
 Changelog
 ---------
+
+1.0.6: Released 2020-11-24
+       Update Tor to 0.2.2.19-alpha
 
 1.0.5: Released 2010-11-18
        Update Tor to 0.2.2.18-alpha
