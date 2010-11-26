@@ -5,16 +5,14 @@ Included applications
 ---------------------
 
 Vidalia 0.2.10 (with Qt 4.6.2)
-Tor 0.2.1.26 (with libevent-1.4.13, zlib-1.2.3 and openssl-0.9.8l) 
+Tor 0.2.1.27 (with libevent-1.4.13, zlib-1.2.3 and openssl-0.9.8p) 
 Polipo 1.0.4.1
 FirefoxPortable 3.6.12
  \_ Firefox 3.6.12
     \_ Torbutton 1.2.5
     \_ HTTPS Everywhere 0.2.2
-    \_ NoScript 2.0.3.2
-    \_ Better Privacy 1.48.3
 PidginPortable 2.7.4
- \_ Pidgin 2.7.4
+ \_ Pidgin 2.7.5
    \_ OTR 3.2
 
 Usage
@@ -294,3 +292,13 @@ Changelog
 
 1.3.12: Released 2010-10-28
   update Firefox to 3.6.12
+
+1.3.13: Released 2010-11-25
+  update Tor to 0.2.1.27
+  update Pidgin to 2.7.5
+  update OpenSSL to 0.9.8p
+  fix Firefox extension install path so extensions show in the installed add-ons list
+  disable Firefox's ability to search the Windows registry path for system-wide
+    plugins and extensions (closes: #2118)
+  remove NoScript and BetterPrivacy from stable bundle until they receive more
+    testing

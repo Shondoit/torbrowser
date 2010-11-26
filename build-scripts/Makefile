@@ -14,19 +14,19 @@
 ## Location of required libraries
 MING=/c/c/mingw/bin
 QT=/c/Qt/4.6.2/bin
-OPENSSL=/c/OpenSSL/bin
+OPENSSL=/c/build/openssl-0.9.8p/
 
 ## Versions
 TORBUTTON_VERSION=1.2.5
 FIREFOX_VERSION=3.6.12
-PIDGIN_VERSION=2.7.4
+PIDGIN_VERSION=2.7.5
 
 ## Location of bundle components
 VIDALIA=/c/build/vidalia-0.2.10
-TOR=/c/build/tor-0.2.1.26
+TOR=/c/build/tor-0.2.1.27
 POLIPO=/c/build/polipo-1.0.4.1
 FIREFOX_SRC=/c/build/FirefoxPortable-3.6.12
-PIDGIN_SRC=/c/build/PidginPortable-2.7.4
+PIDGIN_SRC=/c/build/PidginPortable-2.7.5
 
 ## Location of utility applications
 PWD:=$(shell pwd)
@@ -49,7 +49,7 @@ DEST="Generic Bundle"
 NAME="Tor Browser"
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.3.12
+VERSION=1.3.13
 DEFAULT_COMPRESSED_BASENAME=tor-browser-
 IM_COMPRESSED_BASENAME=tor-im-browser-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
@@ -105,12 +105,12 @@ all-compressed-bundles: compressed-bundle_ar \
 	compressed-bundle_fa \
 	compressed-bundle_fr \
 	compressed-bundle_nl \
-    compressed-bundle_pl \
+	compressed-bundle_pl \
 	compressed-bundle_pt-PT \
 	compressed-bundle_ru \
 	compressed-bundle_zh-CN \
 	compressed-bundle_it \
-    compressed-bundle_vi
+	compressed-bundle_vi
 
 all-split-bundles: split-bundle_ar \
 	split-bundle_en-US \
@@ -119,12 +119,12 @@ all-split-bundles: split-bundle_ar \
 	split-bundle_fa \
 	split-bundle_fr \
 	split-bundle_nl \
-    split-bundle_pl \
+	split-bundle_pl \
 	split-bundle_pt-PT \
 	split-bundle_ru \
 	split-bundle_zh-CN \
 	split-bundle_it \
-    split-bundle_vi
+	split-bundle_vi
 
 ##
 ## Cleanup
@@ -151,7 +151,7 @@ reallyclean: clean
 ##
 
 virus-scan:
-	$(VIRUSSCAN) $(VIDALIA)/src/vidalia/vidalia.exe
+	$(VIRUSSCAN) $(VIDALIA)/build/src/vidalia/vidalia.exe
 	$(VIRUSSCAN) $(POLIPO)/polipo.exe
 	$(VIRUSSCAN) $(TOR)/src/or/tor.exe 
 	$(VIRUSSCAN) $(TOR)/src/tools/tor-resolve.exe
@@ -187,7 +187,7 @@ install-binaries:
 	cp $(QT)/QtCore4.dll $(QT)/QtGui4.dll $(QT)/QtNetwork4.dll $(QT)/QtXml4.dll $(QT)/libgcc_s_dw2-1.dll $(APPDIR) 
 	cp $(OPENSSL)/ssleay32.dll $(APPDIR)
 	cp $(OPENSSL)/libeay32.dll $(APPDIR)
-	cp $(VIDALIA)/src/vidalia/vidalia.exe $(APPDIR)
+	cp $(VIDALIA)/build/src/vidalia/vidalia.exe $(APPDIR)
 	cp $(POLIPO)/polipo.exe $(APPDIR)
 	cp $(TOR)/src/or/tor.exe $(TOR)/src/tools/tor-resolve.exe $(APPDIR)
 
@@ -202,7 +202,7 @@ install-docs:
 	cp $(TOR)/LICENSE $(TOR)/AUTHORS $(TOR)/README $(DOCSDIR)/Tor
 	cp $(QT)/../LICENSE.GPL* $(QT)/../LICENSE.LGPL $(DOCSDIR)/Qt
 	cp $(MING)/../COPYING $(DOCSDIR)/MinGW
-	cp $(POLIPO)/COPYING  $(POLIPO)/README $(DOCSDIR)/Polipo
+	cp $(POLIPO)/COPYING  $(POLIPO)/README.Windows $(DOCSDIR)/Polipo
 	cp ../README $(DOCSDIR)/README-TorBrowserBundle
 
 ## Copy over FirefoxPortable
@@ -302,8 +302,8 @@ install-extensions: $(filter-out langpack_en-US.xpi,langpack_$(LANGCODE).xpi)
 	## Make a dummy profile to stop Firefox creating some large files
 	cp -R $(BUNDLE)/FirefoxPortable/App/DefaultData $(DUMMYPROFILE)
 ifneq ($(LANGCODE), en-US)
-	mv langpack_$(LANGCODE).xpi $(BUNDLE)/FirefoxPortable/App/Firefox/distribution/bundles/langpack-$(LANGCODE)\@firefox.mozilla.org.zip
-	$(SEVENZIP) x -o$(BUNDLE)/FirefoxPortable/App/Firefox/distribution/bundles/langpack-$(LANGCODE)\@firefox.mozilla.org $(BUNDLE)/FirefoxPortable/App/Firefox/distribution/bundles/langpack-$(LANGCODE)\@firefox.mozilla.org.zip
+	mv langpack_$(LANGCODE).xpi $(BUNDLE)/FirefoxPortable/App/Firefox/extensions/langpack-$(LANGCODE)\@firefox.mozilla.org.zip
+	$(SEVENZIP) x -o$(BUNDLE)/FirefoxPortable/App/Firefox/extensions/langpack-$(LANGCODE)\@firefox.mozilla.org $(BUNDLE)/FirefoxPortable/App/Firefox/extensions/langpack-$(LANGCODE)\@firefox.mozilla.org.zip
 endif
 	rm -fr $(DUMMYPROFILE)
 
