@@ -9,6 +9,7 @@ Firefox modifications
 - Apply chrisd's SOCKS patch to remove the need for an http proxy
   altogether. chrisd's patch is linked here,
 https://bugzilla.mozilla.org/show_bug.cgi?id=280661
+  (NB: Currently applied in the Linux version of TBB, as of 1.1.0 -- EC)
 
 - Produce new branding so we don't infringe on the Mozilla trademarks
 [ Instructions here http://kb.mozillazine.org/Rebranding_Firefox ]
