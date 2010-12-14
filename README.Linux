@@ -42,6 +42,7 @@ Changelog
           Torbutton has been reconfigured to just use a SOCKS proxy. Polipo has been removed 
           entirely from this release of the Tor Browser Bundle. If this causes you problems,
           please file a bug: https://trac.torproject.org/projects/tor
+        Rebuild all binaries against glibc 2.7 so they work for older distros again
 
 1.0.17: Released 2010-11-24
         Update Tor to 0.2.2.19-alpha
