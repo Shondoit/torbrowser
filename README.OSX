@@ -7,10 +7,10 @@ Included applications
 Vidalia 0.2.10 (with Qt 4.6.2)
 Tor 0.2.2.19-alpha (with libevent-1.4.13, zlib-1.2.3 and openssl-0.9.8p) 
 Polipo 1.0.4.1
-Firefox (Namoroka) 3.6.12
+Firefox (Namoroka) 3.6.13
  \_ Torbutton 1.2.5
- |_ NoScript 2.0.5.1
- |_ HTTPS-Everywhere 0.2.2
+ |_ NoScript 2.0.7
+ |_ HTTPS-Everywhere 0.9.9.development.1
  |_ BetterPrivacy 1.48.3
 
 Usage
@@ -24,7 +24,16 @@ To exit, close Firefox and Vidalia.
 Changelog
 ---------
 
-1.0.6: Released 2020-11-24
+1.0.7: Released 2010-12-14
+       Update Firefox to 3.6.13
+       Update NoScript to 2.0.7
+       Update HTTPS-Everywhere to 0.9.9.development.1
+         This version of HTTPS-Everywhere is patched to include a fix for bug #2096 which
+         prevented globally installed versions of the extension from working. It also
+         includes better protection from Firesheep. See the changelog here:
+         https://www.eff.org/files/Changelog.txt
+
+1.0.6: Released 2010-11-24
        Update Tor to 0.2.2.19-alpha
 
 1.0.5: Released 2010-11-18
