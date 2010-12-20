@@ -41,7 +41,7 @@ BUILT_DIR=$(FETCH_DIR)/built
 TBB_FINAL=$(BUILT_DIR)/TBBL
 
 ## Versions for our source packages
-HTTPSEVERY_VER=0.9.9.development.1
+HTTPSEVERY_VER=0.9.9.development.2
 FIREFOX_VER=3.6.13
 LIBEVENT_VER=1.4.13-stable
 LIBPNG_VER=1.4.3
@@ -51,7 +51,7 @@ OTR_VER=3.2.0
 PIDGIN_VER=2.6.4
 POLIPO_VER=1.0.4.1
 QT_VER=4.6.2
-TOR_VER=0.2.2.19-alpha
+TOR_VER=0.2.2.20-alpha
 TORBUTTON_VER=1.2.5
 VIDALIA_VER=0.2.10
 ZLIB_VER=1.2.3
@@ -116,11 +116,12 @@ build-zlib:
 	cd $(ZLIB_DIR) && make install
 
 OPENSSL_DIR=$(FETCH_DIR)/openssl-$(OPENSSL_VER)
-OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 shared zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -I$(BUILT_DIR)/lib
+OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 shared zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -I$(BUILT_DIR)/include -L$(BUILT_DIR)/lib
+CFLAGS=-Wa, --noexecstack
 build-openssl:
-	cd $(OPENSSL_DIR) && ./config $(OPENSSL_OPTS)
-	cd $(OPENSSL_DIR) && make depend
-	cd $(OPENSSL_DIR) && make
+	cd $(OPENSSL_DIR) && CFLAGS=-Wa,--noexecstack ./config $(OPENSSL_OPTS)
+	cd $(OPENSSL_DIR) && CFLAGS=-Wa,--noexecstack make depend
+	cd $(OPENSSL_DIR) && CFLAGS=-Wa,--noexecstack make
 	cd $(OPENSSL_DIR) && make install
 
 QT_DIR=$(FETCH_DIR)/qt-everywhere-opensource-src-$(QT_VER)
@@ -216,7 +217,7 @@ NAME=tor-browser
 DISTDIR=tbbl-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.1.0-dev
+VERSION=1.1.1-dev
 DEFAULT_COMPRESSED_BASENAME=tor-browser-gnu-linux-$(ARCH_TYPE)-$(VERSION)-
 IM_COMPRESSED_BASENAME=tor-im-browser-gnu-linux-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
