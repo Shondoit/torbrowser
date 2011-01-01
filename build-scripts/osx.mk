@@ -210,7 +210,7 @@ NAME=TorBrowser
 DISTDIR=tbbosx-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.0.8-dev
+VERSION=1.0.9-dev
 DEFAULT_COMPRESSED_BASENAME=TorBrowser-$(VERSION)-osx-$(ARCH_TYPE)-
 IM_COMPRESSED_BASENAME=TorBrowser-IM-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)
@@ -453,7 +453,6 @@ compressed-bundle-localized: bundle-localized_$(LANGCODE).stamp
 	#hdiutil create -volname "Tor Browser Bundle for OS X" -format UDBZ -imagekey zlib-level=9 -srcfolder $(DISTDIR)/tmp/ $(DISTDIR)/$(DEFAULT_COMPRESSED_BASENAME)$(LANGCODE).dmg
 	zip -r $(DISTDIR)/$(DEFAULT_COMPRESSED_BASENAME)$(LANGCODE).zip $(NAME)_$(LANGCODE).app
 	rm *.zip *.xpi
-	cp ../https/httpseverywhere.xpi .
 
 copy-files_%: generic-bundle.stamp
 	rm -fr $(NAME)_$*
@@ -488,7 +487,7 @@ install-betterprivacy: betterprivacy.xpi
 	cp betterprivacy.xpi $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\}/betterprivacy.zip
 	(cd $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\} && unzip *.zip && rm *.zip)
 	
-install-httpseverywhere: 
+install-httpseverywhere: httpseverywhere.xpi
 	mkdir -p $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/https-everywhere@eff.org
 	cp httpseverywhere.xpi $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/https-everywhere@eff.org/httpseverywhere.zip
 	(cd $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/https-everywhere@eff.org && unzip *.zip && rm *.zip)

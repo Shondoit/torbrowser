@@ -217,7 +217,7 @@ NAME=tor-browser
 DISTDIR=tbbl-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.1.1-dev
+VERSION=1.1.2-dev
 DEFAULT_COMPRESSED_BASENAME=tor-browser-gnu-linux-$(ARCH_TYPE)-$(VERSION)-
 IM_COMPRESSED_BASENAME=tor-im-browser-gnu-linux-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
@@ -429,8 +429,8 @@ betterprivacy.xpi:
 	$(WGET) -O $@ $(BETTERPRIVACY)
 
 ## HTTPS Everywhere
-#httpseverywhere.xpi:
-#	$(WGET) -O $@ --no-check-certificate $(HTTPSEVERYWHERE)
+httpseverywhere.xpi:
+	$(WGET) -O $@ --no-check-certificate $(HTTPSEVERYWHERE)
 
 ## Generic language pack rule
 langpack_%.xpi:
