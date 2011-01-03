@@ -7,18 +7,18 @@
 ###
 ### You want to do the following currently supported activities:
 # This downloads and compiles everything
-### make -f Makefile.linux build-all-binaries
+### make -f linux.mk build-all-binaries
 # This makes a generic bundle
-### make -f Makefile.linux generic-bundle
+### make -f linux.mk generic-bundle
 # This makes the English bundle
-### make -f Makefile.linux bundle_en-US
+### make -f linux.mk bundle_en-US
 # This makes the German bundle
-### make -f Makefile.linux bundle_de
+### make -f linux.mk bundle_de
 # This makes the German compressed bundle
-### make -f Makefile.linux compressed-bundle_de 
+### make -f linux.mk compressed-bundle_de 
 # It's possible you may also want to do:
-### make -f Makefile.linux build-all-binaries
-### make -f Makefile.linux all-compressed-bundles
+### make -f linux.mk build-all-binaries
+### make -f linux.mk all-compressed-bundles
 ### ...
 ### Look in tbbl-dist/ for your files.
 ###
@@ -258,10 +258,10 @@ EXTENSIONS_DIR=extensions
 bundle: bundle_en-US
 
 all-bundles-both:
-	USE_PIDGIN=1 make -f Makefile.linux all-bundles
-	make -f Makefile.linux clean
-	USE_PIDGIN=0 make -f Makefile.linux all-bundles
-	make -f Makefile.linux clean
+	USE_PIDGIN=1 make -f linux.mk all-bundles
+	make -f linux.mk clean
+	USE_PIDGIN=0 make -f linux.mk all-bundles
+	make -f linux.mk clean
 
 all-bundles: all-compressed-bundles
 
@@ -298,7 +298,7 @@ clean:
 
 ## Install binaries, documentation, FirefoxPortable, PidginPortable, and launcher into $(DEST)
 generic-bundle.stamp:
-	make -f Makefile.linux generic-bundle
+	make -f linux.mk generic-bundle
 generic-bundle: directory-structure install-binaries install-docs install-firefox install-pidgin configure-apps launcher strip-it-stripper
 	touch generic-bundle.stamp
 
@@ -445,12 +445,12 @@ langpack_%.xpi:
 ##
 
 bundle_%:
-	LANGCODE=$* make -f Makefile.linux bundle-localized
+	LANGCODE=$* make -f linux.mk bundle-localized
 compressed-bundle_%:
-	LANGCODE=$* make -f Makefile.linux compressed-bundle-localized
+	LANGCODE=$* make -f linux.mk compressed-bundle-localized
 
 bundle-localized_%.stamp:
-	make -f Makefile.linux copy-files_$* install-extensions install-betterprivacy install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language update-extension-pref
+	make -f linux.mk copy-files_$* install-extensions install-betterprivacy install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language update-extension-pref
 	touch bundle-localized_$*.stamp
 
 bundle-localized: bundle-localized_$(LANGCODE).stamp

@@ -7,18 +7,18 @@
 ###
 ### You want to do the following currently supported activities:
 # This downloads and compiles everything
-### make -f Makefile.osx build-all-binaries
+### make -f osx.mk build-all-binaries
 # This makes a generic bundle
-### make -f Makefile.osx generic-bundle
+### make -f osx.mk generic-bundle
 # This makes the English bundle
-### make -f Makefile.osx bundle_en-US
+### make -f osx.mk bundle_en-US
 # This makes the German bundle
-### make -f Makefile.osx bundle_de
+### make -f osx.mk bundle_de
 # This makes the German compressed bundle
-### make -f Makefile.osx compressed-bundle_de 
+### make -f osx.mk compressed-bundle_de 
 # It's possible you may also want to do:
-### make -f Makefile.osx build-all-binaries
-### make -f Makefile.osx all-compressed-bundles
+### make -f osx.mk build-all-binaries
+### make -f osx.mk all-compressed-bundles
 ### ...
 ### Look in tbbosx-dist/ for your files.
 ###
@@ -251,14 +251,14 @@ EXTENSIONS_DIR=extensions
 bundle: bundle_en-US
 
 all-bundles-both:
-	USE_PIDGIN=1 make -f Makefile.osx all-bundles
-	make -f Makefile.osx clean
-	USE_PIDGIN=0 make -f Makefile.osx all-bundles
-	make -f Makefile.osx clean
-	USE_SANDBOX=1 make -f Makefile.osx all-bundles
-	make -f Makefile.osx clean
-	USE_SANDBOX=0 make -f Makefile.osx all-bundles
-	make -f Makefile.osx clean
+	USE_PIDGIN=1 make -f osx.mk all-bundles
+	make -f osx.mk clean
+	USE_PIDGIN=0 make -f osx.mk all-bundles
+	make -f osx.mk clean
+	USE_SANDBOX=1 make -f osx.mk all-bundles
+	make -f osx.mk clean
+	USE_SANDBOX=0 make -f osx.mk all-bundles
+	make -f osx.mk clean
 
 all-bundles: all-compressed-bundles
 
@@ -294,7 +294,7 @@ clean:
 
 ## Install binaries, documentation, FirefoxPortable, PidginPortable, and launcher into $(DEST)
 generic-bundle.stamp:
-	make -f Makefile.osx generic-bundle
+	make -f osx.mk generic-bundle
 generic-bundle: directory-structure install-binaries install-docs install-firefox install-pidgin configure-apps launcher strip-it-stripper
 	touch generic-bundle.stamp
 
@@ -438,11 +438,11 @@ langpack_%.xpi:
 ##
 
 bundle_%:
-	LANGCODE=$* make -f Makefile.osx bundle-localized
+	LANGCODE=$* make -f osx.mk bundle-localized
 compressed-bundle_%:
-	LANGCODE=$* make -f Makefile.osx compressed-bundle-localized
+	LANGCODE=$* make -f osx.mk compressed-bundle-localized
 bundle-localized_%.stamp:
-	make -f Makefile.osx copy-files_$* install-extensions install-betterprivacy install-httpseverywhere install-noscript install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language update-extension-pref final
+	make -f osx.mk copy-files_$* install-extensions install-betterprivacy install-httpseverywhere install-noscript install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language update-extension-pref final
 	touch bundle-localized_$*.stamp
 
 bundle-localized: bundle-localized_$(LANGCODE).stamp
