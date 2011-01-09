@@ -24,6 +24,9 @@ To exit, close Firefox and Vidalia.
 Changelog
 ---------
 
+1.0.9: Released 2011-01-09
+       Update Firefox preferences to be more secure and disable geolocation to address #2338
+
 1.0.8: Released 2010-12-17
        Update Tor to 0.2.2.20-alpha
        Update HTTPS-Everywhere to 0.9.9.development.2
