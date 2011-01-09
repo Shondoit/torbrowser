@@ -417,8 +417,8 @@ strip-it-stripper:
 ##
 
 ## Torbutton development version
-#torbutton.xpi:
-#	$(WGET) -O $@ $(TORBUTTON)
+torbutton.xpi:
+	$(WGET) -O $@ $(TORBUTTON)
 
 ## NoScript development version
 noscript.xpi: 
