@@ -51,7 +51,7 @@ OTR_VER=3.2.0
 PIDGIN_VER=2.6.4
 POLIPO_VER=1.0.4.1
 QT_VER=4.6.2
-TOR_VER=0.2.2.20-alpha
+TOR_VER=0.2.2.21-alpha
 TORBUTTON_VER=1.2.5
 VIDALIA_VER=0.2.10
 ZLIB_VER=1.2.3
@@ -117,11 +117,10 @@ build-zlib:
 
 OPENSSL_DIR=$(FETCH_DIR)/openssl-$(OPENSSL_VER)
 OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 shared zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -I$(BUILT_DIR)/include -L$(BUILT_DIR)/lib
-CFLAGS=-Wa, --noexecstack
 build-openssl:
-	cd $(OPENSSL_DIR) && CFLAGS=-Wa,--noexecstack ./config $(OPENSSL_OPTS)
-	cd $(OPENSSL_DIR) && CFLAGS=-Wa,--noexecstack make depend
-	cd $(OPENSSL_DIR) && CFLAGS=-Wa,--noexecstack make
+	cd $(OPENSSL_DIR) && ./config $(OPENSSL_OPTS)
+	cd $(OPENSSL_DIR) && make depend
+	cd $(OPENSSL_DIR) && make
 	cd $(OPENSSL_DIR) && make install
 
 QT_DIR=$(FETCH_DIR)/qt-everywhere-opensource-src-$(QT_VER)
@@ -217,7 +216,7 @@ NAME=tor-browser
 DISTDIR=tbbl-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.1.2-dev
+VERSION=1.1.3-dev
 DEFAULT_COMPRESSED_BASENAME=tor-browser-gnu-linux-$(ARCH_TYPE)-$(VERSION)-
 IM_COMPRESSED_BASENAME=tor-im-browser-gnu-linux-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
@@ -417,8 +416,8 @@ strip-it-stripper:
 ##
 
 ## Torbutton development version
-torbutton.xpi:
-	$(WGET) -O $@ $(TORBUTTON)
+#torbutton.xpi:
+#	$(WGET) -O $@ $(TORBUTTON)
 
 ## NoScript development version
 noscript.xpi: 
@@ -460,6 +459,7 @@ compressed-bundle-localized: bundle-localized_$(LANGCODE).stamp
 	-mkdir $(DISTDIR)
 	tar -cvzf $(DISTDIR)/$(DEFAULT_COMPRESSED_BASENAME)$(LANGCODE).tar.gz $(NAME)_$(LANGCODE);
 	rm *.zip *.xpi
+	cp test/torbutton.xpi torbutton.xpi
 
 copy-files_%: generic-bundle.stamp
 	rm -fr $(NAME)_$*
