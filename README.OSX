@@ -5,11 +5,11 @@ Included applications
 ---------------------
 
 Vidalia 0.2.10 (with Qt 4.6.2)
-Tor 0.2.2.20-alpha (with libevent-1.4.13, zlib-1.2.3 and openssl-0.9.8p) 
+Tor 0.2.2.21-alpha (with libevent-1.4.13, zlib-1.2.3 and openssl-0.9.8p) 
 Polipo 1.0.4.1
 Firefox (Namoroka) 3.6.13
  \_ Torbutton 1.2.5
- |_ NoScript 2.0.7
+ |_ NoScript 2.0.9.3
  |_ HTTPS-Everywhere 0.9.9.development.2
  |_ BetterPrivacy 1.48.3
 
@@ -24,43 +24,47 @@ To exit, close Firefox and Vidalia.
 Changelog
 ---------
 
-1.0.9: Released 2011-01-09
-       Update Firefox preferences to be more secure and disable geolocation to address #2338
+1.0.10: Released 2011-01-16
+        Update Tor to 0.2.2.21-alpha
+        Update NoScript to 2.0.9.3
 
-1.0.8: Released 2010-12-17
-       Update Tor to 0.2.2.20-alpha
-       Update HTTPS-Everywhere to 0.9.9.development.2
+1.0.9:  Released 2011-01-09
+        Update Firefox preferences to be more secure and disable geolocation to address #2338
 
-1.0.7: Released 2010-12-14
-       Update Firefox to 3.6.13
-       Update NoScript to 2.0.7
-       Update HTTPS-Everywhere to 0.9.9.development.1
-         This version of HTTPS-Everywhere is patched to include a fix for bug #2096 which
-         prevented globally installed versions of the extension from working. It also
-         includes better protection from Firesheep. See the changelog here:
-         https://www.eff.org/files/Changelog.txt
+1.0.8:  Released 2010-12-17
+        Update Tor to 0.2.2.20-alpha
+        Update HTTPS-Everywhere to 0.9.9.development.2
 
-1.0.6: Released 2010-11-24
-       Update Tor to 0.2.2.19-alpha
+1.0.7:  Released 2010-12-14
+        Update Firefox to 3.6.13
+        Update NoScript to 2.0.7
+        Update HTTPS-Everywhere to 0.9.9.development.1
+          This version of HTTPS-Everywhere is patched to include a fix for bug #2096 which
+          prevented globally installed versions of the extension from working. It also
+          includes better protection from Firesheep. See the changelog here:
+          https://www.eff.org/files/Changelog.txt
 
-1.0.5: Released 2010-11-18
-       Update Tor to 0.2.2.18-alpha
-       Update OpenSSL to 0.9.8p (see CVE-2010-3864)
-       Update NoScript to 2.0.5.1
+1.0.6:  Released 2010-11-24
+        Update Tor to 0.2.2.19-alpha
 
-1.0.4: Released 2010-10-28
-       Update Firefox to 3.6.12
-       Fix weird Torbutton location so users can tell it's installed
+1.0.5:  Released 2010-11-18
+        Update Tor to 0.2.2.18-alpha
+        Update OpenSSL to 0.9.8p (see CVE-2010-3864)
+        Update NoScript to 2.0.5.1
 
-1.0.3: Released 2010-10-25
-       Update Firefox to 3.6.11
+1.0.4:  Released 2010-10-28
+        Update Firefox to 3.6.12
+        Fix weird Torbutton location so users can tell it's installed
 
-1.0.2: Released 2010-10-01
-       Update Tor to 0.2.2.17-alpha
-       Update Firefox to 3.6.10
-       Add BetterPrivacy 1.48.3
+1.0.3:  Released 2010-10-25
+        Update Firefox to 3.6.11
 
-1.0.1: Released 2010-09-18
-       Update Tor to 0.2.2.16-alpha
+1.0.2:  Released 2010-10-01
+        Update Tor to 0.2.2.17-alpha
+        Update Firefox to 3.6.10
+        Add BetterPrivacy 1.48.3
 
-1.0.0: Initial release (2010-09-15)
+1.0.1:  Released 2010-09-18
+        Update Tor to 0.2.2.16-alpha
+
+1.0.0:  Initial release (2010-09-15)
