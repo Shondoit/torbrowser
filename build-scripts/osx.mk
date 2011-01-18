@@ -208,7 +208,7 @@ NAME=TorBrowser
 DISTDIR=tbbosx-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.0.10-dev
+VERSION=1.0.11-dev
 DEFAULT_COMPRESSED_BASENAME=TorBrowser-$(VERSION)-osx-$(ARCH_TYPE)-
 IM_COMPRESSED_BASENAME=TorBrowser-IM-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)
@@ -297,7 +297,7 @@ generic-bundle: directory-structure install-binaries install-docs install-firefo
 	touch generic-bundle.stamp
 
 APPDIR=$(DEST)/Contents/MacOS
-LIBSDIR=$(DEST)/Contents/Frameworks
+#LIBSDIR=$(DEST)/Contents/Frameworks
 DOCSDIR=$(DEST)/Contents/Resources/Docs
 DATADIR=$(DEST)/Contents/Resources/Data
 TB_TMPDIR=$(DEST)/Contents/SharedSupport
@@ -308,7 +308,7 @@ directory-structure:
 	mkdir -p $(APPDIR)
 	mkdir -p $(APPDIR)/Firefox.app/Contents/MacOS/Data/profile
 	mkdir -p $(APPDIR)/Firefox.app/Contents/MacOS/Data/plugins
-	mkdir -p $(LIBSDIR)
+	#mkdir -p $(LIBSDIR)
 	mkdir -p $(DATADIR)/Tor
 	mkdir -p $(DATADIR)/Vidalia
 	mkdir -p $(DATADIR)/Polipo
@@ -319,13 +319,13 @@ directory-structure:
 ## Firefox and Pidgin are installed in their own targets
 install-binaries: 
 	# zlib
-	cp -R $(ZLIB)/libz.1.2.3.dylib $(ZLIB)/libz.1.dylib $(ZLIB)/libz.dylib $(LIBSDIR)
+	#cp -R $(ZLIB)/libz.1.2.3.dylib $(ZLIB)/libz.1.dylib $(ZLIB)/libz.dylib $(LIBSDIR)
 	# Libevent
-	cp -R $(LIBEVENT)/libevent.a  $(LIBEVENT)/libevent_core.a $(LIBEVENT)/libevent_extra.a \
-	   $(LIBEVENT)/libevent.la $(LIBEVENT)/libevent_core.la $(LIBEVENT)/libevent_extra.la $(LIBSDIR)
+	#cp -R $(LIBEVENT)/libevent.a  $(LIBEVENT)/libevent_core.a $(LIBEVENT)/libevent_extra.a \
+	#   $(LIBEVENT)/libevent.la $(LIBEVENT)/libevent_core.la $(LIBEVENT)/libevent_extra.la $(LIBSDIR)
 	# OpenSSL
-	cp -R $(OPENSSL)/libcrypto.dylib $(OPENSSL)/libcrypto.0.9.8.dylib $(OPENSSL)/libssl.dylib \
-	   $(OPENSSL)/libssl.0.9.8.dylib $(LIBSDIR)
+	#cp -R $(OPENSSL)/libcrypto.dylib $(OPENSSL)/libcrypto.0.9.8.dylib $(OPENSSL)/libssl.dylib \
+	#   $(OPENSSL)/libssl.0.9.8.dylib $(LIBSDIR)
 	#cp -R $(OPENSSL)/libcrypto* $(OPENSSL)/libssl* $(LIBSDIR)
 	# Vidalia
 	cp -R $(VIDALIA) $(APPDIR)/Vidalia.app

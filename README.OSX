@@ -24,6 +24,10 @@ To exit, close Firefox and Vidalia.
 Changelog
 ---------
 
+1.0.11: Released 2011-01-17
+        Update the OS X Makefile to make sure that tor links zlib, libevent and openssl 
+        statically. Fixes bug #2406.
+
 1.0.10: Released 2011-01-16
         Update Tor to 0.2.2.21-alpha
         Update NoScript to 2.0.9.3
