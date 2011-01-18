@@ -102,20 +102,18 @@ source-dance: fetch-source unpack-source
 	echo "We're ready for building now."
 
 ZLIB_DIR=$(FETCH_DIR)/zlib-$(ZLIB_VER)
-ZLIB_OPTS=--shared --prefix=$(BUILT_DIR)
+ZLIB_OPTS=--prefix=$(BUILT_DIR)
 build-zlib:
 	cd $(ZLIB_DIR) && ./configure $(ZLIB_OPTS)
 	cd $(ZLIB_DIR) && make
 	cd $(ZLIB_DIR) && make install
 
 OPENSSL_DIR=$(FETCH_DIR)/openssl-$(OPENSSL_VER)
-OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 shared zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -I$(BUILT_DIR)/lib
+OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 no-shared zlib -mmacosx-version-min=10.4 -isysroot /Developer/SDKs/MacOSX10.4u.sdk -Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -I$(BUILT_DIR)/lib
 build-openssl:
 	cd $(OPENSSL_DIR) && ./config $(OPENSSL_OPTS)
 	cd $(OPENSSL_DIR) && make depend
-	cd $(OPENSSL_DIR) && CC=/usr/bin/gcc-4.0 \
-	CFLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk" \
-	LDFLAGS="-syslibroot /Developer/SDKs/MacOSX10.5.sdk" make
+	cd $(OPENSSL_DIR) && CC=/usr/bin/gcc-4.0 make
 	cd $(OPENSSL_DIR) && make install
 
 QT_DIR=$(FETCH_DIR)/qt-everywhere-opensource-src-$(QT_VER)
