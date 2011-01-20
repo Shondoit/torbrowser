@@ -1,6 +1,7 @@
 [General]
 BrowserDirectory=.
 BrowserExecutable=firefox
+InterfaceStyle=Cleanlooks
 LanguageCode=en
 
 [Tor]
