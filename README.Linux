@@ -29,6 +29,9 @@ To exit, close Firefox. Vidalia will automatically clean up and exit.
 Changelog
 ---------
 
+1.1.3-1: Released 2011-01-18
+        32-bit only fix: put actual Tor 0.2.2.21-alpha in the tarball
+
 1.1.3:  Released 2011-01-16
         Update Tor to 0.2.2.21-alpha
         Update NoScript to 2.0.9.3
