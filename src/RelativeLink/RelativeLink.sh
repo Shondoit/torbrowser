@@ -44,7 +44,7 @@ export DYLD_PRINT_LIBRARIES
 
 # if any relevant processes are running, inform the user and exit cleanly
 RUNNING=0
-for process in tor vidalia polipo privoxy
+for process in tor vidalia
         do pid=`pidof $process`
         if [ -n "$pid" ]; then
 		printf "\n$process is already running as PID $pid\n\n"

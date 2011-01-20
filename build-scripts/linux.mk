@@ -35,26 +35,26 @@
 ARCH_TYPE=$(shell uname -m)
 
 ## Location of directory for source unpacking
-FETCH_DIR=/build
+FETCH_DIR=$(HOME)/build-alpha
 ## Location of directory for prefix/destdir/compiles/etc
 BUILT_DIR=$(FETCH_DIR)/built
 TBB_FINAL=$(BUILT_DIR)/TBBL
 
 ## Versions for our source packages
 HTTPSEVERY_VER=0.9.9.development.2
-FIREFOX_VER=3.6.13
-LIBEVENT_VER=1.4.13-stable
-LIBPNG_VER=1.4.3
+FIREFOX_VER=4.0b8
+LIBEVENT_VER=2.0.10-stable
+LIBPNG_VER=1.5.1beta01
 NOSCRIPT_VER=2.0.7
-OPENSSL_VER=0.9.8p
+OPENSSL_VER=1.0.0c
 OTR_VER=3.2.0
 PIDGIN_VER=2.6.4
 POLIPO_VER=1.0.4.1
-QT_VER=4.6.2
-TOR_VER=0.2.2.20-alpha
-TORBUTTON_VER=1.2.5
+QT_VER=4.7.1
+TOR_VER=0.2.3.0-alpha
+TORBUTTON_VER=1.3.1-alpha
 VIDALIA_VER=0.2.10
-ZLIB_VER=1.2.3
+ZLIB_VER=1.2.5
 
 ## Extension IDs
 FF_VENDOR_ID:=\{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
@@ -78,10 +78,10 @@ LIBPNG_URL=http://download.sourceforge.net/libpng/$(LIBPNG_PACKAGE).tar.gz
 OPENSSL_URL=https://www.openssl.org/source/$(OPENSSL_PACKAGE)
 PIDGIN_URL=http://sourceforge.net/projects/pidgin/files/Pidgin/$(PIDGIN_PACKAGE)
 POLIPO_URL=http://freehaven.net/~chrisd/polipo/$(POLIPO_PACKAGE)
-QT_URL=ftp://ftp.qt.nokia.com/qt/source/$(QT_PACKAGE)
+QT_URL=http://get.qt.nokia.com/qt/source/$(QT_PACKAGE)
 TOR_URL=https://www.torproject.org/dist/$(TOR_PACKAGE)
 VIDALIA_URL=https://www.torproject.org/vidalia/dist/$(VIDALIA_PACKAGE)
-ZLIB_URL=http://www.gzip.org/zlib/$(ZLIB_PACKAGE)
+ZLIB_URL=http://www.zlib.net/$(ZLIB_PACKAGE)
 
 fetch-source:
 	-mkdir $(FETCH_DIR)
@@ -116,12 +116,11 @@ build-zlib:
 	cd $(ZLIB_DIR) && make install
 
 OPENSSL_DIR=$(FETCH_DIR)/openssl-$(OPENSSL_VER)
-OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 shared zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -I$(BUILT_DIR)/include -L$(BUILT_DIR)/lib
-CFLAGS=-Wa, --noexecstack
+OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 shared zlib -Wa,--noexecstack --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -I$(BUILT_DIR)/include -L$(BUILT_DIR)/lib
 build-openssl:
-	cd $(OPENSSL_DIR) && CFLAGS=-Wa,--noexecstack ./config $(OPENSSL_OPTS)
-	cd $(OPENSSL_DIR) && CFLAGS=-Wa,--noexecstack make depend
-	cd $(OPENSSL_DIR) && CFLAGS=-Wa,--noexecstack make
+	cd $(OPENSSL_DIR) && ./config $(OPENSSL_OPTS)
+	cd $(OPENSSL_DIR) && make depend
+	cd $(OPENSSL_DIR) && make
 	cd $(OPENSSL_DIR) && make install
 
 QT_DIR=$(FETCH_DIR)/qt-everywhere-opensource-src-$(QT_VER)
@@ -132,8 +131,8 @@ build-qt:
 	cd $(QT_DIR) && make
 	cd $(QT_DIR) && make install
 
-VIDALIA_DIR=$(FETCH_DIR)/vidalia-$(VIDALIA_VER)
-VIDALIA_OPTS=-DOPENSSL_LIBRARY_DIR=$(BUILT_DIR)/lib -DCMAKE_BUILD_TYPE=debug -DQT_QMAKE_EXECUTABLE=$(BUILT_DIR)/bin/qmake ..
+VIDALIA_DIR=$(FETCH_DIR)/vidalia.trunk
+VIDALIA_OPTS=-DCMAKE_BUILD_TYPE=debug -DQT_QMAKE_EXECUTABLE=$(BUILT_DIR)/bin/qmake ..
 build-vidalia:
 	-mkdir $(VIDALIA_DIR)/build
 	cd $(VIDALIA_DIR)/build && cmake $(VIDALIA_OPTS) && make
@@ -153,9 +152,10 @@ build-libpng:
 	cd $(LIBPNG_DIR) && make
 	cd $(LIBPNG_DIR) && make install
 
-TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)
+TOR_DIR=$(FETCH_DIR)/tor.git
 TOR_OPTS=--with-openssl-dir=$(BUILT_DIR) --with-zlib-dir=$(BUILT_DIR) --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR)
 build-tor:
+	cd $(TOR_DIR) && ./autogen.sh
 	cd $(TOR_DIR) && ./configure $(TOR_OPTS)
 	cd $(TOR_DIR) && make -j2
 	cd $(TOR_DIR) && make install
@@ -175,7 +175,7 @@ build-firefox:
 	# XXX: add directions ASAP
 
 # source-dance unpack-source
-build-all-binaries: build-zlib build-openssl build-libpng build-qt build-vidalia build-libevent build-tor build-polipo
+build-all-binaries: source-dance build-zlib build-openssl build-libpng build-qt build-vidalia build-libevent build-tor build-polipo
 	echo "If we're here, we've done something right."
 
 ## Location of compiled libraries
@@ -230,7 +230,7 @@ COMPRESSED_NAME=$(DEFAULT_COMPRESSED_NAME)
 endif
 
 ## Extensions to install by default
-DEFAULT_EXTENSIONS=torbutton.xpi noscript.xpi httpseverywhere.xpi
+DEFAULT_EXTENSIONS=torbutton.xpi httpseverywhere.xpi
 
 ## Where to download Torbutton from
 TORBUTTON=https://www.torproject.org/torbutton/releases/torbutton-$(TORBUTTON_VER).xpi
@@ -325,20 +325,20 @@ directory-structure:
 ## Firefox and Pidgin are installed in their own targets
 install-binaries:
 	# A minimal set of Qt libs and the proper symlinks
-	cp -d $(QT)/libQtCore.so $(QT)/libQtCore.so.4 $(QT)/libQtCore.so.4.6 $(QT)/libQtCore.so.4.6.2 $(LIBSDIR)
-	cp -d $(QT)/libQtGui.so $(QT)/libQtGui.so.4 $(QT)/libQtGui.so.4.6 $(QT)/libQtGui.so.4.6.2 $(LIBSDIR)
-	cp -d $(QT)/libQtNetwork.so $(QT)/libQtNetwork.so.4 $(QT)/libQtNetwork.so.4.6 \
-           $(QT)/libQtNetwork.so.4.6.2 $(LIBSDIR)
-	cp -d $(QT)/libQtXml.so $(QT)/libQtXml.so.4 $(QT)/libQtXml.so.4.6 $(QT)/libQtXml.so.4.6.2 $(LIBSDIR)
+	cp -d $(QT)/libQtCore.so $(QT)/libQtCore.so.4 $(QT)/libQtCore.so.4.7 $(QT)/libQtCore.so.4.7.1 $(LIBSDIR)
+	cp -d $(QT)/libQtGui.so $(QT)/libQtGui.so.4 $(QT)/libQtGui.so.4.7 $(QT)/libQtGui.so.4.7.1 $(LIBSDIR)
+	cp -d $(QT)/libQtNetwork.so $(QT)/libQtNetwork.so.4 $(QT)/libQtNetwork.so.4.7 \
+           $(QT)/libQtNetwork.so.4.7.1 $(LIBSDIR)
+	cp -d $(QT)/libQtXml.so $(QT)/libQtXml.so.4 $(QT)/libQtXml.so.4.7 $(QT)/libQtXml.so.4.7.1 $(LIBSDIR)
 	# zlib
-	cp -d $(ZLIB)/libz.so $(ZLIB)/libz.so.1 $(ZLIB)/libz.so.1.2.3 $(LIBSDIR)/libz
+	cp -d $(ZLIB)/libz.so $(ZLIB)/libz.so.1 $(ZLIB)/libz.so.1.2.5 $(LIBSDIR)/libz
 	# Libevent
-	cp -d $(LIBEVENT)/libevent-1.4.so.2 $(LIBEVENT)/libevent-1.4.so.2.1.3 $(LIBEVENT)/libevent_core.so \
-           $(LIBEVENT)/libevent_core-1.4.so.2 $(LIBEVENT)/libevent_core-1.4.so.2.1.3 \
-           $(LIBEVENT)/libevent_extra-1.4.so.2 $(LIBEVENT)/libevent_extra-1.4.so.2.1.3 \
+	cp -d $(LIBEVENT)/libevent-2.0.so.5 $(LIBEVENT)/libevent-2.0.so.5.0.1 $(LIBEVENT)/libevent_core.so \
+           $(LIBEVENT)/libevent_core-2.0.so.5 $(LIBEVENT)/libevent_core-2.0.so.5.0.1 \
+           $(LIBEVENT)/libevent_extra-2.0.so.5 $(LIBEVENT)/libevent_extra-2.0.so.5.0.1 \
            $(LIBEVENT)/libevent_extra.so $(LIBEVENT)/libevent.so $(LIBSDIR)
 	# libpng
-	cp -d $(LIBPNG)/libpng14.so* $(LIBSDIR) 
+	cp -d $(LIBPNG)/libpng15.so* $(LIBSDIR) 
 	# OpenSSL
 	cp -d $(OPENSSL)/libcrypto.a $(OPENSSL)/libssl.a $(OPENSSL)/libssl.so* $(OPENSSL)/libcrypto.so* $(LIBSDIR)
 	# Vidalia
@@ -417,16 +417,16 @@ strip-it-stripper:
 ##
 
 ## Torbutton development version
-torbutton.xpi:
-	$(WGET) -O $@ $(TORBUTTON)
+#torbutton.xpi:
+#	$(WGET) -O $@ $(TORBUTTON)
 
 ## NoScript development version
-noscript.xpi: 
-	$(WGET) -O $@ $(NOSCRIPT)
+#noscript.xpi: 
+#	$(WGET) -O $@ $(NOSCRIPT)
 
 ## BetterPrivacy
-betterprivacy.xpi:
-	$(WGET) -O $@ $(BETTERPRIVACY)
+#betterprivacy.xpi:
+#	$(WGET) -O $@ $(BETTERPRIVACY)
 
 ## HTTPS Everywhere
 httpseverywhere.xpi:
@@ -450,7 +450,7 @@ compressed-bundle_%:
 	LANGCODE=$* make -f linux.mk compressed-bundle-localized
 
 bundle-localized_%.stamp:
-	make -f linux.mk copy-files_$* install-extensions install-betterprivacy install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language update-extension-pref
+	make -f linux.mk copy-files_$* install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language update-extension-pref
 	touch bundle-localized_$*.stamp
 
 bundle-localized: bundle-localized_$(LANGCODE).stamp
@@ -460,6 +460,7 @@ compressed-bundle-localized: bundle-localized_$(LANGCODE).stamp
 	-mkdir $(DISTDIR)
 	tar -cvzf $(DISTDIR)/$(DEFAULT_COMPRESSED_BASENAME)$(LANGCODE).tar.gz $(NAME)_$(LANGCODE);
 	rm *.zip *.xpi
+	cp torbutton/torbutton.xpi .
 
 copy-files_%: generic-bundle.stamp
 	rm -fr $(NAME)_$*
@@ -511,6 +512,7 @@ endif
 patch-firefox-language:
 	## Patch the default Firefox prefs.js
 	## Don't use {} because they aren't always interpreted correctly. Thanks, sh. 
+	mkdir -p $(BUNDLE)/App/Firefox/defaults/profile/
 	cp $(CONFIG_SRC)/bookmarks.html $(BUNDLE)/App/Firefox/defaults/profile/
 	cp $(CONFIG_SRC)/no-polipo.js $(BUNDLE)/App/Firefox/defaults/profile/prefs.js
 	cp $(CONFIG_SRC)/bookmarks.html $(BUNDLE)/Data/profile
