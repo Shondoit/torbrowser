@@ -29,7 +29,7 @@ To exit, close Firefox. Vidalia will automatically clean up and exit.
 Changelog
 ---------
 
-1.1.4:  Released 2011-01-27
+1.1.4:  Released 2011-01-26
         Update Tor to 0.2.2.22-alpha
         Remove useless polipo and privoxy check from shell script
 
