@@ -6,7 +6,6 @@ Included applications
 
 Vidalia 0.2.10 (with Qt 4.6.2)
 Tor 0.2.2.22-alpha (with libevent-2.0.10-stable, zlib-1.2.5 and openssl-1.0.0c) 
-Polipo 1.0.4.1
 Firefox (Namoroka) 3.6.13
  \_ Torbutton 1.2.5
  |_ NoScript 2.0.9.3
