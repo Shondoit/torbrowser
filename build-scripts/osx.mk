@@ -20,7 +20,7 @@
 ### make -f osx.mk build-all-binaries
 ### make -f osx.mk all-compressed-bundles
 ### ...
-### Look in tbbosx-dist/ for your files.
+### Look in tbbosx-alpha-dist/ for your files.
 ###
 ### See LICENSE for licensing information
 ###
@@ -31,72 +31,17 @@
 ### Configuration ###
 #####################
 
+## Include versions
+include $(PWD)/versions.mk
+
 ## Architecture
 ARCH_TYPE=$(shell uname -m)
 
 ## Location of directory for source unpacking
-FETCH_DIR=/build
+FETCH_DIR=/build-alpha
 ## Location of directory for prefix/destdir/compiles/etc
 BUILT_DIR=$(FETCH_DIR)/built
-TBB_FINAL=$(BUILT_DIR)/TBBL
-
-## Versions for our source packages
-HTTPSEVERY_VER=0.9.9.development.2
-FIREFOX_VER=3.6.13
-LIBEVENT_VER=1.4.13-stable
-LIBPNG_VER=1.4.3
-NOSCRIPT_VER=2.0.7
-OPENSSL_VER=0.9.8p
-OTR_VER=3.2.0
-PIDGIN_VER=2.6.4
-POLIPO_VER=1.0.4.1
-QT_VER=4.6.2
-TOR_VER=0.2.2.20-alpha
-TORBUTTON_VER=1.2.5
-VIDALIA_VER=0.2.10
-ZLIB_VER=1.2.3
-
-## Extension IDs
-FF_VENDOR_ID:=\{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
-
-## File names for the source packages
-ZLIB_PACKAGE=zlib-$(ZLIB_VER).tar.gz
-OPENSSL_PACKAGE=openssl-$(OPENSSL_VER).tar.gz
-QT_PACKAGE=qt-everywhere-opensource-src-$(QT_VER).tar.gz
-VIDALIA_PACKAGE=vidalia-$(VIDALIA_VER).tar.gz
-LIBEVENT_PACKAGE=libevent-$(LIBEVENT_VER).tar.gz
-TOR_PACKAGE=tor-$(TOR_VER).tar.gz
-POLIPO_PACKAGE=polipo-$(POLIPO_VER).tar.gz
-PIDGIN_PACKAGE=pidgin-$(PIDGIN_VER).tar.bz2
-FIREFOX_PACKAGE=firefox-$(FIREFOX_VER).tar.bz2
-
-## Location of files for download
-ZLIB_URL=http://www.gzip.org/zlib/$(ZLIB_PACKAGE)
-OPENSSL_URL=http://www.openssl.org/source/$(OPENSSL_PACKAGE)
-QT_URL=ftp://ftp.qt.nokia.com/qt/source/$(QT_PACKAGE)
-VIDALIA_URL=http://www.torproject.org/vidalia/dist/$(VIDALIA_PACKAGE)
-LIBEVENT_URL=http://www.monkey.org/~provos/$(LIBEVENT_PACKAGE)
-TOR_URL=http://www.torproject.org/dist/$(TOR_PACKAGE)
-POLIPO_URL=http://freehaven.net/~chrisd/polipo/$(POLIPO_PACKAGE)
-PIDGIN_URL=http://sourceforge.net/projects/pidgin/files/Pidgin/$(PIDGIN_PACKAGE)
-#FIREFOX_URL=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/$(FIREFOX_VER)/linux-i686/en-US/$(FIREFOX_PACKAGE)
-
-fetch-source:
-	-mkdir $(FETCH_DIR)
-	$(WGET) --directory-prefix=$(FETCH_DIR) $(ZLIB_URL)
-	$(WGET) --directory-prefix=$(FETCH_DIR) $(OPENSSL_URL)
-	$(WGET) --directory-prefix=$(FETCH_DIR) $(VIDALIA_URL)
-	$(WGET) --directory-prefix=$(FETCH_DIR) $(LIBEVENT_URL)
-	$(WGET) --directory-prefix=$(FETCH_DIR) $(TOR_URL)
-	$(WGET) --directory-prefix=$(FETCH_DIR) $(POLIPO_URL)
-
-unpack-source:
-	cd $(FETCH_DIR) && tar -xvzf $(ZLIB_PACKAGE)
-	cd $(FETCH_DIR) && tar -xvzf $(OPENSSL_PACKAGE)
-	cd $(FETCH_DIR) && tar -xvzf $(VIDALIA_PACKAGE)
-	cd $(FETCH_DIR) && tar -xvzf $(LIBEVENT_PACKAGE)
-	cd $(FETCH_DIR) && tar -xvzf $(TOR_PACKAGE)
-	cd $(FETCH_DIR) && tar -xvzf $(POLIPO_PACKAGE)
+TBB_FINAL=$(BUILT_DIR)/tbbosx-alpha-dist
 
 source-dance: fetch-source unpack-source
 	echo "We're ready for building now."
@@ -109,18 +54,16 @@ build-zlib:
 	cd $(ZLIB_DIR) && make install
 
 OPENSSL_DIR=$(FETCH_DIR)/openssl-$(OPENSSL_VER)
-OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 shared zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -I$(BUILT_DIR)/lib
+OPENSSL_OPTS="-no-idea -no-rc5 -no-md2 no-shared zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -L$(BUILT_DIR)/lib -I$(BUILT_DIR)/include"
 build-openssl:
 	cd $(OPENSSL_DIR) && ./config $(OPENSSL_OPTS)
 	cd $(OPENSSL_DIR) && make depend
-	cd $(OPENSSL_DIR) && CC=/usr/bin/gcc-4.0 \
-	CFLAGS="-isysroot /Developer/SDKs/MacOSX10.5.sdk" \
-	LDFLAGS="-syslibroot /Developer/SDKs/MacOSX10.5.sdk" make
+	cd $(OPENSSL_DIR) && CC=/usr/bin/gcc-4.0 make
 	cd $(OPENSSL_DIR) && make install
 
 QT_DIR=$(FETCH_DIR)/qt-everywhere-opensource-src-$(QT_VER)
 QT_BUILD_PREFS=-qt-zlib -universal -confirm-license -opensource -openssl-linked -no-qt3support \
-	-fast -release -no-framework -nomake demos -nomake examples -sdk /Developer/SDKs/MacOSX10.4u.sdk/
+	-fast -release -no-framework -nomake demos -nomake examples -sdk /Developer/SDKs/MacOSX10.5.sdk/
 QT_OPTS=$(QT_BUILD_PREFS) -prefix $(BUILT_DIR) -I $(BUILT_DIR)/include -I $(BUILT_DIR)/include/openssl/ -L $(BUILT_DIR)/lib
 build-qt:
 	cd $(QT_DIR) && ./configure $(QT_OPTS)
@@ -128,48 +71,35 @@ build-qt:
 	cd $(QT_DIR) && make install
 
 VIDALIA_DIR=$(FETCH_DIR)/vidalia-$(VIDALIA_VER)
-VIDALIA_OPTS=-DOSX_TIGER_COMPAT=1 -DCMAKE_OSX_ARCHITECTURES=i386 -DOPENSSL_LIBRARY_DIR=$(BUILT_DIR)/lib -DCMAKE_BUILD_TYPE=debug ..
+VIDALIA_OPTS=-DOSX_TIGER_COMPAT=1 -DCMAKE_OSX_ARCHITECTURES=$(ARCH_TYPE) -DOPENSSL_LIBCRYPTO=$(BUILT_DIR)/lib/libcrypto.dylib \
+	-DOPENSSL_LIBSSL=$(BUILT_DIR)/lib/libssl.dylib -DCMAKE_BUILD_TYPE=debug ..
 build-vidalia:
-	export MACOSX_DEPLOYMENT_TARGET=10.4
 	-mkdir $(VIDALIA_DIR)/build
 	cd $(VIDALIA_DIR)/build && cmake $(VIDALIA_OPTS) \
 	&& make && make dist-osx-libraries
 	cd $(VIDALIA_DIR)/build && DESTDIR=$(BUILT_DIR) make install
 
 LIBEVENT_DIR=$(FETCH_DIR)/libevent-$(LIBEVENT_VER)
-LIBEVENT_CFLAGS="-O -g -mmacosx-version-min=10.4 -isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch i386"
-LIBEVENT_LDFLAGS="-Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk"
+LIBEVENT_CFLAGS="-O -g -arch $(ARCH_TYPE)"
 LIBEVENT_OPTS=--prefix=$(BUILT_DIR) --enable-static --disable-shared --disable-dependency-tracking CC="gcc-4.0"
 build-libevent:
-	cd $(LIBEVENT_DIR) && CFLAGS=$(LIBEVENT_CFLAGS) LDFLAGS=$(LIBEVENT_LDFLAGS) ./configure $(LIBEVENT_OPTS)
+	cd $(LIBEVENT_DIR) && CFLAGS=$(LIBEVENT_CFLAGS) ./configure $(LIBEVENT_OPTS)
 	cd $(LIBEVENT_DIR) && make -j2
-	cd $(LIBEVENT_DIR) && make install
+	cd $(LIBEVENT_DIR) && sudo make install
 
 TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)
-TOR_CFLAGS="-O -g -mmacosx-version-min=10.4 -isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch i386"
-TOR_LDFLAGS="-Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk"
-TOR_OPTS=--with-openssl-dir=$(BUILT_DIR) --with-zlib-dir=$(BUILT_DIR) --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR) CC="gcc-4.0"
+TOR_CFLAGS="-O -g -arch $(ARCH_TYPE) -I$(BUILT_DIR)/include"
+TOR_LDFLAGS="-L$(BUILT_DIR)/lib"
+TOR_OPTS=--enable-static-openssl --enable-static-libevent --with-openssl-dir=$(BUILT_DIR)/lib --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR) --disable-dependency-tracking CC="gcc-4.0"
 build-tor:
 	cd $(TOR_DIR) && CFLAGS=$(TOR_CFLAGS) LDFLAGS=$(TOR_LDFLAGS) ./configure $(TOR_OPTS)
-	cd $(TOR_DIR) && make $(MAKEFLAGS)
+	cd $(TOR_DIR) && make
 	cd $(TOR_DIR) && make install
-
-## Polipo doesn't use autoconf, so we just have to hack their Makefile
-## This probably needs to be updated if Polipo ever updates their Makefile
-POLIPO_DIR=$(FETCH_DIR)/polipo-$(POLIPO_VER)
-POLIPO_MAKEFILE=$(CONFIG_SRC)/polipo-Makefile
-build-polipo:
-	cp $(POLIPO_MAKEFILE) $(POLIPO_DIR)/Makefile
-	cd $(POLIPO_DIR) && make CFLAGS="-mmacosx-version-min=10.4" \
-	&& PREFIX=$(FETCH_DIR)/built/ make install.binary
-
-build-pidgin:
-	echo "We're not building pidgin yet!"
 
 build-firefox:
 	echo "We're using a prebuilt firefox. Fix this someday!"
 
-build-all-binaries: build-zlib build-openssl build-vidalia build-libevent build-tor build-polipo
+build-all-binaries: build-zlib build-openssl build-vidalia build-libevent build-tor
 	echo "If we're here, we've done something right."
 
 ## Location of compiled libraries
@@ -186,7 +116,6 @@ LIBEVENT=$(COMPILED_LIBS)
 ## Location of binary bundle components
 VIDALIA=$(BUILT_DIR)/usr/local/bin/Vidalia.app/
 TOR=$(COMPILED_BINS)/tor
-POLIPO=$(COMPILED_BINS)/polipo
 ## Someday, this will be our custom Firefox
 FIREFOX=$(FETCH_DIR)/Firefox.app
 PIDGIN=$(COMPILED_BINS)/pidgin
@@ -207,10 +136,10 @@ DEST=generic-bundle
 NAME=TorBrowser
 
 ## Where shall we put the finished files for distribution?
-DISTDIR=tbbosx-dist
+DISTDIR=tbbosx-alpha-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.0.9-dev
+VERSION=1.2.0-libevent2
 DEFAULT_COMPRESSED_BASENAME=TorBrowser-$(VERSION)-osx-$(ARCH_TYPE)-
 IM_COMPRESSED_BASENAME=TorBrowser-IM-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)
@@ -247,7 +176,6 @@ EXTENSIONS_DIR=extensions
 ## Default rule
 ##
 
-#bundle: bundle_en-US
 bundle: bundle_en-US
 
 all-bundles-both:
@@ -295,11 +223,10 @@ clean:
 ## Install binaries, documentation, FirefoxPortable, PidginPortable, and launcher into $(DEST)
 generic-bundle.stamp:
 	make -f osx.mk generic-bundle
-generic-bundle: directory-structure install-binaries install-docs install-firefox install-pidgin configure-apps launcher strip-it-stripper
+generic-bundle: directory-structure install-binaries install-docs install-firefox configure-apps launcher strip-it-stripper
 	touch generic-bundle.stamp
 
 APPDIR=$(DEST)/Contents/MacOS
-LIBSDIR=$(DEST)/Contents/Frameworks
 DOCSDIR=$(DEST)/Contents/Resources/Docs
 DATADIR=$(DEST)/Contents/Resources/Data
 TB_TMPDIR=$(DEST)/Contents/SharedSupport
@@ -310,29 +237,16 @@ directory-structure:
 	mkdir -p $(APPDIR)
 	mkdir -p $(APPDIR)/Firefox.app/Contents/MacOS/Data/profile
 	mkdir -p $(APPDIR)/Firefox.app/Contents/MacOS/Data/plugins
-	mkdir -p $(LIBSDIR)
 	mkdir -p $(DATADIR)/Tor
 	mkdir -p $(DATADIR)/Vidalia
-	mkdir -p $(DATADIR)/Polipo
 	mkdir -p $(DOCSDIR)
 	mkdir -p $(TB_TMPDIR)
 
 ## Package up all the Vidalia and Tor pre-requisites
 ## Firefox and Pidgin are installed in their own targets
 install-binaries: 
-	# zlib
-	cp -R $(ZLIB)/libz.1.2.3.dylib $(ZLIB)/libz.1.dylib $(ZLIB)/libz.dylib $(LIBSDIR)
-	# Libevent
-	cp -R $(LIBEVENT)/libevent.a  $(LIBEVENT)/libevent_core.a $(LIBEVENT)/libevent_extra.a \
-	   $(LIBEVENT)/libevent.la $(LIBEVENT)/libevent_core.la $(LIBEVENT)/libevent_extra.la $(LIBSDIR)
-	# OpenSSL
-	cp -R $(OPENSSL)/libcrypto.dylib $(OPENSSL)/libcrypto.0.9.8.dylib $(OPENSSL)/libssl.dylib \
-	   $(OPENSSL)/libssl.0.9.8.dylib $(LIBSDIR)
-	#cp -R $(OPENSSL)/libcrypto* $(OPENSSL)/libssl* $(LIBSDIR)
 	# Vidalia
 	cp -R $(VIDALIA) $(APPDIR)/Vidalia.app
-	# Polipo
-	cp $(POLIPO) $(APPDIR)
 	# Tor (perhaps we want tor-resolve too?)
 	cp $(TOR) $(APPDIR)
 
@@ -342,26 +256,15 @@ install-docs:
 	mkdir -p $(DOCSDIR)/Vidalia
 	mkdir -p $(DOCSDIR)/Tor
 	mkdir -p $(DOCSDIR)/Qt
-	mkdir -p $(DOCSDIR)/Polipo
 	cp $(VIDALIA_DIR)/LICENSE* $(VIDALIA_DIR)/CREDITS $(DOCSDIR)/Vidalia
 	cp $(TOR_DIR)/LICENSE $(TOR_DIR)/README $(DOCSDIR)/Tor
 	cp $(QT_DIR)/LICENSE.GPL* $(QT_DIR)/LICENSE.LGPL $(DOCSDIR)/Qt
-	cp $(POLIPO_DIR)/COPYING  $(POLIPO_DIR)/README $(DOCSDIR)/Polipo
 	cp ../LICENSE $(DEST)
 	cp ../README.OSX $(DEST)/README-TorBrowserBundle
 
 ## Copy over Firefox
 install-firefox:
 	cp -R $(FIREFOX) $(APPDIR)
-	# Due to various issues with a broken libxml2, we'll remove these...
-	#rm -f $(APPDIR)/Firefox/components/libnkgnomevfs.so
-	#rm -f $(APPDIR)/Firefox/components/libmozgnome.so
-
-## Copy over Pidgin
-install-pidgin:
-ifeq ($(USE_PIDGIN),1)
-	cp -R $(PIDGIN) $(APPDIR)
-endif
 
 ## Configure Firefox, Vidalia, Polipo and Tor
 configure-apps:
@@ -369,16 +272,12 @@ configure-apps:
 	#mkdir -p $(DEST)/.mozilla/Firefox/firefox.default
 	cp -R $(CONFIG_SRC)/firefox-profiles.ini $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profiles.ini
 	cp $(CONFIG_SRC)/bookmarks.html $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile
-	cp $(CONFIG_SRC)/prefs.js $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/prefs.js
+	cp $(CONFIG_SRC)/no-polipo.js $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/prefs.js
 	cp $(CONFIG_SRC)/Info.plist $(DEST)/Contents
 	cp $(CONFIG_SRC)/PkgInfo $(DEST)/Contents
 	cp $(CONFIG_SRC)/qt.conf $(DEST)/Contents/Resources
 	cp $(CONFIG_SRC)/vidalia.icns $(DEST)/Contents/Resources
-	## Configure Pidgin
-ifeq ($(USE_PIDGIN),1)
-	mkdir -p $(DEST)/PidginPortable/Data/settings/.purple
-	cp $(CONFIG_SRC)/prefs.xml $(DEST)/PidginPortable/Data/settings/.purple
-endif
+
 	## Configure Vidalia
 	mkdir -p $(DEST)/Library/Vidalia
 ifeq ($(USE_SANDBOX),1)
@@ -386,10 +285,8 @@ ifeq ($(USE_SANDBOX),1)
 else
 	cp $(CONFIG_SRC)/vidalia.conf.ff-osx $(DEST)/Library/Vidalia/vidalia.conf
 endif
-	## Configure Polipo
-	cp $(CONFIG_SRC)/polipo.conf $(DEST)/Contents/Resources/Data/Polipo/polipo.conf
+
 	## Configure Tor
-	#cp $(CONFIG_SRC)/torrc-osx $(DEST)/Contents/Resources/Data/Tor/torrc
 	cp $(CONFIG_SRC)/torrc-osx $(DEST)/Library/Vidalia/torrc
 	cp $(TOR_DIR)/src/config/geoip $(DEST)/Contents/Resources/Data/Tor/geoip
 	chmod 700 $(DATADIR)/Tor
@@ -401,17 +298,15 @@ launcher:
 
 strip-it-stripper:
 	strip $(APPDIR)/tor
-	strip $(APPDIR)/polipo
 	strip $(APPDIR)/Vidalia.app/Contents/MacOS/Vidalia
-	#strip $(LIBSDIR)/*
 
 ##
 ## How to create required extensions
 ##
 
 ## Torbutton development version
-torbutton.xpi:
-	$(WGET) --no-check-certificate -O $@ $(TORBUTTON)
+#torbutton.xpi:
+#	$(WGET) --no-check-certificate -O $@ $(TORBUTTON)
 
 ## BetterPrivacy
 betterprivacy.xpi:
@@ -444,6 +339,7 @@ compressed-bundle_%:
 bundle-localized_%.stamp:
 	make -f osx.mk copy-files_$* install-extensions install-betterprivacy install-httpseverywhere install-noscript install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language update-extension-pref final
 	touch bundle-localized_$*.stamp
+	cp extensions/torbutton.xpi .
 
 bundle-localized: bundle-localized_$(LANGCODE).stamp
 
@@ -514,7 +410,7 @@ endif
 patch-firefox-language:
 	## Patch the default Firefox prefs.js
 	## Don't use {} because they aren't always interpreted correctly. Thanks, sh. 
-	cp $(CONFIG_SRC)/prefs.js $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
+	cp $(CONFIG_SRC)/no-polipo.js $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
 	cp $(CONFIG_SRC)/bookmarks.html $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile
 	./patch-firefox-language.sh $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js $(LANGCODE) -e
 
