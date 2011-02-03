@@ -5,11 +5,11 @@ Included applications
 ---------------------
 
 Vidalia 0.2.10 (with Qt 4.6.2)
-Tor 0.2.2.20-alpha (with libevent-1.4.13, zlib-1.2.3 and openssl-0.9.8p) 
+Tor 0.2.2.22-alpha (with libevent-2.0.10-stable, zlib-1.2.5 and openssl-1.0.0c) 
 Polipo 1.0.4.1
 Firefox (Namoroka) 3.6.13
  \_ Torbutton 1.2.5
- |_ NoScript 2.0.7
+ |_ NoScript 2.0.9.3
  |_ HTTPS-Everywhere 0.9.9.development.2
  |_ BetterPrivacy 1.48.3
 
@@ -23,6 +23,14 @@ To exit, close Firefox and Vidalia.
 
 Changelog
 ---------
+
+1.2.0-libevent2: TESTING RELEASE: Released 2011-02-03
+       Test Tor Browser Bundle
+       Update Libevent to 2.0.10-stable
+       Update OpenSSL to 1.0.0c
+       Update zlib to 1.2.5
+       Remove polipo
+       This bundle will not work with OS X 10.4
 
 1.0.9: Released 2011-01-09
        Update Firefox preferences to be more secure and disable geolocation to address #2338
