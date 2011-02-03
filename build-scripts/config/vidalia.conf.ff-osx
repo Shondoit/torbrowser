@@ -2,9 +2,6 @@
 BrowserDirectory=../../
 BrowserExecutable=firefox-bin
 LanguageCode=en
-ProxyExecutable=../../Contents/MacOS/polipo
-ProxyExecutableArguments=-c ../../Contents/Resources/Data/Polipo/polipo.conf
-RunProxyAtStart=true
 
 [Tor]
 ControlPort=9051
