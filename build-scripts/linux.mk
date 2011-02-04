@@ -45,7 +45,7 @@ HTTPSEVERY_VER=0.9.9.development.2
 FIREFOX_VER=3.6.13
 LIBEVENT_VER=1.4.13-stable
 LIBPNG_VER=1.4.3
-NOSCRIPT_VER=2.0.7
+NOSCRIPT_VER=2.0.9.3
 OPENSSL_VER=0.9.8p
 OTR_VER=3.2.0
 PIDGIN_VER=2.6.4
@@ -216,7 +216,7 @@ NAME=tor-browser
 DISTDIR=tbbl-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.1.3-1-dev
+VERSION=1.1.4-dev
 DEFAULT_COMPRESSED_BASENAME=tor-browser-gnu-linux-$(ARCH_TYPE)-$(VERSION)-
 IM_COMPRESSED_BASENAME=tor-im-browser-gnu-linux-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
