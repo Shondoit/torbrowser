@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>TorBrowserBundle</string>
 	<key>CFBundleGetInfoString</key>
-	<string>Tor Browser Bundle 1.0 Copyright 2010 The Tor Project</string>
+	<string>Tor Browser Bundle 1.0 Copyright 2010, 2011 The Tor Project</string>
 	<key>CFBundleIconFile</key>
 	<string>vidalia.icns</string>
 	<key>CFBundleIdentifier</key>
@@ -29,13 +29,13 @@
 	<key>LSHasLocalizedDisplayName</key>
 	<false/>
 	<key>LSMinimumSystemVersion</key>
-	<string>10.4</string>
+	<string>10.5</string>
 	<key>LSUIElement</key>
 	<false/>
 	<key>NSAppleScriptEnabled</key>
 	<false/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Tor Browser Bundle 1.0 Copyright 2010 The Tor Project</string>
+	<string>Tor Browser Bundle 1.0 Copyright 2010, 2011 The Tor Project</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
