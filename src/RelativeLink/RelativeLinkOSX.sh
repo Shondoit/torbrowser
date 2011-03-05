@@ -1,10 +1,5 @@
 #!/bin/sh
 #
-# GNU/Linux does not really require something like RelativeLink.c
-# However, we do want to have the same look and feel with similiar features.
-# In the future, we may want this to be a C binary with a custom icon but at the moment
-# it's quite simple to just use a shell script
-#
 # To run in debug mode simply pass --debug
 #
 # Copyright 2010 The Tor Project.  See LICENSE for licensing information.
@@ -33,6 +28,6 @@ if [ "${debug}" ]; then
 fi
 
 # not in debug mode, run proceed normally
-printf "\nLaunching Tor Browser Bundle for Linux in ${HOME}\n"
+printf "\nLaunching Tor Browser Bundle for Mac OS X in ${HOME}\n"
 cd "${HOME}"
 open $HOME/Contents/MacOS/Vidalia.app
