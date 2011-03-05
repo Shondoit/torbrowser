@@ -7,7 +7,7 @@ Included applications
 Vidalia 0.2.10 (with Qt 4.6.2)
 Tor 0.2.1.30 (with libevent-1.4.13, zlib-1.2.3 and openssl-0.9.8p) 
 Polipo 1.0.4.1
-FirefoxPortable 3.6.13
+FirefoxPortable 3.6.14
  \_ Firefox 3.6.13
     \_ Torbutton 1.2.5
     \_ HTTPS Everywhere 0.9.9.development.3
@@ -324,3 +324,6 @@ Changelog
 1.3.18: Released 2011-02-25
  Update Tor to 0.2.1.30
  Update HTTPS-Everywhere to 0.9.9.development.3
+
+1.3.19: Released 2011-03-03
+ Update Firefox to 3.6.14

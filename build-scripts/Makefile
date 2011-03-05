@@ -18,14 +18,14 @@ OPENSSL=/e/build/openssl-0.9.8p/
 
 ## Versions
 TORBUTTON_VERSION=1.2.5
-FIREFOX_VERSION=3.6.13
+FIREFOX_VERSION=3.6.14
 PIDGIN_VERSION=2.7.5
 
 ## Location of bundle components
 VIDALIA=/e/build/vidalia-0.2.10
 TOR=/e/build/tor-0.2.1.30
 POLIPO=/e/build/polipo-1.0.4.1
-FIREFOX_SRC=/e/build/FirefoxPortable-3.6.13
+FIREFOX_SRC=/e/build/FirefoxPortable-3.6.14
 PIDGIN_SRC=/e/build/PidginPortable-2.7.5
 
 ## Location of utility applications
@@ -49,7 +49,7 @@ DEST="Generic Bundle"
 NAME="Tor Browser"
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.3.18
+VERSION=1.3.19
 DEFAULT_COMPRESSED_BASENAME=tor-browser-
 IM_COMPRESSED_BASENAME=tor-im-browser-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
