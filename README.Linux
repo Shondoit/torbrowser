@@ -5,7 +5,7 @@ Included applications
 ---------------------
 
 Vidalia 0.2.10 (with Qt 4.6.2)
-Tor 0.2.2.22-alpha (with libevent-1.4.13, zlib-1.2.3 and openssl-0.9.8p) 
+Tor 0.2.2.23-alpha (with libevent-1.4.13, zlib-1.2.3 and openssl-0.9.8p) 
 Firefox 3.6.15
  \_ Torbutton 1.2.5
  |_ NoScript 2.0.9.8
@@ -29,7 +29,8 @@ To exit, close Firefox. Vidalia will automatically clean up and exit.
 Changelog
 ---------
 
-1.1.5:  Released 2011-03-07
+1.1.5:  Released 2011-03-09
+        Update Tor to 0.2.2.23-alpha
         Update Firefox to 3.6.15
         Update NoScript to 2.0.9.8
         Update HTTPS-Everywhere to 0.9.9.development.3
