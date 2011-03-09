@@ -5,7 +5,7 @@ Included applications
 ---------------------
 
 Vidalia 0.2.10 (with Qt 4.6.2)
-Tor 0.2.2.22-alpha (with libevent-1.4.13, zlib-1.2.3 and openssl-0.9.8p) 
+Tor 0.2.2.23-alpha (with libevent-1.4.13, zlib-1.2.3 and openssl-0.9.8p) 
 Polipo 1.0.4.1
 Firefox 3.6.15
  \_ Torbutton 1.2.5
@@ -24,7 +24,8 @@ To exit, close Firefox and Vidalia.
 Changelog
 ---------
 
-1.0.13: Released 2011-03-07
+1.0.13: Released 2011-03-09
+        Update Tor to 0.2.2.23-alpha
         Update Firefox to 3.6.15, and use the Mozilla version until I get it to build on
           OS X 10.6 (Snow Leopard)
         Update NoScript to 2.0.9.8
