@@ -332,9 +332,9 @@ install-binaries:
 	# zlib
 	cp -d $(ZLIB)/libz.so $(ZLIB)/libz.so.1 $(ZLIB)/libz.so.1.2.3 $(LIBSDIR)/libz
 	# Libevent
-	cp -d $(LIBEVENT)/libevent-1.4.so.2 $(LIBEVENT)/libevent-1.4.so.2.1.3 $(LIBEVENT)/libevent_core.so \
-           $(LIBEVENT)/libevent_core-1.4.so.2 $(LIBEVENT)/libevent_core-1.4.so.2.1.3 \
-           $(LIBEVENT)/libevent_extra-1.4.so.2 $(LIBEVENT)/libevent_extra-1.4.so.2.1.3 \
+	cp -d $(LIBEVENT)/libevent-2.0.so.5 $(LIBEVENT)/libevent-2.0.so.5.0.1 $(LIBEVENT)/libevent_core.so \
+           $(LIBEVENT)/libevent_core-2.0.so.5 $(LIBEVENT)/libevent_core-2.0.so.5.0.1 \
+           $(LIBEVENT)/libevent_extra-2.0.so.5 $(LIBEVENT)/libevent_extra-2.0.so.5.0.1 \
            $(LIBEVENT)/libevent_extra.so $(LIBEVENT)/libevent.so $(LIBSDIR)
 	# libpng
 	cp -d $(LIBPNG)/libpng14.so* $(LIBSDIR) 
