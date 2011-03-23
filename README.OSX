@@ -5,13 +5,13 @@ Included applications
 ---------------------
 
 Vidalia 0.2.10 (with Qt 4.6.2)
-Tor 0.2.2.23-alpha (with libevent-1.4.13, zlib-1.2.3 and openssl-0.9.8p) 
+Tor 0.2.2.23-alpha (with libevent-2.0.10-stable, zlib-1.2.3 and openssl-0.9.8p) 
 Polipo 1.0.4.1
-Firefox 3.6.15
+Firefox 3.6.16
  \_ Torbutton 1.2.5
- |_ NoScript 2.0.9.8
- |_ HTTPS-Everywhere 0.9.9.development.3
- |_ BetterPrivacy 1.48.3
+ |_ NoScript 2.0.9.9
+ |_ HTTPS-Everywhere 0.9.9.development.4
+ |_ BetterPrivacy 1.49
 
 Usage
 -----
@@ -23,6 +23,13 @@ To exit, close Firefox and Vidalia.
 
 Changelog
 ---------
+
+1.0.14: Released 2011-03-23
+        Update Firefox to 3.6.16
+        Update Libevent to 2.0.10-stable
+        Update NoScript to 2.0.9.9
+        Update HTTPS-Everywhere to 0.9.9.development.4
+        Update BetterPrivacy to 1.49
 
 1.0.13: Released 2011-03-09
         Update Tor to 0.2.2.23-alpha
