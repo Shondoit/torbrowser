@@ -14,6 +14,11 @@ if [ $1 ]; then
 	printf "\nDebug enabled.\n\n"
 fi
 
+if [ -z $XAUTHORITY]; then 
+	XAUTHORITY=~/.Xauthority
+	export XAUTHORITY
+fi
+
 # Try to be agnostic to where we're being started from, chdir to where
 # the script is.
 mydir="$(dirname $0)"
