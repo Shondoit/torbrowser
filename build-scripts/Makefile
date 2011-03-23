@@ -25,8 +25,8 @@ PIDGIN_VERSION=2.7.5
 VIDALIA=/e/build/vidalia-0.2.10
 TOR=/e/build/tor-0.2.1.30
 POLIPO=/e/build/polipo-1.0.4.1
-FIREFOX_SRC=/e/build/FirefoxPortable-3.6.16
-PIDGIN_SRC=/e/build/PidginPortable-2.7.5
+FIREFOX_SRC=/e/build/FirefoxPortable-$(FIREFOX_VERSION)
+PIDGIN_SRC=/e/build/PidginPortable-$(PIDGIN_VERSION)
 
 ## Location of utility applications
 PWD:=$(shell pwd)

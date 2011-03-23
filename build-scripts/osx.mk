@@ -144,8 +144,8 @@ build-libevent:
 	cd $(LIBEVENT_DIR) && make install
 
 TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)
-TOR_CFLAGS="-O -g -mmacosx-version-min=10.4 -isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch i386"
-TOR_LDFLAGS="-Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk"
+TOR_CFLAGS="-I$(BUILT_DIR)/lib -O -g -mmacosx-version-min=10.4 -isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch i386"
+TOR_LDFLAGS="-L$(BUILT_DIR)/lib -Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk"
 TOR_OPTS=--enable-static-openssl --enable-static-zlib --enable-static-libevent --with-openssl-dir=$(BUILT_DIR) --with-zlib-dir=$(BUILT_DIR) --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR) CC="gcc-4.0"
 build-tor:
 	cd $(TOR_DIR) && CFLAGS=$(TOR_CFLAGS) LDFLAGS=$(TOR_LDFLAGS) ./configure $(TOR_OPTS)
@@ -229,7 +229,7 @@ NOSCRIPT=https://secure.informaction.com/download/releases/noscript-$(NOSCRIPT_V
 BETTERPRIVACY=https://addons.mozilla.org/en-US/firefox/downloads/latest/6623/addon-6623-latest.xpi
 HTTPSEVERYWHERE=https://eff.org/files/https-everywhere-$(HTTPSEVERY_VER).xpi
 ## Where to download Mozilla language packs
-MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/latest/mac/xpi
+MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/$(FIREFOX_VER)/mac/xpi
 
 ## Put more extensions here
 EXTENSIONS_DIR=extensions
