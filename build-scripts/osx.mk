@@ -35,10 +35,10 @@
 include $(PWD)/versions.mk
 
 ## Architecture
-ARCH_TYPE=$(shell uname -m)
+ARCH_TYPE=i386
 
 ## Location of directory for source unpacking
-FETCH_DIR=/build-alpha
+FETCH_DIR=$(PWD)/build-alpha-$(ARCH_TYPE)
 ## Location of directory for prefix/destdir/compiles/etc
 BUILT_DIR=$(FETCH_DIR)/built
 TBB_FINAL=$(BUILT_DIR)/tbbosx-alpha-dist
@@ -47,18 +47,23 @@ source-dance: fetch-source unpack-source
 	echo "We're ready for building now."
 
 ZLIB_DIR=$(FETCH_DIR)/zlib-$(ZLIB_VER)
-ZLIB_OPTS=--shared --prefix=$(BUILT_DIR)
+ZLIB_OPTS=--prefix=$(BUILT_DIR)
+ZLIB_CFLAGS="-arch $(ARCH_TYPE)"
 build-zlib:
-	cd $(ZLIB_DIR) && ./configure $(ZLIB_OPTS)
+	cd $(ZLIB_DIR) && CFLAGS=$(ZLIB_CFLAGS) ./configure $(ZLIB_OPTS)
 	cd $(ZLIB_DIR) && make
 	cd $(ZLIB_DIR) && make install
 
 OPENSSL_DIR=$(FETCH_DIR)/openssl-$(OPENSSL_VER)
-OPENSSL_OPTS="-no-idea -no-rc5 -no-md2 no-shared zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -L$(BUILT_DIR)/lib -I$(BUILT_DIR)/include"
+OPENSSL_OPTS=-no-rc5 -no-md2 shared zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -L$(BUILT_DIR)/lib -I$(BUILT_DIR)/include
 build-openssl:
-	cd $(OPENSSL_DIR) && ./config $(OPENSSL_OPTS)
+ifeq (x86_64,$(ARCH_TYPE))
+	cd $(OPENSSL_DIR) && ./Configure darwin64-x86_64-cc $(OPENSSL_OPTS)
+else
+	cd $(OPENSSL_DIR) && ./Configure darwin-i386-cc $(OPENSSL_OPTS)
+endif
 	cd $(OPENSSL_DIR) && make depend
-	cd $(OPENSSL_DIR) && CC=/usr/bin/gcc-4.0 make
+	cd $(OPENSSL_DIR) && make
 	cd $(OPENSSL_DIR) && make install
 
 QT_DIR=$(FETCH_DIR)/qt-everywhere-opensource-src-$(QT_VER)
@@ -71,7 +76,7 @@ build-qt:
 	cd $(QT_DIR) && make install
 
 VIDALIA_DIR=$(FETCH_DIR)/vidalia-$(VIDALIA_VER)
-VIDALIA_OPTS=-DOSX_TIGER_COMPAT=1 -DCMAKE_OSX_ARCHITECTURES=$(ARCH_TYPE) -DOPENSSL_LIBCRYPTO=$(BUILT_DIR)/lib/libcrypto.dylib \
+VIDALIA_OPTS=-DCMAKE_OSX_ARCHITECTURES=i386 -DOPENSSL_LIBCRYPTO=$(BUILT_DIR)/lib/libcrypto.dylib \
 	-DOPENSSL_LIBSSL=$(BUILT_DIR)/lib/libssl.dylib -DCMAKE_BUILD_TYPE=debug ..
 build-vidalia:
 	-mkdir $(VIDALIA_DIR)/build
@@ -139,7 +144,7 @@ NAME=TorBrowser
 DISTDIR=tbbosx-alpha-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.2.0-libevent2
+VERSION=1.2.0-dev-alpha
 DEFAULT_COMPRESSED_BASENAME=TorBrowser-$(VERSION)-osx-$(ARCH_TYPE)-
 IM_COMPRESSED_BASENAME=TorBrowser-IM-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)
@@ -272,7 +277,7 @@ configure-apps:
 	#mkdir -p $(DEST)/.mozilla/Firefox/firefox.default
 	cp -R $(CONFIG_SRC)/firefox-profiles.ini $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profiles.ini
 	cp $(CONFIG_SRC)/bookmarks.html $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile
-	cp $(CONFIG_SRC)/no-polipo.js $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/prefs.js
+	cp $(CONFIG_SRC)/no-polipo-4.0.js $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/prefs.js
 	cp $(CONFIG_SRC)/Info.plist $(DEST)/Contents
 	cp $(CONFIG_SRC)/PkgInfo $(DEST)/Contents
 	cp $(CONFIG_SRC)/qt.conf $(DEST)/Contents/Resources
@@ -410,7 +415,7 @@ endif
 patch-firefox-language:
 	## Patch the default Firefox prefs.js
 	## Don't use {} because they aren't always interpreted correctly. Thanks, sh. 
-	cp $(CONFIG_SRC)/no-polipo.js $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
+	cp $(CONFIG_SRC)/no-polipo-4.0.js $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
 	cp $(CONFIG_SRC)/bookmarks.html $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile
 	./patch-firefox-language.sh $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js $(LANGCODE) -e
 
