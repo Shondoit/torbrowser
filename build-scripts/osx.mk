@@ -144,7 +144,7 @@ NAME=TorBrowser
 DISTDIR=tbbosx-alpha-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.2.0-dev-alpha
+VERSION=2.2.23-1-alpha
 DEFAULT_COMPRESSED_BASENAME=TorBrowser-$(VERSION)-osx-$(ARCH_TYPE)-
 IM_COMPRESSED_BASENAME=TorBrowser-IM-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)
@@ -264,8 +264,9 @@ install-docs:
 	cp $(VIDALIA_DIR)/LICENSE* $(VIDALIA_DIR)/CREDITS $(DOCSDIR)/Vidalia
 	cp $(TOR_DIR)/LICENSE $(TOR_DIR)/README $(DOCSDIR)/Tor
 	cp $(QT_DIR)/LICENSE.GPL* $(QT_DIR)/LICENSE.LGPL $(DOCSDIR)/Qt
+	cp ../changelog.osx-0.2.2 $(DOCSDIR)/changelog
 	cp ../LICENSE $(DEST)
-	cp ../README.OSX $(DEST)/README-TorBrowserBundle
+	cp ../README.OSX-0.2.2 $(DEST)/README-TorBrowserBundle
 
 ## Copy over Firefox
 install-firefox:
