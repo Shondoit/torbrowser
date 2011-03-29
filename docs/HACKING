@@ -1,0 +1,123 @@
+How to Contribute to the Tor Browser Bundle
+===========================================
+
+General system layout
+---------------------
+
+The Tor Browser Bundle (henceforth known as 'TBB') consists of several
+components of software:
+
+Main Players
+- Tor
+- Vidalia (front-end to Tor)
+- Firefox
+  * Firefox extensions
+    - Torbutton
+    - HTTPS-Everywhere
+    - (Linux and OS X) NoScript
+    - (Linux and OS X) BetterPrivacy
+Supporting Cast (libraries)
+- OpenSSL
+- zlib
+- libevent
+- Qt 
+
+It works by having a launch script which opens Vidalia, which then launches
+Firefox, pre-configured with Torbutton and other privacy-enhancing extensions.
+
+
+Git branching strategy
+----------------------
+
+TBB's git strategy is based loosely on Tor's method. At any given time there
+are three TBB branches which correspond to Tor's branches. Currently that
+means:
+
+torbrowser.git
+  - master
+  - maint-2.3
+  - maint-2.2
+  - archive-1.0
+
+master: 
+The master branch's versions are considered equivalent in spirit to Tor's
+master branch, which is to say things under heavy and occasionally turbulent
+development. This branch will use Tor's 'master' as its main Tor build, and all
+other components in TBB will be equally alpha, which is to say, they ought to
+be the kinds of things that are pulled directly from version control with
+absolutely no guarantee that they will work separately or together.
+
+maint-2.3:
+The maint-2.3 branch's versions correspond to Tor's 0.2.3.x series of releases.
+Since 0.2.3.x is the next alpha release of Tor, all of the components of TBB
+will mimic its stability, as above. This means it will be a testing ground for
+newly released pieces of software, rather than relying on the latest commits in
+the various components' version control systems. (As of current writing
+(2011-03-29), 0.2.3.x is still the alpha-dev version of Tor, but it is expected
+to become the normal alpha release soon.)
+
+maint-2.2:
+The maint-2.2 branch's versions correspond to Tor's 0.2.2.x series of releases.
+This is the (almost) incumbent stable branch of Tor, and of TBB. Every
+component in this branch should consistently work together, and new versions of
+non-Tor software can only be moved in once they have proven to be stable in the
+maint-2.3 branch. New features and build improvements may be added to this
+branch, but only after they have had sufficient testing in the alpha branch.
+
+archive-1.0:
+This will be a record of all changes prior to the new git methodology.
+
+Versioning
+-----------------------
+
+A brief history lesson is necessary to explain the versioning of TBB.
+
+The first version of TBB (0.0.1) was released 2007-12-11. It was Windows only
+until 2010-03-25, at which point it was joined by the Linux version (1.0.0,
+thusly versioned because Andrew said "Just call it 1.0.0. Users won't use
+anything else.") At this point, Windows was at version 1.3.3. The OS X version
+joined the fray on 2010-09-15 as version 1.0.0, at which point the Windows
+version was at 1.3.9 and the Linux version was at 1.0.10. The Linux and OS X
+versions were widely diverged from the Windows version in the sense that they
+were alpha -- both in terms of overall bundle testing, and because they were
+using the Tor alpha version.
+
+When your humble narrator took over all three of them, and the Tor 0.2.2.x
+branch began to stabilize, it was clear that soon all three versions would be
+able to use the same versions of software, and in order to remain consistent,
+the version should meet the following requirements:
+
+1. It must be an increment of the previous shared version so as to avoid
+   confusing users
+2. It must be consistent across operating systems
+3. It must communicate the Tor version it contains
+4. It must allow for package versioning that does not impact the Tor version
+5. It should not make the filenames any longer
+6. It should be flexible enough to allow for deviation between architectural
+   packages on the same operating system, or packaging changes irrespective of
+   operating system, while maintaining clarity about which 'family' the package 
+   belongs to
+
+(For more information on the Tor versioning scheme, please see:
+https://gitweb.torproject.org/torspec.git/blob/HEAD:/version-spec.txt)
+
+Based on the blend of TBB's old versioning system and Tor's current versioning
+system, we end up with: 
+Tor's MINOR.MICRO.PATCHLEVEL(-status_tag)-tbb_ver(-tbb_status_tag)(-arch)
+
+If Tor is ever perfect and releases a major version that is non-zero we will
+have to rethink this strategy.
+
+Tor's MINOR, MICRO, PATCHLEVEL, and status_tag are covered in its version spec.
+
+Official TBB releases must have 'tbb_ver' which refers to the current version
+of the package, beginning with 1.
+
+Official TBB releases may have 'tbb_status_tag' if there is a good enough
+reason. What constitutes a 'good enough reason' is left to the discretion of
+the official maintainer and must have a corresponding git branch in the
+maintainer's personal repo. Unofficial TBB releases must have 'tbb_status_tag'
+as well as a corresponding git branch.
+
+Official TBB releases for more than one architecture must use 'arch' in the
+filename.
