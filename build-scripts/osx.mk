@@ -35,7 +35,7 @@
 include $(PWD)/versions.mk
 
 ## Architecture
-ARCH_TYPE=i386
+ARCH_TYPE=x86_64
 
 ## Location of directory for source unpacking
 FETCH_DIR=$(PWD)/build-alpha-$(ARCH_TYPE)

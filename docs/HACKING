@@ -25,6 +25,41 @@ Supporting Cast (libraries)
 It works by having a launch script which opens Vidalia, which then launches
 Firefox, pre-configured with Torbutton and other privacy-enhancing extensions.
 
+Releases
+----------------------
+Official vs. Unofficial releases
+
+Official releases are regularly maintained and must be updated whenever one of
+the main three components is updated (Tor, Vidalia, or Firefox) as well as
+whenever there are any important security bugs in any of the components. It is
+not necessary for them to be updated whenever the Firefox extensions or
+libraries are updated (except as previously mentioned, for security reasons.)
+
+Unofficial releases are not maintained and are intended either for testing or
+favor purposes.
+
+Modifications
+----------------------
+
+Some components of TBB are modified and all of the patches are available in the
+git repository in src/current-patches.
+
+- Vidalia: modified on Linux and OS X
+  * Vidalia has been patched for Linux in order to allow it to quit at the same
+    time as the browser
+  * It has been modified on OS X in order to make it conform to the standard OS
+    X bundle layout
+
+- Firefox: modified on Linux (3.6 and 4.0), OS X (4.0), Windows (3.6)
+  * On Linux and OS X, the non-blocking SOCKS proxy has been applied before
+    being built. See: https://bugzilla.mozilla.org/show_bug.cgi?id=280661
+
+  * On Windows, a section of nsExtensionManager.js has been commented out to
+    prevent Firefox from picking up system plugins. See:
+    https://trac.torproject.org/projects/tor/ticket/2118
+
+- Torbutton: 1.2.5 (Linux), 1.3.2-alpha (Linux andOS X Firefox 4 bundles)
+  * In both versions it has had its use_privoxy option set to false instead of true
 
 Git branching strategy
 ----------------------
@@ -43,8 +78,8 @@ master:
 The master branch's versions are considered equivalent in spirit to Tor's
 master branch, which is to say things under heavy and occasionally turbulent
 development. This branch will use Tor's 'master' as its main Tor build, and all
-other components in TBB will be equally alpha, which is to say, they ought to
-be the kinds of things that are pulled directly from version control with
+other components in TBB will be equally alpha, and most (if not all) components
+should be drawn directly from their respective project's version control with
 absolutely no guarantee that they will work separately or together.
 
 maint-2.3:
@@ -103,7 +138,9 @@ https://gitweb.torproject.org/torspec.git/blob/HEAD:/version-spec.txt)
 
 Based on the blend of TBB's old versioning system and Tor's current versioning
 system, we end up with: 
-Tor's MINOR.MICRO.PATCHLEVEL(-status_tag)-tbb_ver(-tbb_status_tag)(-arch)
+
+Tor's MINOR.MICRO.PATCHLEVEL(-status_tag)-tbb_ver(~tbb_status_tag)(-arch)
+Example: 2.2.23-alpha-1~libevent33-s390
 
 If Tor is ever perfect and releases a major version that is non-zero we will
 have to rethink this strategy.
@@ -115,9 +152,22 @@ of the package, beginning with 1.
 
 Official TBB releases may have 'tbb_status_tag' if there is a good enough
 reason. What constitutes a 'good enough reason' is left to the discretion of
-the official maintainer and must have a corresponding git branch in the
-maintainer's personal repo. Unofficial TBB releases must have 'tbb_status_tag'
-as well as a corresponding git branch.
+the official maintainer, but this is primarily intended for one-off packages --
+for example, security or architecture-specific fixes that don't comfortably fit
+into the existing naming scheme. For official packages the use of
+'tbb_status_tag' is discouraged.
+
+Unofficial TBB releases must have 'tbb_status_tag'. The reasons for making an
+unofficial TBB package are more broad and likely to be one-time testing
+packages, but could also be special language requests or TBBs that are
+specifically modified to appeal to various regions.
+
+In order to make sure our sources are always available for auditing, any
+package that uses 'tbb_status_tag' must also have an accompanying git branch,
+preferably in the maintainer's personal (but public) repo. If the changes are
+eventually merged back into master or the maint branches, the 'tbb_status_repo'
+can be removed.  If the changes are not merged back into any of the branches,
+whether they should be kept around in perpetuity is undecided at this moment.
 
 Official TBB releases for more than one architecture must use 'arch' in the
 filename.
