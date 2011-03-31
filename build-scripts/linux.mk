@@ -31,79 +31,17 @@
 ### Configuration ###
 #####################
 
+## Include versions
+include $(PWD)/versions.mk
+
 ## Architecture
 ARCH_TYPE=$(shell uname -m)
 
 ## Location of directory for source unpacking
-FETCH_DIR=$(HOME)/build-alpha
+FETCH_DIR=$(PWD)/build-alpha-$(ARCH_TYPE)
 ## Location of directory for prefix/destdir/compiles/etc
 BUILT_DIR=$(FETCH_DIR)/built
 TBB_FINAL=$(BUILT_DIR)/TBBL
-
-## Versions for our source packages
-HTTPSEVERY_VER=0.9.9.development.2
-FIREFOX_VER=4.0b8
-LIBEVENT_VER=2.0.10-stable
-LIBPNG_VER=1.5.1beta01
-NOSCRIPT_VER=2.0.7
-OPENSSL_VER=1.0.0c
-OTR_VER=3.2.0
-PIDGIN_VER=2.6.4
-POLIPO_VER=1.0.4.1
-QT_VER=4.7.1
-TOR_VER=0.2.3.0-alpha
-TORBUTTON_VER=1.3.1-alpha
-VIDALIA_VER=0.2.10
-ZLIB_VER=1.2.5
-
-## Extension IDs
-FF_VENDOR_ID:=\{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
-
-## File names for the source packages
-FIREFOX_PACKAGE=firefox-$(FIREFOX_VER).source.tar.bz2
-LIBEVENT_PACKAGE=libevent-$(LIBEVENT_VER).tar.gz
-LIBPNG_PACKAGE=libpng-$(LIBPNG_VER).tar.gz
-OPENSSL_PACKAGE=openssl-$(OPENSSL_VER).tar.gz
-PIDGIN_PACKAGE=pidgin-$(PIDGIN_VER).tar.bz2
-POLIPO_PACKAGE=polipo-$(POLIPO_VER).tar.gz
-QT_PACKAGE=qt-everywhere-opensource-src-$(QT_VER).tar.gz
-TOR_PACKAGE=tor-$(TOR_VER).tar.gz
-VIDALIA_PACKAGE=vidalia-$(VIDALIA_VER).tar.gz
-ZLIB_PACKAGE=zlib-$(ZLIB_VER).tar.gz
-
-## Location of files for download
-FIREFOX_URL=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/$(FIREFOX_VER)/source/$(FIREFOX_PACKAGE)
-LIBEVENT_URL=http://www.monkey.org/~provos/$(LIBEVENT_PACKAGE)
-LIBPNG_URL=http://download.sourceforge.net/libpng/$(LIBPNG_PACKAGE).tar.gz
-OPENSSL_URL=https://www.openssl.org/source/$(OPENSSL_PACKAGE)
-PIDGIN_URL=http://sourceforge.net/projects/pidgin/files/Pidgin/$(PIDGIN_PACKAGE)
-POLIPO_URL=http://freehaven.net/~chrisd/polipo/$(POLIPO_PACKAGE)
-QT_URL=http://get.qt.nokia.com/qt/source/$(QT_PACKAGE)
-TOR_URL=https://www.torproject.org/dist/$(TOR_PACKAGE)
-VIDALIA_URL=https://www.torproject.org/vidalia/dist/$(VIDALIA_PACKAGE)
-ZLIB_URL=http://www.zlib.net/$(ZLIB_PACKAGE)
-
-fetch-source:
-	-mkdir $(FETCH_DIR)
-	$(WGET) --directory-prefix=$(FETCH_DIR) $(ZLIB_URL)
-	$(WGET) --directory-prefix=$(FETCH_DIR) $(OPENSSL_URL)
-	$(WGET) --directory-prefix=$(FETCH_DIR) $(QT_URL)
-	$(WGET) --directory-prefix=$(FETCH_DIR) $(VIDALIA_URL)
-	$(WGET) --directory-prefix=$(FETCH_DIR) $(LIBEVENT_URL)
-	$(WGET) --directory-prefix=$(FETCH_DIR) $(TOR_URL)
-	$(WGET) --directory-prefix=$(FETCH_DIR) $(POLIPO_URL)
-	$(WGET) --directory-prefix=$(FETCH_DIR) $(PIDGIN_URL)
-	$(WGET) --directory-prefix=$(FETCH_DIR) $(FIREFOX_URL)
-
-unpack-source:
-	cd $(FETCH_DIR) && tar -xvzf $(ZLIB_PACKAGE)
-	cd $(FETCH_DIR) && tar -xvzf $(OPENSSL_PACKAGE)
-	cd $(FETCH_DIR) && tar -xvzf $(QT_PACKAGE)
-	cd $(FETCH_DIR) && tar -xvzf $(VIDALIA_PACKAGE)
-	cd $(FETCH_DIR) && tar -xvzf $(LIBEVENT_PACKAGE)
-	cd $(FETCH_DIR) && tar -xvzf $(TOR_PACKAGE)
-	cd $(FETCH_DIR) && tar -xvzf $(POLIPO_PACKAGE)
-	cd $(FETCH_DIR) && tar -xvjf $(FIREFOX_PACKAGE)
 
 source-dance: fetch-source unpack-source
 	echo "We're ready for building now."
@@ -116,7 +54,7 @@ build-zlib:
 	cd $(ZLIB_DIR) && make install
 
 OPENSSL_DIR=$(FETCH_DIR)/openssl-$(OPENSSL_VER)
-OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 shared zlib -Wa,--noexecstack --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -I$(BUILT_DIR)/include -L$(BUILT_DIR)/lib
+OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 shared zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -I$(BUILT_DIR)/include -L$(BUILT_DIR)/lib
 build-openssl:
 	cd $(OPENSSL_DIR) && ./config $(OPENSSL_OPTS)
 	cd $(OPENSSL_DIR) && make depend
@@ -131,7 +69,7 @@ build-qt:
 	cd $(QT_DIR) && make
 	cd $(QT_DIR) && make install
 
-VIDALIA_DIR=$(FETCH_DIR)/vidalia.trunk
+VIDALIA_DIR=$(FETCH_DIR)/vidalia-$(VIDALIA_VER)
 VIDALIA_OPTS=-DCMAKE_BUILD_TYPE=debug -DQT_QMAKE_EXECUTABLE=$(BUILT_DIR)/bin/qmake ..
 build-vidalia:
 	-mkdir $(VIDALIA_DIR)/build
@@ -152,10 +90,9 @@ build-libpng:
 	cd $(LIBPNG_DIR) && make
 	cd $(LIBPNG_DIR) && make install
 
-TOR_DIR=$(FETCH_DIR)/tor.git
+TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)
 TOR_OPTS=--with-openssl-dir=$(BUILT_DIR) --with-zlib-dir=$(BUILT_DIR) --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR)
 build-tor:
-	cd $(TOR_DIR) && ./autogen.sh
 	cd $(TOR_DIR) && ./configure $(TOR_OPTS)
 	cd $(TOR_DIR) && make -j2
 	cd $(TOR_DIR) && make install
@@ -217,7 +154,7 @@ NAME=tor-browser
 DISTDIR=tbbl-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.1.2-dev
+VERSION=2.2.23-1-alpha
 DEFAULT_COMPRESSED_BASENAME=tor-browser-gnu-linux-$(ARCH_TYPE)-$(VERSION)-
 IM_COMPRESSED_BASENAME=tor-im-browser-gnu-linux-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
@@ -316,7 +253,6 @@ directory-structure:
 	mkdir -p $(LIBSDIR)/libz
 	mkdir -p $(DATADIR)/Tor
 	mkdir -p $(DATADIR)/Vidalia
-	#mkdir -p $(DATADIR)/Polipo
 	mkdir -p $(DATADIR)/profile
 	mkdir -p $(DOCSDIR)
 	mkdir -p $(TB_TMPDIR)
@@ -325,11 +261,10 @@ directory-structure:
 ## Firefox and Pidgin are installed in their own targets
 install-binaries:
 	# A minimal set of Qt libs and the proper symlinks
-	cp -d $(QT)/libQtCore.so $(QT)/libQtCore.so.4 $(QT)/libQtCore.so.4.7 $(QT)/libQtCore.so.4.7.1 $(LIBSDIR)
-	cp -d $(QT)/libQtGui.so $(QT)/libQtGui.so.4 $(QT)/libQtGui.so.4.7 $(QT)/libQtGui.so.4.7.1 $(LIBSDIR)
-	cp -d $(QT)/libQtNetwork.so $(QT)/libQtNetwork.so.4 $(QT)/libQtNetwork.so.4.7 \
-           $(QT)/libQtNetwork.so.4.7.1 $(LIBSDIR)
-	cp -d $(QT)/libQtXml.so $(QT)/libQtXml.so.4 $(QT)/libQtXml.so.4.7 $(QT)/libQtXml.so.4.7.1 $(LIBSDIR)
+	cp -d $(QT)/libQtCore.so* $(LIBSDIR)
+	cp -d $(QT)/libQtGui.so* $(LIBSDIR)
+	cp -d $(QT)/libQtNetwork.so* $(LIBSDIR)
+	cp -d $(QT)/libQtXml.so* $(LIBSDIR)
 	# zlib
 	cp -d $(ZLIB)/libz.so $(ZLIB)/libz.so.1 $(ZLIB)/libz.so.1.2.5 $(LIBSDIR)/libz
 	# Libevent
@@ -338,14 +273,11 @@ install-binaries:
            $(LIBEVENT)/libevent_extra-2.0.so.5 $(LIBEVENT)/libevent_extra-2.0.so.5.0.1 \
            $(LIBEVENT)/libevent_extra.so $(LIBEVENT)/libevent.so $(LIBSDIR)
 	# libpng
-	cp -d $(LIBPNG)/libpng15.so* $(LIBSDIR) 
+	cp -d $(LIBPNG)/libpng14.so* $(LIBSDIR) 
 	# OpenSSL
 	cp -d $(OPENSSL)/libcrypto.a $(OPENSSL)/libssl.a $(OPENSSL)/libssl.so* $(OPENSSL)/libcrypto.so* $(LIBSDIR)
 	# Vidalia
 	cp $(VIDALIA) $(APPDIR)
-	# Polipo
-	#cp $(POLIPO) $(APPDIR)
-	# Tor (perhaps we want tor-resolve too?)
 	cp $(TOR) $(APPDIR)
 
 ## Fixup
@@ -354,13 +286,12 @@ install-docs:
 	mkdir -p $(DOCSDIR)/Vidalia
 	mkdir -p $(DOCSDIR)/Tor
 	mkdir -p $(DOCSDIR)/Qt
-	#mkdir -p $(DOCSDIR)/Polipo
 	cp $(VIDALIA_DIR)/LICENSE* $(VIDALIA_DIR)/CREDITS $(DOCSDIR)/Vidalia
 	cp $(TOR_DIR)/LICENSE $(TOR_DIR)/README $(DOCSDIR)/Tor
 	cp $(QT_DIR)/LICENSE.GPL* $(QT_DIR)/LICENSE.LGPL $(DOCSDIR)/Qt
-	#cp $(POLIPO_DIR)/COPYING  $(POLIPO_DIR)/README $(DOCSDIR)/Polipo
+	cp ../changelog.linux-0.2.2 $(DOCSDIR)/changelog
 	# This should be updated to be more generic (version-wise) and more Linux specific
-	cp ../README.Linux $(DOCSDIR)/README-TorBrowserBundle
+	cp ../README.LINUX-0.2.2 $(DOCSDIR)/README-TorBrowserBundle
 
 ## Copy over Firefox
 install-firefox:
@@ -381,7 +312,7 @@ configure-apps:
 	#mkdir -p $(DEST)/.mozilla/Firefox/firefox.default
 	cp -R $(CONFIG_SRC)/firefox-profiles.ini $(DEST)/Data/profiles.ini
 	cp $(CONFIG_SRC)/bookmarks.html $(DEST)/Data/profile
-	cp $(CONFIG_SRC)/no-polipo.js $(DEST)/Data/profile/prefs.js
+	cp $(CONFIG_SRC)/no-polipo-4.0.js $(DEST)/Data/profile/prefs.js
 	## Configure Pidgin
 ifeq ($(USE_PIDGIN),1)
 	mkdir -p $(DEST)/PidginPortable/Data/settings/.purple
@@ -421,12 +352,12 @@ strip-it-stripper:
 #	$(WGET) -O $@ $(TORBUTTON)
 
 ## NoScript development version
-#noscript.xpi: 
-#	$(WGET) -O $@ $(NOSCRIPT)
+noscript.xpi: 
+	$(WGET) -O $@ $(NOSCRIPT)
 
 ## BetterPrivacy
-#betterprivacy.xpi:
-#	$(WGET) -O $@ $(BETTERPRIVACY)
+betterprivacy.xpi:
+	$(WGET) -O $@ $(BETTERPRIVACY)
 
 ## HTTPS Everywhere
 httpseverywhere.xpi:
@@ -450,7 +381,7 @@ compressed-bundle_%:
 	LANGCODE=$* make -f linux.mk compressed-bundle-localized
 
 bundle-localized_%.stamp:
-	make -f linux.mk copy-files_$* install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language update-extension-pref
+	make -f linux.mk copy-files_$* install-extensions install-betterprivacy install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language update-extension-pref
 	touch bundle-localized_$*.stamp
 
 bundle-localized: bundle-localized_$(LANGCODE).stamp
@@ -514,9 +445,9 @@ patch-firefox-language:
 	## Don't use {} because they aren't always interpreted correctly. Thanks, sh. 
 	mkdir -p $(BUNDLE)/App/Firefox/defaults/profile/
 	cp $(CONFIG_SRC)/bookmarks.html $(BUNDLE)/App/Firefox/defaults/profile/
-	cp $(CONFIG_SRC)/no-polipo.js $(BUNDLE)/App/Firefox/defaults/profile/prefs.js
+	cp $(CONFIG_SRC)/no-polipo-4.0.js $(BUNDLE)/App/Firefox/defaults/profile/prefs.js
 	cp $(CONFIG_SRC)/bookmarks.html $(BUNDLE)/Data/profile
-	cp $(CONFIG_SRC)/no-polipo.js $(BUNDLE)/Data/profile/prefs.js
+	cp $(CONFIG_SRC)/no-polipo-4.0.js $(BUNDLE)/Data/profile/prefs.js
 	./patch-firefox-language.sh $(BUNDLE)/App/Firefox/defaults/profile/prefs.js $(LANGCODE) -e
 	./patch-firefox-language.sh $(BUNDLE)/Data/profile/prefs.js $(LANGCODE) -e
 
