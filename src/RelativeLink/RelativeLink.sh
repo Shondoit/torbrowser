@@ -14,7 +14,7 @@ if [ $1 ]; then
 	printf "\nDebug enabled.\n\n"
 fi
 
-if [ -z $XAUTHORITY]; then 
+if [ -z $XAUTHORITY ]; then 
 	XAUTHORITY=~/.Xauthority
 	export XAUTHORITY
 fi
