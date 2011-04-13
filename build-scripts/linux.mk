@@ -309,7 +309,7 @@ endif
 ## Configure Firefox, Vidalia, Polipo and Tor
 configure-apps:
 	## Configure Firefox preferences
-	#mkdir -p $(DEST)/.mozilla/Firefox/firefox.default
+	mkdir -p $(DEST)/Data/profile/extensions
 	cp -R $(CONFIG_SRC)/firefox-profiles.ini $(DEST)/Data/profiles.ini
 	cp $(CONFIG_SRC)/bookmarks.html $(DEST)/Data/profile
 	cp $(CONFIG_SRC)/no-polipo-4.0.js $(DEST)/Data/profile/prefs.js
@@ -408,15 +408,15 @@ install-extensions: $(DEFAULT_EXTENSIONS)
 		do \
 			cp $$extension $$extension.zip; \
 			ext_id=$$(unzip -p $$extension.zip install.rdf | sed -n '/<em:id>/{s#[^<]*<em:id>\(.*\)</em:id>#\1#p;q}'); \
-			mkdir -p $(BUNDLE)/.mozilla/extensions/$(FF_VENDOR_ID)/$$ext_id; \
-			cp $$extension $(BUNDLE)/.mozilla/extensions/$(FF_VENDOR_ID)/$$ext_id/$$extension.zip; \
-			(cd $(BUNDLE)/.mozilla/extensions/$(FF_VENDOR_ID)/$$ext_id/ && unzip *.zip && rm *.zip); \
+			mkdir -p $(BUNDLE)/Data/profile/extensions/$$ext_id; \
+			cp $$extension $(BUNDLE)/Data/profile/extensions/$$ext_id/$$extension.zip; \
+			(cd $(BUNDLE)/Data/profile/extensions/$$ext_id/ && unzip *.zip && rm *.zip); \
 		done
 
 install-betterprivacy: betterprivacy.xpi
-	mkdir -p $(BUNDLE)/.mozilla/extensions/$(FF_VENDOR_ID)/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\}
-	cp betterprivacy.xpi $(BUNDLE)/.mozilla/extensions/$(FF_VENDOR_ID)/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\}/betterprivacy.zip
-	(cd $(BUNDLE)/.mozilla/extensions/$(FF_VENDOR_ID)/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\}/ && unzip *.zip && rm *.zip);
+	mkdir -p $(BUNDLE)/Data/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\}
+	cp betterprivacy.xpi $(BUNDLE)/Data/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\}/betterprivacy.zip
+	(cd $(BUNDLE)/Data/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\}/ && unzip *.zip && rm *.zip);
 
 ## Language extensions need to be handled differently from other extensions
 install-lang-extensions: $(filter-out langpack_en-US.xpi,langpack_$(LANGCODE).xpi)
