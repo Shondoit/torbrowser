@@ -22,7 +22,7 @@ FIREFOX_VERSION=3.6.16
 PIDGIN_VERSION=2.7.5
 
 ## Location of bundle components
-VIDALIA=/e/build/vidalia-0.2.10
+VIDALIA=/e/build/vidalia-0.2.12
 TOR=/e/build/tor-0.2.1.30
 POLIPO=/e/build/polipo-1.0.4.1
 FIREFOX_SRC=/e/build/FirefoxPortable-$(FIREFOX_VERSION)
@@ -49,7 +49,7 @@ DEST="Generic Bundle"
 NAME="Tor Browser"
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.3.21
+VERSION=1.3.23
 DEFAULT_COMPRESSED_BASENAME=tor-browser-
 IM_COMPRESSED_BASENAME=tor-im-browser-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
@@ -69,6 +69,8 @@ DEFAULT_EXTENSIONS=torbutton.xpi
 TORBUTTON=https://www.torproject.org/torbutton/releases/torbutton-$(TORBUTTON_VERSION).xpi
 
 ## Where to download Mozilla language packs
+MY_LANGPACK=http://www.wordpress-my.tk/langpack-firefox-3.6-my.xpi
+
 MOZILLA_LANGUAGE=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/$(FIREFOX_VERSION)/win32/xpi
 
 ## Where Farsi Language Pack can be downloaded from
