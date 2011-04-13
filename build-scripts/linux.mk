@@ -38,7 +38,7 @@ include $(PWD)/versions.mk
 ARCH_TYPE=$(shell uname -m)
 
 ## Location of directory for source unpacking
-FETCH_DIR=$(PWD)/build-alpha-$(ARCH_TYPE)
+FETCH_DIR=/srv/build-trees/build-alpha-$(ARCH_TYPE)
 ## Location of directory for prefix/destdir/compiles/etc
 BUILT_DIR=$(FETCH_DIR)/built
 TBB_FINAL=$(BUILT_DIR)/TBBL
@@ -167,7 +167,7 @@ COMPRESSED_NAME=$(DEFAULT_COMPRESSED_NAME)
 endif
 
 ## Extensions to install by default
-DEFAULT_EXTENSIONS=torbutton.xpi httpseverywhere.xpi
+DEFAULT_EXTENSIONS=torbutton.xpi noscript.xpi httpseverywhere.xpi
 
 ## Where to download Torbutton from
 TORBUTTON=https://www.torproject.org/torbutton/releases/torbutton-$(TORBUTTON_VER).xpi
