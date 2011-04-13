@@ -151,10 +151,10 @@ DEST=generic-bundle
 NAME=tor-browser
 
 ## Where shall we put the finished files for distribution?
-DISTDIR=tbbl-dist
+DISTDIR=tbbl-alpha-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=2.2.23-1-alpha
+VERSION=2.2.24-1-alpha
 DEFAULT_COMPRESSED_BASENAME=tor-browser-gnu-linux-$(ARCH_TYPE)-$(VERSION)-
 IM_COMPRESSED_BASENAME=tor-im-browser-gnu-linux-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
