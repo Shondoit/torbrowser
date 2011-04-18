@@ -1,0 +1,28 @@
+Tor Browser Bundle for Windows
+===============
+
+Included applications
+---------------------
+
+Vidalia 0.2.12 (with Qt 4.6.2)
+Tor 0.2.2.24-alpha (with libevent-2.0.10-stable, zlib-1.2.5 and openssl-1.0.0d) 
+Polipo 1.0.4.1
+FirefoxPortable 4.0
+ \_ Firefox 4.0
+    \_ Torbutton 1.3.2-alpha
+    \_ HTTPS Everywhere 0.9.9.development.4
+
+Usage
+-----
+
+Tor Browser.exe is a 7zip self extracting archive. To extract the bundle, run
+this and point it to the install location. It will create a folder called "Tor
+Browser". This may be the hard disk, but is more likely the currently mounted
+USB drive. The install process needs only be performed once.
+
+Once the bundle is extracted, open the newly created folder and click
+"Start Tor Browser.bat" (may appear as simply "Start Tor Browser").
+This will start Vidalia. Once Tor has successfully opened a circuit,
+Firefox will automatically be opened.
+
+To exit, close Firefox. Vidalia will automatically clean up and exit.
