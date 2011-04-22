@@ -18,7 +18,7 @@ SEDARG=$3
 # On other platforms, we pass "-c" when they do nothing
 if [ -z $SEDARG ];
 then
-	SEDARG="-c";
+	SEDARG="-e";
 fi
 
 ## Backup original file
