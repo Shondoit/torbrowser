@@ -55,7 +55,7 @@ WINRAR="/c/Program Files/WinRAR/WinRAR.exe"
 
 
 ## Location of directory for source unpacking
-FETCH_DIR=$(PWD)/build-alpha-$(ARCH_TYPE)
+FETCH_DIR=$(PWD)/build-alpha-windows
 ## Location of directory for prefix/destdir/compiles/etc
 BUILT_DIR=$(FETCH_DIR)/built
 TBB_FINAL=$(BUILT_DIR)/tbbwin-alpha-dist
@@ -65,15 +65,14 @@ source-dance: fetch-source unpack-source
 
 ZLIB_DIR=$(FETCH_DIR)/zlib-$(ZLIB_VER)
 ZLIB_OPTS=--prefix=$(BUILT_DIR)
-ZLIB_LDFLAGS=-Wl,--nxcompat -Wl,--dynamicbase
+ZLIB_LDFLAGS="-Wl,--nxcompat -Wl,--dynamicbase"
 build-zlib:
-	cd $(ZLIB_DIR) && CFLAGS=$(ZLIB_LDFLAGS) ./configure $(ZLIB_OPTS)
+	cd $(ZLIB_DIR) && LDFLAGS=$(ZLIB_LDFLAGS) ./configure $(ZLIB_OPTS)
 	cd $(ZLIB_DIR) && make
 	cd $(ZLIB_DIR) && make install
 
 OPENSSL_DIR=$(FETCH_DIR)/openssl-$(OPENSSL_VER)
-OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 shared zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -L$(BUILT_DIR)/lib \
-	-Wl,--nxcompat -Wl,dynamicbase -I$(BUILT_DIR)/include
+OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 shared zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -L$(BUILT_DIR)/lib -Wl,--nxcompat -Wl,--dynamicbase -I$(BUILT_DIR)/include
 build-openssl:
 	cd $(OPENSSL_DIR) && ./config $(OPENSSL_OPTS)
 	cd $(OPENSSL_DIR) && make depend
@@ -81,24 +80,31 @@ build-openssl:
 	cd $(OPENSSL_DIR) && make install
 
 VIDALIA_DIR=$(FETCH_DIR)/vidalia-$(VIDALIA_VER)
-VIDALIA_OPTS=-DWIN2K=1 -DCMAKE_BUILD_TYPE=minsizerel -DMINGW_BINARY_DIR=$(MING) -DOPENSSL_BINARY_DIR=$(OPENSSL) -DWIX_BINARY_DIR=$(WIX)
+VIDALIA_OPTS=-DCMAKE_EXE_LINKER_FLAGS="-static-libstdc++" -DWIN2K=1 -DQT_MAKE_EXECUTABLE=/c/Qt/$(QT_VER)/bin/qmake -DCMAKE_BUILD_TYPE=minsizerel -DMINGW_BINARY_DIR=$(MING) -DOPENSSL_BINARY_DIR=$(OPENSSL) -DWIX_BINARY_DIR=$(WIX_LIB)
 build-vidalia:
 	-mkdir $(VIDALIA_DIR)/build
-	cd $(VIDALIA_DIR)/build && cmake -G "MinGW Makefiles" $(VIDALIA_OPTS) ..
+	cd $(VIDALIA_DIR)/build && cmake -G "MSYS Makefiles" $(VIDALIA_OPTS) ..
+	cd $(VIDALIA_DIR)/build && make
 
 LIBEVENT_DIR=$(FETCH_DIR)/libevent-$(LIBEVENT_VER)
 LIBEVENT_CFLAGS="-O -g"
+LIBEVENT_LDFLAGS="-Wl,--nxcompat -Wl,--dynamicbase"
 LIBEVENT_OPTS=--prefix=$(BUILT_DIR) --enable-static --disable-shared --disable-dependency-tracking
 build-libevent:
-	cd $(LIBEVENT_DIR) && CFLAGS=$(LIBEVENT_CFLAGS) ./configure $(LIBEVENT_OPTS)
+	cd $(LIBEVENT_DIR) && CFLAGS=$(LIBEVENT_CFLAGS) LDFLAGS=$(LIBEVENT_LDFLAGS) ./configure $(LIBEVENT_OPTS)
 	cd $(LIBEVENT_DIR) && make -j2
-	cd $(LIBEVENT_DIR) && sudo make install
+	cd $(LIBEVENT_DIR) && make install
+
+POLIPO_DIR=$(FETCH_DIR)/polipo-$(POLIPO_VER)
+POLIPO_MAKEFILE=$(CONFIG_SRC)/polipo-Makefile
+POLIPO_LDFLAGS="-Wl,--nxcompat -Wl,--dynamicbase"
+build-polipo:
+	cd $(POLIPO_DIR) && LDFLAGS=$(POLIPO_LDFLAGS) make && PREFIX=$(FETCH_DIR)/built/ make install.binary
 
 TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)
-TOR_CFLAGS="-O -g -arch $(ARCH_TYPE) -I$(BUILT_DIR)/include"
+TOR_CFLAGS="-O -g -I$(BUILT_DIR)/include"
 TOR_LDFLAGS="-L$(BUILT_DIR)/lib"
-TOR_OPTS=--enable-static-openssl --enable-static-libevent --with-openssl-dir=$(OPENSSL) --with-libevent-dir=$(BUILT_DIR)/lib \
-	--prefix=$(BUILT_DIR) --disable-dependency-tracking
+TOR_OPTS=--enable-static-libevent --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR)
 build-tor:
 	cd $(TOR_DIR) && CFLAGS=$(TOR_CFLAGS) LDFLAGS=$(TOR_LDFLAGS) ./configure $(TOR_OPTS)
 	cd $(TOR_DIR) && make
@@ -121,8 +127,6 @@ OPENSSL=$(COMPILED_LIBS)
 ZLIB=$(COMPILED_LIBS)
 LIBEVENT=$(COMPILED_LIBS)
 
-## Location of utility applications
-WGET:=$(shell which wget)
 
 ## Size of split archive volumes for WinRAR
 SPLITSIZE=1440k
@@ -131,10 +135,10 @@ SPLITSIZE=1440k
 CONFIG_SRC=config
 
 ## Destination for the generic bundle
-DEST=generic-bundle
+DEST="Generic Bundle"
 
 ## Name of the bundle
-NAME=TorBrowser
+NAME="Tor Browser"
 
 ## Where shall we put the finished files for distribution?
 DISTDIR=tbbwin-alpha-dist
@@ -153,7 +157,7 @@ COMPRESSED_NAME=$(DEFAULT_COMPRESSED_NAME)
 endif
 
 ## Extensions to install by default
-DEFAULT_EXTENSIONS=torbutton.xpi
+DEFAULT_EXTENSIONS=torbutton-alpha.xpi
 
 ## Where to download Torbutton from
 TORBUTTON=https://www.torproject.org/torbutton/releases/torbutton-$(TORBUTTON_VER).xpi
@@ -226,7 +230,7 @@ reallyclean: clean
 
 virus-scan:
 	$(VIRUSSCAN) $(VIDALIA)/build/src/vidalia/vidalia.exe
-	$(VIRUSSCAN) $(POLIPO)/polipo.exe
+	$(VIRUSSCAN) $(COMPILED_BINS)/polipo.exe
 	$(VIRUSSCAN) $(TOR)/src/or/tor.exe 
 	$(VIRUSSCAN) $(TOR)/src/tools/tor-resolve.exe
 
@@ -257,11 +261,11 @@ directory-structure:
 install-binaries: 
 	cp $(MING)/mingwm10.dll $(APPDIR)
 	cp $(MING)/libgnurx-0.dll $(APPDIR)
-	cp $(QT)/QtCore4.dll $(QT)/QtGui4.dll $(QT)/QtNetwork4.dll $(QT)/QtXml4.dll $(QT)/libgcc_s_dw2-1.dll $(APPDIR) 
-	cp $(OPENSSL)/ssleay32.dll $(APPDIR)
-	cp $(OPENSSL)/libeay32.dll $(APPDIR)
+	cp $(QT_LIB)/QtCore4.dll $(QT_LIB)/QtGui4.dll $(QT_LIB)/QtNetwork4.dll $(QT_LIB)/QtXml4.dll $(QT_LIB)/libgcc_s_dw2-1.dll $(APPDIR) 
+	cp $(OPENSSL_LIB)/ssleay32.dll $(APPDIR)
+	cp $(OPENSSL_LIB)/libeay32.dll $(APPDIR)
 	cp $(VIDALIA)/build/src/vidalia/vidalia.exe $(APPDIR)
-	cp $(POLIPO)/polipo.exe $(APPDIR)
+	cp $(COMPILED_BINS)/polipo.exe $(APPDIR)
 	cp $(TOR)/src/or/tor.exe $(TOR)/src/tools/tor-resolve.exe $(APPDIR)
 
 ## Fixup
@@ -273,40 +277,30 @@ install-docs:
 	mkdir -p $(DOCSDIR)/MinGW
 	mkdir -p $(DOCSDIR)/Polipo
 	cp $(VIDALIA)/LICENSE* $(VIDALIA)/CREDITS $(DOCSDIR)/Vidalia
-	cp $(TOR)/LICENSE $(TOR)/AUTHORS $(TOR)/README $(DOCSDIR)/Tor
-	cp $(QT)/../LICENSE.GPL* $(QT)/../LICENSE.LGPL $(DOCSDIR)/Qt
-	cp $(MING)/../COPYING $(DOCSDIR)/MinGW
+	cp $(TOR)/LICENSE $(TOR)/README $(DOCSDIR)/Tor
+	cp $(QT_LIB)/../LICENSE.GPL* $(QT_LIB)/../LICENSE.LGPL $(DOCSDIR)/Qt
+	cp $(MING)/../msys/1.0/share/doc/MSYS/COPYING $(DOCSDIR)/MinGW
 	cp $(POLIPO)/COPYING  $(POLIPO)/README.Windows $(DOCSDIR)/Polipo
-	cp ../changelog.windows-2.2 $(DOCSDIR)/changelog
-	cp ../README.WINDOWS-2.2 $(DOCSDIR)/README-TorBrowserBundle
+	cp ../changelog.win-2.2 $(DOCSDIR)/changelog
+	cp ../README.WIN-2.2 $(DOCSDIR)/README-TorBrowserBundle
 
-## Copy over Firefox
-install-firefox:
-	cp -R $(FIREFOX) $(DEST)/FirefoxPortable
-
-## Configure Firefox, Vidalia, Polipo and Tor
-configure-apps:
-	## Configure Firefox preferences
-	#mkdir -p $(DEST)/.mozilla/Firefox/firefox.default
-	cp -R $(CONFIG_SRC)/firefox-profiles.ini $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profiles.ini
-	cp $(CONFIG_SRC)/bookmarks.html $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile
-	cp $(CONFIG_SRC)/no-polipo-4.0.js $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/prefs.js
-	cp $(CONFIG_SRC)/Info.plist $(DEST)/Contents
-	cp $(CONFIG_SRC)/PkgInfo $(DEST)/Contents
-	cp $(CONFIG_SRC)/qt.conf $(DEST)/Contents/Resources
-	cp $(CONFIG_SRC)/vidalia.icns $(DEST)/Contents/Resources
+## Copy over FirefoxPortable
+install-firefoxportable:
+	cp -r $(FIREFOX) $(DEST)/FirefoxPortable
 
 ## Copy over PidginPortable
 install-pidginportable:
 ifeq ($(USE_PIDGIN),1)
-	cp -R $(PIDGIN) $(DEST)/PidginPortable
+	cp -r $(PIDGIN) $(DEST)/PidginPortable
 endif
 
 ## Configure Firefox, FirefoxPortable, Vidalia, Polipo and Tor
 configure-apps:
 
+	mkdir -p $(DEST)/FirefoxPortable/Data/profile
 	## Configure Firefox preferences
-	cp $(CONFIG_SRC)/no-polipo-4.0.js $(DEST)/FirefoxPortable/App/DefaultData/profile/
+	cp $(CONFIG_SRC)/windows-4.0.js $(DEST)/FirefoxPortable/App/DefaultData/profile/prefs.js
+	cp $(CONFIG_SRC)/windows-4.0.js $(DEST)/FirefoxPortable/Data/profile/prefs.js
 	cp $(CONFIG_SRC)/bookmarks.html $(DEST)/FirefoxPortable/App/DefaultData/profile/
 
 	## Set up alternate launcher
@@ -344,7 +338,7 @@ launcher:
 ##
 
 ## Torbutton development version
-torbutton.xpi:
+torbutton-alpha.xpi:
 	$(WGET) -O $@ $(TORBUTTON)
 
 ## English comes as default
@@ -353,33 +347,33 @@ langpack_en-US.xpi:
 
 ## BetterPrivacy
 betterprivacy.xpi:
-	$(WGET) --no-check-certificate -O $@ $(BETTERPRIVACY)
+	$(WGET) -O $@ $(BETTERPRIVACY)
 
 ## NoScript development version
 noscript.xpi: 
-	$(WGET) --no-check-certificate -O $@ $(NOSCRIPT)
+	$(WGET) -O $@ $(NOSCRIPT)
 
 ## HTTPS Everywhere
 httpseverywhere.xpi:
-	$(WGET) --no-check-certificate -O $@ $(HTTPSEVERYWHERE)
+	$(WGET) -O $@ $(HTTPSEVERYWHERE)
 
 ## Generic language pack rule
 langpack_%.xpi:
-	$(WGET) --no-check-certificate -O $@ $(MOZILLA_LANGUAGE)/$*.xpi
+	$(WGET) -O $@ $(MOZILLA_LANGUAGE)/$*.xpi
 
 ##
 ## Customize the bundle
 ##
 
 bundle_%:
-	LANGCODE=$* make bundle-localized
+	LANGCODE=$* make -f windows.mk bundle-localized
 compressed-bundle_%:
-	LANGCODE=$* make compressed-bundle-localized
+	LANGCODE=$* make -f windows.mk compressed-bundle-localized
 split-bundle_%:
-	LANGCODE=$* make split-bundle-localized
+	LANGCODE=$* make -f windows.mk split-bundle-localized
 
 bundle-localized_%.stamp:
-	make copy-files_$* install-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language
+	make -f windows.mk copy-files_$* install-extensions install-torbutton install-httpseverywhere install-betterprivacy install-noscript patch-vidalia-language patch-firefox-language patch-pidgin-language
 	touch bundle-localized_$*.stamp
 
 bundle-localized: bundle-localized_$(LANGCODE).stamp
@@ -396,18 +390,40 @@ split-bundle-localized: bundle-localized_$(LANGCODE).stamp
 copy-files_%: generic-bundle.stamp
 	rm -fr $(NAME)_$*
 	mkdir $(NAME)_$*
-	cp -R $(DEST) $(NAME)_$*/$(NAME)
+	cp -r $(DEST) $(NAME)_$*/$(NAME)
 
 BUNDLE=$(NAME)_$(LANGCODE)/$(NAME)
 DUMMYPROFILE=$(BUNDLE)/FirefoxPortable/App/DummyProfile
 install-extensions: $(filter-out langpack_en-US.xpi,langpack_$(LANGCODE).xpi)
 	## Make a dummy profile to stop Firefox creating some large files
-	cp -R $(BUNDLE)/FirefoxPortable/App/DefaultData $(DUMMYPROFILE)
+	cp -r $(BUNDLE)/FirefoxPortable/App/DefaultData $(DUMMYPROFILE)
+	mkdir -p $(BUNDLE)/FirefoxPortable/Data/profile/extensions
 ifneq ($(LANGCODE), en-US)
-	mv langpack_$(LANGCODE).xpi $(BUNDLE)/FirefoxPortable/App/Firefox/extensions/langpack-$(LANGCODE)\@firefox.mozilla.org.zip
-	$(SEVENZIP) x -o$(BUNDLE)/FirefoxPortable/App/Firefox/extensions/langpack-$(LANGCODE)\@firefox.mozilla.org $(BUNDLE)/FirefoxPortable/App/Firefox/extensions/langpack-$(LANGCODE)\@firefox.mozilla.org.zip
+	mv langpack_$(LANGCODE).xpi $(BUNDLE)/FirefoxPortable/Data/profile/extensions/langpack-$(LANGCODE)\@firefox.mozilla.org.zip
+	$(SEVENZIP) x -o$(BUNDLE)/FirefoxPortable/Data/profile/extensions/langpack-$(LANGCODE)\@firefox.mozilla.org $(BUNDLE)/FirefoxPortable/Data/profile/extensions/langpack-$(LANGCODE)\@firefox.mozilla.org.zip
 endif
 	rm -fr $(DUMMYPROFILE)
+
+install-torbutton: torbutton-alpha.xpi
+	mkdir -p $(BUNDLE)/FirefoxPortable/Data/profile/extensions/{e0204bd5-9d31-402b-a99d-a6aa8ffebdca}
+	cp torbutton-alpha.xpi $(BUNDLE)/FirefoxPortable/Data/profile/extensions/{e0204bd5-9d31-402b-a99d-a6aa8ffebdca}/torbutton.zip
+	(cd $(BUNDLE)/FirefoxPortable/Data/profile/extensions/{e0204bd5-9d31-402b-a99d-a6aa8ffebdca} && $(SEVENZIP) x *.zip && rm *.zip)
+
+install-httpseverywhere: httpseverywhere.xpi
+	mkdir -p $(BUNDLE)/FirefoxPortable/Data/profile/extensions/https-everywhere@eff.org
+	cp httpseverywhere.xpi $(BUNDLE)/FirefoxPortable/Data/profile/extensions/https-everywhere@eff.org/httpseverywhere.zip
+	(cd $(BUNDLE)/FirefoxPortable/Data/profile/extensions/https-everywhere@eff.org && $(SEVENZIP) x *.zip && rm *.zip)
+
+install-betterprivacy: betterprivacy.xpi
+	mkdir -p $(BUNDLE)/FirefoxPortable/Data/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\}
+	cp betterprivacy.xpi $(BUNDLE)/FirefoxPortable/Data/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\}/betterprivacy.zip
+	(cd $(BUNDLE)/FirefoxPortable/Data/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\} && $(SEVENZIP) x *.zip && rm *.zip)
+
+install-noscript: noscript.xpi
+	mkdir -p $(BUNDLE)/FirefoxPortable/Data/profile/extensions/\{73a6fe31-595d-460b-a920-fcc0f8843232\}
+	cp noscript.xpi $(BUNDLE)/FirefoxPortable/Data/profile/extensions/\{73a6fe31-595d-460b-a920-fcc0f8843232\}/noscript.zip
+	(cd $(BUNDLE)/FirefoxPortable/Data/profile/extensions/\{73a6fe31-595d-460b-a920-fcc0f8843232\} && $(SEVENZIP) x *.zip && rm *.zip)
+
 
 ## Set the language for Vidalia
 patch-vidalia-language:
@@ -426,6 +442,7 @@ endif
 patch-firefox-language:
 	## Patch Firefox prefs.js
 	./patch-firefox-language.sh $(BUNDLE)/FirefoxPortable/App/DefaultData/profile/prefs.js $(LANGCODE)
+	./patch-firefox-language.sh $(BUNDLE)/FirefoxPortable/Data/profile/prefs.js $(LANGCODE)
 
 ###
 ### Utilities

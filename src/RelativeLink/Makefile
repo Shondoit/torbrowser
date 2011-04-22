@@ -7,6 +7,7 @@
 APPNAME = StartTorBrowserBundle.exe
 OBJECTS = RelativeLink-res.rc.o RelativeLink.o
 CFLAGS = -Wall -mwindows -static
+CC = gcc
 
 all: RelativeLink
 
