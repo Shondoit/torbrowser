@@ -33,10 +33,10 @@
 include $(PWD)/versions.mk
 
 ## Location of required libraries
-MING=/c/c/mingw/bin
-QT=/c/Qt/$(QT_VER)/bin
-OPENSSL=/e/build/openssl-$(OPENSSL_VER)
-WIX=/c/Program Files/WiX/bin
+MING=/c/MinGW/bin
+QT_LIB=/c/Qt/$(QT_VER)/bin
+OPENSSL_LIB=$(COMPILED_BINS)
+WIX_LIB="/c/Program Files (x86)/Windows Installer XML v3.5/bin"
 
 ## Location of bundle components
 VIDALIA=$(FETCH_DIR)/vidalia-$(VIDALIA_VER)
@@ -47,7 +47,7 @@ PIDGIN=$(FETCH_DIR)/PidginPortable-$(PIDGIN_VER)
 
 ## Location of utility applications
 PWD:=$(shell pwd)
-PYTHON=/c/Python25/python.exe
+PYTHON=/c/Python26/python.exe
 SEVENZIP="/c/Program Files/7-Zip/7z.exe"
 WGET=$(PYTHON) $(PWD)/pyget.py
 VIRUSSCAN=$(PYTHON) $(PWD)/virus-scan.py

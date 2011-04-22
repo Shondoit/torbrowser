@@ -8,6 +8,7 @@ NOSCRIPT_VER=2.1.0.1
 OPENSSL_VER=1.0.0d
 OTR_VER=3.2.0
 PIDGIN_VER=2.6.4
+POLIPO_VER=1.0.4.1
 QT_VER=4.6.2
 TOR_VER=0.2.2.24-alpha
 TORBUTTON_VER=1.3.2-alpha
@@ -31,7 +32,7 @@ FIREFOX_PACKAGE=firefox-$(FIREFOX_VER).tar.bz2
 ZLIB_URL=http://www.zlib.net/$(ZLIB_PACKAGE)
 OPENSSL_URL=http://www.openssl.org/source/$(OPENSSL_PACKAGE)
 QT_URL=ftp://ftp.qt.nokia.com/qt/source/$(QT_PACKAGE)
-VIDALIA_URL=http://www.torproject.org/vidalia/dist/$(VIDALIA_PACKAGE)
+VIDALIA_URL=http://www.torproject.org/dist/vidalia/$(VIDALIA_PACKAGE)
 LIBEVENT_URL=http://www.monkey.org/~provos/$(LIBEVENT_PACKAGE)
 TOR_URL=http://www.torproject.org/dist/$(TOR_PACKAGE)
 PIDGIN_URL=http://sourceforge.net/projects/pidgin/files/Pidgin/$(PIDGIN_PACKAGE)
@@ -39,11 +40,11 @@ PIDGIN_URL=http://sourceforge.net/projects/pidgin/files/Pidgin/$(PIDGIN_PACKAGE)
 
 fetch-source:
 	-mkdir $(FETCH_DIR)
-	$(WGET) --directory-prefix=$(FETCH_DIR) $(ZLIB_URL)
-	$(WGET) --directory-prefix=$(FETCH_DIR) $(OPENSSL_URL)
-	$(WGET) --directory-prefix=$(FETCH_DIR) $(VIDALIA_URL)
-	$(WGET) --directory-prefix=$(FETCH_DIR) $(LIBEVENT_URL)
-	$(WGET) --directory-prefix=$(FETCH_DIR) $(TOR_URL)
+	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(ZLIB_URL)
+	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(OPENSSL_URL)
+	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(VIDALIA_URL)
+	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(LIBEVENT_URL)
+	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(TOR_URL)
 
 unpack-source:
 	cd $(FETCH_DIR) && tar -xvzf $(ZLIB_PACKAGE)
