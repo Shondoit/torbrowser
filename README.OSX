@@ -5,9 +5,9 @@ Included applications
 ---------------------
 
 Vidalia 0.2.12 (with Qt 4.6.2)
-Tor 0.2.2.24-alpha (with libevent-2.0.10-stable, zlib-1.2.3 and openssl-0.9.8p)
+Tor 0.2.2.25-alpha (with libevent-2.0.10-stable, zlib-1.2.3 and openssl-0.9.8p)
 Polipo 1.0.4.1
-Firefox 3.6.16
+Firefox 3.6.17
  \_ Torbutton 1.2.5
  |_ NoScript 2.1.0.1
  |_ HTTPS-Everywhere 0.9.9.development.4
@@ -23,6 +23,10 @@ To exit, close Firefox and Vidalia.
 
 Changelog
 ---------
+
+1.0.16: Released 2011-04-30
+        Update Tor to 0.2.2.25-alpha
+        Update Firefox to 3.6.17
 
 1.0.15: Released 2011-04-11
         Update Tor to 0.2.2.24-alpha
