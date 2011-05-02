@@ -289,9 +289,9 @@ install-docs:
 	cp $(VIDALIA_DIR)/LICENSE* $(VIDALIA_DIR)/CREDITS $(DOCSDIR)/Vidalia
 	cp $(TOR_DIR)/LICENSE $(TOR_DIR)/README $(DOCSDIR)/Tor
 	cp $(QT_DIR)/LICENSE.GPL* $(QT_DIR)/LICENSE.LGPL $(DOCSDIR)/Qt
-	cp ../changelog.linux-0.2.2 $(DOCSDIR)/changelog
+	cp ../changelog.linux-2.2 $(DOCSDIR)/changelog
 	# This should be updated to be more generic (version-wise) and more Linux specific
-	cp ../README.LINUX-0.2.2 $(DOCSDIR)/README-TorBrowserBundle
+	cp ../README.LINUX-2.2 $(DOCSDIR)/README-TorBrowserBundle
 
 ## Copy over Firefox
 install-firefox:
