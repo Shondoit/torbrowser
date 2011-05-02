@@ -144,7 +144,7 @@ NAME=TorBrowser
 DISTDIR=tbbosx-alpha-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=2.2.24-1-alpha
+VERSION=2.2.25-1-alpha
 DEFAULT_COMPRESSED_BASENAME=TorBrowser-$(VERSION)-osx-$(ARCH_TYPE)-
 IM_COMPRESSED_BASENAME=TorBrowser-IM-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)
