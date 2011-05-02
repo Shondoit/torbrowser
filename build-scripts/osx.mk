@@ -264,9 +264,9 @@ install-docs:
 	cp $(VIDALIA_DIR)/LICENSE* $(VIDALIA_DIR)/CREDITS $(DOCSDIR)/Vidalia
 	cp $(TOR_DIR)/LICENSE $(TOR_DIR)/README $(DOCSDIR)/Tor
 	cp $(QT_DIR)/LICENSE.GPL* $(QT_DIR)/LICENSE.LGPL $(DOCSDIR)/Qt
-	cp ../changelog.osx-0.2.2 $(DOCSDIR)/changelog
+	cp ../changelog.osx-2.2 $(DOCSDIR)/changelog
 	cp ../LICENSE $(DEST)
-	cp ../README.OSX-0.2.2 $(DEST)/README-TorBrowserBundle
+	cp ../README.OSX-2.2 $(DEST)/README-TorBrowserBundle
 
 ## Copy over Firefox
 install-firefox:
