@@ -66,7 +66,7 @@ user_pref("extensions.checkUpdateSecurity", false);
 user_pref("extensions.databaseSchema", 3);
 user_pref("extensions.enabledAddons", "https-everywhere@eff.org:0.9.9.development.4,{73a6fe31-595d-460b-a920-fcc0f8843232}:2.0.9.9,{d40f5e7b-d2cf-4856-b441-cc613eeffbe3}:1.49,{e0204bd5-9d31-402b-a99d-a6aa8ffebdca}:1.3.2-alpha,{972ce4c6-7e08-4474-a285-3208198ce6fd}:4.0");
 user_pref("extensions.enabledItems", "langpack-en-US@firefox.mozilla.org:,{73a6fe31-595d-460b-a920-fcc0f8843232}:1.9.9.57,{e0204bd5-9d31-402b-a99d-a6aa8ffebdca}:1.2.4,{972ce4c6-7e08-4474-a285-3208198ce6fd}:3.5.8");
-user_pref("extensions.enabledScopes", 5);
+user_pref("extensions.enabledScopes", 1);
 user_pref("extensions.lastAppVersion", "4.0");
 user_pref("extensions.pendingOperations", false);
 user_pref("extensions.torbutton.fresh_install", false);
