@@ -160,7 +160,7 @@ endif
 DEFAULT_EXTENSIONS=torbutton.xpi
 
 ## Where to download Torbutton from
-TORBUTTON=https://www.torproject.org/torbutton/releases/torbutton-$(TORBUTTON_VER).xpi
+TORBUTTON=https://www.torproject.org/dist/torbutton/torbutton-$(TORBUTTON_VER).xpi
 NOSCRIPT=https://secure.informaction.com/download/releases/noscript-$(NOSCRIPT_VER).xpi
 BETTERPRIVACY=https://addons.mozilla.org/en-US/firefox/downloads/latest/6623/addon-6623-latest.xpi
 HTTPSEVERYWHERE=https://eff.org/files/https-everywhere-$(HTTPSEVERY_VER).xpi
