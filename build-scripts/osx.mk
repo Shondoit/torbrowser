@@ -43,18 +43,18 @@ TBB_FINAL=$(BUILT_DIR)/TBBL
 ## Versions for our source packages
 HTTPSEVERY_VER=0.9.9.development.5
 FIREFOX_VER=3.6.17
-LIBEVENT_VER=2.0.10-stable
+LIBEVENT_VER=2.0.12-stable
 LIBPNG_VER=1.4.3
-NOSCRIPT_VER=2.1.0.5
+NOSCRIPT_VER=2.1.1
 OPENSSL_VER=0.9.8p
 OTR_VER=3.2.0
 PIDGIN_VER=2.6.4
 POLIPO_VER=1.0.4.1
 QT_VER=4.6.2
-TOR_VER=0.2.2.27-beta
+TOR_VER=0.2.2.28-beta
 TORBUTTON_VER=1.2.5
 VIDALIA_VER=0.2.12
-ZLIB_VER=1.2.3
+ZLIB_VER=1.2.5
 
 ## Extension IDs
 FF_VENDOR_ID:=\{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
@@ -101,10 +101,13 @@ unpack-source:
 source-dance: fetch-source unpack-source
 	echo "We're ready for building now."
 
+
 ZLIB_DIR=$(FETCH_DIR)/zlib-$(ZLIB_VER)
 ZLIB_OPTS=--prefix=$(BUILT_DIR)
+ZLIB_CFLAGS="-mmacosx-version-min=10.4 -isysroot /Developer/SDKs/MacOSX10.4u.sdk -arch $(ARCH_TYPE)"
+ZLIB_LDFLAGS="-Wl,-syslibroot,/Developer/SDKs/MacOSX10.4u.sdk"
 build-zlib:
-	cd $(ZLIB_DIR) && ./configure $(ZLIB_OPTS)
+	cd $(ZLIB_DIR) && CFLAGS=$(ZLIB_CFLAGS) LDFLAGS=$(ZLIB_LDFLAGS) ./configure $(ZLIB_OPTS)
 	cd $(ZLIB_DIR) && make
 	cd $(ZLIB_DIR) && make install
 
@@ -208,7 +211,7 @@ NAME=TorBrowser
 DISTDIR=tbbosx-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.0.17-dev
+VERSION=1.0.18-dev
 DEFAULT_COMPRESSED_BASENAME=TorBrowser-$(VERSION)-osx-$(ARCH_TYPE)-
 IM_COMPRESSED_BASENAME=TorBrowser-IM-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)
