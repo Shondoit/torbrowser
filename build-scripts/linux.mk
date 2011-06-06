@@ -43,18 +43,18 @@ TBB_FINAL=$(BUILT_DIR)/TBBL
 ## Versions for our source packages
 HTTPSEVERY_VER=0.9.9.development.5
 FIREFOX_VER=3.6.17
-LIBEVENT_VER=2.0.10-stable
+LIBEVENT_VER=2.0.12-stable
 LIBPNG_VER=1.4.3
-NOSCRIPT_VER=2.1.0.5
+NOSCRIPT_VER=2.1.1
 OPENSSL_VER=0.9.8p
 OTR_VER=3.2.0
 PIDGIN_VER=2.6.4
 POLIPO_VER=1.0.4.1
 QT_VER=4.6.2
-TOR_VER=0.2.2.27-beta
+TOR_VER=0.2.2.28-beta
 TORBUTTON_VER=1.2.5
 VIDALIA_VER=0.2.12
-ZLIB_VER=1.2.3
+ZLIB_VER=1.2.5
 
 ## Extension IDs
 FF_VENDOR_ID:=\{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
@@ -216,7 +216,7 @@ NAME=tor-browser
 DISTDIR=tbbl-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.1.9-dev
+VERSION=1.1.10-dev
 DEFAULT_COMPRESSED_BASENAME=tor-browser-gnu-linux-$(ARCH_TYPE)-$(VERSION)-
 IM_COMPRESSED_BASENAME=tor-im-browser-gnu-linux-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
