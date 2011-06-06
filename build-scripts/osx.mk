@@ -213,7 +213,6 @@ all-compressed-bundles: compressed-bundle_ar \
 ##
 
 clean:
-	rm -fr $(DISTDIR)
 	rm -fr *.app
 	rm -fr $(DEST) *.stamp
 	rm -f *~
