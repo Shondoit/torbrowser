@@ -30,4 +30,4 @@ fi
 # not in debug mode, run proceed normally
 printf "\nLaunching Tor Browser Bundle for Mac OS X in ${HOME}\n"
 cd "${HOME}"
-open $HOME/Contents/MacOS/Vidalia.app
+open "$HOME/Contents/MacOS/Vidalia.app"
