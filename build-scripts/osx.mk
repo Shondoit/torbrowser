@@ -101,8 +101,13 @@ build-tor:
 	cd $(TOR_DIR) && make
 	cd $(TOR_DIR) && make install
 
+FIREFOX_DIR=$(FETCH_DIR)/mozilla-2.0
 build-firefox:
-	echo "We're using a prebuilt firefox. Fix this someday!"
+	cp ../src/current-patches/*firefox* $(FIREFOX_DIR)
+	cp patch-firefox-src.sh $(FIREFOX_DIR)
+	cp $(CONFIG_SRC)/mozconfig-osx-$(ARCH_TYPE) $(FIREFOX_DIR)/mozconfig
+	cd $(FIREFOX_DIR) && ./patch-firefox-src.sh
+	cd $(FIREFOX_DIR) && make -f client.mk build
 
 build-all-binaries: build-zlib build-openssl build-vidalia build-libevent build-tor
 	echo "If we're here, we've done something right."
