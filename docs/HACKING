@@ -42,7 +42,8 @@ Modifications
 ----------------------
 
 Some components of TBB are modified and all of the patches are available in the
-git repository in src/current-patches.
+git repository in src/current-patches. Within each patch is an explanation of
+what the patch does. Please see them for more information.
 
 - Vidalia: modified on Linux and OS X
   * Vidalia has been patched for Linux in order to allow it to quit at the same
@@ -171,3 +172,42 @@ whether they should be kept around in perpetuity is undecided at this moment.
 
 Official TBB releases for more than one architecture must use 'arch' in the
 filename.
+
+Patch format
+----------------------
+
+The patches for TBB components live in torbrowser.git/src/current-patches and
+are in the following format:
+
+001-component-patch-summary.patch
+
+Please see TBB's git for a list of current patches:
+https://gitweb.torproject.org/torbrowser.git/tree/refs/heads/maint-2.2:/src/current-patches
+
+If the patch is against anything in the existing torbrowser.git, do:
+
+$ git clone git://git.torproject.org/torbrowser.git
+
+If it's against an existing tarball of some component in TBB (such as Firefox,
+OpenSSL, or Vidalia), you can use git format-patch by doing the following:
+
+$ cd srcdir && git init && git add --ignore-errors .; git commit -m "`basename $PWD`"
+
+Make your changes, then:
+
+$ git format-patch origin/master
+
+Make sure to add a sufficiently explanatory summary of the changes since future
+people will be looking in the patch to see why it's being used.
+
+You may have to change the filename of the patch to fit appropriately in the
+patch series if there are pre-existing patches.
+
+Submitting patches
+----------------------
+
+File a ticket on https://trac.torproject.org for the Tor bundles/installation
+component and attach the patch.
+
+If you're a Tor developer and have a personal torbrowser.git, just tell me
+which branch your changes are in.
