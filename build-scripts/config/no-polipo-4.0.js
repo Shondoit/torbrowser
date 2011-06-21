@@ -123,6 +123,7 @@ user_pref("noscript.firstRunRedirection", false);
 user_pref("noscript.global", true);
 user_pref("noscript.gtemp", "");
 user_pref("noscript.opacizeObject", 3);
+user_pref("noscript.forbidWebGL", true);
 user_pref("noscript.options.tabSelectedIndexes", "5,0,0");
 user_pref("noscript.policynames", "");
 user_pref("noscript.secureCookies", true);
