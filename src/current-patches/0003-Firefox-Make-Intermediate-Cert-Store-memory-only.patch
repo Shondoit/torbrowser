@@ -1,0 +1,283 @@
+From eb23d73f7ce0503d62485b81ace4fdbba091588a Mon Sep 17 00:00:00 2001
+From: Mike Perry <mikeperry-git@fscked.org>
+Date: Mon, 20 Jun 2011 17:07:49 -0700
+Subject: [PATCH 3/4] Firefox: Make Intermediate Cert Store memory-only.
+
+This patch makes the intermediate SSL cert store exist in memory only. It
+exposes a pref ('security.nocertdb') to toggle to clear the store, but this
+seems buggy.
+
+The pref must be set before startup in prefs.js.
+https://trac.torproject.org/projects/tor/ticket/2949
+---
+ security/manager/ssl/src/nsNSSComponent.cpp |  180 ++++++++++++++++++---------
+ 1 files changed, 120 insertions(+), 60 deletions(-)
+
+diff --git a/security/manager/ssl/src/nsNSSComponent.cpp b/security/manager/ssl/src/nsNSSComponent.cpp
+index 33377ac..716bcee 100644
+--- a/security/manager/ssl/src/nsNSSComponent.cpp
++++ b/security/manager/ssl/src/nsNSSComponent.cpp
+@@ -1674,8 +1674,21 @@ nsNSSComponent::InitializeNSS(PRBool showWarningBox)
+     // Ubuntu 8.04, which loads any nonexistent "<configdir>/libnssckbi.so" as
+     // "/usr/lib/nss/libnssckbi.so".
+     PRUint32 init_flags = NSS_INIT_NOROOTINIT | NSS_INIT_OPTIMIZESPACE;
+-    SECStatus init_rv = ::NSS_Initialize(profileStr.get(), "", "",
++    PRBool nocertdb = false;
++    mPrefBranch->GetBoolPref("security.nocertdb", &nocertdb);
++
++    // XXX: We can also do the the following to only disable the certdb.
++    // Leaving this codepath in as a fallback in case InitNODB fails
++    if (nocertdb)
++      init_flags |= NSS_INIT_NOCERTDB;
++
++    SECStatus init_rv;
++    if (nocertdb) {
++        init_rv = ::NSS_NoDB_Init(NULL);
++    } else {
++        init_rv = ::NSS_Initialize(profileStr.get(), "", "",
+                                          SECMOD_DB, init_flags);
++    }
+ 
+     if (init_rv != SECSuccess) {
+       PR_LOG(gPIPNSSLog, PR_LOG_DEBUG, ("can not init NSS r/w in %s\n", profileStr.get()));
+@@ -2231,70 +2244,106 @@ nsNSSComponent::Observe(nsISupports *aSubject, const char *aTopic,
+       }
+     }
+   }
+-  else if (nsCRT::strcmp(aTopic, NS_PREFBRANCH_PREFCHANGE_TOPIC_ID) == 0) { 
+-    nsNSSShutDownPreventionLock locker;
+-    PRBool clearSessionCache = PR_FALSE;
+-    PRBool enabled;
++  else if (nsCRT::strcmp(aTopic, NS_PREFBRANCH_PREFCHANGE_TOPIC_ID) == 0) {
+     NS_ConvertUTF16toUTF8  prefName(someData);
++    // XXX: This should be an observer notification, so we can properly cancel it
++    if (prefName.Equals("security.nocertdb")) {
++      // XXX: If these functions tell us to cancel, the browser seems to get left in an
++      // indeterminate state that prevents SSL from being used.
++      //
++      // We apparently need to wait for all SSL sockets to shut down on their
++      // own (this can take up to a minute!) and then attempt to alter the pref
++      // again before doing anything.
++      //
++      // So any implementation of New Identity based on this code will need to keep
++      // attempting to send the notification until it is not canceled. Ugh...
++      if (!DoProfileApproveChange(aSubject)) {
++        PR_LOG(gPIPNSSLog, PR_LOG_DEBUG, ("CertDB change canceled\n"));
++        return NS_OK;
++      }
+ 
+-    if (prefName.Equals("security.enable_ssl2")) {
+-      mPrefBranch->GetBoolPref("security.enable_ssl2", &enabled);
+-      SSL_OptionSetDefault(SSL_ENABLE_SSL2, enabled);
+-      SSL_OptionSetDefault(SSL_V2_COMPATIBLE_HELLO, enabled);
+-      clearSessionCache = PR_TRUE;
+-    } else if (prefName.Equals("security.enable_ssl3")) {
+-      mPrefBranch->GetBoolPref("security.enable_ssl3", &enabled);
+-      SSL_OptionSetDefault(SSL_ENABLE_SSL3, enabled);
+-      clearSessionCache = PR_TRUE;
+-    } else if (prefName.Equals("security.enable_tls")) {
+-      mPrefBranch->GetBoolPref("security.enable_tls", &enabled);
+-      SSL_OptionSetDefault(SSL_ENABLE_TLS, enabled);
+-      clearSessionCache = PR_TRUE;
+-    } else if (prefName.Equals("security.enable_tls_session_tickets")) {
+-      mPrefBranch->GetBoolPref("security.enable_tls_session_tickets", &enabled);
+-      SSL_OptionSetDefault(SSL_ENABLE_SESSION_TICKETS, enabled);
+-    } else if (prefName.Equals("security.ssl.require_safe_negotiation")) {
+-      mPrefBranch->GetBoolPref("security.ssl.require_safe_negotiation", &enabled);
+-      SSL_OptionSetDefault(SSL_REQUIRE_SAFE_NEGOTIATION, enabled);
+-    } else if (prefName.Equals("security.ssl.allow_unrestricted_renego_everywhere__temporarily_available_pref")) {
+-      mPrefBranch->GetBoolPref("security.ssl.allow_unrestricted_renego_everywhere__temporarily_available_pref", &enabled);
+-      SSL_OptionSetDefault(SSL_ENABLE_RENEGOTIATION, 
+-        enabled ? SSL_RENEGOTIATE_UNRESTRICTED : SSL_RENEGOTIATE_REQUIRES_XTN);
+-    } else if (prefName.Equals("security.ssl.renego_unrestricted_hosts")) {
+-      char *unrestricted_hosts=nsnull;
+-      mPrefBranch->GetCharPref("security.ssl.renego_unrestricted_hosts", &unrestricted_hosts);
+-      if (unrestricted_hosts) {
+-        nsSSLIOLayerHelpers::setRenegoUnrestrictedSites(nsDependentCString(unrestricted_hosts));
+-        nsMemory::Free(unrestricted_hosts);
++      DoProfileChangeNetTeardown();
++      if (!DoProfileChangeTeardown(aSubject)) {
++        PR_LOG(gPIPNSSLog, PR_LOG_DEBUG, ("CertDB change canceled\n"));
++        return NS_OK;
++      }
++
++      if (!DoProfileBeforeChange(aSubject)) {
++        PR_LOG(gPIPNSSLog, PR_LOG_DEBUG, ("CertDB change canceled by NSS shutdown\n"));
++        // Need to re-add observer because ShutdownNSS removed it.
++        nsCOMPtr<nsIPrefBranch2> pbi = do_QueryInterface(mPrefBranch);
++        pbi->AddObserver("security.", this, PR_FALSE);
++        return NS_OK;
+       }
+-    } else if (prefName.Equals("security.ssl.treat_unsafe_negotiation_as_broken")) {
+-      mPrefBranch->GetBoolPref("security.ssl.treat_unsafe_negotiation_as_broken", &enabled);
+-      nsSSLIOLayerHelpers::setTreatUnsafeNegotiationAsBroken(enabled);
+-    } else if (prefName.Equals("security.ssl.warn_missing_rfc5746")) {
+-      PRInt32 warnLevel = 1;
+-      mPrefBranch->GetIntPref("security.ssl.warn_missing_rfc5746", &warnLevel);
+-      nsSSLIOLayerHelpers::setWarnLevelMissingRFC5746(warnLevel);
++
++      DoProfileChangeNetRestore();
++      InitializeNSS(PR_FALSE);
++      InitializeCRLUpdateTimer();
++      return NS_OK;
++    } else {
++      nsNSSShutDownPreventionLock locker;
++      PRBool clearSessionCache = PR_FALSE;
++      PRBool enabled;
++
++      if (prefName.Equals("security.enable_ssl2")) {
++        mPrefBranch->GetBoolPref("security.enable_ssl2", &enabled);
++        SSL_OptionSetDefault(SSL_ENABLE_SSL2, enabled);
++        SSL_OptionSetDefault(SSL_V2_COMPATIBLE_HELLO, enabled);
++        clearSessionCache = PR_TRUE;
++      } else if (prefName.Equals("security.enable_ssl3")) {
++        mPrefBranch->GetBoolPref("security.enable_ssl3", &enabled);
++        SSL_OptionSetDefault(SSL_ENABLE_SSL3, enabled);
++        clearSessionCache = PR_TRUE;
++      } else if (prefName.Equals("security.enable_tls")) {
++        mPrefBranch->GetBoolPref("security.enable_tls", &enabled);
++        SSL_OptionSetDefault(SSL_ENABLE_TLS, enabled);
++        clearSessionCache = PR_TRUE;
++      } else if (prefName.Equals("security.enable_tls_session_tickets")) {
++        mPrefBranch->GetBoolPref("security.enable_tls_session_tickets", &enabled);
++        SSL_OptionSetDefault(SSL_ENABLE_SESSION_TICKETS, enabled);
++      } else if (prefName.Equals("security.ssl.require_safe_negotiation")) {
++        mPrefBranch->GetBoolPref("security.ssl.require_safe_negotiation", &enabled);
++        SSL_OptionSetDefault(SSL_REQUIRE_SAFE_NEGOTIATION, enabled);
++      } else if (prefName.Equals("security.ssl.allow_unrestricted_renego_everywhere__temporarily_available_pref")) {
++        mPrefBranch->GetBoolPref("security.ssl.allow_unrestricted_renego_everywhere__temporarily_available_pref", &enabled);
++        SSL_OptionSetDefault(SSL_ENABLE_RENEGOTIATION, 
++          enabled ? SSL_RENEGOTIATE_UNRESTRICTED : SSL_RENEGOTIATE_REQUIRES_XTN);
++      } else if (prefName.Equals("security.ssl.renego_unrestricted_hosts")) {
++        char *unrestricted_hosts=nsnull;
++        mPrefBranch->GetCharPref("security.ssl.renego_unrestricted_hosts", &unrestricted_hosts);
++        if (unrestricted_hosts) {
++          nsSSLIOLayerHelpers::setRenegoUnrestrictedSites(nsDependentCString(unrestricted_hosts));
++          nsMemory::Free(unrestricted_hosts);
++        }
++      } else if (prefName.Equals("security.ssl.treat_unsafe_negotiation_as_broken")) {
++        mPrefBranch->GetBoolPref("security.ssl.treat_unsafe_negotiation_as_broken", &enabled);
++        nsSSLIOLayerHelpers::setTreatUnsafeNegotiationAsBroken(enabled);
++      } else if (prefName.Equals("security.ssl.warn_missing_rfc5746")) {
++        PRInt32 warnLevel = 1;
++        mPrefBranch->GetIntPref("security.ssl.warn_missing_rfc5746", &warnLevel);
++        nsSSLIOLayerHelpers::setWarnLevelMissingRFC5746(warnLevel);
+ #ifdef SSL_ENABLE_FALSE_START // Requires NSS 3.12.8
+-    } else if (prefName.Equals("security.ssl.enable_false_start")) {
+-      mPrefBranch->GetBoolPref("security.ssl.enable_false_start", &enabled);
+-      SSL_OptionSetDefault(SSL_ENABLE_FALSE_START, enabled);
++      } else if (prefName.Equals("security.ssl.enable_false_start")) {
++        mPrefBranch->GetBoolPref("security.ssl.enable_false_start", &enabled);
++        SSL_OptionSetDefault(SSL_ENABLE_FALSE_START, enabled);
+ #endif
+-    } else if (prefName.Equals("security.OCSP.enabled")
+-               || prefName.Equals("security.OCSP.require")) {
+-      setOCSPOptions(mPrefBranch);
+-    } else {
+-      /* Look through the cipher table and set according to pref setting */
+-      for (CipherPref* cp = CipherPrefs; cp->pref; ++cp) {
+-        if (prefName.Equals(cp->pref)) {
+-          mPrefBranch->GetBoolPref(cp->pref, &enabled);
+-          SSL_CipherPrefSetDefault(cp->id, enabled);
+-          clearSessionCache = PR_TRUE;
+-          break;
++      } else if (prefName.Equals("security.OCSP.enabled")
++                 || prefName.Equals("security.OCSP.require")) {
++        setOCSPOptions(mPrefBranch);
++      } else {
++        /* Look through the cipher table and set according to pref setting */
++        for (CipherPref* cp = CipherPrefs; cp->pref; ++cp) {
++          if (prefName.Equals(cp->pref)) {
++            mPrefBranch->GetBoolPref(cp->pref, &enabled);
++            SSL_CipherPrefSetDefault(cp->id, enabled);
++            clearSessionCache = PR_TRUE;
++            break;
++          }
+         }
+       }
++      if (clearSessionCache)
++        SSL_ClearSessionCache();
+     }
+-    if (clearSessionCache)
+-      SSL_ClearSessionCache();
+   }
+   else if (nsCRT::strcmp(aTopic, PROFILE_CHANGE_NET_TEARDOWN_TOPIC) == 0) {
+     PR_LOG(gPIPNSSLog, PR_LOG_DEBUG, ("receiving network teardown topic\n"));
+@@ -2463,16 +2512,19 @@ nsNSSComponent::RememberCert(CERTCertificate *cert)
+   return NS_OK;
+ }
+ 
+-void
++PRBool
+ nsNSSComponent::DoProfileApproveChange(nsISupports* aSubject)
+ {
+   if (mShutdownObjectList->isUIActive()) {
++    PR_LOG(gPIPNSSLog, PR_LOG_WARN, ("NSS UI active in profile change!\n"));
+     ShowAlert(ai_crypto_ui_active);
+     nsCOMPtr<nsIProfileChangeStatus> status = do_QueryInterface(aSubject);
+     if (status) {
+       status->VetoChange();
+     }
++    return false;
+   }
++  return true;
+ }
+ 
+ void
+@@ -2485,16 +2537,18 @@ nsNSSComponent::DoProfileChangeNetTeardown()
+   mIsNetworkDown = PR_TRUE;
+ }
+ 
+-void
++PRBool
+ nsNSSComponent::DoProfileChangeTeardown(nsISupports* aSubject)
+ {
+   PRBool callVeto = PR_FALSE;
+ 
+   if (!mShutdownObjectList->ifPossibleDisallowUI()) {
+     callVeto = PR_TRUE;
++    PR_LOG(gPIPNSSLog, PR_LOG_WARN, ("NSS: Not possible to disallow UI!\n"));
+     ShowAlert(ai_crypto_ui_active);
+   }
+   else if (mShutdownObjectList->areSSLSocketsActive()) {
++    PR_LOG(gPIPNSSLog, PR_LOG_WARN, ("NSS: SSL Sockets are active!\n"));
+     callVeto = PR_TRUE;
+     ShowAlert(ai_sockets_still_active);
+   }
+@@ -2505,9 +2559,11 @@ nsNSSComponent::DoProfileChangeTeardown(nsISupports* aSubject)
+       status->VetoChange();
+     }
+   }
++
++  return !callVeto;
+ }
+ 
+-void
++PRBool
+ nsNSSComponent::DoProfileBeforeChange(nsISupports* aSubject)
+ {
+   NS_ASSERTION(mIsNetworkDown, "nsNSSComponent relies on profile manager to wait for synchronous shutdown of all network activity");
+@@ -2526,16 +2582,20 @@ nsNSSComponent::DoProfileBeforeChange(nsISupports* aSubject)
+   }
+     
+   StopCRLUpdateTimer();
++  PRBool allow_change = PR_TRUE;
+ 
+   if (needsCleanup) {
+     if (NS_FAILED(ShutdownNSS())) {
++      PR_LOG(gPIPNSSLog, PR_LOG_WARN, ("NSS: Shutdown failed\n"));
+       nsCOMPtr<nsIProfileChangeStatus> status = do_QueryInterface(aSubject);
+       if (status) {
+         status->ChangeFailed();
+       }
++      allow_change = PR_FALSE;
+     }
+   }
+   mShutdownObjectList->allowUI();
++  return allow_change;
+ }
+ 
+ void
+-- 
+1.7.3.4
+
