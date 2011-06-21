@@ -179,7 +179,7 @@ Patch format
 The patches for TBB components live in torbrowser.git/src/current-patches and
 are in the following format:
 
-001-component-patch-summary.patch
+0001-component-patch-summary.patch
 
 Please see TBB's git for a list of current patches:
 https://gitweb.torproject.org/torbrowser.git/tree/refs/heads/maint-2.2:/src/current-patches
@@ -202,6 +202,14 @@ people will be looking in the patch to see why it's being used.
 
 You may have to change the filename of the patch to fit appropriately in the
 patch series if there are pre-existing patches.
+
+Alternatively, you can apply all the current patches in order to your git
+checkout, and you should be able to kick the N most recent back out again
+with:
+
+$ git format-patch -N
+
+This way, you can ensure there are no conflicts.
 
 Submitting patches
 ----------------------
