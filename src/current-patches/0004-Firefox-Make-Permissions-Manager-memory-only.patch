@@ -1,4 +1,4 @@
-From 880d0b8c0b0c30316585ad3745dd3ee824d326b8 Mon Sep 17 00:00:00 2001
+From acf065599f1ab270eed4846fbc916f245002da0d Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@fscked.org>
 Date: Mon, 20 Jun 2011 17:07:56 -0700
 Subject: [PATCH 4/4] Firefox: Make Permissions Manager memory-only
