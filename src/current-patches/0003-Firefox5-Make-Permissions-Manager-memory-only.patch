@@ -1,7 +1,7 @@
-From acf065599f1ab270eed4846fbc916f245002da0d Mon Sep 17 00:00:00 2001
+From 16bafbf39c89cce901af6500255822677bc4c36d Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@fscked.org>
 Date: Mon, 20 Jun 2011 17:07:56 -0700
-Subject: [PATCH 4/4] Firefox: Make Permissions Manager memory-only
+Subject: [PATCH 3/3] Firefox5: Make Permissions Manager memory-only
 
 This patch exposes a pref 'permissions.memory_only' that properly isolates the
 permissions manager to memory, which is responsible for all user specified
@@ -16,10 +16,10 @@ https://trac.torproject.org/projects/tor/ticket/2950
  1 files changed, 31 insertions(+), 3 deletions(-)
 
 diff --git a/extensions/cookie/nsPermissionManager.cpp b/extensions/cookie/nsPermissionManager.cpp
-index d182013..0a1aea6 100644
+index 773a973..5387397 100644
 --- a/extensions/cookie/nsPermissionManager.cpp
 +++ b/extensions/cookie/nsPermissionManager.cpp
-@@ -60,6 +60,10 @@
+@@ -58,6 +58,10 @@
  #include "mozStorageHelper.h"
  #include "mozStorageCID.h"
  #include "nsXULAppAPI.h"
@@ -30,7 +30,7 @@ index d182013..0a1aea6 100644
  
  static nsPermissionManager *gPermissionManager = nsnull;
  
-@@ -233,6 +237,11 @@ nsPermissionManager::Init()
+@@ -227,6 +231,11 @@ nsPermissionManager::Init()
      mObserverService->AddObserver(this, "profile-do-change", PR_TRUE);
    }
  
@@ -39,10 +39,10 @@ index d182013..0a1aea6 100644
 +    pbi->AddObserver("permissions.", this, PR_FALSE);
 +  }
 +
- #ifdef MOZ_IPC
    if (IsChildProcess()) {
      // Get the permissions from the parent process
-@@ -283,8 +292,18 @@ nsPermissionManager::InitDB(PRBool aRemoveFile)
+     InfallibleTArray<IPC::Permission> perms;
+@@ -275,8 +284,18 @@ nsPermissionManager::InitDB(PRBool aRemoveFile)
    if (!storage)
      return NS_ERROR_UNEXPECTED;
  
@@ -62,7 +62,7 @@ index d182013..0a1aea6 100644
    NS_ENSURE_SUCCESS(rv, rv);
  
    PRBool ready;
-@@ -294,7 +313,11 @@ nsPermissionManager::InitDB(PRBool aRemoveFile)
+@@ -286,7 +305,11 @@ nsPermissionManager::InitDB(PRBool aRemoveFile)
      rv = permissionsFile->Remove(PR_FALSE);
      NS_ENSURE_SUCCESS(rv, rv);
  
@@ -75,9 +75,9 @@ index d182013..0a1aea6 100644
      NS_ENSURE_SUCCESS(rv, rv);
  
      mDBConn->GetConnectionReady(&ready);
-@@ -825,7 +848,12 @@ NS_IMETHODIMP nsPermissionManager::Observe(nsISupports *aSubject, const char *aT
+@@ -805,7 +828,12 @@ NS_IMETHODIMP nsPermissionManager::Observe(nsISupports *aSubject, const char *aT
+ {
    ENSURE_NOT_CHILD_PROCESS;
- #endif
  
 -  if (!nsCRT::strcmp(aTopic, "profile-before-change")) {
 +  if (nsCRT::strcmp(aTopic, NS_PREFBRANCH_PREFCHANGE_TOPIC_ID) == 0) {

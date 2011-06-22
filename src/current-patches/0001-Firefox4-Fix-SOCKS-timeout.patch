@@ -1,7 +1,7 @@
-From 51be2e0f33325dcd6275229d3d99a2ae7b1bda40 Mon Sep 17 00:00:00 2001
+From d37dce07b9eb9b40244d2fa867728e7a57a33f0f Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@fscked.org>
 Date: Mon, 20 Jun 2011 17:07:33 -0700
-Subject: [PATCH 1/4] Firefox: Fix SOCKS timeout
+Subject: [PATCH 1/4] Firefox4: Fix SOCKS timeout
 
 This patch by chrisd removes the hardcoded SOCKS timeout by rewriting the
 Firefox SOCKS code to use non-blocking IO.

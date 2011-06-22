@@ -1,7 +1,7 @@
-From a401deb3598db247113a998fb287f663b6acfac0 Mon Sep 17 00:00:00 2001
+From 16b89c54032d1ad0acf2d6fa005b292a6f434791 Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@fscked.org>
 Date: Mon, 20 Jun 2011 17:07:49 -0700
-Subject: [PATCH 3/4] Firefox: Make Intermediate Cert Store memory-only.
+Subject: [PATCH 2/3] Firefox5: Make Intermediate Cert Store memory-only.
 
 This patch makes the intermediate SSL cert store exist in memory only. It
 exposes a pref ('security.nocertdb') to toggle to clear the store, but this
@@ -14,10 +14,10 @@ https://trac.torproject.org/projects/tor/ticket/2949
  1 files changed, 120 insertions(+), 60 deletions(-)
 
 diff --git a/security/manager/ssl/src/nsNSSComponent.cpp b/security/manager/ssl/src/nsNSSComponent.cpp
-index 33377ac..716bcee 100644
+index d3ae772..fa37ace 100644
 --- a/security/manager/ssl/src/nsNSSComponent.cpp
 +++ b/security/manager/ssl/src/nsNSSComponent.cpp
-@@ -1674,8 +1674,21 @@ nsNSSComponent::InitializeNSS(PRBool showWarningBox)
+@@ -1658,8 +1658,21 @@ nsNSSComponent::InitializeNSS(PRBool showWarningBox)
      // Ubuntu 8.04, which loads any nonexistent "<configdir>/libnssckbi.so" as
      // "/usr/lib/nss/libnssckbi.so".
      PRUint32 init_flags = NSS_INIT_NOROOTINIT | NSS_INIT_OPTIMIZESPACE;
@@ -40,7 +40,7 @@ index 33377ac..716bcee 100644
  
      if (init_rv != SECSuccess) {
        PR_LOG(gPIPNSSLog, PR_LOG_DEBUG, ("can not init NSS r/w in %s\n", profileStr.get()));
-@@ -2231,70 +2244,106 @@ nsNSSComponent::Observe(nsISupports *aSubject, const char *aTopic,
+@@ -2215,70 +2228,106 @@ nsNSSComponent::Observe(nsISupports *aSubject, const char *aTopic,
        }
      }
    }
@@ -203,7 +203,7 @@ index 33377ac..716bcee 100644
    }
    else if (nsCRT::strcmp(aTopic, PROFILE_CHANGE_NET_TEARDOWN_TOPIC) == 0) {
      PR_LOG(gPIPNSSLog, PR_LOG_DEBUG, ("receiving network teardown topic\n"));
-@@ -2463,16 +2512,19 @@ nsNSSComponent::RememberCert(CERTCertificate *cert)
+@@ -2447,16 +2496,19 @@ nsNSSComponent::RememberCert(CERTCertificate *cert)
    return NS_OK;
  }
  
@@ -224,7 +224,7 @@ index 33377ac..716bcee 100644
  }
  
  void
-@@ -2485,16 +2537,18 @@ nsNSSComponent::DoProfileChangeNetTeardown()
+@@ -2469,16 +2521,18 @@ nsNSSComponent::DoProfileChangeNetTeardown()
    mIsNetworkDown = PR_TRUE;
  }
  
@@ -244,7 +244,7 @@ index 33377ac..716bcee 100644
      callVeto = PR_TRUE;
      ShowAlert(ai_sockets_still_active);
    }
-@@ -2505,9 +2559,11 @@ nsNSSComponent::DoProfileChangeTeardown(nsISupports* aSubject)
+@@ -2489,9 +2543,11 @@ nsNSSComponent::DoProfileChangeTeardown(nsISupports* aSubject)
        status->VetoChange();
      }
    }
@@ -257,7 +257,7 @@ index 33377ac..716bcee 100644
  nsNSSComponent::DoProfileBeforeChange(nsISupports* aSubject)
  {
    NS_ASSERTION(mIsNetworkDown, "nsNSSComponent relies on profile manager to wait for synchronous shutdown of all network activity");
-@@ -2526,16 +2582,20 @@ nsNSSComponent::DoProfileBeforeChange(nsISupports* aSubject)
+@@ -2510,16 +2566,20 @@ nsNSSComponent::DoProfileBeforeChange(nsISupports* aSubject)
    }
      
    StopCRLUpdateTimer();
