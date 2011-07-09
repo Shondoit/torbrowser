@@ -28,7 +28,7 @@ VIDALIA_PACKAGE=vidalia-$(VIDALIA_VER).tar.gz
 LIBEVENT_PACKAGE=libevent-$(LIBEVENT_VER).tar.gz
 TOR_PACKAGE=tor-$(TOR_VER).tar.gz
 PIDGIN_PACKAGE=pidgin-$(PIDGIN_VER).tar.bz2
-FIREFOX_PACKAGE=firefox-$(FIREFOX_VER).tar.bz2
+FIREFOX_PACKAGE=firefox-$(FIREFOX_VER).source.tar.bz2
 
 ## Location of files for download
 ZLIB_URL=http://www.zlib.net/$(ZLIB_PACKAGE)
@@ -38,7 +38,7 @@ VIDALIA_URL=http://www.torproject.org/dist/vidalia/$(VIDALIA_PACKAGE)
 LIBEVENT_URL=http://www.monkey.org/~provos/$(LIBEVENT_PACKAGE)
 TOR_URL=http://www.torproject.org/dist/$(TOR_PACKAGE)
 PIDGIN_URL=http://sourceforge.net/projects/pidgin/files/Pidgin/$(PIDGIN_PACKAGE)
-#FIREFOX_URL=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/$(FIREFOX_VER)/linux-i686/en-US/$(FIREFOX_PACKAGE)
+FIREFOX_URL=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/$(FIREFOX_VER)/source/$(FIREFOX_PACKAGE)
 
 fetch-source:
 	-mkdir $(FETCH_DIR)
@@ -47,6 +47,10 @@ fetch-source:
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(VIDALIA_URL)
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(LIBEVENT_URL)
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(TOR_URL)
+
+fetch-firefox:
+	-rm -rf $(FETCH_DIR)/mozilla-release
+	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(FIREFOX_URL)
 
 unpack-source:
 	cd $(FETCH_DIR) && tar -xvzf $(ZLIB_PACKAGE)
