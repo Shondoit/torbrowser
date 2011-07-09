@@ -278,6 +278,23 @@ index d3ae772..fa37ace 100644
  }
  
  void
+--- a/security/manager/ssl/src/nsNSSComponent.h
++++ b/security/manager/ssl/src/nsNSSComponent.h
+@@ -321,10 +321,10 @@
+ 
+   // Methods that we use to handle the profile change notifications (and to
+   // synthesize a full profile change when we're just doing a profile startup):
+-  void DoProfileApproveChange(nsISupports* aSubject);
++  PRBool DoProfileApproveChange(nsISupports* aSubject);
+   void DoProfileChangeNetTeardown();
+-  void DoProfileChangeTeardown(nsISupports* aSubject);
+-  void DoProfileBeforeChange(nsISupports* aSubject);
++  PRBool DoProfileChangeTeardown(nsISupports* aSubject);
++  PRBool DoProfileBeforeChange(nsISupports* aSubject);
+   void DoProfileChangeNetRestore();
+   
+   Mutex mutex;
+
 -- 
 1.7.3.4
 
