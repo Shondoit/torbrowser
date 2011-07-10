@@ -315,8 +315,8 @@ strip-it-stripper:
 ##
 
 ## Torbutton development version
-#torbutton.xpi:
-#	$(WGET) --no-check-certificate -O $@ $(TORBUTTON)
+torbutton.xpi:
+	$(WGET) --no-check-certificate -O $@ $(TORBUTTON)
 
 ## BetterPrivacy
 betterprivacy.xpi:
