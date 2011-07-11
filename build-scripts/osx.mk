@@ -41,17 +41,17 @@ BUILT_DIR=$(FETCH_DIR)/built
 TBB_FINAL=$(BUILT_DIR)/TBBL
 
 ## Versions for our source packages
-HTTPSEVERY_VER=0.9.9.development.6
-FIREFOX_VER=3.6.17
+HTTPSEVERY_VER=1.0.0development.4
+FIREFOX_VER=3.6.18
 LIBEVENT_VER=2.0.12-stable
 LIBPNG_VER=1.4.3
-NOSCRIPT_VER=2.1.1.1
+NOSCRIPT_VER=2.1.1.2
 OPENSSL_VER=0.9.8p
 OTR_VER=3.2.0
 PIDGIN_VER=2.6.4
 POLIPO_VER=1.0.4.1
 QT_VER=4.6.2
-TOR_VER=0.2.2.29-beta
+TOR_VER=0.2.2.30-rc
 TORBUTTON_VER=1.2.5
 VIDALIA_VER=0.2.12
 ZLIB_VER=1.2.5
@@ -211,7 +211,7 @@ NAME=TorBrowser
 DISTDIR=tbbosx-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.0.19-dev
+VERSION=1.0.20-dev
 DEFAULT_COMPRESSED_BASENAME=TorBrowser-$(VERSION)-osx-$(ARCH_TYPE)-
 IM_COMPRESSED_BASENAME=TorBrowser-IM-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)
@@ -227,7 +227,7 @@ endif
 DEFAULT_EXTENSIONS=torbutton.xpi
 
 ## Where to download Torbutton from
-TORBUTTON=https://www.torproject.org/torbutton/releases/torbutton-$(TORBUTTON_VER).xpi
+TORBUTTON=https://archive.torproject.org/tor-package-archive/torbutton/torbutton-$(TORBUTTON_VER).xpi
 NOSCRIPT=https://secure.informaction.com/download/releases/noscript-$(NOSCRIPT_VER).xpi
 BETTERPRIVACY=https://addons.mozilla.org/en-US/firefox/downloads/latest/6623/addon-6623-latest.xpi
 HTTPSEVERYWHERE=https://eff.org/files/https-everywhere-$(HTTPSEVERY_VER).xpi
