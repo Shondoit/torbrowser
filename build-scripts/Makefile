@@ -18,7 +18,7 @@ OPENSSL=/e/build/openssl-0.9.8p/
 
 ## Versions
 TORBUTTON_VERSION=1.2.5
-FIREFOX_VERSION=3.6.17
+FIREFOX_VERSION=3.6.18
 PIDGIN_VERSION=2.7.5
 
 ## Location of bundle components
@@ -49,7 +49,7 @@ DEST="Generic Bundle"
 NAME="Tor Browser"
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.3.24
+VERSION=1.3.25
 DEFAULT_COMPRESSED_BASENAME=tor-browser-
 IM_COMPRESSED_BASENAME=tor-im-browser-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
