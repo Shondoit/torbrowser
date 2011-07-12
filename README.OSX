@@ -24,6 +24,10 @@ To exit, close Firefox and Vidalia.
 Changelog
 ---------
 
+1.0.21: Released 2011-07-12
+	The new HTTPS-Everywhere was missing from the last release. Actually
+        add it this time.
+
 1.0.20: Released 2011-07-10
         Update Tor to 0.2.2.30-rc
         Update Firefox to 3.6.18
