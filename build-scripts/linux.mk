@@ -42,7 +42,7 @@ TBB_FINAL=$(BUILT_DIR)/TBBL
 
 ## Versions for our source packages
 HTTPSEVERY_VER=1.0.0development.4
-FIREFOX_VER=3.6.18
+FIREFOX_VER=3.6.19
 LIBEVENT_VER=2.0.12-stable
 LIBPNG_VER=1.4.3
 NOSCRIPT_VER=2.1.1.2

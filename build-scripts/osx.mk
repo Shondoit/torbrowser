@@ -42,7 +42,7 @@ TBB_FINAL=$(BUILT_DIR)/TBBL
 
 ## Versions for our source packages
 HTTPSEVERY_VER=1.0.0development.4
-FIREFOX_VER=3.6.18
+FIREFOX_VER=3.6.19
 LIBEVENT_VER=2.0.12-stable
 LIBPNG_VER=1.4.3
 NOSCRIPT_VER=2.1.1.2
@@ -211,7 +211,7 @@ NAME=TorBrowser
 DISTDIR=tbbosx-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.0.21-dev
+VERSION=1.0.22-dev
 DEFAULT_COMPRESSED_BASENAME=TorBrowser-$(VERSION)-osx-$(ARCH_TYPE)-
 IM_COMPRESSED_BASENAME=TorBrowser-IM-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)

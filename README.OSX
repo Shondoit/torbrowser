@@ -7,7 +7,7 @@ Included applications
 Vidalia 0.2.12 (with Qt 4.6.2)
 Tor 0.2.2.30-rc (with libevent-2.0.12-stable, zlib-1.2.5 and openssl-0.9.8p)
 Polipo 1.0.4.1
-Firefox 3.6.18
+Firefox 3.6.19
  \_ Torbutton 1.2.5
  |_ NoScript 2.1.1.2
  |_ HTTPS-Everywhere 1.0.0development.4
@@ -23,6 +23,9 @@ To exit, close Firefox and Vidalia.
 
 Changelog
 ---------
+
+1.0.22: Released 2011-07-13
+        Update Firefox to 3.6.19
 
 1.0.21: Released 2011-07-12
 	The new HTTPS-Everywhere was missing from the last release. Actually
