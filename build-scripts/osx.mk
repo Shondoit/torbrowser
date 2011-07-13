@@ -35,7 +35,7 @@
 include $(PWD)/versions.mk
 
 ## Architecture
-ARCH_TYPE=x86_64
+ARCH_TYPE=i386
 
 ## Location of directory for source unpacking
 FETCH_DIR=$(PWD)/build-alpha-$(ARCH_TYPE)
@@ -149,7 +149,7 @@ NAME=TorBrowser
 DISTDIR=tbbosx-alpha-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=$(RELEASE_VER)-1-alpha
+VERSION=$(RELEASE_VER)-2-alpha
 DEFAULT_COMPRESSED_BASENAME=TorBrowser-$(VERSION)-osx-$(ARCH_TYPE)-
 IM_COMPRESSED_BASENAME=TorBrowser-IM-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)
