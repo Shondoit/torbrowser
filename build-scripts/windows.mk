@@ -41,7 +41,6 @@ WIX_LIB="/c/Program Files (x86)/Windows Installer XML v3.5/bin"
 ## Location of bundle components
 VIDALIA=$(FETCH_DIR)/vidalia-$(VIDALIA_VER)
 TOR=$(FETCH_DIR)/tor-$(TOR_VER)
-POLIPO=$(FETCH_DIR)/polipo-$(POLIPO_VER)
 FIREFOX=$(FETCH_DIR)/FirefoxPortable-$(FIREFOX_VER)
 PIDGIN=$(FETCH_DIR)/PidginPortable-$(PIDGIN_VER)
 
@@ -94,12 +93,6 @@ build-libevent:
 	cd $(LIBEVENT_DIR) && CFLAGS=$(LIBEVENT_CFLAGS) LDFLAGS=$(LIBEVENT_LDFLAGS) ./configure $(LIBEVENT_OPTS)
 	cd $(LIBEVENT_DIR) && make -j2
 	cd $(LIBEVENT_DIR) && make install
-
-POLIPO_DIR=$(FETCH_DIR)/polipo-$(POLIPO_VER)
-POLIPO_MAKEFILE=$(CONFIG_SRC)/polipo-Makefile
-POLIPO_LDFLAGS="-Wl,--nxcompat -Wl,--dynamicbase"
-build-polipo:
-	cd $(POLIPO_DIR) && LDFLAGS=$(POLIPO_LDFLAGS) make && PREFIX=$(FETCH_DIR)/built/ make install.binary
 
 TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)
 TOR_CFLAGS="-O -g -I$(BUILT_DIR)/include"
@@ -230,7 +223,6 @@ reallyclean: clean
 
 virus-scan:
 	$(VIRUSSCAN) $(VIDALIA)/build/src/vidalia/vidalia.exe
-	$(VIRUSSCAN) $(COMPILED_BINS)/polipo.exe
 	$(VIRUSSCAN) $(TOR)/src/or/tor.exe 
 	$(VIRUSSCAN) $(TOR)/src/tools/tor-resolve.exe
 
@@ -253,7 +245,6 @@ directory-structure:
 	mkdir -p $(APPDIR)
 	mkdir -p $(DATADIR)/Tor
 	mkdir -p $(DATADIR)/Vidalia
-	mkdir -p $(DATADIR)/Polipo
 	mkdir -p $(DOCSDIR)
 
 ## Package up all the Vidalia and Tor pre-requisites
@@ -265,7 +256,6 @@ install-binaries:
 	cp $(OPENSSL_LIB)/ssleay32.dll $(APPDIR)
 	cp $(OPENSSL_LIB)/libeay32.dll $(APPDIR)
 	cp $(VIDALIA)/build/src/vidalia/vidalia.exe $(APPDIR)
-	cp $(COMPILED_BINS)/polipo.exe $(APPDIR)
 	cp $(TOR)/src/or/tor.exe $(TOR)/src/tools/tor-resolve.exe $(APPDIR)
 
 ## Fixup
@@ -275,12 +265,10 @@ install-docs:
 	mkdir -p $(DOCSDIR)/Tor
 	mkdir -p $(DOCSDIR)/Qt
 	mkdir -p $(DOCSDIR)/MinGW
-	mkdir -p $(DOCSDIR)/Polipo
 	cp $(VIDALIA)/LICENSE* $(VIDALIA)/CREDITS $(DOCSDIR)/Vidalia
 	cp $(TOR)/LICENSE $(TOR)/README $(DOCSDIR)/Tor
 	cp $(QT_LIB)/../LICENSE.GPL* $(QT_LIB)/../LICENSE.LGPL $(DOCSDIR)/Qt
 	cp $(MING)/../msys/1.0/share/doc/MSYS/COPYING $(DOCSDIR)/MinGW
-	cp $(POLIPO)/COPYING  $(POLIPO)/README.Windows $(DOCSDIR)/Polipo
 	cp ../changelog.win-2.2 $(DOCSDIR)/changelog
 	cp ../README.WIN-2.2 $(DOCSDIR)/README-TorBrowserBundle
 
@@ -294,7 +282,7 @@ ifeq ($(USE_PIDGIN),1)
 	cp -r $(PIDGIN) $(DEST)/PidginPortable
 endif
 
-## Configure Firefox, FirefoxPortable, Vidalia, Polipo and Tor
+## Configure Firefox, FirefoxPortable, Vidalia, and Tor
 configure-apps:
 
 	mkdir -p $(DEST)/FirefoxPortable/Data/profile
@@ -323,8 +311,6 @@ ifeq ($(USE_PIDGIN),1)
 else
 	cp $(CONFIG_SRC)/vidalia.conf.ff $(DEST)/Data/Vidalia/vidalia.conf
 endif
-	## Configure Polipo
-	cp $(CONFIG_SRC)/polipo.conf $(DEST)/Data/Polipo
 	## Configure Tor
 	cp $(CONFIG_SRC)/torrc $(DEST)/Data/Tor
 	cp $(TOR)/src/config/geoip $(DEST)/Data/Tor
