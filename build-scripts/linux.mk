@@ -449,7 +449,7 @@ compressed-bundle_%:
 	LANGCODE=$* make -f linux.mk compressed-bundle-localized
 
 bundle-localized_%.stamp:
-	make -f linux.mk copy-files_$* install-extensions install-betterprivacy install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language update-extension-pref
+	make -f linux.mk copy-files_$* install-extensions install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language update-extension-pref
 	touch bundle-localized_$*.stamp
 
 bundle-localized: bundle-localized_$(LANGCODE).stamp
