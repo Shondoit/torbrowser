@@ -4,14 +4,13 @@ Tor Browser Bundle for Mac OS X
 Included applications
 ---------------------
 
-Vidalia 0.2.12 (with Qt 4.6.2)
-Tor 0.2.2.30-rc (with libevent-2.0.12-stable, zlib-1.2.5 and openssl-0.9.8p)
+Vidalia 0.2.13 (with Qt 4.6.2)
+Tor 0.2.2.31-rc (with libevent-2.0.13-stable, zlib-1.2.5 and openssl-0.9.8p)
 Polipo 1.0.4.1
-Firefox 3.6.19
+Firefox 3.6.20
  \_ Torbutton 1.2.5
- |_ NoScript 2.1.1.2
- |_ HTTPS-Everywhere 1.0.0development.4
- |_ BetterPrivacy 1.51
+ |_ NoScript 2.1.2.6
+ |_ HTTPS-Everywhere 1.0.0development.5
 
 Usage
 -----
@@ -23,6 +22,16 @@ To exit, close Firefox and Vidalia.
 
 Changelog
 ---------
+
+1.0.23: Released 2011-08-19
+        Update Tor to 0.2.2.31-rc
+        Update Vidalia to 0.2.13
+        Update Firefox to 3.6.20
+        Update Libevent to 2.0.13-stable
+        Update NoScript to 2.1.2.6
+        Update HTTPS-Everywhere to 1.0.0development.5
+        Remove BetterPrivacy until we can figure out how to make it safe in all
+        bundles (see #3597)
 
 1.0.22: Released 2011-07-13
         Update Firefox to 3.6.19
