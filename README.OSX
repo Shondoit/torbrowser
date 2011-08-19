@@ -4,7 +4,7 @@ Tor Browser Bundle for Mac OS X
 Included applications
 ---------------------
 
-Vidalia 0.2.13 (with Qt 4.6.2)
+Vidalia 0.2.12 (with Qt 4.6.2)
 Tor 0.2.2.31-rc (with libevent-2.0.13-stable, zlib-1.2.5 and openssl-0.9.8p)
 Polipo 1.0.4.1
 Firefox 3.6.20
@@ -25,7 +25,6 @@ Changelog
 
 1.0.23: Released 2011-08-19
         Update Tor to 0.2.2.31-rc
-        Update Vidalia to 0.2.13
         Update Firefox to 3.6.20
         Update Libevent to 2.0.13-stable
         Update NoScript to 2.1.2.6
