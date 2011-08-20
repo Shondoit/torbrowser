@@ -1,0 +1,43 @@
+From 2bdee82990bbda960d23d6122bf89d422bb63211 Mon Sep 17 00:00:00 2001
+From: Mike Perry <mikeperry-git@fscked.org>
+Date: Fri, 19 Aug 2011 17:58:23 -0700
+Subject: [PATCH 3/3] Firefox6: Make Intermediate Cert Store memory-only.
+
+This patch makes the intermediate SSL cert store exist in memory only.
+
+The pref must be set before startup in prefs.js.
+https://trac.torproject.org/projects/tor/ticket/2949
+---
+ security/manager/ssl/src/nsNSSComponent.cpp |   16 ++++++++++++++++
+ 1 files changed, 16 insertions(+), 0 deletions(-)
+
+diff --git a/security/manager/ssl/src/nsNSSComponent.cpp b/security/manager/ssl/src/nsNSSComponent.cpp
+index 7a8569b..5261c5e 100644
+--- a/security/manager/ssl/src/nsNSSComponent.cpp
++++ b/security/manager/ssl/src/nsNSSComponent.cpp
+@@ -1729,6 +1729,22 @@ nsNSSComponent::InitializeNSS(PRBool showWarningBox)
+     // Ubuntu 8.04, which loads any nonexistent "<configdir>/libnssckbi.so" as
+     // "/usr/lib/nss/libnssckbi.so".
+     PRUint32 init_flags = NSS_INIT_NOROOTINIT | NSS_INIT_OPTIMIZESPACE;
++    PRBool nocertdb = false;
++    mPrefBranch->GetBoolPref("security.nocertdb", &nocertdb);
++
++    // XXX: We can also do the the following to only disable the certdb.
++    // Leaving this codepath in as a fallback in case InitNODB fails
++    if (nocertdb)
++      init_flags |= NSS_INIT_NOCERTDB;
++
++    SECStatus init_rv;
++    if (nocertdb) {
++        init_rv = ::NSS_NoDB_Init(NULL);
++    } else {
++        init_rv = ::NSS_Initialize(profileStr.get(), "", "",
++                                         SECMOD_DB, init_flags);
++    }
++
+     SECStatus init_rv = ::NSS_Initialize(profileStr.get(), "", "",
+                                          SECMOD_DB, init_flags);
+ 
+-- 
+1.7.3.4
+
