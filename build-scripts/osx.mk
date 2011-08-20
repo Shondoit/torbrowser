@@ -351,7 +351,7 @@ bundle_%:
 compressed-bundle_%:
 	LANGCODE=$* make -f osx.mk compressed-bundle-localized
 bundle-localized_%.stamp:
-	make -f osx.mk copy-files_$* install-extensions install-betterprivacy install-httpseverywhere install-noscript install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language update-extension-pref final
+	make -f osx.mk copy-files_$* install-extensions install-httpseverywhere install-noscript install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language update-extension-pref final
 	touch bundle-localized_$*.stamp
 	cp extensions/torbutton.xpi .
 
