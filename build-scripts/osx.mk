@@ -109,6 +109,10 @@ build-firefox:
 	cd $(FIREFOX_DIR) && ./patch-firefox-src.sh
 	cd $(FIREFOX_DIR) && make -f client.mk build
 
+copy-firefox:
+	-rm -rf $(FETCH_DIR)/Firefox.app
+	cp -r $(FIREFOX_DIR)/obj*/dist/*.app $(FETCH_DIR)/Firefox.app
+
 build-all-binaries: build-zlib build-openssl build-vidalia build-libevent build-tor
 	echo "If we're here, we've done something right."
 

@@ -35,28 +35,55 @@ ZLIB_URL=http://www.zlib.net/$(ZLIB_PACKAGE)
 OPENSSL_URL=http://www.openssl.org/source/$(OPENSSL_PACKAGE)
 QT_URL=ftp://ftp.qt.nokia.com/qt/source/$(QT_PACKAGE)
 VIDALIA_URL=http://www.torproject.org/dist/vidalia/$(VIDALIA_PACKAGE)
-LIBEVENT_URL=http://www.monkey.org/~provos/$(LIBEVENT_PACKAGE)
+LIBEVENT_URL=http://archive.torproject.org/tor-package-archive/libevent/$(LIBEVENT_PACKAGE)
 TOR_URL=http://www.torproject.org/dist/$(TOR_PACKAGE)
 PIDGIN_URL=http://sourceforge.net/projects/pidgin/files/Pidgin/$(PIDGIN_PACKAGE)
 FIREFOX_URL=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/$(FIREFOX_VER)/source/$(FIREFOX_PACKAGE)
 
-fetch-source:
+fetch-source: fetch-zlib fetch-openssl fetch-vidalia fetch-libevent fetch-tor fetch-firefox
 	-mkdir $(FETCH_DIR)
+
+fetch-zlib:
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(ZLIB_URL)
+
+fetch-openssl:
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(OPENSSL_URL)
+
+fetch-vidalia:
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(VIDALIA_URL)
+
+fetch-libevent:
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(LIBEVENT_URL)
+
+fetch-tor:
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(TOR_URL)
 
 fetch-firefox:
 	-rm -rf $(FETCH_DIR)/mozilla-release
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(FIREFOX_URL)
 
-unpack-source:
+unpack-source: unpack-zlib unpack-openssl unpack-vidalia unpack-libevent unpack-tor unpack-firefox
+
+unpack-zlib:
+	-rm -rf $(FETCH_DIR)/zlib-$(ZLIB_VER)
 	cd $(FETCH_DIR) && tar -xvzf $(ZLIB_PACKAGE)
+
+unpack-openssl:
+	-rm -rf $(FETCH_DIR)/openssl-$(OPENSSL_VER)
 	cd $(FETCH_DIR) && tar -xvzf $(OPENSSL_PACKAGE)
+
+unpack-vidalia:
+	-rm -rf $(FETCH_DIR)/vidalia-$(VIDALIA_VER)
 	cd $(FETCH_DIR) && tar -xvzf $(VIDALIA_PACKAGE)
+
+unpack-libevent:
+	-rm -rf $(FETCH_DIR)/libevent-$(LIBEVENT_VER)
 	cd $(FETCH_DIR) && tar -xvzf $(LIBEVENT_PACKAGE)
+
+unpack-tor:
+	-rm -rf $(FETCH_DIR)/tor-$(TOR-VER)
 	cd $(FETCH_DIR) && tar -xvzf $(TOR_PACKAGE)
 
-
+unpack-firefox:
+	-rm -rf $(FETCH_DIR)/mozilla-release
+	cd $(FETCH_DIR) && tar -xvjf $(FIREFOX_PACKAGE)

@@ -359,7 +359,7 @@ split-bundle_%:
 	LANGCODE=$* make -f windows.mk split-bundle-localized
 
 bundle-localized_%.stamp:
-	make -f windows.mk copy-files_$* install-extensions install-torbutton install-httpseverywhere install-betterprivacy install-noscript patch-vidalia-language patch-firefox-language patch-pidgin-language
+	make -f windows.mk copy-files_$* install-extensions install-torbutton install-httpseverywhere install-noscript patch-vidalia-language patch-firefox-language patch-pidgin-language
 	touch bundle-localized_$*.stamp
 
 bundle-localized: bundle-localized_$(LANGCODE).stamp

@@ -108,8 +108,20 @@ build-polipo:
 build-pidgin:
 	echo "We're not building pidgin yet!"
 
+FIREFOX_DIR=$(FETCH_DIR)/mozilla-release
 build-firefox:
-	# XXX: add directions ASAP
+	cp ../src/current-patches/*Firefox* $(FIREFOX_DIR)
+	cp patch-firefox-src.sh $(FIREFOX_DIR)
+	cp $(CONFIG_SRC)/mozconfig-osx-$(ARCH_TYPE) $(FIREFOX_DIR)/mozconfig
+	cd $(FIREFOX_DIR) && ./patch-firefox-src.sh
+	cd $(FIREFOX_DIR) && make -f client.mk build
+
+copy-firefox:
+	-rm -rf $(FETCH_DIR)/Firefox
+	## This is so ugly. Update it to use cool tar --transform soon.
+	cd $(FIREFOX_DIR) && make -C obj-$(ARCH_TYPE)-pc-linux-gnu/ package
+	cp $(FIREFOX_DIR)/obj-$(ARCH_TYPE)-pc-linux-gnu/*bz2 $(FETCH_DIR)
+	cd $(FETCH_DIR) && tar -xvjf firefox-$(FIREFOX_VER).en-US.bz2 && mv firefox Firefox
 
 # source-dance unpack-source
 build-all-binaries: source-dance build-zlib build-openssl build-libpng build-qt build-vidalia build-libevent build-tor build-polipo
@@ -269,9 +281,9 @@ install-binaries:
 	cp -d $(ZLIB)/libz.so $(ZLIB)/libz.so.1 $(ZLIB)/libz.so.1.2.5 $(LIBSDIR)/libz
 	# Libevent
 	cp -d $(LIBEVENT)/libevent-2.0.so.5 $(LIBEVENT)/libevent-2.0.so.5.0.1 $(LIBEVENT)/libevent_core.so \
-           $(LIBEVENT)/libevent_core-2.0.so.5 $(LIBEVENT)/libevent_core-2.0.so.5.0.1 \
-           $(LIBEVENT)/libevent_extra-2.0.so.5 $(LIBEVENT)/libevent_extra-2.0.so.5.0.1 \
-           $(LIBEVENT)/libevent_extra.so $(LIBEVENT)/libevent.so $(LIBSDIR)
+	   $(LIBEVENT)/libevent_core-2.0.so.5 $(LIBEVENT)/libevent_core-2.0.so.5.0.1 \
+	   $(LIBEVENT)/libevent_extra-2.0.so.5 $(LIBEVENT)/libevent_extra-2.0.so.5.0.1 \
+	   $(LIBEVENT)/libevent_extra.so $(LIBEVENT)/libevent.so $(LIBSDIR)
 	# libpng
 	cp -d $(LIBPNG)/libpng14.so* $(LIBSDIR) 
 	# OpenSSL
@@ -436,8 +448,8 @@ patch-pidgin-language:
 	## Patch Pidgin
 ifeq ($(USE_PIDGIN),1)
 	./patch-pidgin-language.sh $(BUNDLE)/PidginPortable/Data/settings/PidginPortableSettings.ini $(LANGCODE) \
-                                   $(BUNDLE)/PidginPortable/App/Pidgin/locale \
-                                   $(BUNDLE)/PidginPortable/App/GTK/share/locale
+				   $(BUNDLE)/PidginPortable/App/Pidgin/locale \
+				   $(BUNDLE)/PidginPortable/App/GTK/share/locale
 endif
 
 patch-firefox-language:
