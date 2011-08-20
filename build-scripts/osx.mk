@@ -103,7 +103,7 @@ build-tor:
 
 FIREFOX_DIR=$(FETCH_DIR)/mozilla-release
 build-firefox:
-	cp ../src/current-patches/*Firefox5* $(FIREFOX_DIR)
+	cp ../src/current-patches/*Firefox* $(FIREFOX_DIR)
 	cp patch-firefox-src.sh $(FIREFOX_DIR)
 	cp $(CONFIG_SRC)/mozconfig-osx-$(ARCH_TYPE) $(FIREFOX_DIR)/mozconfig
 	cd $(FIREFOX_DIR) && ./patch-firefox-src.sh
