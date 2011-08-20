@@ -112,7 +112,7 @@ FIREFOX_DIR=$(FETCH_DIR)/mozilla-release
 build-firefox:
 	cp ../src/current-patches/*Firefox* $(FIREFOX_DIR)
 	cp patch-firefox-src.sh $(FIREFOX_DIR)
-	cp $(CONFIG_SRC)/mozconfig-osx-$(ARCH_TYPE) $(FIREFOX_DIR)/mozconfig
+	cp $(CONFIG_SRC)/dot_mozconfig $(FIREFOX_DIR)/mozconfig
 	cd $(FIREFOX_DIR) && ./patch-firefox-src.sh
 	cd $(FIREFOX_DIR) && make -f client.mk build
 
