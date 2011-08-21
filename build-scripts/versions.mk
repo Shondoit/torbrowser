@@ -46,6 +46,9 @@ fetch-source: fetch-zlib fetch-openssl fetch-vidalia fetch-libevent fetch-tor fe
 fetch-zlib:
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(ZLIB_URL)
 
+fetch-qt:
+	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(QT_URL)
+
 fetch-openssl:
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(OPENSSL_URL)
 

@@ -113,7 +113,7 @@ copy-firefox:
 	-rm -rf $(FETCH_DIR)/Firefox.app
 	cp -r $(FIREFOX_DIR)/obj*/dist/*.app $(FETCH_DIR)/Firefox.app
 
-build-all-binaries: build-zlib build-openssl build-vidalia build-libevent build-tor
+build-all-binaries: build-zlib build-openssl build-vidalia build-libevent build-tor build-firefox
 	echo "If we're here, we've done something right."
 
 ## Location of compiled libraries

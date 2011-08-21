@@ -124,7 +124,7 @@ copy-firefox:
 	cd $(FETCH_DIR) && tar -xvjf firefox-$(FIREFOX_VER).en-US.linux-$(ARCH_TYPE).tar.bz2 && mv firefox Firefox
 
 # source-dance unpack-source
-build-all-binaries: source-dance build-zlib build-openssl build-libpng build-qt build-vidalia build-libevent build-tor build-polipo
+build-all-binaries: source-dance build-zlib build-openssl build-libpng build-qt build-vidalia build-libevent build-tor build-firefox
 	echo "If we're here, we've done something right."
 
 ## Location of compiled libraries
