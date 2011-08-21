@@ -119,9 +119,9 @@ build-firefox:
 copy-firefox:
 	-rm -rf $(FETCH_DIR)/Firefox
 	## This is so ugly. Update it to use cool tar --transform soon.
-	cd $(FIREFOX_DIR) && make -C obj-$(ARCH_TYPE)-pc-linux-gnu/ package
-	cp $(FIREFOX_DIR)/obj-$(ARCH_TYPE)-pc-linux-gnu/*bz2 $(FETCH_DIR)
-	cd $(FETCH_DIR) && tar -xvjf firefox-$(FIREFOX_VER).en-US.bz2 && mv firefox Firefox
+	cd $(FIREFOX_DIR) && make -C obj-$(ARCH_TYPE)-*/ package
+	cp $(FIREFOX_DIR)/obj-$(ARCH_TYPE)-*/dist/*bz2 $(FETCH_DIR)
+	cd $(FETCH_DIR) && tar -xvjf firefox-$(FIREFOX_VER).en-US.linux-$(ARCH_TYPE).tar.bz2 && mv firefox Firefox
 
 # source-dance unpack-source
 build-all-binaries: source-dance build-zlib build-openssl build-libpng build-qt build-vidalia build-libevent build-tor build-polipo
@@ -233,7 +233,6 @@ all-compressed-bundles: compressed-bundle_ar \
 ##
 
 clean:
-	rm -fr $(DISTDIR)
 	rm -fr *.tar.gz
 	rm -fr $(DEST) *.stamp
 	rm -f *~
@@ -280,9 +279,9 @@ install-binaries:
 	# zlib
 	cp -d $(ZLIB)/libz.so $(ZLIB)/libz.so.1 $(ZLIB)/libz.so.1.2.5 $(LIBSDIR)/libz
 	# Libevent
-	cp -d $(LIBEVENT)/libevent-2.0.so.5 $(LIBEVENT)/libevent-2.0.so.5.0.1 $(LIBEVENT)/libevent_core.so \
-	   $(LIBEVENT)/libevent_core-2.0.so.5 $(LIBEVENT)/libevent_core-2.0.so.5.0.1 \
-	   $(LIBEVENT)/libevent_extra-2.0.so.5 $(LIBEVENT)/libevent_extra-2.0.so.5.0.1 \
+	cp -d $(LIBEVENT)/libevent-2.0.so.5 $(LIBEVENT)/libevent-2.0.so.5.1.2 $(LIBEVENT)/libevent_core.so \
+	   $(LIBEVENT)/libevent_core-2.0.so.5 $(LIBEVENT)/libevent_core-2.0.so.5.1.2 \
+	   $(LIBEVENT)/libevent_extra-2.0.so.5 $(LIBEVENT)/libevent_extra-2.0.so.5.1.2 \
 	   $(LIBEVENT)/libevent_extra.so $(LIBEVENT)/libevent.so $(LIBSDIR)
 	# libpng
 	cp -d $(LIBPNG)/libpng14.so* $(LIBSDIR) 
@@ -360,8 +359,8 @@ strip-it-stripper:
 ##
 
 ## Torbutton development version
-#torbutton.xpi:
-#	$(WGET) -O $@ $(TORBUTTON)
+torbutton.xpi:
+	$(WGET) -O $@ $(TORBUTTON)
 
 ## NoScript development version
 noscript.xpi: 
@@ -403,7 +402,6 @@ compressed-bundle-localized: bundle-localized_$(LANGCODE).stamp
 	-mkdir $(DISTDIR)
 	tar -cvzf $(DISTDIR)/$(DEFAULT_COMPRESSED_BASENAME)$(LANGCODE).tar.gz $(NAME)_$(LANGCODE);
 	rm *.zip *.xpi
-	cp torbutton/torbutton.xpi .
 
 copy-files_%: generic-bundle.stamp
 	rm -fr $(NAME)_$*
