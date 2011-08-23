@@ -7,6 +7,11 @@
 #
 # Copyright 2010 The Tor Project.  See LICENSE for licensing information.
 
+if [ "`id -u`" -eq 0 ]; then
+	echo "The Tor Browser Bundle should not be run as root.  Exiting."
+	exit 1
+fi
+
 if [ "$1" ]; then
 	debug="$1"
 	printf "\nDebug enabled.\n\n"
