@@ -14,6 +14,9 @@ if [ $1 ]; then
 	printf "\nDebug enabled.\n\n"
 fi
 
+# If XAUTHORITY is unset, set it to its default value of $HOME/.Xauthority
+# before we change HOME below.  (See xauth(1) and #1945.)  XDM and KDM rely
+# on applications using this default value.
 if [ -z "$XAUTHORITY" ]; then
 	XAUTHORITY=~/.Xauthority
 	export XAUTHORITY
