@@ -400,7 +400,7 @@ bundle-localized: bundle-localized_$(LANGCODE).stamp
 compressed-bundle-localized: bundle-localized_$(LANGCODE).stamp
 	-rm -f $(DISTDIR)/$(COMPRESSED_NAME)_$(LANGCODE).tar.gz
 	-mkdir $(DISTDIR)
-	tar -cvzf $(DISTDIR)/$(DEFAULT_COMPRESSED_BASENAME)$(LANGCODE).tar.gz $(NAME)_$(LANGCODE);
+	tar -cvf - $(NAME)_$(LANGCODE) |tardy -unu 0 -una root -gnu 0 -gna wheel |gzip -c9 >$(DISTDIR)/$(DEFAULT_COMPRESSED_BASENAME)$(LANGCODE).tar.gz
 	rm *.zip *.xpi
 
 copy-files_%: generic-bundle.stamp
