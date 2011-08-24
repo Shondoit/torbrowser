@@ -7,21 +7,52 @@
 #
 # Copyright 2010 The Tor Project.  See LICENSE for licensing information.
 
+# First, make sure DISPLAY is set.  If it isn't, we're hosed; scream
+# at stderr and die.
+if [ "x$DISPLAY" = "x" ]; then
+	echo "The Tor Browser Bundle for Linux must be run within the X Window System." >&2
+	echo "Exiting." >&2
+	exit 1
+fi
+
+# Determine whether we are running in a terminal.  If we are, we
+# should send our error messages to stderr...
+ARE_WE_RUNNING_IN_A_TERMINAL=0
+if [ -t 1 -o -t 2 ]; then
+	ARE_WE_RUNNING_IN_A_TERMINAL=1
+fi
+
+# ...unless we're running in the same terminal as startx or xinit.  In
+# that case, the user is probably running us from a GUI file manager
+# in an X session started by typing startx at the console.
+#
+# Hopefully, the local ps command supports BSD-style options.  (The ps
+# commands usually used on Linux and FreeBSD do; do any other OSes
+# support running Linux binaries?)
+ps T 2>/dev/null |grep startx 2>/dev/null |grep -v grep 2>&1 >/dev/null
+not_running_in_same_terminal_as_startx="$?"
+ps T 2>/dev/null |grep xinit 2>/dev/null |grep -v grep 2>&1 >/dev/null
+not_running_in_same_terminal_as_xinit="$?"
+
+# not_running_in_same_terminal_as_foo has the value 1 if we are *not*
+# running in the same terminal as foo.
+if [ "$not_running_in_same_terminal_as_startx" -eq 0 -o \
+     "$not_running_in_same_terminal_as_xinit" -eq 0 ]; then
+	ARE_WE_RUNNING_IN_A_TERMINAL=0
+fi
+
 # Complain about an error, by any means necessary.
 # Usage: complain message
 # message must not begin with a dash.
 complain () {
 	# If we're being run in a terminal, complain there.
-	#
-	# FIXME Hopefully the user didn't run startx on the console and then
-	# double-click 'start-tor-browser' in a GUI file manager.
-	if [ -t 2 ]; then
+	if [ "$ARE_WE_RUNNING_IN_A_TERMINAL" -ne 0 ]; then
 		echo "$1" >&2
 		return
 	fi
 
-	# Otherwise, hope that we're being run in a GUI of some sort,
-	# and try to pop up a message there in the nicest way
+	# Otherwise, we're being run by a GUI program of some sort;
+	# try to pop up a message in the GUI in the nicest way
 	# possible.
 	#
 	# In mksh, non-existent commands return 127; I'll assume all
@@ -30,10 +61,6 @@ complain () {
 	# close button, so we do need to look at the exact exit code,
 	# not just assume the command failed to display a message if
 	# it returns non-zero.)
-	#
-	# If DISPLAY isn't set, the first command on the list will
-	# fail with a non-127 exit code; that feels wrong somehow, but
-	# there's nothing better we can do in that case anyway.
 
 	# First, try zenity.
 	zenity --error --text="$1"
