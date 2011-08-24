@@ -103,9 +103,24 @@ if [ -z "$XAUTHORITY" ]; then
 	export XAUTHORITY
 fi
 
+# If this script is being run through a symlink, we need to know where
+# in the filesystem the script itself is, not where the symlink is.
+myname="$0"
+while [ -L "$myname" ]; do
+	# XXX readlink is not POSIX, but is present in GNU coreutils
+	# and on FreeBSD.  Unfortunately, the -f option (which follows
+	# a whole chain of symlinks until it reaches a non-symlink
+	# path name) is a GNUism, so we can't safely use it.  (Using
+	# it would be rude to FreeBSD users who currently have no
+	# other officially supported choice than TBB for Linux, and
+	# might even break compatibility with older versions of the
+	# GNU utility.)
+	myname="`readlink -n "$myname"`"
+done
+
 # Try to be agnostic to where we're being started from, chdir to where
 # the script is.
-mydir="$(dirname "$0")"
+mydir="$(dirname "$myname")"
 test -d "$mydir" && cd "$mydir"
 
 # If ${PWD} results in a zero length HOME, we can try something else...
