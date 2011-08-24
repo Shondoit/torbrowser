@@ -196,4 +196,6 @@ exitcode="$?"
 if [ "$exitcode" -ne 0 ]; then
 	complain "Vidalia exited abnormally.  Exit code: $exitcode"
 	exit "$exitcode"
+else
+	echo '\nVidalia exited cleanly.\n'
 fi
