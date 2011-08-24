@@ -105,7 +105,7 @@ fi
 
 # Try to be agnostic to where we're being started from, chdir to where
 # the script is.
-mydir="$(dirname $0)"
+mydir="$(dirname "$0")"
 test -d "$mydir" && cd "$mydir"
 
 # If ${PWD} results in a zero length HOME, we can try something else...
