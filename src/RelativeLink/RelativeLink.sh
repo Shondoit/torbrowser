@@ -5,7 +5,7 @@
 #
 # To run in debug mode simply pass --debug
 #
-# Copyright 2010 The Tor Project.  See LICENSE for licensing information.
+# Copyright 2011 The Tor Project.  See LICENSE for licensing information.
 
 # First, make sure DISPLAY is set.  If it isn't, we're hosed; scream
 # at stderr and die.
