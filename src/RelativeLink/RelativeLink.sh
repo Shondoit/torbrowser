@@ -7,6 +7,57 @@
 #
 # Copyright 2010 The Tor Project.  See LICENSE for licensing information.
 
+# Complain about an error, by any means necessary.
+# Usage: complain message
+# message must not begin with a dash.
+complain () {
+	# If we're being run in a terminal, complain there.
+	#
+	# FIXME Hopefully the user didn't run startx on the console and then
+	# double-click 'start-tor-browser' in a GUI file manager.
+	if [ -t 2 ]; then
+		echo "$1" >&2
+		return
+	fi
+
+	# Otherwise, hope that we're being run in a GUI of some sort,
+	# and try to pop up a message there in the nicest way
+	# possible.
+	#
+	# In mksh, non-existent commands return 127; I'll assume all
+	# other shells set the same exit code if they can't run a
+	# command.  (xmessage returns 1 if the user clicks the WM
+	# close button, so we do need to look at the exact exit code,
+	# not just assume the command failed to display a message if
+	# it returns non-zero.)
+	#
+	# If DISPLAY isn't set, the first command on the list will
+	# fail with a non-127 exit code; that feels wrong somehow, but
+	# there's nothing better we can do in that case anyway.
+
+	# First, try zenity.
+	zenity --error --text="$1"
+	if [ "$?" -ne 127 ]; then
+		return
+	fi
+
+	# Try xmessage.
+	xmessage "$1"
+	if [ "$?" -ne 127 ]; then
+		return
+	fi
+
+	# Try gxmessage.  This one isn't installed by default on
+	# Debian with the default GNOME installation, so it seems to
+	# be the least likely program to have available, but it might
+	# be used by one of the 'lightweight' Gtk-based desktop
+	# environments.
+	gxmessage "$1"
+	if [ "$?" -ne 127 ]; then
+		return
+	fi
+}
+
 if [ "`id -u`" -eq 0 ]; then
 	echo "The Tor Browser Bundle should not be run as root.  Exiting."
 	exit 1
