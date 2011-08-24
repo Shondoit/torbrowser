@@ -90,9 +90,12 @@ if [ "`id -u`" -eq 0 ]; then
 	exit 1
 fi
 
-if [ "$1" ]; then
-	debug="$1"
+if [ "$#" -eq 1 -a "x$1" = "x--debug" ]; then
+	debug=1
 	printf "\nDebug enabled.\n\n"
+elif [ "$#" -ne 0 ]; then
+	complain "usage: $0 [--debug]"
+	exit 1
 fi
 
 # If XAUTHORITY is unset, set it to its default value of $HOME/.Xauthority
