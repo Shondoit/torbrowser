@@ -106,18 +106,18 @@ export DYLD_PRINT_LIBRARIES
 
 # if any relevant processes are running, inform the user and exit cleanly
 RUNNING=0
+RUNNING_MESSAGE=""
 for process in tor vidalia
         # FIXME pidof isn't POSIX
         do pid="`pidof $process`"
         if [ -n "$pid" ]; then
-		printf "\n$process is already running as PID $pid\n\n"
+		RUNNING_MESSAGE="`printf "%s\n%s is already running as PID %s." "$RUNNING_MESSAGE" "$process" "$pid"`"
 		RUNNING=1
-		break
 	fi
 	done
 
 if [ "$RUNNING" -eq 1 ]; then
-	complain "`printf "%s is already running as PID %s.\n\nPlease shut down the above process(es) before running Tor Browser Bundle." "$process" "$pid"`"
+	complain "`printf "%s\n\nPlease shut down the above process(es) before running Tor Browser Bundle." "$RUNNING_MESSAGE"`"
 	exit 1
 fi
 
