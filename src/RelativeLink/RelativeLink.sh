@@ -59,7 +59,7 @@ complain () {
 }
 
 if [ "`id -u`" -eq 0 ]; then
-	echo "The Tor Browser Bundle should not be run as root.  Exiting."
+	complain "The Tor Browser Bundle should not be run as root.  Exiting."
 	exit 1
 fi
 
@@ -107,16 +107,18 @@ export DYLD_PRINT_LIBRARIES
 # if any relevant processes are running, inform the user and exit cleanly
 RUNNING=0
 for process in tor vidalia
+        # FIXME pidof isn't POSIX
         do pid="`pidof $process`"
         if [ -n "$pid" ]; then
 		printf "\n$process is already running as PID $pid\n\n"
 		RUNNING=1
+		break
 	fi
 	done
 
-if [ $RUNNING -eq 1 ]; then
-	printf "Please shut down the above process(es) before running Tor Browser Bundle.\n\n"
-	exit 0
+if [ "$RUNNING" -eq 1 ]; then
+	complain "$process is already running as PID $pid."$'\n\n'"Please shut down the above process(es) before running Tor Browser Bundle."
+	exit 1
 fi
 
 
@@ -148,4 +150,8 @@ fi
 printf "\nLaunching Tor Browser Bundle for Linux in ${HOME}\n"
 cd "${HOME}"
 ./App/vidalia --datadir Data/Vidalia/
-printf "\nExited cleanly. Goodbye.\n"
+exitcode="$?"
+if [ "$exitcode" -ne 0 ]; then
+	complain "Vidalia exited abnormally.  Exit code: $exitcode"
+	exit "$exitcode"
+fi
