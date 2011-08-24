@@ -249,7 +249,14 @@ clean:
 ## Install binaries, documentation, FirefoxPortable, PidginPortable, and launcher into $(DEST)
 generic-bundle.stamp:
 	make -f linux.mk generic-bundle
-generic-bundle: directory-structure install-binaries install-docs install-firefox install-pidgin configure-apps launcher strip-it-stripper
+generic-bundle: directory-structure \
+		install-binaries \
+		install-docs \
+		install-firefox \
+		install-pidgin \
+		configure-apps \
+		launcher \
+		strip-it-stripper
 	touch generic-bundle.stamp
 
 APPDIR=$(DEST)/App
