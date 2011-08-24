@@ -117,7 +117,7 @@ for process in tor vidalia
 	done
 
 if [ "$RUNNING" -eq 1 ]; then
-	complain "$process is already running as PID $pid."$'\n\n'"Please shut down the above process(es) before running Tor Browser Bundle."
+	complain "`printf "%s is already running as PID %s.\n\nPlease shut down the above process(es) before running Tor Browser Bundle." "$process" "$pid"`"
 	exit 1
 fi
 
