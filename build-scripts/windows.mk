@@ -51,6 +51,7 @@ SEVENZIP="/c/Program Files/7-Zip/7z.exe"
 WGET=$(PYTHON) $(PWD)/pyget.py
 VIRUSSCAN=$(PYTHON) $(PWD)/virus-scan.py
 WINRAR="/c/Program Files/WinRAR/WinRAR.exe"
+CC=gcc
 
 
 ## Location of directory for source unpacking
