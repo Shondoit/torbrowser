@@ -87,7 +87,6 @@ complain () {
 		-center \
 		-buttons OK \
 		-default OK \
-		-geometry 300 \
 		-xrm '*message.scrollVertical: Never' \
 		"$complain_message"
 	if [ "$?" -ne 127 ]; then
@@ -103,7 +102,6 @@ complain () {
 		-center \
 		-buttons GTK_STOCK_OK \
 		-default OK \
-		-geometry 300 \
 		"$complain_message"
 	if [ "$?" -ne 127 ]; then
 		return
