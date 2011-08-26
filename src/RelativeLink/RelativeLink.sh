@@ -205,7 +205,7 @@ if [ "${debug}" ]; then
 			BOUND="`netstat -tan 2>&1|grep 127.0.0.1":${port}[^:]"|grep -v TIME_WAIT`"
 			if [ "${BOUND}" ]; then
 			printf "\nLikely problem detected: It appears that you have something listening on ${port}\n"
-			printf "\nWe think this because of the following: ${BOUND}\n"
+			printf "\nWe think this because of the following:\n${BOUND}\n"
 			fi
 		done
 
@@ -227,5 +227,5 @@ if [ "$exitcode" -ne 0 ]; then
 	complain "Vidalia exited abnormally.  Exit code: $exitcode"
 	exit "$exitcode"
 else
-	echo '\nVidalia exited cleanly.\n'
+	printf '\nVidalia exited cleanly.\n'
 fi
