@@ -12,7 +12,7 @@ complain_dialog_title="Tor Browser Bundle"
 # First, make sure DISPLAY is set.  If it isn't, we're hosed; scream
 # at stderr and die.
 if [ "x$DISPLAY" = "x" ]; then
-	echo "The Tor Browser Bundle for Linux must be run within the X Window System." >&2
+	echo "$complain_dialog_title must be run within the X Window System." >&2
 	echo "Exiting." >&2
 	exit 1
 fi
