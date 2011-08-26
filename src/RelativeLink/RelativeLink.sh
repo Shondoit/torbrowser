@@ -119,7 +119,7 @@ if [ "$#" -eq 1 -a \( "x$1" = "x--debug" -o "x$1" = "x-debug" \) ]; then
 	printf "\nDebug enabled.\n\n"
 elif [ "$#" -eq 1 -a \( "x$1" = "x--help" -o "x$1" = "x-help" \) ]; then
 	echo "$usage_message"
-	exit 1
+	exit 0
 elif [ "$#" -ne 0 ]; then
 	complain "$usage_message"
 	exit 1
