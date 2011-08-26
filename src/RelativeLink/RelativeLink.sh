@@ -70,6 +70,12 @@ complain () {
 		return
 	fi
 
+	# Try kdialog.
+	kdialog --title "$complain_dialog_title" --error "$1"
+	if [ "$?" -ne 127 ]; then
+		return
+	fi
+
 	# Try xmessage.
 	xmessage -title "$complain_dialog_title" \
 		-center \
