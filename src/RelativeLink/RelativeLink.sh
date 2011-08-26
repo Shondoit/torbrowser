@@ -47,9 +47,12 @@ fi
 # Usage: complain message
 # message must not begin with a dash.
 complain () {
+	# Trim leading newlines, to avoid breaking formatting in some dialogs.
+	complain_message="`echo "$1" | sed '/./,$!d'`"
+
 	# If we're being run in a terminal, complain there.
 	if [ "$ARE_WE_RUNNING_IN_A_TERMINAL" -ne 0 ]; then
-		echo "$1" >&2
+		echo "$complain_message" >&2
 		return
 	fi
 
@@ -65,13 +68,16 @@ complain () {
 	# it returns non-zero.)
 
 	# First, try zenity.
-	zenity --error --title="$complain_dialog_title" --text="$1"
+	zenity --error \
+		--title="$complain_dialog_title" \
+		--text="$complain_message"
 	if [ "$?" -ne 127 ]; then
 		return
 	fi
 
 	# Try kdialog.
-	kdialog --title "$complain_dialog_title" --error "$1"
+	kdialog --title "$complain_dialog_title" \
+		--error "$complain_message"
 	if [ "$?" -ne 127 ]; then
 		return
 	fi
@@ -83,7 +89,7 @@ complain () {
 		-default OK \
 		-geometry 300 \
 		-xrm '*message.scrollVertical: Never' \
-		"$1"
+		"$complain_message"
 	if [ "$?" -ne 127 ]; then
 		return
 	fi
@@ -98,7 +104,7 @@ complain () {
 		-buttons GTK_STOCK_OK \
 		-default OK \
 		-geometry 300 \
-		"$1"
+		"$complain_message"
 	if [ "$?" -ne 127 ]; then
 		return
 	fi
