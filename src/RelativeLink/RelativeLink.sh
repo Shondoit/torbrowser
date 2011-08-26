@@ -120,9 +120,6 @@ if [ "$#" -eq 1 -a \( "x$1" = "x--debug" -o "x$1" = "x-debug" \) ]; then
 elif [ "$#" -eq 1 -a \( "x$1" = "x--help" -o "x$1" = "x-help" \) ]; then
 	echo "$usage_message"
 	exit 0
-elif [ "$#" -ne 0 ]; then
-	complain "$usage_message"
-	exit 1
 fi
 
 # If XAUTHORITY is unset, set it to its default value of $HOME/.Xauthority
@@ -212,6 +209,8 @@ if [ "${debug}" ]; then
 		printf "\nStarting Vidalia now\n"
 		cd "${HOME}"
 		printf "\nLaunching Vidalia from: `pwd`\n"
+		# XXX Someday we should pass whatever command-line arguments we got
+		# (probably filenames or URLs) to Firefox.
 		./App/vidalia --loglevel debug --logfile vidalia-debug-log \
 		--datadir Data/Vidalia/
 		printf "\nVidalia exited with the following return code: $?\n"
@@ -221,6 +220,8 @@ fi
 # not in debug mode, run proceed normally
 printf "\nLaunching Tor Browser Bundle for Linux in ${HOME}\n"
 cd "${HOME}"
+# XXX Someday we should pass whatever command-line arguments we got
+# (probably filenames or URLs) to Firefox.
 ./App/vidalia --datadir Data/Vidalia/
 exitcode="$?"
 if [ "$exitcode" -ne 0 ]; then
