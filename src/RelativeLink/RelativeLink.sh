@@ -7,6 +7,8 @@
 #
 # Copyright 2011 The Tor Project.  See LICENSE for licensing information.
 
+complain_dialog_title="Tor Browser Bundle"
+
 # First, make sure DISPLAY is set.  If it isn't, we're hosed; scream
 # at stderr and die.
 if [ "x$DISPLAY" = "x" ]; then
@@ -63,13 +65,19 @@ complain () {
 	# it returns non-zero.)
 
 	# First, try zenity.
-	zenity --error --text="$1"
+	zenity --error --title="$complain_dialog_title" --text="$1"
 	if [ "$?" -ne 127 ]; then
 		return
 	fi
 
 	# Try xmessage.
-	xmessage "$1"
+	xmessage -title "$complain_dialog_title" \
+		-center \
+		-buttons OK \
+		-default OK \
+		-geometry 300 \
+		-xrm '*message.scrollVertical: Never' \
+		"$1"
 	if [ "$?" -ne 127 ]; then
 		return
 	fi
@@ -79,7 +87,12 @@ complain () {
 	# be the least likely program to have available, but it might
 	# be used by one of the 'lightweight' Gtk-based desktop
 	# environments.
-	gxmessage "$1"
+	gxmessage -title "$complain_dialog_title" \
+		-center \
+		-buttons GTK_STOCK_OK \
+		-default OK \
+		-geometry 300 \
+		"$1"
 	if [ "$?" -ne 127 ]; then
 		return
 	fi
