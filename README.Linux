@@ -4,8 +4,8 @@ Tor Browser Bundle for GNU/Linux
 Included applications
 ---------------------
 
-Vidalia 0.2.12 (with Qt 4.6.2)
-Tor 0.2.2.31-rc (with libevent-2.0.13-stable, zlib-1.2.5 and openssl-0.9.8p)
+Vidalia 0.2.14 (with Qt 4.6.2)
+Tor 0.2.2.32 (with libevent-2.0.13-stable, zlib-1.2.5 and openssl-0.9.8p)
 Firefox 3.6.20
  \_ Torbutton 1.2.5
  |_ NoScript 2.1.2.6
@@ -27,6 +27,10 @@ To exit, close Firefox. Vidalia will automatically clean up and exit.
 
 Changelog
 ---------
+
+1.1.14: Released 2011-08-28
+        Update Tor to 0.2.2.32
+        Update Vidalia to 0.2.14
 
 1.1.13: Released 2011-08-19
         Update Tor to 0.2.2.31-rc

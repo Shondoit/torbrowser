@@ -22,8 +22,8 @@ FIREFOX_VERSION=3.6.20
 PIDGIN_VERSION=2.7.5
 
 ## Location of bundle components
-VIDALIA=/e/build/vidalia-0.2.12
-TOR=/e/build/tor-0.2.1.30
+VIDALIA=/e/build/vidalia-0.2.14
+TOR=/e/build/tor-0.2.2.32
 POLIPO=/e/build/polipo-1.0.4.1
 FIREFOX_SRC=/e/build/FirefoxPortable-$(FIREFOX_VERSION)
 PIDGIN_SRC=/e/build/PidginPortable-$(PIDGIN_VERSION)
@@ -49,7 +49,7 @@ DEST="Generic Bundle"
 NAME="Tor Browser"
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.3.27
+VERSION=1.3.28
 DEFAULT_COMPRESSED_BASENAME=tor-browser-
 IM_COMPRESSED_BASENAME=tor-im-browser-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)

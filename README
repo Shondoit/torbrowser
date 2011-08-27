@@ -4,8 +4,8 @@ Tor USB project
 Included applications
 ---------------------
 
-Vidalia 0.2.12 (with Qt 4.6.2)
-Tor 0.2.1.30 (with libevent-2.0.13-stable, zlib-1.2.5 and openssl-1.0.0d)
+Vidalia 0.2.14 (with Qt 4.6.2)
+Tor 0.2.2.32 (with libevent-2.0.13-stable, zlib-1.2.5 and openssl-1.0.0d)
 Polipo 1.0.4.1
 FirefoxPortable 3.6.20
  \_ Firefox 3.6.20
@@ -359,3 +359,7 @@ Changelog
  Update Firefox to 3.6.20
  Update Libevent to 2.0.13-stable
  Update HTTPS-Everywhere to 1.0.0development.5
+
+1.3.28: Released 2011-08-28
+ Update Tor to 0.2.2.32
+ Update Vidalia to 0.2.14

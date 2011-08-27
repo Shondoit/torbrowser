@@ -51,9 +51,9 @@ OTR_VER=3.2.0
 PIDGIN_VER=2.6.4
 POLIPO_VER=1.0.4.1
 QT_VER=4.6.2
-TOR_VER=0.2.2.31-rc
+TOR_VER=0.2.2.32
 TORBUTTON_VER=1.2.5
-VIDALIA_VER=0.2.12
+VIDALIA_VER=0.2.14
 ZLIB_VER=1.2.5
 
 ## Extension IDs
@@ -216,7 +216,7 @@ NAME=tor-browser
 DISTDIR=tbbl-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=1.1.13-dev
+VERSION=1.1.14-dev
 DEFAULT_COMPRESSED_BASENAME=tor-browser-gnu-linux-$(ARCH_TYPE)-$(VERSION)-
 IM_COMPRESSED_BASENAME=tor-im-browser-gnu-linux-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
