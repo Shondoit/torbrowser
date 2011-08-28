@@ -138,7 +138,7 @@ NAME="Tor Browser"
 DISTDIR=tbbwin-alpha-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=$(RELEASE_VER)-2-alpha
+VERSION=$(RELEASE_VER)-1-alpha
 DEFAULT_COMPRESSED_BASENAME=tor-browser-$(VERSION)
 IM_COMPRESSED_BASENAME=tor-im-browser-$(VERSION)
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)
