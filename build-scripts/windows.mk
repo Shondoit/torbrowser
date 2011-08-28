@@ -441,7 +441,8 @@ apply-prefs:
 	cp $(DEST)/FirefoxPortable/Data/profile/prefs.js $(CONFIG_SRC)
 
 write-tbb-version:
-	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)" >> $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
+	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)" >> $(BUNDLE)/FirefoxPortable/App/DefaultData/profile/prefs.js
+	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)" >> $(BUNDLE)/FirefoxPortable/Data/profile/prefs.js
 
 ## Export the source code of the bundle
 SRCNAME=$(COMPRESSED_NAME)

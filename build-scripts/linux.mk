@@ -468,5 +468,6 @@ update-extension-pref:
 	sed -i -e "s/SHPONKA/langpack-$(LANGCODE)@firefox.mozilla.org:$$ext_ver/g" $(BUNDLE)/Data/profile/prefs.js
 
 write-tbb-version:
-	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)" >> $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
+	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)" >> $(BUNDLE)/App/Firefox/defaults/profile/prefs.js
+	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)" >> $(BUNDLE)/Data/profile/prefs.js
 
