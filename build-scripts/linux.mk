@@ -392,7 +392,8 @@ compressed-bundle_%:
 	LANGCODE=$* make -f linux.mk compressed-bundle-localized
 
 bundle-localized_%.stamp:
-	make -f linux.mk copy-files_$* install-extensions install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language update-extension-pref
+	make -f linux.mk copy-files_$* install-extensions install-lang-extensions patch-vidalia-language patch-firefox-language \
+	patch-pidgin-language update-extension-pref write-tbb-version
 	touch bundle-localized_$*.stamp
 
 bundle-localized: bundle-localized_$(LANGCODE).stamp
@@ -465,4 +466,7 @@ patch-firefox-language:
 update-extension-pref:
 	ext_ver=$$(sed -n '/em:version/{s,.*="\(.*\)".*,\1,p;q}' $(BUNDLE)/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org/install.rdf); \
 	sed -i -e "s/SHPONKA/langpack-$(LANGCODE)@firefox.mozilla.org:$$ext_ver/g" $(BUNDLE)/Data/profile/prefs.js
+
+write-tbb-version:
+	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)" >> $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
 

@@ -360,7 +360,8 @@ split-bundle_%:
 	LANGCODE=$* make -f windows.mk split-bundle-localized
 
 bundle-localized_%.stamp:
-	make -f windows.mk copy-files_$* install-extensions install-torbutton install-httpseverywhere install-noscript patch-vidalia-language patch-firefox-language patch-pidgin-language
+	make -f windows.mk copy-files_$* install-extensions install-torbutton install-httpseverywhere install-noscript \
+	patch-vidalia-language patch-firefox-language patch-pidgin-language write-tbb-version
 	touch bundle-localized_$*.stamp
 
 bundle-localized: bundle-localized_$(LANGCODE).stamp
@@ -438,6 +439,9 @@ patch-firefox-language:
 ## Copy Firefox preferences from a run of FirefoxPortable to be the default
 apply-prefs:
 	cp $(DEST)/FirefoxPortable/Data/profile/prefs.js $(CONFIG_SRC)
+
+write-tbb-version:
+	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)" >> $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
 
 ## Export the source code of the bundle
 SRCNAME=$(COMPRESSED_NAME)
