@@ -351,9 +351,8 @@ bundle_%:
 compressed-bundle_%:
 	LANGCODE=$* make -f osx.mk compressed-bundle-localized
 bundle-localized_%.stamp:
-	make -f osx.mk copy-files_$* install-extensions install-httpseverywhere install-noscript install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language update-extension-pref final
+	make -f osx.mk copy-files_$* install-extensions install-httpseverywhere install-noscript install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language update-extension-pref write-tbb-version final
 	touch bundle-localized_$*.stamp
-	cp extensions/torbutton.xpi .
 
 bundle-localized: bundle-localized_$(LANGCODE).stamp
 
@@ -432,6 +431,9 @@ patch-firefox-language:
 update-extension-pref:
 	ext_ver=$$(sed -n '/em:version/{s,.*="\(.*\)".*,\1,p;q;}' $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org/install.rdf); \
 	sed -i -e "s/SHPONKA/langpack-$(LANGCODE)@firefox.mozilla.org:$$ext_ver/g" $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
+
+write-tbb-version:
+	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)" >> $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
 
 final: 
 	mv $(BUNDLE) $(BUNDLE).app
