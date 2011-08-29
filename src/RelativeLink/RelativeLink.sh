@@ -173,48 +173,15 @@ export LD_LIBRARY_PATH
 DYLD_PRINT_LIBRARIES=1
 export DYLD_PRINT_LIBRARIES
 
-# if any relevant processes are running, inform the user and exit cleanly
-RUNNING=0
-RUNNING_MESSAGE=""
-for process in tor vidalia
-        # FIXME pidof isn't POSIX
-        do pid="`pidof $process`"
-        if [ -n "$pid" ]; then
-		RUNNING_MESSAGE="`printf "%s\n%s is already running as PID %s." "$RUNNING_MESSAGE" "$process" "$pid"`"
-		RUNNING=1
-	fi
-	done
-
-if [ "$RUNNING" -eq 1 ]; then
-	complain "`printf "%s\n\nPlease shut down the above process(es) before running Tor Browser Bundle." "$RUNNING_MESSAGE"`"
-	exit 1
-fi
-
-
 if [ "${debug}" ]; then
-	if [ -n "${surveysays}" ]; then 
-		printf "\nSurvey says: $surveysays\n\n"
-	fi
-  	
-		# this is likely unportable to Mac OS X or other netstat binaries
-  		for port in "8118" "9050"
-  			do
-			BOUND="`netstat -tan 2>&1|grep 127.0.0.1":${port}[^:]"|grep -v TIME_WAIT`"
-			if [ "${BOUND}" ]; then
-			printf "\nLikely problem detected: It appears that you have something listening on ${port}\n"
-			printf "\nWe think this because of the following:\n${BOUND}\n"
-			fi
-		done
-
-		printf "\nStarting Vidalia now\n"
-		cd "${HOME}"
-		printf "\nLaunching Vidalia from: `pwd`\n"
-		# XXX Someday we should pass whatever command-line arguments we got
-		# (probably filenames or URLs) to Firefox.
-		./App/vidalia --loglevel debug --logfile vidalia-debug-log \
-		--datadir Data/Vidalia/
-		printf "\nVidalia exited with the following return code: $?\n"
-	exit
+	printf "\nStarting Vidalia now\n"
+	cd "${HOME}"
+	printf "\nLaunching Vidalia from: `pwd`\n"
+	# XXX Someday we should pass whatever command-line arguments we got
+	# (probably filenames or URLs) to Firefox.
+	./App/vidalia --loglevel debug --logfile vidalia-debug-log \
+	--datadir Data/Vidalia/
+	printf "\nVidalia exited with the following return code: $?\n"
 fi
 
 # not in debug mode, run proceed normally
