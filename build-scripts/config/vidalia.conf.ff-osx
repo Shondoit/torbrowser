@@ -10,3 +10,4 @@ RunProxyAtStart=true
 ControlPort=9051
 TorExecutable=../../Contents/MacOS/tor
 Torrc=../../Library/Vidalia/torrc
+DataDirectory=../../Contents/Resources/Data/Tor

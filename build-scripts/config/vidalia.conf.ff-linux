@@ -7,3 +7,4 @@ LanguageCode=en
 ControlPort=9051
 TorExecutable=./App/tor
 Torrc=./Data/Tor/torrc
+DataDirectory=./Data/Tor

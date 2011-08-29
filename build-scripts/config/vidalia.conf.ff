@@ -10,3 +10,4 @@ RunProxyAtStart=true
 ControlPort=9051
 TorExecutable=.\\App\\tor.exe
 Torrc=.\\Data\\Tor\\torrc
+DataDirectory=.\\Data\\Tor
