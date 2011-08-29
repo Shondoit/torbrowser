@@ -36,6 +36,8 @@ include $(PWD)/versions.mk
 
 ## Architecture
 ARCH_TYPE=$(shell uname -m)
+BUILD_NUM=1
+PLATFORM=Linux
 
 ## Location of directory for source unpacking
 FETCH_DIR=/srv/build-trees/build-alpha-$(ARCH_TYPE)
@@ -166,7 +168,7 @@ NAME=tor-browser
 DISTDIR=tbbl-alpha-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=$(RELEASE_VER)-1-alpha
+VERSION=$(RELEASE_VER)-$(BUILD_NUM)-alpha
 DEFAULT_COMPRESSED_BASENAME=tor-browser-gnu-linux-$(ARCH_TYPE)-$(VERSION)-
 IM_COMPRESSED_BASENAME=tor-im-browser-gnu-linux-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)$(VERSION)
@@ -468,6 +470,6 @@ update-extension-pref:
 	sed -i -e "s/SHPONKA/langpack-$(LANGCODE)@firefox.mozilla.org:$$ext_ver/g" $(BUNDLE)/Data/profile/prefs.js
 
 write-tbb-version:
-	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)" >> $(BUNDLE)/App/Firefox/defaults/profile/prefs.js
-	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)" >> $(BUNDLE)/Data/profile/prefs.js
+	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)-$(BUILD_NUM)-$(PLATFORM)-$(ARCH_TYPE)" >> $(BUNDLE)/App/Firefox/defaults/profile/prefs.js
+	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)-$(BUILD_NUM)-$(PLATFORM)-$(ARCH_TYPE)" >> $(BUNDLE)/Data/profile/prefs.js
 

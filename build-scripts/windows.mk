@@ -31,6 +31,8 @@
 
 ## Include versions
 include $(PWD)/versions.mk
+BUILD_NUM=1
+PLATFORM=Windows
 
 ## Location of required libraries
 MING=/c/MinGW/bin
@@ -138,7 +140,7 @@ NAME="Tor Browser"
 DISTDIR=tbbwin-alpha-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=$(RELEASE_VER)-1-alpha
+VERSION=$(RELEASE_VER)-$(BUILD_NUM)-alpha
 DEFAULT_COMPRESSED_BASENAME=tor-browser-$(VERSION)
 IM_COMPRESSED_BASENAME=tor-im-browser-$(VERSION)
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)
@@ -441,8 +443,8 @@ apply-prefs:
 	cp $(DEST)/FirefoxPortable/Data/profile/prefs.js $(CONFIG_SRC)
 
 write-tbb-version:
-	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)" >> $(BUNDLE)/FirefoxPortable/App/DefaultData/profile/prefs.js
-	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)" >> $(BUNDLE)/FirefoxPortable/Data/profile/prefs.js
+	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)-$(BUILD_NUM)-$(PLATFORM)-$(ARCH_TYPE)" >> $(BUNDLE)/FirefoxPortable/App/DefaultData/profile/prefs.js
+	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)-$(BUILD_NUM)-$(PLATFORM)-$(ARCH_TYPE)" >> $(BUNDLE)/FirefoxPortable/Data/profile/prefs.js
 
 ## Export the source code of the bundle
 SRCNAME=$(COMPRESSED_NAME)

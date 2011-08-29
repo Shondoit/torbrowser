@@ -36,6 +36,8 @@ include $(PWD)/versions.mk
 
 ## Architecture
 ARCH_TYPE=i386
+BUILD_NUM=1
+PLATFORM=MacOS
 
 ## Location of directory for source unpacking
 FETCH_DIR=$(PWD)/build-alpha-$(ARCH_TYPE)
@@ -153,7 +155,7 @@ NAME=TorBrowser
 DISTDIR=tbbosx-alpha-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=$(RELEASE_VER)-1-alpha
+VERSION=$(RELEASE_VER)-$(BUILD_NUM)-alpha
 DEFAULT_COMPRESSED_BASENAME=TorBrowser-$(VERSION)-osx-$(ARCH_TYPE)-
 IM_COMPRESSED_BASENAME=TorBrowser-IM-$(VERSION)-
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)
@@ -433,7 +435,7 @@ update-extension-pref:
 	sed -i -e "s/SHPONKA/langpack-$(LANGCODE)@firefox.mozilla.org:$$ext_ver/g" $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
 
 write-tbb-version:
-	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)" >> $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
+	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)-$(BUILD_NUM)-$(PLATFORM)-$(ARCH_TYPE)" >> $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
 
 final: 
 	mv $(BUNDLE) $(BUNDLE).app
