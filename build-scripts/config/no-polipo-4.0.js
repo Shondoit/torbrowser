@@ -85,6 +85,7 @@ user_pref("extensions.update.notifyUser", false);
 user_pref("general.appname.override", "Netscape");
 user_pref("general.appversion.override", "5.0 (Windows; en-US)");
 user_pref("general.buildID.override", "0");
+user_pref("general.useragent.locale", "SHPONKA");
 user_pref("general.oscpu.override", "Windows NT 6.1");
 user_pref("general.platform.override", "Win32");
 user_pref("general.productSub.override", "20100401");
