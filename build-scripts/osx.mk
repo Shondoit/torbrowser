@@ -57,7 +57,7 @@ build-zlib:
 	cd $(ZLIB_DIR) && make install
 
 OPENSSL_DIR=$(FETCH_DIR)/openssl-$(OPENSSL_VER)
-OPENSSL_OPTS=-no-rc5 -no-md2 shared zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -L$(BUILT_DIR)/lib -I$(BUILT_DIR)/include
+OPENSSL_OPTS=-no-rc5 -no-md2 -no-man shared zlib -mmacosx-version-min=10.5 -isysroot /Developer/SDKs/MacOSX10.5.sdk -Wl,-syslibroot,/Developer/SDKs/MacOSX10.5.sdk --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -L$(BUILT_DIR)/lib -I$(BUILT_DIR)/include
 build-openssl:
 ifeq (x86_64,$(ARCH_TYPE))
 	cd $(OPENSSL_DIR) && ./Configure darwin64-x86_64-cc $(OPENSSL_OPTS)
@@ -78,25 +78,27 @@ build-qt:
 	cd $(QT_DIR) && make install
 
 VIDALIA_DIR=$(FETCH_DIR)/vidalia-$(VIDALIA_VER)
-VIDALIA_OPTS=-DCMAKE_OSX_ARCHITECTURES=i386 -DOPENSSL_LIBCRYPTO=$(BUILT_DIR)/lib/libcrypto.dylib \
-	-DOPENSSL_LIBSSL=$(BUILT_DIR)/lib/libssl.dylib -DCMAKE_BUILD_TYPE=debug ..
+VIDALIA_OPTS=-DOSX_TIGER_COMPAT=1 -DCMAKE_OSX_ARCHITECTURES=i386 -DQT_QMAKE_EXECUTABLE=/usr/bin/qmake \
+	-DCMAKE_BUILD_TYPE=debug ..
 build-vidalia:
+	export MACOSX_DEPLOYMENT_TARGET=10.5
 	-mkdir $(VIDALIA_DIR)/build
 	cd $(VIDALIA_DIR)/build && cmake $(VIDALIA_OPTS) \
 	&& make && make dist-osx-libraries
 	cd $(VIDALIA_DIR)/build && DESTDIR=$(BUILT_DIR) make install
 
 LIBEVENT_DIR=$(FETCH_DIR)/libevent-$(LIBEVENT_VER)
-LIBEVENT_CFLAGS="-O -g -arch $(ARCH_TYPE)"
+LIBEVENT_CFLAGS="-O -g -arch $(ARCH_TYPE) -mmacosx-version-min=10.5 -isysroot /Developer/SDKs/MacOSX10.5.sdk -arch $(ARCH_TYPE)"
+LIBEVENT_LDFLAGS="-L$(BUILT_DIR)/lib -Wl,-syslibroot,/Developer/SDKs/MacOSX10.5.sdk"
 LIBEVENT_OPTS=--prefix=$(BUILT_DIR) --enable-static --disable-shared --disable-dependency-tracking CC="gcc-4.0"
 build-libevent:
-	cd $(LIBEVENT_DIR) && CFLAGS=$(LIBEVENT_CFLAGS) ./configure $(LIBEVENT_OPTS)
+	cd $(LIBEVENT_DIR) && CFLAGS=$(LIBEVENT_CFLAGS) LDFLAGS=$(LIBEVENT_LDFLAGS) ./configure $(LIBEVENT_OPTS)
 	cd $(LIBEVENT_DIR) && make -j2
 	cd $(LIBEVENT_DIR) && sudo make install
 
 TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)
-TOR_CFLAGS="-O -g -arch $(ARCH_TYPE) -I$(BUILT_DIR)/include"
-TOR_LDFLAGS="-L$(BUILT_DIR)/lib"
+TOR_CFLAGS="-O -g -arch $(ARCH_TYPE) -I$(BUILT_DIR)/include -mmacosx-version-min=10.5 -isysroot /Developer/SDKs/MacOSX10.5.sdk"
+TOR_LDFLAGS="-L$(BUILT_DIR)/lib -Wl,-syslibroot,/Developer/SDKs/MacOSX10.5.sdk"
 TOR_OPTS=--enable-static-openssl --enable-static-libevent --with-openssl-dir=$(BUILT_DIR)/lib --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR) --disable-dependency-tracking CC="gcc-4.0"
 build-tor:
 	cd $(TOR_DIR) && CFLAGS=$(TOR_CFLAGS) LDFLAGS=$(TOR_LDFLAGS) ./configure $(TOR_OPTS)
@@ -105,7 +107,7 @@ build-tor:
 
 FIREFOX_DIR=$(FETCH_DIR)/mozilla-release
 build-firefox:
-	cp ../src/current-patches/*Firefox* $(FIREFOX_DIR)
+	cp ../src/current-patches/000* $(FIREFOX_DIR)
 	cp patch-firefox-src.sh $(FIREFOX_DIR)
 	cp $(CONFIG_SRC)/mozconfig-osx-$(ARCH_TYPE) $(FIREFOX_DIR)/mozconfig
 	cd $(FIREFOX_DIR) && ./patch-firefox-src.sh
