@@ -190,7 +190,7 @@ all-bundles-both:
 	USE_PIDGIN=0 make -f windows.mk all-bundles
 	make -f windows.mk clean
 
-all-bundles: all-compressed-bundles
+all-bundles: all-compressed-bundles all-split-bundles
 
 all-compressed-bundles: compressed-bundle_ar \
 	compressed-bundle_de \
@@ -204,6 +204,19 @@ all-compressed-bundles: compressed-bundle_ar \
 	compressed-bundle_ru \
 	compressed-bundle_zh-CN \
 	compressed-bundle_it
+
+all-split-bundles: split-bundle_ar \
+	split-bundle_de \
+	split-bundle_en-US \
+	split-bundle_es-ES \
+	split-bundle_fa \
+	split-bundle_fr \
+	split-bundle_nl \
+	split-bundle_pl \
+	split-bundle_pt-PT \
+	split-bundle_ru \
+	split-bundle_zh-CN \
+	split-bundle_it
 
 ##
 ## Cleanup
