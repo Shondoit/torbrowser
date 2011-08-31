@@ -1,3 +1,19 @@
+Tor Browser Bundle (2.2.32-2) alpha; suite=osx
+
+  * Update Firefox to 6.0.1, with an additional patch to exclude DigiNotar completely
+    - https://gitweb.torproject.org/torbrowser.git/commit/0be3b043afa0e54d207f603a3bf3716f6165caa1
+    For the full saga, read:
+    - http://blog.mozilla.com/security/2011/08/29/fraudulent-google-com-certificate/
+    - http://googleonlinesecurity.blogspot.com/2011/08/update-on-attempted-man-in-middle.html
+  * Update Libevent to 2.0.14-stable
+  * Rebuild 32-bit binaries with backwards compatibility options so TBB works
+    on OSX 10.5 (closes: #3671)
+  * Update torbrowser.version string in prefs.js to have more information (see #3504)
+  * Enable internationalized bundles by adding and changing the
+    general.useragent.locale pref in prefs.js
+
+ -- Erinn Clark <erinn@torproject.org>  Wed Aug 31 17:43:09 BST 2011
+
 Tor Browser Bundle (2.2.32-1) alpha; suite=osx
 
   * Update Tor to 0.2.2.32
