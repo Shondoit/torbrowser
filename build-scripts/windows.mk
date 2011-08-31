@@ -106,8 +106,13 @@ build-tor:
 	cd $(TOR_DIR) && make
 	cd $(TOR_DIR) && make install
 
+FIREFOX_DIR=/c/mozilla-build/mozilla-release
 build-firefox:
-	echo "We're using a prebuilt firefox. Fix this someday!"
+	cp ../src/current-patches/000* $(FIREFOX_DIR)
+	cp patch-firefox-src.sh $(FIREFOX_DIR)
+	cp $(CONFIG_SRC)/dot_mozconfig $(FIREFOX_DIR)/mozconfig
+	cd $(FIREFOX_DIR) && ./patch-firefox-src.sh
+#	cmd /c C:/mozilla-build/start-msvc9
 
 build-all-binaries: build-zlib build-openssl build-vidalia build-libevent build-tor
 	echo "If we're here, we've done something right."
@@ -153,7 +158,7 @@ COMPRESSED_NAME=$(DEFAULT_COMPRESSED_NAME)
 endif
 
 ## Extensions to install by default
-DEFAULT_EXTENSIONS=torbutton-alpha.xpi
+DEFAULT_EXTENSIONS=torbutton.xpi
 
 ## Where to download Torbutton from
 TORBUTTON=https://www.torproject.org/dist/torbutton/torbutton-$(TORBUTTON_VER).xpi
@@ -327,7 +332,7 @@ launcher:
 ##
 
 ## Torbutton development version
-torbutton-alpha.xpi:
+torbutton.xpi:
 	$(WGET) -O $@ $(TORBUTTON)
 
 ## English comes as default
@@ -389,14 +394,13 @@ install-extensions: $(filter-out langpack_en-US.xpi,langpack_$(LANGCODE).xpi)
 	cp -r $(BUNDLE)/FirefoxPortable/App/DefaultData $(DUMMYPROFILE)
 	mkdir -p $(BUNDLE)/FirefoxPortable/Data/profile/extensions
 ifneq ($(LANGCODE), en-US)
-	mv langpack_$(LANGCODE).xpi $(BUNDLE)/FirefoxPortable/Data/profile/extensions/langpack-$(LANGCODE)\@firefox.mozilla.org.zip
-	$(SEVENZIP) x -o$(BUNDLE)/FirefoxPortable/Data/profile/extensions/langpack-$(LANGCODE)\@firefox.mozilla.org $(BUNDLE)/FirefoxPortable/Data/profile/extensions/langpack-$(LANGCODE)\@firefox.mozilla.org.zip
+	mv langpack_$(LANGCODE).xpi $(BUNDLE)/FirefoxPortable/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org.xpi
 endif
 	rm -fr $(DUMMYPROFILE)
 
-install-torbutton: torbutton-alpha.xpi
+install-torbutton: torbutton.xpi
 	mkdir -p $(BUNDLE)/FirefoxPortable/Data/profile/extensions/{e0204bd5-9d31-402b-a99d-a6aa8ffebdca}
-	cp torbutton-alpha.xpi $(BUNDLE)/FirefoxPortable/Data/profile/extensions/{e0204bd5-9d31-402b-a99d-a6aa8ffebdca}/torbutton.zip
+	cp torbutton.xpi $(BUNDLE)/FirefoxPortable/Data/profile/extensions/{e0204bd5-9d31-402b-a99d-a6aa8ffebdca}/torbutton.zip
 	(cd $(BUNDLE)/FirefoxPortable/Data/profile/extensions/{e0204bd5-9d31-402b-a99d-a6aa8ffebdca} && $(SEVENZIP) x *.zip && rm *.zip)
 
 install-httpseverywhere: httpseverywhere.xpi
