@@ -112,7 +112,7 @@ build-pidgin:
 
 FIREFOX_DIR=$(FETCH_DIR)/mozilla-release
 build-firefox:
-	cp ../src/current-patches/*Firefox* $(FIREFOX_DIR)
+	cp ../src/current-patches/000* $(FIREFOX_DIR)
 	cp patch-firefox-src.sh $(FIREFOX_DIR)
 	cp $(CONFIG_SRC)/dot_mozconfig $(FIREFOX_DIR)/mozconfig
 	cd $(FIREFOX_DIR) && ./patch-firefox-src.sh
@@ -434,9 +434,8 @@ install-betterprivacy: betterprivacy.xpi
 ## Language extensions need to be handled differently from other extensions
 install-lang-extensions: $(filter-out langpack_en-US.xpi,langpack_$(LANGCODE).xpi)
 ifneq ($(LANGCODE), en-US)
-	mkdir -p $(BUNDLE)/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org
-	cp langpack_$(LANGCODE).xpi $(BUNDLE)/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org/langpack_$(LANGCODE).zip
-	(cd $(BUNDLE)/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org && unzip *.zip && rm *.zip)
+	mkdir -p $(BUNDLE)/Data/profile/extensions
+	cp langpack_$(LANGCODE).xpi $(BUNDLE)/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org.xpi
 endif
 
 ## Set the language for Vidalia
@@ -466,8 +465,10 @@ patch-firefox-language:
 
 ## Fix prefs.js since extensions.checkCompatibility, false doesn't work
 update-extension-pref:
-	ext_ver=$$(sed -n '/em:version/{s,.*="\(.*\)".*,\1,p;q}' $(BUNDLE)/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org/install.rdf); \
+	#ext_ver=$$(sed -n '/em:version/{s,.*="\(.*\)".*,\1,p;q}' $(BUNDLE)/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org/install.rdf); \
 	sed -i -e "s/SHPONKA/langpack-$(LANGCODE)@firefox.mozilla.org:$$ext_ver/g" $(BUNDLE)/Data/profile/prefs.js
+	sed -i -e "s/SHPONKA/$(LANGCODE)/g" $(BUNDLE)/Data/profile/prefs.js
+	sed -i -e "s/SHPONKA/$(LANGCODE)/g" $(BUNDLE)/App/Firefox/defaults/profile/prefs.js
 
 write-tbb-version:
 	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)-$(BUILD_NUM)-$(PLATFORM)-$(ARCH_TYPE)" >> $(BUNDLE)/App/Firefox/defaults/profile/prefs.js
