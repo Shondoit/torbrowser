@@ -96,6 +96,7 @@ user_pref("general.buildID.override", "0");
 user_pref("general.oscpu.override", "Windows NT 6.1");
 user_pref("general.platform.override", "Win32");
 user_pref("general.productSub.override", "20100401");
+user_pref("general.useragent.locale", "SHPONKA");
 user_pref("general.useragent.override", "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3");
 user_pref("general.useragent.vendor", "");
 user_pref("general.useragent.vendorSub", "");
