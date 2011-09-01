@@ -256,7 +256,8 @@ generic-bundle: directory-structure \
 		install-pidgin \
 		configure-apps \
 		launcher \
-		strip-it-stripper
+		strip-it-stripper \
+		remove-bundle-shared-lib-symlinks
 	touch generic-bundle.stamp
 
 APPDIR=$(DEST)/App
@@ -362,6 +363,10 @@ strip-it-stripper:
 	strip $(APPDIR)/vidalia
 	strip $(LIBSDIR)/*.so*
 	strip $(LIBSDIR)/libz/*.so*
+
+remove-bundle-shared-lib-symlinks:
+	./remove-shared-lib-symlinks $(LIBSDIR)
+	./remove-shared-lib-symlinks $(LIBSDIR)/libz
 
 ##
 ## How to create required extensions
