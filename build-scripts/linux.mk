@@ -465,8 +465,6 @@ patch-firefox-language:
 
 ## Fix prefs.js since extensions.checkCompatibility, false doesn't work
 update-extension-pref:
-	#ext_ver=$$(sed -n '/em:version/{s,.*="\(.*\)".*,\1,p;q}' $(BUNDLE)/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org/install.rdf); \
-	sed -i -e "s/SHPONKA/langpack-$(LANGCODE)@firefox.mozilla.org:$$ext_ver/g" $(BUNDLE)/Data/profile/prefs.js
 	sed -i -e "s/SHPONKA/$(LANGCODE)/g" $(BUNDLE)/Data/profile/prefs.js
 	sed -i -e "s/SHPONKA/$(LANGCODE)/g" $(BUNDLE)/App/Firefox/defaults/profile/prefs.js
 
