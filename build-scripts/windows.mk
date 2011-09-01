@@ -145,7 +145,7 @@ NAME="Tor Browser"
 DISTDIR=tbbwin-alpha-dist
 
 ## Version and name of the compressed bundle (also used for source)
-VERSION=$(RELEASE_VER)-$(BUILD_NUM)-alpha
+VERSION=$(RELEASE_VER)-$(BUILD_NUM)
 DEFAULT_COMPRESSED_BASENAME=tor-browser-$(VERSION)
 IM_COMPRESSED_BASENAME=tor-im-browser-$(VERSION)
 DEFAULT_COMPRESSED_NAME=$(DEFAULT_COMPRESSED_BASENAME)
@@ -471,7 +471,7 @@ SRCDEST=/tmp
 SRCDESTPATH=$(SRCDEST)/$(SRCNAME)
 srcdist:
 	rm -fr $(SRCDESTPATH)
-	git clone git://git.torproject.org/torbrowser.git \
+	git clone -b maint-2.2 git://git.torproject.org/torbrowser.git \
 		$(SRCDESTPATH)
 	cd $(SRCDEST); tar --exclude src/archived-patches \
 		--exclude src/current-patches  --exclude src/processtest \
