@@ -165,7 +165,7 @@ foreach {x} $shared_lib_filenames {
         # can now remove it from that list -- no name later in the
         # list can be a symlink to this file.
         set i [lsearch -exact $shared_libs_renamed $x]
-        if {i != -1} {
+        if {$i != -1} {
             set shared_libs_renamed [lreplace $shared_libs_renamed $i $i]
         }
         continue
@@ -210,7 +210,7 @@ close $action_list_chan
 # Perform the rename/delete actions.
 #
 # FIXME There should be a -n or --dry-run command-line option to skip this.
-foreach {action} $shared_lib_actions {
+foreach {action} $shared_lib_name_actions {
     lassign $action cmd from to
     switch -exact -- $cmd \
         rm {
