@@ -154,9 +154,12 @@ foreach {x} $shared_lib_filenames {
         # The target has not been renamed yet.  This must be the
         # symlink to the target with the shortest name not of the form
         # lib*.so , and thus it is the name by which the dynamic
-        # loader will attempt to load the library.  Rename it.
+        # loader will attempt to load the library.  Rename the target,
+        # and record that we have renamed it so that we won't try to
+        # rename it again.
         lappend shared_lib_name_actions [list rm $x]
         lappend shared_lib_name_actions [list mv $link_target $x]
+        lappend shared_libs_renamed $link_target
         continue
     }
 
