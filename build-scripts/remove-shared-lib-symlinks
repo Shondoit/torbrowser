@@ -69,15 +69,22 @@ foreach {x} $shared_lib_filenames {
     }
 }
 
-# Check that every shared library symlink points to a file or symlink
-# whose name starts with the symlink's name followed by a ".", and is
-# longer.
+# Check that every shared library symlink not of the form lib*.so
+# points to a file or symlink whose name starts with the symlink's
+# name followed by a ".", and is longer.
 #
 # FIXME This currently allows 'libfoozer.so.3' to point to
 # 'libfoozer.so.3.17.so.so.so.42.7'.  That should be fixed, as a
 # matter of principle.
 foreach {x} $shared_lib_filenames {
     if {[file type $x] eq "file"} {continue}
+
+    if {[string match lib*.so $x]} {
+        # This is a shared library symlink of the form lib*.so ; it is
+        # only used at build time, and it may point to a shared
+        # library with a different name.
+        continue
+    }
 
     set link_target [file readlink $x]
     if {![file exists $link_target]} {
