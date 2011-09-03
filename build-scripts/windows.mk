@@ -474,6 +474,5 @@ srcdist:
 	git clone -b maint-2.2 git://git.torproject.org/torbrowser.git \
 		$(SRCDESTPATH)
 	cd $(SRCDEST); tar --exclude src/archived-patches \
-		--exclude src/current-patches  --exclude src/processtest \
-		--exclude .git -czvf $(SRCNAME)-src.tar.gz $(SRCNAME)
+	--exclude src/processtest --exclude .git -czvf $(SRCNAME)-src.tar.gz $(SRCNAME)
 
