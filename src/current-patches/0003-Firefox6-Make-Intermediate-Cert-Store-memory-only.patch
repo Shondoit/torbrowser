@@ -1,7 +1,7 @@
-From c50f65a9f11e09332c2c97678b685d2bdcad7d62 Mon Sep 17 00:00:00 2001
+From 66d789bb9eb916dc909f7fda79f988c4360a3924 Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@fscked.org>
 Date: Fri, 19 Aug 2011 17:58:23 -0700
-Subject: [PATCH 3/3] Firefox6: Make Intermediate Cert Store memory-only.
+Subject: [PATCH 3/7] Firefox6: Make Intermediate Cert Store memory-only.
 
 This patch makes the intermediate SSL cert store exist in memory only.
 

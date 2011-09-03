@@ -1,9 +1,15 @@
-From 6215e898232ba74a3676f87226a64501874fcbd2 Mon Sep 17 00:00:00 2001
+From b6b74cdac09ed294ea1b965e39e4e9ae64c5cbd8 Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@fscked.org>
-Date: Tue, 30 Aug 2011 13:34:14 -0700
-Subject: [PATCH 5/5] Smash the state.
+Date: Sat, 3 Sep 2011 03:00:26 -0700
+Subject: [PATCH 7/7] Smash the state.
 
 What happened to you, Nederlanden? You used to be cool.
+
+This exemption is insecure as-is anyway, because we have no way of verifying
+that DigiNotar wasn't compromised enough to allow the attacker to sign
+certificates with an issuer string matching this exemption. The adversary
+would then be able to create a chain of Entrust -> DigiNotar -> "Staat der
+Nederlanden" -> *.torproject.org or *.google.com.
 ---
  security/manager/ssl/src/nsNSSCallbacks.cpp |    7 -------
  1 files changed, 0 insertions(+), 7 deletions(-)

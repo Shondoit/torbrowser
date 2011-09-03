@@ -1,7 +1,7 @@
-From 1eb6ddb69b9fa4b82a555398d2c47b8ef1166ae2 Mon Sep 17 00:00:00 2001
+From c8cbe2617fd627f3edbd64c7ddaf99e6dd0301fb Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@fscked.org>
 Date: Mon, 20 Jun 2011 17:07:56 -0700
-Subject: [PATCH 2/3] Firefox6: Make Permissions Manager memory-only
+Subject: [PATCH 2/7] Firefox6: Make Permissions Manager memory-only
 
 This patch exposes a pref 'permissions.memory_only' that properly isolates the
 permissions manager to memory, which is responsible for all user specified
