@@ -1,0 +1,37 @@
+From b6b74cdac09ed294ea1b965e39e4e9ae64c5cbd8 Mon Sep 17 00:00:00 2001
+From: Mike Perry <mikeperry-git@fscked.org>
+Date: Sat, 3 Sep 2011 03:00:26 -0700
+Subject: [PATCH 7/7] Smash the state.
+
+What happened to you, Nederlanden? You used to be cool.
+
+This exemption is insecure as-is anyway, because we have no way of verifying
+that DigiNotar wasn't compromised enough to allow the attacker to sign
+certificates with an issuer string matching this exemption. The adversary
+would then be able to create a chain of Entrust -> DigiNotar -> "Staat der
+Nederlanden" -> *.torproject.org or *.google.com.
+---
+ security/manager/ssl/src/nsNSSCallbacks.cpp |    7 -------
+ 1 files changed, 0 insertions(+), 7 deletions(-)
+
+diff --git a/security/manager/ssl/src/nsNSSCallbacks.cpp b/security/manager/ssl/src/nsNSSCallbacks.cpp
+index 5e3a888..43e1c19 100644
+--- a/security/manager/ssl/src/nsNSSCallbacks.cpp
++++ b/security/manager/ssl/src/nsNSSCallbacks.cpp
+@@ -1065,13 +1065,6 @@ PSM_SSL_BlacklistDigiNotar(CERTCertificate * serverCert,
+         }
+       }
+     }
+-
+-    // By request of the Dutch government
+-    if (!strcmp(node->cert->issuerName,
+-                "CN=Staat der Nederlanden Root CA,O=Staat der Nederlanden,C=NL") &&
+-        CERT_LIST_END(CERT_LIST_NEXT(node), serverCertChain)) {
+-      return 0;
+-    }
+   }
+ 
+   if (isDigiNotarIssuedCert)
+-- 
+1.7.3.4
+
