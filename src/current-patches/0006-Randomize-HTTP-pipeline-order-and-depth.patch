@@ -1,4 +1,4 @@
-From 30836f3af346970e58dc98308feebae3f53b9dc7 Mon Sep 17 00:00:00 2001
+From 1c5c12f3c28b6c618f2273d2fe36d7c898b7f012 Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@fscked.org>
 Date: Sat, 3 Sep 2011 00:10:35 -0700
 Subject: [PATCH 6/7] Randomize HTTP pipeline order and depth.
@@ -8,12 +8,12 @@ Also turn up maximum depth to 12.
 This is an experimental defense against
 http://lorre.uni.lu/~andriy/papers/acmccs-wpes11-fingerprinting.pdf
 ---
- netwerk/protocol/http/nsHttpConnectionMgr.cpp |   77 ++++++++++++++++++++++++-
+ netwerk/protocol/http/nsHttpConnectionMgr.cpp |   78 ++++++++++++++++++++++++-
  netwerk/protocol/http/nsHttpConnectionMgr.h   |    4 +
- 2 files changed, 80 insertions(+), 1 deletions(-)
+ 2 files changed, 81 insertions(+), 1 deletions(-)
 
 diff --git a/netwerk/protocol/http/nsHttpConnectionMgr.cpp b/netwerk/protocol/http/nsHttpConnectionMgr.cpp
-index 108f2c5..38feda3 100644
+index 108f2c5..6961ab6 100644
 --- a/netwerk/protocol/http/nsHttpConnectionMgr.cpp
 +++ b/netwerk/protocol/http/nsHttpConnectionMgr.cpp
 @@ -93,6 +93,11 @@ nsHttpConnectionMgr::nsHttpConnectionMgr()
@@ -37,7 +37,7 @@ index 108f2c5..38feda3 100644
              trans = pipeline;
      }
  
-@@ -867,6 +872,76 @@ nsHttpConnectionMgr::BuildPipeline(nsConnectionEntry *ent,
+@@ -867,6 +872,77 @@ nsHttpConnectionMgr::BuildPipeline(nsConnectionEntry *ent,
      return PR_TRUE;
  }
  
@@ -69,7 +69,7 @@ index 108f2c5..38feda3 100644
 +    rv = mRandomGenerator->GenerateRandomBytes(1, &bytes);
 +    NS_ENSURE_SUCCESS(rv, rv);
 +    // 4...12
-+    max = 4 + (bytes[0] % mMaxPipelinedRequests);
++    max = 4 + (bytes[0] % (mMaxPipelinedRequests + 1));
 +    NS_Free(bytes);
 +
 +    while (numAllowed > 0) {
@@ -102,11 +102,12 @@ index 108f2c5..38feda3 100644
 +            break;
 +    }
 +
++    //fprintf(stderr, "Yay!!! pipelined %u/%u transactions\n", numAdded, max);
++    LOG(("  pipelined %u/%u transactions\n", numAdded, max));
++
 +    if (numAdded == 0)
 +        return PR_FALSE;
 +
-+    fprintf(stderr, "Yay!!! pipelined %u/%u transactions\n", numAdded, max);
-+    LOG(("  pipelined %u transactions\n", numAdded));
 +    NS_ADDREF(*result = pipeline);
 +    return PR_TRUE;
 +}
