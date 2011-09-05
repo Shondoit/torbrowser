@@ -435,9 +435,9 @@ install-betterprivacy: betterprivacy.xpi
 ## Language extensions need to be handled differently from other extensions
 fix-install-rdf: $(filter-out langpack_en-US.xpi,langpack_$(LANGCODE).xpi)
 ifneq ($(LANGCODE), en-US)
-        rm -fr xx
-        mkdir xx
-        (cd xx && unzip ../langpack_$(LANGCODE).xpi && sed -i -e "s/em:maxVersion>6.0.1/em:maxVersion>6.0.*/" install.rdf && zip  -r ../langpack_$(LANGCODE).xpi .)
+	rm -fr xx
+	mkdir xx
+	(cd xx && unzip ../langpack_$(LANGCODE).xpi && sed -i -e "s/em:maxVersion>6.0.1/em:maxVersion>6.0.*/" install.rdf && zip  -r ../langpack_$(LANGCODE).xpi .)
 endif
 
 install-lang-extensions: $(filter-out langpack_en-US.xpi,langpack_$(LANGCODE).xpi) fix-install-rdf
