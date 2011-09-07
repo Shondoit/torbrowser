@@ -108,7 +108,7 @@ user_pref("network.cookie.cookieBehavior", 1);
 user_pref("network.cookie.lifetimePolicy", 2);
 user_pref("network.cookie.prefsMigrated", true);
 user_pref("network.http.pipelining", true);
-user_pref("network.http.pipelining.maxrequests", 10);
+user_pref("network.http.pipelining.maxrequests", 8);
 user_pref("network.http.pipelining.ssl", true);
 user_pref("network.http.proxy.pipelining", true);
 user_pref("network.hosts.pop_server", "");
