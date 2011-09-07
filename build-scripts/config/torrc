@@ -8,6 +8,4 @@ GeoIPFile .\Data\Tor\geoip
 Log notice stdout
 # Bind to this address to listen to connections from SOCKS-speaking
 # applications.
-SocksPort auto
 SocksListenAddress 127.0.0.1
-ControlPort auto

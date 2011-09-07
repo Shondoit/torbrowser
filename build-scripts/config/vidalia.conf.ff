@@ -7,5 +7,4 @@ LanguageCode=en
 ControlPort=9051
 TorExecutable=.\\App\\tor.exe
 Torrc=.\\Data\\Tor\\torrc
-AutoControl=true
 DataDirectory=.\\Data\\Tor
