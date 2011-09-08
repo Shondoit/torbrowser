@@ -46,7 +46,6 @@ user_pref("browser.search.suggest.enabled", false);
 user_pref("browser.search.update", false);
 user_pref("browser.sessionstore.privacy_level", 2);
 user_pref("browser.urlbar.autocomplete.enabled", false);
-user_pref("browser.zoom.siteSpecific", false);
 user_pref("capability.policy.maonoscript.javascript.enabled", "allAccess");
 user_pref("capability.policy.maonoscript.sites", "addons.mozilla.org about: about:addons about:blank about:blocked about:certerror about:config about:crashes about:credits about:home about:neterror about:plugins about:privatebrowsing about:sessionrestore chrome: resource:");
 user_pref("dom.event.contextmenu.enabled", false);
