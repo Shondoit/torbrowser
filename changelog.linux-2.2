@@ -1,3 +1,18 @@
+Tor Browser Bundle (2.2.32-4); suite=linux
+
+  * Fix Makefile to allow for automatic retrieval of Qt and libpng (closes: #2255)
+  * Remove symlinks from tarball (closes: #2312)
+  * New Firefox patches
+    - Prevent Firefox from loading all system plugins besides Flash (closes: #2826, #3547)
+    - Prevent content-preferences service from writing website urls and their settings to disk (closes: #3229)
+  * Update Torbutton to 1.4.3
+    - Don't let Torbutton inadvertently enable automatic updating in Firefox (closes: #3933)
+    - Fix auto-scroll on Twitter (closes: #3960)
+    - Allow site zoom information to be stored (closes: #3928)
+    - Make permissions and disk errors human-readable (closes: #3649)
+
+ -- Erinn Clark <erinn@torproject.org>  Sat Sep 10 00:33:48 BST 2011
+
 Tor Browser Bundle (2.2.32-3) alpha; suite=linux
 
   * Update Firefox to 6.0.2
