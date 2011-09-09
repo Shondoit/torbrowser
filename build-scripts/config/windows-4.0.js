@@ -166,6 +166,7 @@ user_pref("plugin.scan.Acrobat", "99.0");
 user_pref("plugin.scan.Quicktime", "99.0");
 user_pref("plugin.scan.SunJRE", "99.0");
 user_pref("plugin.scan.WindowsMediaPlayer", "99.0");
+user_pref("plugin.scan.plid.all", false);
 user_pref("privacy.sanitize.migrateFx3Prefs", true);
 user_pref("security.enable_java", false);
 user_pref("signon.rememberSignons", false);
