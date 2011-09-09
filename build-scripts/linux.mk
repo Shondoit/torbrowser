@@ -249,7 +249,15 @@ clean:
 ## Install binaries, documentation, FirefoxPortable, PidginPortable, and launcher into $(DEST)
 generic-bundle.stamp:
 	make -f linux.mk generic-bundle
-generic-bundle: directory-structure install-binaries install-docs install-firefox install-pidgin configure-apps launcher strip-it-stripper
+generic-bundle: directory-structure \
+		install-binaries \
+		install-docs \
+		install-firefox \
+		install-pidgin \
+		configure-apps \
+		launcher \
+		strip-it-stripper \
+		remove-bundle-shared-lib-symlinks
 	touch generic-bundle.stamp
 
 APPDIR=$(DEST)/App
@@ -278,6 +286,7 @@ install-binaries:
 	cp -d $(QT)/libQtGui.so* $(LIBSDIR)
 	cp -d $(QT)/libQtNetwork.so* $(LIBSDIR)
 	cp -d $(QT)/libQtXml.so* $(LIBSDIR)
+	rm $(LIBSDIR)/libQt*.so*.debug
 	# zlib
 	cp -d $(ZLIB)/libz.so $(ZLIB)/libz.so.1 $(ZLIB)/libz.so.1.2.5 $(LIBSDIR)/libz
 	# Libevent
@@ -355,6 +364,10 @@ strip-it-stripper:
 	strip $(APPDIR)/vidalia
 	strip $(LIBSDIR)/*.so*
 	strip $(LIBSDIR)/libz/*.so*
+
+remove-bundle-shared-lib-symlinks:
+	./remove-shared-lib-symlinks $(LIBSDIR)
+	./remove-shared-lib-symlinks $(LIBSDIR)/libz
 
 ##
 ## How to create required extensions

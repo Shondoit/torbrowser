@@ -1,0 +1,226 @@
+#!/usr/bin/tclsh8.5
+
+set usage [string trimleft {
+usage: remove-shared-lib-symlinks $LIBSDIR
+
+Remove all shared library symlinks from the libraries in $LIBSDIR,
+renaming the libraries themselves so that the Linux dynamic loader
+will still load executables linked to those libraries properly.
+
+This program assumes that the contents of $LIBSDIR do not change while
+it is running.
+}]
+
+#* Return $x.  (The command [return $x] returns $x <em>from the
+# containing function</em>.)
+proc result {x} {
+    return $x
+}
+
+# Check that we have exactly one command-line argument.  If our
+# command line isn't what we expect, print a usage message to stderr
+# and die.
+#
+# As a special case, if our one command-line argument is "--help" or
+# "-help", print the usage message to stdout and exit.
+if {$argc != 1 ||
+    [lindex $argv 0] eq "--help" ||
+    [lindex $argv 0] eq "-help" ||
+    ![file exists [lindex $argv 0]]} {
+
+    set usage_chan [switch -regexp -- [lindex $argv 0] \
+                        -?-help {result stdout} \
+                        .* {result stderr}]
+
+    puts -nonewline $usage_chan $usage
+
+    if {$usage_chan eq stderr} {
+        exit 2
+    } else {
+        exit 0
+    }
+}
+
+set libdir [lindex $argv 0]
+cd $libdir
+
+# Make a list of shared library filenames in the specified directory.
+# We assume filesystem objects whose names start with "lib" and end in
+# ".so" or contain ".so." are shared libraries or symlinks to them.
+set possible_shared_lib_filenames [glob -types {f l} lib*.so*]
+set shared_lib_filenames [list]
+foreach {x} $possible_shared_lib_filenames {
+    if {[string match lib*.so $x] ||
+        [string match lib*.so.* $x]} {
+
+        lappend shared_lib_filenames $x
+    }
+}
+unset possible_shared_lib_filenames
+
+# Check that every shared library symlink points to a file in this
+# directory.
+foreach {x} $shared_lib_filenames {
+    if {[file type $x] eq "file"} {continue}
+
+    set link_target [file readlink $x]
+    if {[string first / $link_target] != -1} {
+        error "symlink [list $x] -> [list $link_target] may lead to another directory"
+    }
+}
+
+# Check that every shared library symlink not of the form lib*.so
+# points to a file or symlink whose name starts with the symlink's
+# name followed by a ".", and is longer.
+#
+# FIXME This currently allows 'libfoozer.so.3' to point to
+# 'libfoozer.so.3.17.so.so.so.42.7'.  That should be fixed, as a
+# matter of principle.
+foreach {x} $shared_lib_filenames {
+    if {[file type $x] eq "file"} {continue}
+
+    if {[string match lib*.so $x]} {
+        # This is a shared library symlink of the form lib*.so ; it is
+        # only used at build time, and it may point to a shared
+        # library with a different name.
+        continue
+    }
+
+    set link_target [file readlink $x]
+    if {![file exists $link_target]} {
+        set link_target_type {}
+    } else {
+        set link_target_type [file type $link_target]
+    }
+
+    if {[string length $link_target] <= [string length $x.] ||
+        ![string equal -length [string length $x.] $x. $link_target] ||
+        ($link_target_type ne "file" && $link_target_type ne "link")} {
+
+        error "symlink [list $x] -> [list $link_target] is not a valid symlink to a shared library version"
+    }
+}
+
+# Check that all shared library symlinks' and files' names are of the
+# form of a lib*.so name followed by zero or more (".", non-negative
+# decimal number with no unnecessary leading zeroes) pairs.
+foreach {x} $shared_lib_filenames {
+    if {![regexp -all -- {^lib.*\.so(\.(0|[1-9][0-9]*))*$} $x]} {
+        error "file or symlink [list $x] has invalid name"
+    }
+}
+
+# Now decide what to do with each shared library symlink or file.
+#
+# We want to rename each shared library file to the name of the
+# shortest symlink which points to that file and which is not of the
+# form lib*.so .
+#
+# We can do this by first sorting the list ASCIIbetically, then
+# FIXME DESCRIBE INTENDED ALGORITHM                                        
+set shared_lib_filenames [lsort -ascii $shared_lib_filenames]
+set shared_lib_name_actions {}
+set shared_libs_renamed {}
+foreach {x} $shared_lib_filenames {
+    if {[file type $x] eq "link"} {
+        # This is a shared library symlink.  If its target (after
+        # following the whole chain of symlinks) is not in
+        # $shared_libs_renamed yet, then this must also be the symlink
+        # to its target with the shortest name (partly due to the
+        # constraints above on what we allow a symlink to point to,
+        # and partly because of how we sorted the list above).
+
+        if {[regexp -all -- {^lib.*\.so$} $x]} {
+            # This is a shared library symlink of the form lib*.so .
+            # Symlinks of this form are only used by the linker at build
+            # time.  Delete this name.
+
+            lappend shared_lib_name_actions [list rm $x]
+            continue
+        }
+
+        set link_target [file readlink $x]
+        while {[file type $link_target] eq "link"} {
+            # We don't have to worry about symlink loops here.
+            set link_target [file readlink $x]
+        }
+
+        if {[lsearch -exact $shared_libs_renamed $link_target] != -1} {
+            # The target has been renamed already -- just delete this link.
+            lappend shared_lib_name_actions [list rm $x]
+            continue
+        }
+
+        # The target has not been renamed yet.  This must be the
+        # symlink to the target with the shortest name not of the form
+        # lib*.so , and thus it is the name by which the dynamic
+        # loader will attempt to load the library.  Rename the target,
+        # and record that we have renamed it so that we won't try to
+        # rename it again.
+        lappend shared_lib_name_actions [list rm $x]
+        lappend shared_lib_name_actions [list mv $link_target $x]
+        lappend shared_libs_renamed $link_target
+        continue
+    }
+
+    if {[file type $x] eq "file"} {
+        # This is a file.  If it is listed in $shared_libs_renamed, we
+        # can now remove it from that list -- no name later in the
+        # list can be a symlink to this file.
+        set i [lsearch -exact $shared_libs_renamed $x]
+        if {$i != -1} {
+            set shared_libs_renamed [lreplace $shared_libs_renamed $i $i]
+        }
+        continue
+    }
+
+    # This isn't a file, and it isn't a symlink -- so WTF is this
+    # thing, anyway?  A fish?
+    error "[list $x] foozer?"
+}
+
+# Write the current list of shared library names and the list of
+# rename/delete actions to disk.
+#
+# FIXME Currently, we write these out as single Tcl lists, most likely
+# on a single line, because that is the only format that we can easily
+# emit which can also be parsed easily and unambiguously by another
+# program.  Someday that should be improved; until then, it should be
+# easy enough to write a tiny Tcl program that reads the list and
+# writes out one list element per line or a tiny Tk program that reads
+# the list and sticks it in a listbox widget.
+set library_list {}
+foreach {x} $shared_lib_filenames {
+    set x_type [file type $x]
+    if {$x_type eq "link"} {
+        set extra_info [file readlink $x]
+    } elseif {$x_type eq "file"} {
+        set extra_info {} ;# FIXME This should be a hash of some sort.
+    } else {
+        # can't happen
+        error "[list $x] foozer!"
+    }
+    lappend library_list [list $x $x_type $extra_info]
+}
+set library_list_chan [open ".shared-library-name-list" {WRONLY CREAT EXCL}]
+puts -nonewline $library_list_chan $library_list
+close $library_list_chan
+
+set action_list_chan [open ".shared-library-rename-action-list" {WRONLY CREAT EXCL}]
+puts -nonewline $action_list_chan $shared_lib_name_actions
+close $action_list_chan
+
+# Perform the rename/delete actions.
+#
+# FIXME There should be a -n or --dry-run command-line option to skip this.
+foreach {action} $shared_lib_name_actions {
+    lassign $action cmd from to
+    switch -exact -- $cmd \
+        rm {
+            file delete -- $from
+        } \
+        mv {
+            file rename -- $from $to
+        }
+}
+
