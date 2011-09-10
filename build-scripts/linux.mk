@@ -453,7 +453,7 @@ ifneq ($(LANGCODE), en-US)
 	(cd xx && unzip ../langpack_$(LANGCODE).xpi && sed -i -e "s/em:maxVersion>6.0.1/em:maxVersion>6.0.*/" install.rdf && zip  -r ../langpack_$(LANGCODE).xpi .)
 endif
 
-install-lang-extensions: $(filter-out langpack_en-US.xpi,langpack_$(LANGCODE).xpi) fix-install-rdf
+install-lang-extensions: $(filter-out langpack_en-US.xpi,langpack_$(LANGCODE).xpi)
 ifneq ($(LANGCODE), en-US)
 	mkdir -p $(BUNDLE)/Data/profile/extensions
 	cp langpack_$(LANGCODE).xpi $(BUNDLE)/Data/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org.xpi
