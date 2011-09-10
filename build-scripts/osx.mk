@@ -36,7 +36,7 @@ include $(PWD)/versions.mk
 
 ## Architecture
 ARCH_TYPE=i386
-BUILD_NUM=3
+BUILD_NUM=4
 PLATFORM=MacOS
 
 ## Location of directory for source unpacking
@@ -396,7 +396,7 @@ ifneq ($(LANGCODE), en-US)
 	(cd xx && unzip ../langpack_$(LANGCODE).xpi && sed -i -e "s/em:maxVersion>6.0.1/em:maxVersion>6.0.*/" install.rdf && zip  -r ../langpack_$(LANGCODE).xpi .)
 endif
 
-install-lang-extensions: $(filter-out langpack_en-US.xpi,langpack_$(LANGCODE).xpi) fix-install-rdf
+install-lang-extensions: $(filter-out langpack_en-US.xpi,langpack_$(LANGCODE).xpi)
 ifneq ($(LANGCODE), en-US)
 	mkdir -p $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/
 	cp langpack_$(LANGCODE).xpi $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org.xpi
@@ -442,6 +442,9 @@ patch-firefox-language:
 update-extension-pref:
 	sed -i -e "s/SHPONKA/$(LANGCODE)/g" $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
 	sed -i -e "s/SHPONKA/$(LANGCODE)/g" $(BUNDLE)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/prefs.js
+
+print-version:
+	@echo $(RELEASE_VER)-$(BUILD_NUM)
 
 write-tbb-version:
 	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)-$(BUILD_NUM)-$(PLATFORM)-$(ARCH_TYPE)" >> $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js

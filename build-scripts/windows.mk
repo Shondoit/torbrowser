@@ -31,7 +31,7 @@
 
 ## Include versions
 include $(PWD)/versions.mk
-BUILD_NUM=3
+BUILD_NUM=4
 PLATFORM=Windows
 
 ## Location of required libraries
@@ -468,6 +468,9 @@ patch-firefox-language:
 ## Copy Firefox preferences from a run of FirefoxPortable to be the default
 apply-prefs:
 	cp $(DEST)/FirefoxPortable/Data/profile/prefs.js $(CONFIG_SRC)
+
+print-version:
+	@echo $(RELEASE_VER)-$(BUILD_NUM)
 
 write-tbb-version:
 	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)-$(BUILD_NUM)-$(PLATFORM)-$(ARCH_TYPE)" >> $(BUNDLE)/FirefoxPortable/App/DefaultData/profile/prefs.js

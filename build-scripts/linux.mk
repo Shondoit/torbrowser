@@ -36,7 +36,7 @@ include $(PWD)/versions.mk
 
 ## Architecture
 ARCH_TYPE=$(shell uname -m)
-BUILD_NUM=3
+BUILD_NUM=4
 PLATFORM=Linux
 
 ## Location of directory for source unpacking
@@ -488,6 +488,9 @@ patch-firefox-language:
 update-extension-pref:
 	sed -i -e "s/SHPONKA/$(LANGCODE)/g" $(BUNDLE)/Data/profile/prefs.js
 	sed -i -e "s/SHPONKA/$(LANGCODE)/g" $(BUNDLE)/App/Firefox/defaults/profile/prefs.js
+
+print-version:
+	@echo $(RELEASE_VER)-$(BUILD_NUM)
 
 write-tbb-version:
 	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)-$(BUILD_NUM)-$(PLATFORM)-$(ARCH_TYPE)" >> $(BUNDLE)/App/Firefox/defaults/profile/prefs.js
