@@ -481,9 +481,5 @@ SRCNAME=$(COMPRESSED_NAME)
 SRCDEST=/tmp
 SRCDESTPATH=$(SRCDEST)/$(SRCNAME)
 srcdist:
-	rm -fr $(SRCDESTPATH)
-	git clone -b maint-2.2 git://git.torproject.org/torbrowser.git \
-		$(SRCDESTPATH)
-	cd $(SRCDEST); tar --exclude src/archived-patches \
-	--exclude src/processtest --exclude .git -czvf $(SRCNAME)-src.tar.gz $(SRCNAME)
+	git archive --format=tar --prefix=tor-browser-$(VERSION)-src/ torbrowser-$(VERSION) | gzip -9 > $(PWD)/tor-browser-$(VERSION)-src.tar.gz
 
