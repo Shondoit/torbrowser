@@ -23,6 +23,7 @@ FF_VENDOR_ID:=\{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 ## File names for the source packages
 ZLIB_PACKAGE=zlib-$(ZLIB_VER).tar.gz
 OPENSSL_PACKAGE=openssl-$(OPENSSL_VER).tar.gz
+LIBPNG_PACKAGE=libpng-$(LIBPNG_VER).tar.bz2
 QT_PACKAGE=qt-everywhere-opensource-src-$(QT_VER).tar.gz
 VIDALIA_PACKAGE=vidalia-$(VIDALIA_VER).tar.gz
 LIBEVENT_PACKAGE=libevent-$(LIBEVENT_VER).tar.gz
@@ -33,6 +34,7 @@ FIREFOX_PACKAGE=firefox-$(FIREFOX_VER).source.tar.bz2
 ## Location of files for download
 ZLIB_URL=http://www.zlib.net/$(ZLIB_PACKAGE)
 OPENSSL_URL=http://www.openssl.org/source/$(OPENSSL_PACKAGE)
+LIBPNG_URL=ftp://ftp.simplesystems.org/pub/libpng/png/src/$(LIBPNG_PACKAGE)
 QT_URL=ftp://ftp.qt.nokia.com/qt/source/$(QT_PACKAGE)
 VIDALIA_URL=http://www.torproject.org/dist/vidalia/$(VIDALIA_PACKAGE)
 LIBEVENT_URL=https://github.com/downloads/libevent/libevent/$(LIBEVENT_PACKAGE)
@@ -40,11 +42,14 @@ TOR_URL=http://www.torproject.org/dist/$(TOR_PACKAGE)
 PIDGIN_URL=http://sourceforge.net/projects/pidgin/files/Pidgin/$(PIDGIN_PACKAGE)
 FIREFOX_URL=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/$(FIREFOX_VER)/source/$(FIREFOX_PACKAGE)
 
-fetch-source: fetch-zlib fetch-openssl fetch-vidalia fetch-libevent fetch-tor fetch-firefox
+fetch-source: fetch-zlib fetch-openssl fetch-libpng fetch-qt fetch-vidalia fetch-libevent fetch-tor fetch-firefox
 	-mkdir $(FETCH_DIR)
 
 fetch-zlib:
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(ZLIB_URL)
+
+fetch-libpng:
+	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(LIBPNG_URL)
 
 fetch-qt:
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(QT_URL)
@@ -65,11 +70,15 @@ fetch-firefox:
 	-rm -rf $(FETCH_DIR)/mozilla-release
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(FIREFOX_URL)
 
-unpack-source: unpack-zlib unpack-openssl unpack-vidalia unpack-libevent unpack-tor unpack-firefox
+unpack-source: unpack-zlib unpack-openssl unpack-libpng unpack-qt unpack-vidalia unpack-libevent unpack-tor unpack-firefox
 
 unpack-zlib:
 	-rm -rf $(FETCH_DIR)/zlib-$(ZLIB_VER)
 	cd $(FETCH_DIR) && tar -xvzf $(ZLIB_PACKAGE)
+
+unpack-libpng:
+	-rm -rf $(FETCH_DIR)/libpng-$(LIBPNG_VER)
+	cd $(FETCH_DIR) && tar -xvjf $(LIBPNG_PACKAGE)
 
 unpack-openssl:
 	-rm -rf $(FETCH_DIR)/openssl-$(OPENSSL_VER)
