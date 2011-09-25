@@ -7,6 +7,9 @@
 #
 # To run in debug mode, simply pass -debug or --debug on the command line.
 #
+# WARNING: In debug mode, this script may cause dyld to write to the system
+#          log file.
+#
 # Copyright 2010 The Tor Project.  See LICENSE for licensing information.
 
 DEBUG_TBB=0
@@ -22,8 +25,11 @@ export HOME
 DYLD_LIBRARY_PATH=${HOME}/Contents/Frameworks
 export LDPATH
 export DYLD_LIBRARY_PATH
-DYLD_PRINT_LIBRARIES=1
-export DYLD_PRINT_LIBRARIES
+
+if [ "$DEBUG_TBB" -eq 1 ]; then
+	DYLD_PRINT_LIBRARIES=1
+	export DYLD_PRINT_LIBRARIES
+fi
 
 if [ "$DEBUG_TBB" -eq 1 ]; then
 	printf "\nStarting Vidalia now\n"
