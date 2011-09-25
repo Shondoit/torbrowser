@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # GNU/Linux does not really require something like RelativeLink.c
-# However, we do want to have the same look and feel with similiar features.
+# However, we do want to have the same look and feel with similar features.
 #
 # To run in debug mode simply pass --debug
 #
