@@ -5,11 +5,14 @@
 # In the future, we may want this to be a C binary with a custom icon but at the moment
 # it's quite simple to just use a shell script
 #
-# To run in debug mode simply pass --debug
+# To run in debug mode, simply pass -debug or --debug on the command line.
 #
 # Copyright 2010 The Tor Project.  See LICENSE for licensing information.
 
-if [ "$1" == "--debug" ]; then 
+DEBUG_TBB=0
+
+if [ "x$1" = "x--debug" -o "x$1" = "x-debug" ]; then
+	DEBUG_TBB=1
 	printf "\nDebug enabled.\n\n"
 fi
 
@@ -22,7 +25,7 @@ export DYLD_LIBRARY_PATH
 DYLD_PRINT_LIBRARIES=1
 export DYLD_PRINT_LIBRARIES
 
-if [ "${debug}" ]; then
+if [ "$DEBUG_TBB" -eq 1 ]; then
 	printf "\nStarting Vidalia now\n"
 	cd "${HOME}"
 	printf "\nLaunching Vidalia from: `pwd`\n"
