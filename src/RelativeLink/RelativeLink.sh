@@ -185,8 +185,6 @@ fi
 LDPATH="${HOME}/Lib/"
 export LDPATH
 export LD_LIBRARY_PATH
-DYLD_PRINT_LIBRARIES=1
-export DYLD_PRINT_LIBRARIES
 
 if [ "${debug}" ]; then
 	printf "\nStarting Vidalia now\n"
