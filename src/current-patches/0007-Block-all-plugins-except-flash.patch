@@ -1,6 +1,6 @@
-From dfabac8eddc37d794e23d25de3f1ef602ad4ad86 Mon Sep 17 00:00:00 2001
+From 32c9fdda43a02e738cbe9c7207795ed92bf835b9 Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@fscked.org>
-Date: Thu, 8 Sep 2011 08:40:05 -0700
+Date: Wed, 28 Sep 2011 13:24:20 -0700
 Subject: [PATCH 7/8] Block all plugins except flash.
 
 We cannot use the @mozilla.org/extensions/blocklist;1 service, because we
@@ -17,12 +17,12 @@ on a better way. Until then, it is delta-darwinism for us.
  2 files changed, 35 insertions(+), 0 deletions(-)
 
 diff --git a/dom/plugins/base/nsPluginHost.cpp b/dom/plugins/base/nsPluginHost.cpp
-index 93c2413..1dc4ee0 100644
+index 2c2ad7d..eba8c24 100644
 --- a/dom/plugins/base/nsPluginHost.cpp
 +++ b/dom/plugins/base/nsPluginHost.cpp
-@@ -2062,6 +2062,35 @@ class nsDefaultComparator<pluginFileinDirectory, pluginFileinDirectory>
- 
- typedef NS_NPAPIPLUGIN_CALLBACK(char *, NP_GETMIMEDESCRIPTION)(void);
+@@ -2014,6 +2014,35 @@ PRBool nsPluginHost::IsDuplicatePlugin(nsPluginTag * aPluginTag)
+   return PR_FALSE;
+ }
  
 +PRBool nsPluginHost::GhettoBlacklist(nsIFile *pluginFile)
 +{
@@ -53,25 +53,25 @@ index 93c2413..1dc4ee0 100644
 +    return PR_TRUE; // fuck 'em. blacklist.
 +}
 +
+ typedef NS_NPAPIPLUGIN_CALLBACK(char *, NP_GETMIMEDESCRIPTION)(void);
+ 
  nsresult nsPluginHost::ScanPluginsDirectory(nsIFile *pluginsDir,
-                                             PRBool aCreatePluginList,
-                                             PRBool *aPluginsChanged)
-@@ -2197,6 +2226,10 @@ nsresult nsPluginHost::ScanPluginsDirectory(nsIFile *pluginsDir,
+@@ -2135,6 +2164,10 @@ nsresult nsPluginHost::ScanPluginsDirectory(nsIFile *pluginsDir,
        continue;
      }
  
-+    if (GhettoBlacklist(file)) {
-+      continue;
++    if (GhettoBlacklist(localfile)) {
++        continue;
 +    }
 +
      // if it is not found in cache info list or has been changed, create a new one
      if (!pluginTag) {
-       nsPluginFile pluginFile(file);
+       nsPluginFile pluginFile(localfile);
 diff --git a/dom/plugins/base/nsPluginHost.h b/dom/plugins/base/nsPluginHost.h
-index b1b8759..d6e237f 100644
+index cb43042..41dbf63 100644
 --- a/dom/plugins/base/nsPluginHost.h
 +++ b/dom/plugins/base/nsPluginHost.h
-@@ -283,6 +283,8 @@ private:
+@@ -282,6 +282,8 @@ private:
    // Loads all cached plugins info into mCachedPlugins
    nsresult ReadPluginInfo();
  

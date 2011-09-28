@@ -1,7 +1,7 @@
-From 1e21a3046829028f07c9bd13945e8bbeee2d5aad Mon Sep 17 00:00:00 2001
+From b31cf77e084355158252629efd6bf794212d807a Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@fscked.org>
 Date: Mon, 20 Jun 2011 17:07:41 -0700
-Subject: [PATCH 1/7] Firefox6: Block Components.interfaces,lookupMethod from content
+Subject: [PATCH 1/8] Block Components.interfaces,lookupMethod from content
 
 This patch removes the ability of content script to access
 Components.interfaces.* as well as call or access Components.lookupMethod.
@@ -20,10 +20,10 @@ https://trac.torproject.org/projects/tor/ticket/2874
  1 files changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/js/src/xpconnect/src/xpccomponents.cpp b/js/src/xpconnect/src/xpccomponents.cpp
-index c1d3e30..48c8b6a 100644
+index 664021e..9c8c415 100644
 --- a/js/src/xpconnect/src/xpccomponents.cpp
 +++ b/js/src/xpconnect/src/xpccomponents.cpp
-@@ -4231,7 +4231,9 @@ nsXPCComponents::CanCreateWrapper(const nsIID * iid, char **_retval)
+@@ -4393,7 +4393,9 @@ nsXPCComponents::CanCreateWrapper(const nsIID * iid, char **_retval)
  NS_IMETHODIMP
  nsXPCComponents::CanCallMethod(const nsIID * iid, const PRUnichar *methodName, char **_retval)
  {
@@ -34,7 +34,7 @@ index c1d3e30..48c8b6a 100644
      *_retval = xpc_CheckAccessList(methodName, allowed);
      return NS_OK;
  }
-@@ -4240,7 +4242,9 @@ nsXPCComponents::CanCallMethod(const nsIID * iid, const PRUnichar *methodName, c
+@@ -4402,7 +4404,9 @@ nsXPCComponents::CanCallMethod(const nsIID * iid, const PRUnichar *methodName, c
  NS_IMETHODIMP
  nsXPCComponents::CanGetProperty(const nsIID * iid, const PRUnichar *propertyName, char **_retval)
  {

@@ -1,4 +1,4 @@
-From 3964288545a78c28ca4585ac51bd7d9b8ccb3503 Mon Sep 17 00:00:00 2001
+From cdf48e30d76f7e1c349cdf8597e9cdc94623b8d8 Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@fscked.org>
 Date: Thu, 8 Sep 2011 08:40:17 -0700
 Subject: [PATCH 8/8] Make content pref service memory-only + clearable
