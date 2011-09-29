@@ -1,3 +1,15 @@
+Tor Browser Bundle (2.2.33-1); suite=osx
+
+  * Update Firefox to 7
+  * Update Tor to 0.2.2.33
+  * Update NoScript to 2.1.2.8
+  * Downgrade HTTPS Everywhere to 1.0.3, because we don't want stable TBBs to
+    use development versions of extensions (closes: #4050)
+  * Stop TBB from logging so much information to the system by only allowing
+    dyld log library loads to syslog when it is in debug mode (closes: #4093)
+
+ -- Erinn Clark <erinn@torproject.org>  Thu Sep 29 15:44:48 BST 2011
+
 Tor Browser Bundle (2.2.32-4); suite=osx
 
   * New Firefox patches

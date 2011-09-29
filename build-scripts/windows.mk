@@ -31,7 +31,7 @@
 
 ## Include versions
 include $(PWD)/versions.mk
-BUILD_NUM=4
+BUILD_NUM=1
 PLATFORM=Windows
 
 ## Location of required libraries
