@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # GNU/Linux does not really require something like RelativeLink.c
-# However, we do want to have the same look and feel with similiar features.
+# However, we do want to have the same look and feel with similar features.
 #
 # To run in debug mode simply pass --debug
 #
@@ -185,8 +185,6 @@ fi
 LDPATH="${HOME}/Lib/"
 export LDPATH
 export LD_LIBRARY_PATH
-DYLD_PRINT_LIBRARIES=1
-export DYLD_PRINT_LIBRARIES
 
 if [ "${debug}" ]; then
 	printf "\nStarting Vidalia now\n"
