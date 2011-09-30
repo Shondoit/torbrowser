@@ -291,7 +291,7 @@ install-docs:
 	cp $(TOR)/LICENSE $(TOR)/README $(DOCSDIR)/Tor
 	cp $(QT_LIB)/../LICENSE.GPL* $(QT_LIB)/../LICENSE.LGPL $(DOCSDIR)/Qt
 	cp $(MING)/../msys/1.0/share/doc/MSYS/COPYING $(DOCSDIR)/MinGW
-	cp ../changelog.win-2.2 $(DOCSDIR)/changelog
+	cp ../changelog.windows-2.2 $(DOCSDIR)/changelog
 	cp ../README.WIN-2.2 $(DOCSDIR)/README-TorBrowserBundle
 
 ## Copy over FirefoxPortable
