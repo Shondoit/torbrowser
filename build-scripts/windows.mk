@@ -50,7 +50,8 @@ PIDGIN=$(FETCH_DIR)/PidginPortable-$(PIDGIN_VER)
 PWD:=$(shell pwd)
 PYTHON=/c/Python26/python.exe
 SEVENZIP="/c/Program Files/7-Zip/7z.exe"
-WGET=$(PYTHON) $(PWD)/pyget.py
+PYGET=$(PYTHON) $(PWD)/pyget.py
+WGET=wget
 VIRUSSCAN=$(PYTHON) $(PWD)/virus-scan.py
 WINRAR="/c/Program Files/WinRAR/WinRAR.exe"
 CC=gcc
@@ -346,7 +347,7 @@ launcher:
 
 ## Torbutton development version
 torbutton.xpi:
-	$(WGET) -O $@ $(TORBUTTON)
+	$(PYGET) -O $@ $(TORBUTTON)
 
 ## English comes as default
 langpack_en-US.xpi:
@@ -354,19 +355,19 @@ langpack_en-US.xpi:
 
 ## BetterPrivacy
 betterprivacy.xpi:
-	$(WGET) -O $@ $(BETTERPRIVACY)
+	$(PYGET) -O $@ $(BETTERPRIVACY)
 
 ## NoScript development version
 noscript.xpi: 
-	$(WGET) -O $@ $(NOSCRIPT)
+	$(PYGET) -O $@ $(NOSCRIPT)
 
 ## HTTPS Everywhere
 httpseverywhere.xpi:
-	$(WGET) -O $@ $(HTTPSEVERYWHERE)
+	$(PYGET) -O $@ $(HTTPSEVERYWHERE)
 
 ## Generic language pack rule
 langpack_%.xpi:
-	$(WGET) -O $@ $(MOZILLA_LANGUAGE)/$*.xpi
+	$(PYGET) -O $@ $(MOZILLA_LANGUAGE)/$*.xpi
 
 ##
 ## Customize the bundle
