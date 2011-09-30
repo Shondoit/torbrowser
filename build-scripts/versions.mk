@@ -19,6 +19,12 @@ ZLIB_VER=1.2.5
 ## Extension IDs
 FF_VENDOR_ID:=\{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
+## Extensions
+TORBUTTON=https://www.torproject.org/dist/torbutton/torbutton-$(TORBUTTON_VER).xpi
+NOSCRIPT=https://addons.mozilla.org/firefox/downloads/latest/722/addon-722-latest.xpi
+BETTERPRIVACY=https://addons.mozilla.org/en-US/firefox/downloads/latest/6623/addon-6623-latest.xpi
+HTTPSEVERYWHERE=https://eff.org/files/https-everywhere-$(HTTPSEVERY_VER).xpi
+
 ## File names for the source packages
 ZLIB_PACKAGE=zlib-$(ZLIB_VER).tar.gz
 OPENSSL_PACKAGE=openssl-$(OPENSSL_VER).tar.gz
