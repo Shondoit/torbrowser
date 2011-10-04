@@ -469,8 +469,8 @@ print-version:
 	@echo $(RELEASE_VER)-$(BUILD_NUM)
 
 write-tbb-version:
-	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)-$(BUILD_NUM)-$(PLATFORM)-$(ARCH_TYPE)" >> $(BUNDLE)/FirefoxPortable/App/DefaultData/profile/prefs.js
-	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)-$(BUILD_NUM)-$(PLATFORM)-$(ARCH_TYPE)" >> $(BUNDLE)/FirefoxPortable/Data/profile/prefs.js
+	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)-$(BUILD_NUM)-$(PLATFORM)" >> $(BUNDLE)/FirefoxPortable/App/DefaultData/profile/prefs.js
+	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)-$(BUILD_NUM)-$(PLATFORM)" >> $(BUNDLE)/FirefoxPortable/Data/profile/prefs.js
 
 ## Export the source code of the bundle
 SRCNAME=$(COMPRESSED_NAME)
