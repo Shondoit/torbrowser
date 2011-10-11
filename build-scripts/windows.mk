@@ -472,6 +472,10 @@ write-tbb-version:
 	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)-$(BUILD_NUM)-$(PLATFORM)" >> $(BUNDLE)/FirefoxPortable/App/DefaultData/profile/prefs.js
 	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)-$(BUILD_NUM)-$(PLATFORM)" >> $(BUNDLE)/FirefoxPortable/Data/profile/prefs.js
 
+## Tag the release
+releasetag:
+	git tag -s torbrowser-$(VERSION) -m "tagging $(VERSION)"
+
 ## Export the source code of the bundle
 SRCNAME=$(COMPRESSED_NAME)
 SRCDEST=/tmp
