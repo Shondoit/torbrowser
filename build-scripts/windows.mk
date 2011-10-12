@@ -53,7 +53,7 @@ SEVENZIP="/c/Program Files/7-Zip/7z.exe"
 PYGET=$(PYTHON) $(PWD)/pyget.py
 WGET=wget
 VIRUSSCAN=$(PYTHON) $(PWD)/virus-scan.py
-WINRAR="/c/Program Files/WinRAR (x86)/WinRAR.exe"
+WINRAR="/c/Program Files (x86)/WinRAR/WinRAR.exe"
 CC=gcc
 
 
