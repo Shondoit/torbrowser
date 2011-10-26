@@ -90,8 +90,8 @@ build-vidalia:
 	cd $(VIDALIA_DIR)/build && make
 
 LIBEVENT_DIR=$(FETCH_DIR)/libevent-$(LIBEVENT_VER)
-LIBEVENT_CFLAGS="-O -g"
-LIBEVENT_LDFLAGS="-Wl,--nxcompat -Wl,--dynamicbase"
+LIBEVENT_CFLAGS="-I$(BUILT_DIR)/include -O -g"
+LIBEVENT_LDFLAGS="-L$(BUILT_DIR)/lib -L$(BUILT_DIR)/bin -Wl,--nxcompat -Wl,--dynamicbase"
 LIBEVENT_OPTS=--prefix=$(BUILT_DIR) --enable-static --disable-shared --disable-dependency-tracking
 build-libevent:
 	cd $(LIBEVENT_DIR) && CFLAGS=$(LIBEVENT_CFLAGS) LDFLAGS=$(LIBEVENT_LDFLAGS) ./configure $(LIBEVENT_OPTS)
@@ -100,7 +100,7 @@ build-libevent:
 
 TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)
 TOR_CFLAGS="-O -g -I$(BUILT_DIR)/include"
-TOR_LDFLAGS="-L$(BUILT_DIR)/lib"
+TOR_LDFLAGS="-L$(BUILT_DIR)/lib -L$(BUILT_DIR)/bin"
 TOR_OPTS=--enable-static-libevent --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR)
 build-tor:
 	cd $(TOR_DIR) && CFLAGS=$(TOR_CFLAGS) LDFLAGS=$(TOR_LDFLAGS) ./configure $(TOR_OPTS)
