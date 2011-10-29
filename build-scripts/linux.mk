@@ -112,10 +112,10 @@ build-pidgin:
 
 FIREFOX_DIR=$(FETCH_DIR)/mozilla-release
 build-firefox:
-	cp ../src/current-patches/000* $(FIREFOX_DIR)
-	cp patch-firefox-src.sh $(FIREFOX_DIR)
+	cp ../src/current-patches/firefox/* $(FIREFOX_DIR)
+	cp patch-any-src.sh $(FIREFOX_DIR)
 	cp $(CONFIG_SRC)/dot_mozconfig $(FIREFOX_DIR)/mozconfig
-	cd $(FIREFOX_DIR) && ./patch-firefox-src.sh
+	cd $(FIREFOX_DIR) && ./patch-any-src.sh
 	cd $(FIREFOX_DIR) && make -f client.mk build
 
 copy-firefox:
