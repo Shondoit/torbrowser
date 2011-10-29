@@ -1,0 +1,38 @@
+From b45561038c1819c5d6264b025e872c82b7adf94f Mon Sep 17 00:00:00 2001
+From: Erinn Clark <erinn@torproject.org>
+Date: Sat, 29 Oct 2011 01:59:59 +0100
+Subject: [PATCH] update zlib Makefile.gcc
+
+zlib's Makefile is inadequate for building TBB from source, so patch it to use
+DEP/ASLR build options and have some actually working include and library
+paths.
+
+---
+ win32/Makefile.gcc |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
+
+diff --git a/win32/Makefile.gcc b/win32/Makefile.gcc
+index 0a33bf6..79cad54 100644
+--- a/win32/Makefile.gcc
++++ b/win32/Makefile.gcc
+@@ -44,7 +44,7 @@ AS = $(CC)
+ ASFLAGS = $(LOC) -Wall
+ 
+ LD = $(CC)
+-LDFLAGS = $(LOC)
++LDFLAGS = $(LOC) -Wl,--nxcompat -Wl,--dynamicbase
+ 
+ AR = $(PREFIX)ar
+ ARFLAGS = rcs
+@@ -113,6 +113,8 @@ zlibrc.o: win32/zlib1.rc
+ 
+ 
+ # BINARY_PATH, INCLUDE_PATH and LIBRARY_PATH must be set.
++INCLUDE_PATH=$(prefix)/include
++LIBRARY_PATH=$(prefix)/lib
+ 
+ .PHONY: install uninstall clean
+ 
+-- 
+1.7.5.4
+

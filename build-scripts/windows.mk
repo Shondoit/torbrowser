@@ -67,12 +67,13 @@ source-dance: fetch-source unpack-source
 	echo "We're ready for building now."
 
 ZLIB_DIR=$(FETCH_DIR)/zlib-$(ZLIB_VER)
-ZLIB_OPTS=--prefix=$(BUILT_DIR)
-ZLIB_LDFLAGS="-Wl,--nxcompat -Wl,--dynamicbase"
 build-zlib:
-	cd $(ZLIB_DIR) && LDFLAGS=$(ZLIB_LDFLAGS) ./configure $(ZLIB_OPTS)
-	cd $(ZLIB_DIR) && make
-	cd $(ZLIB_DIR) && make install
+	cp ../src/current-patches/zlib/* $(ZLIB_DIR)
+	cp patch-any-src.sh $(ZLIB_DIR)
+	cd $(ZLIB_DIR) && ./patch-any-src.sh
+	cd $(ZLIB_DIR) && sed -i -e "s%prefix = /usr/local%prefix = ${BUILT_DIR}%" win32/Makefile.gcc
+	cd $(ZLIB_DIR) && make -f win32/Makefile.gcc
+	cd $(ZLIB_DIR) && make -f win32/Makefile.gcc install
 
 OPENSSL_DIR=$(FETCH_DIR)/openssl-$(OPENSSL_VER)
 OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 shared zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -L$(BUILT_DIR)/lib -Wl,--nxcompat -Wl,--dynamicbase -I$(BUILT_DIR)/include
