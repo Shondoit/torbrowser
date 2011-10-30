@@ -21,15 +21,14 @@ Contents
 - Install Qt
 - Install msysDTK
 - Install WinRAR
-- Building Polipo
+- Install Firefox build pre-requisites
 - Building zlib
 - Building OpenSSL
 - Building libevent
 - Building Tor
 - Building Vidalia
-- Unpacking PidginPortable
-- Building Firefox or Unpacking Firefox Portable
-- Adding extensions to Firefox Portable (3.6.x series)
+- Building Firefox
+- Building Pidgin
 - Customizing and Building the Tor Browser Bundle
 
 An Introduction to Building Tor Browser Bundle
@@ -38,47 +37,35 @@ An Introduction to Building Tor Browser Bundle
 To build Tor Browser Bundle, you need to have built:
  Vidalia (in /c/build/vidalia-<version> by default)
  Tor (in /c/build/tor-<version> by default)
- Polipo (in /c/build/polipo-<version> by default)
 and have uncompressed Firefox Portable or produce a custom build Firefox
  FirefoxPortable (in /c/build/FirefoxPortable by default)
 
-Instructions for building Vidalia, Polipo and Tor are included below.
+Instructions for building Vidalia, Tor, Firefox, and Pidgin  are included
+below.
 
 As a prerequisite for all builds, we'll need a build directory:
 
     cd C:\
     C:\>mkdir build
 
-Vidalia needs to have the BrowserExecutable, ProxyExecutable,
-RunProxyAtStart and ProxyExecutableArguments options. Currently this
-is only available in the Vidalia trunk revision 2328 and later.
+Vidalia needs to have the BrowserExecutable and ProxyExecutable options. 
 
 Furthermore, you'll need to install many different software packages for the
 checkout and build process.  Sadly, many of these packages are unsigned and
 there is very little in the way of a chain of trust.
 
-Installing Subversion
+Installing GitS
 =====================
 
-To checkout the Tor Browser Bundle, you need Subversion.
-You can download and install the stock Subversion package:
+To checkout the Tor Browser Bundle, you need Git. You can download and install
+the latest (fullinstall) Windows version of Git from:
 
-    http://subversion.tigris.org/getting.html
+http://code.google.com/p/msysgit/downloads/list
 
-Specifically you should use the pre-built packages. You can choose any from
-this list:
-
-    http://subversion.tigris.org/servlets/ProjectDocumentList?folderID=91
-
-Or if you'd like a direct link, you can use this as it is tested and working
-for our purposes:
-
-    http://subversion.tigris.org/files/documents/15/41686/svn-1.4.6-setup.exe
-
-Alternatively, TortoiseSVN offers a graphical interface and integrates
+You can additionally download TortoiseGit, which has a nice GUI and integrates
 with Windows Explorer:
 
- http://tortoisesvn.tigris.org/
+http://code.google.com/p/tortoisegit/downloads/list
 
 Installing 7zip
 ===============
@@ -92,25 +79,24 @@ and future releases:
 
     http://sourceforge.net/forum/message.php?msg_id=4982530
 
-The suggested version is "7-Zip 4.57":
+The suggested version is "7-Zip 9.20":
 
-    http://downloads.sourceforge.net/sevenzip/7z457.exe
+    http://downloads.sourceforge.net/sevenzip/7z920.exe
 
 Installing Python
 =================
 
 Either Python or wget is required to download Firefox extensions. Python is the
-suggested method.  To use Python, you'll need to download Python and install
-it. The suggested method is a pre-built Windows build.
-Download and install the following msi installer:
+suggested method.  To use Python, you'll need to download Python (> 2.6) and
+install it. The suggested method is a pre-built Windows build.
 
-    http://python.org/ftp/python/2.5.2/python-2.5.2.msi
+Download the version appropriate for your operating system from:
 
-Download and verify the signature:
+    http://www.python.org/download/releases/2.7.2/
 
-    http://www.python.org/download/releases/2.5.2/python-2.5.2.msi.asc
+Make sure to also download and verify the signature.
 
-When prompted for a directory, install it into: C:\Python25\
+When prompted for a directory, install it into: C:\Python27\
 
 Installing MinGW
 (MinGW - Minimalist GNU for Windows)
@@ -128,57 +114,24 @@ You can find the proper release on Sourceforge:
 
 To download MinGW-5.1.6.exe, visit the following URL:
 
-  http://sourceforge.net/projects/mingw/files/Automated%20MinGW%20Installer/MinGW%205.1.6/MinGW-5.1.6.exe/download
+  http://sourceforge.net/projects/mingw/files/Automated%20MinGW%20Installer/mingw-get-inst/mingw-get-inst-20110802/mingw-get-inst-20110802.exe/download
 
-Run MinGW-5.1.6.exe and begin the install. When prompted, select 'Full' as the
-type of install.  If you know better, select individual packages. It is
-expected that you will install MinGW into: C:\MinGW
+Run mingw-get-inst-20110802.exe and begin the install. When prompted, select
+'Full' as the type of install.  If you know better, select individual packages.
+It is expected that you will install MinGW into: C:\MinGW
 
 Installing MSYS
 ===============
 
-For tar and other useful commands, you will also need MSYS. The current version
-of this is hellish to find.  In short, visit the MSYS Base System download
-page:
+MSYS used to be handled separately, but it is now installed as part of
+mingw-get. You can read more about it here:
 
-  http://sourceforge.net/projects/mingw/files/
+http://www.mingw.org/wiki/MSYS
 
-The MSYS-1.0.11.exe download url is:
 
-  http://sourceforge.net/projects/mingw/files/MSYS%20Base%20System/msys-1.0.11/MSYS-1.0.11.exe/download
+Installing GNU wget is not optional. You must install it for commands in the
+Tor Browser Bundle makefiles to work.
 
-Download and install MSYS-1.0.11.exe. When prompted, read the license agreement
-and other documentation.  When asked for an install path, choose: C:\msys\1.0
-
-You will be prompted to do a post install process that will "normalize" your
-MinGW environment with MSYS.  Agree to the prompt. You will hopefully see a
-prompt that says:
-
-    "Oh joy, you do not have C:MinGW/bin/make.exe. Keep it that way."
-
-Read the MSYS README. Understanding how to use MSYS is important.
-
-Now you'll need to fix your /etc/fstab because it is broken by default. Make it
-look like so:
-
-    Administrator@I-CF61A82488F14 /
-    $ cat /etc/fstab
-    C:\MinGW /mingw
-
-Once you have replaced the three old binaries you will be ready to actually do
-something useful.
-
-All of the rest of the build commands will take place inside of the MSYS Shell.
-Launch that now. It's found in:
-
-    Start Menu -> All Programs -> MinGW -> MSYS -> msys
-
-Installing GNU wget is optional. If you installed Python, you do not need to
-install wget.  It is not required as basic wget functionality is implemented in
-Python. Instructions for downloading, compiling and installing wget for MSYS
-can be found here:
-
-    http://www.mingw.org/MinGWiki/index.php/mingwPORT
 
 Installing CMake
 ================
@@ -189,9 +142,9 @@ You can read about different versions on the CMake homepage:
 
   http://cmake.org/
 
-Download version 2.8.0:
+Download version 2.8.6:
 
-  http://www.cmake.org/files/v2.8/cmake-2.8.0-win32-x86.exe
+  http://www.cmake.org/files/v2.8/cmake-2.8.6-win32-x86.exe
 
 Run the installer with Windows Explorer and install into:
 
@@ -247,48 +200,11 @@ Extract the .tar.gz like so in your MSYS console:
 
     tar -C / -xvjf /c/Documents\ and\ Settings/Administrator/Desktop/msys-autoconf-2.59.tar.bz2
 
-Building Polipo
-===============
+Using the MSYS shell to build the Tor Browser Bundle
+====================================================
 
-In order to enable the forbiddenFile functionality, the GNU Regex
-library is required. Download the -bin and -dev tarballs from:
-
-    http://sourceforge.net/project/showfiles.php?group_id=2435&package_id=73286&release_id=140957
-
-Extract them both into you MinGW directory, e.g.
-
-    tar -C /c/MinGW/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/mingw-libgnurx-2.5.1-bin.tar.gz
-    tar -C /c/MinGW/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/mingw-libgnurx-2.5.1-dev.tar.gz
-
-Download Polipo sources:
-
-    http://www.pps.jussieu.fr/~jch/software/files/polipo/polipo-1.0.4.1.tar.gz
-    http://www.pps.jussieu.fr/~jch/software/files/polipo/polipo-1.0.4.1.tar.gz.asc
-
-Verify the PGP signature of the above files by following the developer directions:
-
-    http://www.pps.jussieu.fr/~jch/software/pgp-validating.html
-
-Unpack the Polipo source code into /c/build/polipo-1.0.4.1/ :
-
-    cd /c/build/
-    tar -C . -vxzf /c/Documents\ and\ Settings/Administrator/Desktop/polipo-1.0.4.1.tar.gz
-
-Download a Tor contributed Polipo specific Makefile:
-
-    https://svn.torproject.org/svn/tor/trunk/contrib/polipo/Makefile.mingw
-
-Replace the stock Polipo Makefile with the one above:
-
-    mv Makefile Makefile-dist-unused
-    mv /c/Documents\ and\ Settings/Administrator/Desktop/Makefile.mingw Makefile
-
-Now build Polipo:
-
-    make
-
-You should have a working binary. If you don't have gcc, it means your path is
-broken. Ensure you applied the aforementioned /etc/fstab suggestion.
+1. checkout git repo
+2. issue build commands
 
 Building zlib
 =============
@@ -296,7 +212,7 @@ Building zlib
 Now we'll download zlib and install it.
 
 Download the zlib source:
-        http://www.zlib.net/zlib-1.2.3.tar.gz
+        http://www.zlib.net/zlib-1.2.5.tar.gz
 
 Currently, zlib doesn't have package signatures. We emailed the zlib team and are awaiting a reply.
 
