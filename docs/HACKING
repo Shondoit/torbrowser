@@ -14,8 +14,7 @@ Main Players
   * Firefox extensions
     - Torbutton
     - HTTPS-Everywhere
-    - (Linux and OS X) NoScript
-    - (Linux and OS X) BetterPrivacy
+    - NoScript
 Supporting Cast (libraries)
 - OpenSSL
 - zlib
@@ -51,16 +50,8 @@ what the patch does. Please see them for more information.
   * It has been modified on OS X in order to make it conform to the standard OS
     X bundle layout
 
-- Firefox: modified on Linux (3.6 and 4.0), OS X (4.0), Windows (3.6)
-  * On Linux and OS X, the non-blocking SOCKS proxy has been applied before
-    being built. See: https://bugzilla.mozilla.org/show_bug.cgi?id=280661
-
-  * On Windows, a section of nsExtensionManager.js has been commented out to
-    prevent Firefox from picking up system plugins. See:
-    https://trac.torproject.org/projects/tor/ticket/2118
-
-- Torbutton: 1.2.5 (Linux), 1.3.2-alpha (Linux andOS X Firefox 4 bundles)
-  * In both versions it has had its use_privoxy option set to false instead of true
+- Firefox: modified on Linux, OS X, Windows
+  * For all current Firefox patches, see src/current-patches/firefox
 
 Git branching strategy
 ----------------------
@@ -73,7 +64,6 @@ torbrowser.git
   - master
   - maint-2.3
   - maint-2.2
-  - archive-1.0
 
 master: 
 The master branch's versions are considered equivalent in spirit to Tor's
@@ -85,10 +75,10 @@ absolutely no guarantee that they will work separately or together.
 
 maint-2.3:
 The maint-2.3 branch's versions correspond to Tor's 0.2.3.x series of releases.
-Since 0.2.3.x is the next alpha release of Tor, all of the components of TBB
-will mimic its stability, as above. This means it will be a testing ground for
-newly released pieces of software, rather than relying on the latest commits in
-the various components' version control systems. (As of current writing
+Since 0.2.3.x is the alpha release of Tor, all of the components of TBB will
+mimic its stability, as above. This means it will be a testing ground for newly
+released pieces of software, rather than relying on the latest commits in the
+various components' version control systems. (As of current writing
 (2011-03-29), 0.2.3.x is still the alpha-dev version of Tor, but it is expected
 to become the normal alpha release soon.)
 
@@ -99,9 +89,6 @@ component in this branch should consistently work together, and new versions of
 non-Tor software can only be moved in once they have proven to be stable in the
 maint-2.3 branch. New features and build improvements may be added to this
 branch, but only after they have had sufficient testing in the alpha branch.
-
-archive-1.0:
-This will be a record of all changes prior to the new git methodology.
 
 Versioning
 -----------------------
@@ -193,9 +180,16 @@ OpenSSL, or Vidalia), you can use git format-patch by doing the following:
 
 $ cd srcdir && git init && git add --ignore-errors .; git commit -m "`basename $PWD`"
 
-Make your changes, then:
+Make your changes, and if you're using the above git init command, do:
+
+$ git format-patch HEAD^
+
+If you made changes against the existing torbrowser.git, do:
 
 $ git format-patch origin/master
+
+(Switch 'master' for 'maint-2.2' or 'maint-2.3', depending on which branch you
+used.)
 
 Make sure to add a sufficiently explanatory summary of the changes since future
 people will be looking in the patch to see why it's being used.
@@ -215,7 +209,8 @@ Submitting patches
 ----------------------
 
 File a ticket on https://trac.torproject.org for the Tor bundles/installation
-component and attach the patch.
+component and attach the patch. If you're using github or gitorious, give me a
+link to your repository and let me know the branch name.
 
 If you're a Tor developer and have a personal torbrowser.git, just tell me
 which branch your changes are in.
