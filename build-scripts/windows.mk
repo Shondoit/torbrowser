@@ -111,9 +111,9 @@ build-tor:
 FIREFOX_DIR=/c/mozilla-build/mozilla-release
 build-firefox:
 	cp ../src/current-patches/firefox/* $(FIREFOX_DIR)
-	cp patch-firefox-src.sh $(FIREFOX_DIR)
+	cp patch-any-src.sh $(FIREFOX_DIR)
 	cp $(CONFIG_SRC)/dot_mozconfig $(FIREFOX_DIR)/mozconfig
-	cd $(FIREFOX_DIR) && ./patch-firefox-src.sh
+	cd $(FIREFOX_DIR) && ./patch-any-src.sh
 #	cmd /c C:/mozilla-build/start-msvc9
 
 build-all-binaries: build-zlib build-openssl build-vidalia build-libevent build-tor
