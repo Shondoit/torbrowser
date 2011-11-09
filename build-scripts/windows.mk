@@ -56,6 +56,9 @@ VIRUSSCAN=$(PYTHON) $(PWD)/virus-scan.py
 WINRAR="/c/Program Files (x86)/WinRAR/WinRAR.exe"
 CC=gcc
 
+MSVC_VER=9
+FIREFOX_DIR=/c/mozilla-build/mozilla-release
+MOZ_BUILD=/c/mozilla-build
 
 ## Location of directory for source unpacking
 FETCH_DIR=$(PWD)/build-alpha-windows
@@ -108,13 +111,18 @@ build-tor:
 	cd $(TOR_DIR) && make
 	cd $(TOR_DIR) && make install
 
-FIREFOX_DIR=/c/mozilla-build/mozilla-release
+patch-mozbuild:
+	cp ../src/current-patches/mozilla-build/start-msvc.patch $(MOZ_BUILD)
+	cp ../src/current-patches/mozilla-build/guess-msvc-x64.bat $(MOZ_BUILD)
+	cp patch-mozilla-build.sh $(MOZ_BUILD)
+	cd $(MOZ_BUILD) && ./patch-mozilla-build.sh $(MSVC_VER)
+
 build-firefox:
 	cp ../src/current-patches/firefox/* $(FIREFOX_DIR)
 	cp patch-any-src.sh $(FIREFOX_DIR)
 	cp $(CONFIG_SRC)/dot_mozconfig $(FIREFOX_DIR)/mozconfig
 	cd $(FIREFOX_DIR) && ./patch-any-src.sh
-#	cmd /c C:/mozilla-build/start-msvc9
+	cd $(MOZ_BUILD) && cmd.exe /c "start-msvc$(MSVC_VER).bat $(FIREFOX_DIR)"
 
 build-all-binaries: build-zlib build-openssl build-vidalia build-libevent build-tor
 	echo "If we're here, we've done something right."
