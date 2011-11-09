@@ -1,7 +1,7 @@
-From 6b2fed2b29f239c1c85e32bd417bacc3fd7155a7 Mon Sep 17 00:00:00 2001
+From c2b3fb6a517dfd6cad3670e8aeb0cce5c2cba342 Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@fscked.org>
 Date: Fri, 19 Aug 2011 17:58:23 -0700
-Subject: [PATCH 3/8] Make Intermediate Cert Store memory-only.
+Subject: [PATCH 3/9] Make Intermediate Cert Store memory-only.
 
 This patch makes the intermediate SSL cert store exist in memory only.
 
@@ -12,10 +12,10 @@ https://trac.torproject.org/projects/tor/ticket/2949
  1 files changed, 14 insertions(+), 1 deletions(-)
 
 diff --git a/security/manager/ssl/src/nsNSSComponent.cpp b/security/manager/ssl/src/nsNSSComponent.cpp
-index 11cb2bd..fd717f4 100644
+index c29aaf7..5488f06 100644
 --- a/security/manager/ssl/src/nsNSSComponent.cpp
 +++ b/security/manager/ssl/src/nsNSSComponent.cpp
-@@ -1757,8 +1757,21 @@ nsNSSComponent::InitializeNSS(PRBool showWarningBox)
+@@ -1744,8 +1744,21 @@ nsNSSComponent::InitializeNSS(PRBool showWarningBox)
      // Ubuntu 8.04, which loads any nonexistent "<configdir>/libnssckbi.so" as
      // "/usr/lib/nss/libnssckbi.so".
      PRUint32 init_flags = NSS_INIT_NOROOTINIT | NSS_INIT_OPTIMIZESPACE;

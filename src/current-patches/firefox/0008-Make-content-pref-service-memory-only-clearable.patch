@@ -1,7 +1,7 @@
-From cdf48e30d76f7e1c349cdf8597e9cdc94623b8d8 Mon Sep 17 00:00:00 2001
+From d5356d3d6d33ead6c5c7d149fd851a6666c2daac Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@fscked.org>
 Date: Thu, 8 Sep 2011 08:40:17 -0700
-Subject: [PATCH 8/8] Make content pref service memory-only + clearable
+Subject: [PATCH 8/9] Make content pref service memory-only + clearable
 
 This prevents random urls from being inserted into content-prefs.sqllite in
 the profile directory as content prefs change (includes site-zoom and perhaps
