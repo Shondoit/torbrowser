@@ -57,8 +57,8 @@ WINRAR="/c/Program Files (x86)/WinRAR/WinRAR.exe"
 CC=gcc
 
 MSVC_VER=9
-FIREFOX_DIR=/c/mozilla-build/mozilla-release
-MOZ_BUILD=/c/mozilla-build
+FIREFOX_DIR=/c/build/mozilla-build/mozilla-release
+MOZ_BUILD=/c/build/mozilla-build
 
 ## Location of directory for source unpacking
 FETCH_DIR=$(PWD)/build-alpha-windows
