@@ -124,7 +124,14 @@ build-firefox:
 	cd $(FIREFOX_DIR) && ./patch-any-src.sh
 	cd $(MOZ_BUILD) && cmd.exe /c "start-msvc$(MSVC_VER).bat $(FIREFOX_DIR)"
 
-build-all-binaries: build-zlib build-openssl build-vidalia build-libevent build-tor
+copy-firefox:
+	-rm -rf $(FIREFOX)
+	-mkdir -p $(FIREFOX)
+	cp -r config/firefox-portable/* $(FIREFOX)
+	cp "/c/Program Files (x86)/Microsoft Visual Studio 9.0/VC/redist/x86/Microsoft.VC90.CRT/"msvc*90.dll $(FIREFOX)/App/Firefox
+	cp -r $(FIREFOX_DIR)/obj-*/dist/bin/* $(FIREFOX)/App/Firefox
+
+build-all-binaries: build-zlib build-openssl build-vidalia build-libevent build-tor build-firefox copy-firefox
 	echo "If we're here, we've done something right."
 
 ## Location of compiled libraries
