@@ -52,28 +52,35 @@ fetch-source-osx: fetch-zlib fetch-openssl fetch-vidalia fetch-libevent fetch-to
 	-mkdir $(FETCH_DIR)
 
 fetch-zlib:
+	-rm -f $(FETCH_DIR)/$(ZLIB_PACKAGE)
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(ZLIB_URL)
 
 fetch-libpng:
+	-rm -f $(FETCH_DIR)/$(LIBPNG_PACKAGE)
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(LIBPNG_URL)
 
 fetch-qt:
+	-rm -f $(FETCH_DIR)/$(QT_PACKAGE)
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(QT_URL)
 
 fetch-openssl:
+	-rm -f $(FETCH_DIR)/$(OPENSSL_PACKAGE)
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(OPENSSL_URL)
 
 fetch-vidalia:
+	-rm -f $(FETCH_DIR)/$(VIDALIA_PACKAGE)
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(VIDALIA_URL)
 
 fetch-libevent:
+	-rm -f $(FETCH_DIR)/$(LIBEVENT_PACKAGE)
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(LIBEVENT_URL)
 
 fetch-tor:
+	-rm -f $(FETCH_DIR)/$(TOR_PACKAGE)
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(TOR_URL)
 
 fetch-firefox:
-	-rm -rf $(FETCH_DIR)/mozilla-release
+	-rm -f $(FETCH_DIR)/$(FIREFOX_PACKAGE)
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(FIREFOX_URL)
 
 unpack-source: unpack-zlib unpack-openssl unpack-libpng unpack-qt unpack-vidalia unpack-libevent unpack-tor unpack-firefox
