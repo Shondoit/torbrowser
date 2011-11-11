@@ -55,6 +55,7 @@ user_pref("capability.policy.maonoscript.javascript.enabled", "allAccess");
 user_pref("capability.policy.maonoscript.sites", "addons.mozilla.org about: about:addons about:blank about:blocked about:certerror about:config about:crashes about:credits about:home about:neterror about:plugins about:privatebrowsing about:sessionrestore chrome: resource:");
 user_pref("dom.event.contextmenu.enabled", false);
 user_pref("dom.storage.enabled", false);
+user_pref("extensions.autoDisableScopes", 0);
 user_pref("extensions.bootstrappedAddons", "{}");
 user_pref("extensions.bprivacy.DataDir", "/Users/erinn/Library/Preferences/Macromedia");
 user_pref("extensions.bprivacy.donotaskforfolder", true);
