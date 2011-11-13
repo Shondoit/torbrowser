@@ -90,6 +90,26 @@ non-Tor software can only be moved in once they have proven to be stable in the
 maint-2.3 branch. New features and build improvements may be added to this
 branch, but only after they have had sufficient testing in the alpha branch.
 
+Forking to GitHub
+-----------------------
+
+This assumes you are familiar with github and pushing to it.
+If you want to hack on your repository on github you must first add github as a
+remote. We assume you have cloned a local torbrowser repository from the
+official torproject git repository. Create a new repository on github by
+logging into your account and clicking "New repository" on your dashboard.
+It's easiest to name it 'torbrowser'.
+
+Add a new remote to your local repository by typing the following command:
+'git remote add github git@github.com:USERNAME/torbrowser.git'
+Replace USERNAME by your github username.
+For every local branch you want to push to github, type the following:
+'git push -u github BRANCH'
+Replace BRANCH by the branch you want to push.
+
+That's it. Now you can fetch the official torproject git (git fetch origin)
+and push to your own github repository (git push github)
+
 Versioning
 -----------------------
 
