@@ -93,7 +93,7 @@ build-libpng:
 	cd $(LIBPNG_DIR) && make install
 
 TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)
-TOR_OPTS=--with-openssl-dir=$(BUILT_DIR) --with-zlib-dir=$(BUILT_DIR) --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR)
+TOR_OPTS=--enable-gcc-warnings --with-openssl-dir=$(BUILT_DIR) --with-zlib-dir=$(BUILT_DIR) --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR)
 build-tor:
 	cd $(TOR_DIR) && ./configure $(TOR_OPTS)
 	cd $(TOR_DIR) && make -j2

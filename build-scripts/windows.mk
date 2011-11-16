@@ -105,7 +105,7 @@ build-libevent:
 TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)
 TOR_CFLAGS="-O -g -I$(BUILT_DIR)/include"
 TOR_LDFLAGS="-L$(BUILT_DIR)/lib -L$(BUILT_DIR)/bin"
-TOR_OPTS=--enable-static-libevent --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR)
+TOR_OPTS=--enable-gcc-warnings --enable-static-libevent --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR)
 build-tor:
 	cd $(TOR_DIR) && CFLAGS=$(TOR_CFLAGS) LDFLAGS=$(TOR_LDFLAGS) ./configure $(TOR_OPTS)
 	cd $(TOR_DIR) && make
