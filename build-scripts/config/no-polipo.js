@@ -175,3 +175,4 @@ user_pref("noscript.version", "2.0.7");
 user_pref("plugin.disable_full_page_plugin_for_types", "application/asx,video/x-ms-asf-plugin,application/x-mplayer2,video/x-ms-asf,video/x-ms-wm,audio/x-ms-wma,audio/x-ms-wax,video/x-ms-wmv,video/x-ms-wvx,application/x-drm-v2,application/x-drm");
 user_pref("plugin.expose_full_path", true);
 user_pref("plugin.scan.4xPluginFolder", false);
+user_pref("security.ssl.enable_false_start", true);

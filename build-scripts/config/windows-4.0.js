@@ -178,3 +178,4 @@ user_pref("urlclassifier.tableversion.goog-white-domain", "1.481");
 user_pref("urlclassifier.tableversion.goog-white-url", "1.371");
 user_pref("xpinstall.whitelist.add", "");
 user_pref("xpinstall.whitelist.add.36", "");
+user_pref("security.ssl.enable_false_start", true);
