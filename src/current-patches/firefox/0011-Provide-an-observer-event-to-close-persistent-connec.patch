@@ -1,0 +1,39 @@
+From 7f6e76f1cbab26bcd6dead6427a9a19460877434 Mon Sep 17 00:00:00 2001
+From: Mike Perry <mikeperry-git@fscked.org>
+Date: Wed, 7 Dec 2011 20:05:19 -0800
+Subject: [PATCH 11/11] Provide an observer event to close persistent connections
+
+We need to prevent linkability across "New Identity", which includes closing
+keep-alive connections.
+---
+ netwerk/protocol/http/nsHttpHandler.cpp |    7 +++++++
+ 1 files changed, 7 insertions(+), 0 deletions(-)
+
+diff --git a/netwerk/protocol/http/nsHttpHandler.cpp b/netwerk/protocol/http/nsHttpHandler.cpp
+index f79f23e..ed70ecd 100644
+--- a/netwerk/protocol/http/nsHttpHandler.cpp
++++ b/netwerk/protocol/http/nsHttpHandler.cpp
+@@ -321,6 +321,7 @@ nsHttpHandler::Init()
+         mObserverService->AddObserver(this, "net:clear-active-logins", PR_TRUE);
+         mObserverService->AddObserver(this, NS_PRIVATE_BROWSING_SWITCH_TOPIC, PR_TRUE);
+         mObserverService->AddObserver(this, "net:prune-dead-connections", PR_TRUE);
++        mObserverService->AddObserver(this, "net:prune-all-connections", PR_TRUE);
+     }
+  
+     return NS_OK;
+@@ -1611,6 +1612,12 @@ nsHttpHandler::Observe(nsISupports *subject,
+             mConnMgr->PruneDeadConnections();
+         }
+     }
++    else if (strcmp(topic, "net:prune-all-connections") == 0) {
++        if (mConnMgr) {
++           mConnMgr->ClosePersistentConnections();
++           mConnMgr->PruneDeadConnections();
++        }
++    }
+   
+     return NS_OK;
+ }
+-- 
+1.7.3.4
+
