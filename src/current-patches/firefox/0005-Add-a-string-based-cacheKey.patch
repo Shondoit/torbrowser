@@ -1,7 +1,7 @@
-From bedc5d561ea3b17de6702274ee07f6c130e2cd95 Mon Sep 17 00:00:00 2001
+From 65410adb53fafe4ec717ab464cdefee3cdd35708 Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@fscked.org>
 Date: Fri, 2 Sep 2011 20:47:02 -0700
-Subject: [PATCH 5/9] Add a string-based cacheKey.
+Subject: [PATCH 05/12] Add a string-based cacheKey.
 
 Used for isolating cache according to same-origin policy.
 ---
@@ -29,10 +29,10 @@ index 2da46d6..4ee5774 100644
       * may fail if the disk cache is not present.  The value of this attribute
       * is usually only settable during the processing of a channel's
 diff --git a/netwerk/protocol/http/nsHttpChannel.cpp b/netwerk/protocol/http/nsHttpChannel.cpp
-index bf60bb3..b0a5d0d 100644
+index 945bc0d..9e838d8 100644
 --- a/netwerk/protocol/http/nsHttpChannel.cpp
 +++ b/netwerk/protocol/http/nsHttpChannel.cpp
-@@ -2316,6 +2316,12 @@ nsHttpChannel::AssembleCacheKey(const char *spec, PRUint32 postID,
+@@ -2356,6 +2356,12 @@ nsHttpChannel::AssembleCacheKey(const char *spec, PRUint32 postID,
          cacheKey.Append(buf);
      }
  
@@ -45,7 +45,7 @@ index bf60bb3..b0a5d0d 100644
      if (!cacheKey.IsEmpty()) {
          cacheKey.AppendLiteral("uri=");
      }
-@@ -4600,6 +4606,22 @@ nsHttpChannel::SetCacheForOfflineUse(PRBool value)
+@@ -4641,6 +4647,22 @@ nsHttpChannel::SetCacheForOfflineUse(PRBool value)
  }
  
  NS_IMETHODIMP
@@ -69,7 +69,7 @@ index bf60bb3..b0a5d0d 100644
  {
      value = mOfflineCacheClientID;
 diff --git a/netwerk/protocol/http/nsHttpChannel.h b/netwerk/protocol/http/nsHttpChannel.h
-index a64ec07..7e89afe 100644
+index 6e0f360..9df9e38 100644
 --- a/netwerk/protocol/http/nsHttpChannel.h
 +++ b/netwerk/protocol/http/nsHttpChannel.h
 @@ -303,6 +303,7 @@ private:

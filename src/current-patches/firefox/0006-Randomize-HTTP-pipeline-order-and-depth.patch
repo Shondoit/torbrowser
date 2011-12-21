@@ -1,7 +1,7 @@
-From efa29783b4f6fb53b37400e6f5da0ace157a1f08 Mon Sep 17 00:00:00 2001
+From 797fecf94e73e4f65fa8fdd58e0980e0d79ec092 Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@fscked.org>
 Date: Tue, 8 Nov 2011 17:34:54 -0800
-Subject: [PATCH 6/9] Randomize HTTP pipeline order and depth.
+Subject: [PATCH 06/12] Randomize HTTP pipeline order and depth.
 
 This is an experimental defense against
 http://lorre.uni.lu/~andriy/papers/acmccs-wpes11-fingerprinting.pdf
@@ -14,7 +14,7 @@ https://blog.torproject.org/blog/experimental-defense-website-traffic-fingerprin
  2 files changed, 81 insertions(+), 1 deletions(-)
 
 diff --git a/netwerk/protocol/http/nsHttpConnectionMgr.cpp b/netwerk/protocol/http/nsHttpConnectionMgr.cpp
-index 3435d29..fbfee3f 100644
+index 3bb2b55..89ec350 100644
 --- a/netwerk/protocol/http/nsHttpConnectionMgr.cpp
 +++ b/netwerk/protocol/http/nsHttpConnectionMgr.cpp
 @@ -94,6 +94,11 @@ nsHttpConnectionMgr::nsHttpConnectionMgr()

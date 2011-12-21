@@ -1,0 +1,72 @@
+From e4586005446c57161e14adc153aa5890f5694223 Mon Sep 17 00:00:00 2001
+From: Mike Perry <mikeperry-git@fscked.org>
+Date: Tue, 20 Dec 2011 21:02:49 -0800
+Subject: [PATCH 12/12] Provide client values only to CSS Media Queries
+
+Also disable a bunch of Mozilla extensions that smell like they are
+fingerprintable.
+
+This is done to address
+https://www.torproject.org/projects/torbrowser/design/#fingerprinting-linkability
+---
+ layout/style/nsMediaFeatures.cpp |   10 ++++++----
+ 1 files changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/layout/style/nsMediaFeatures.cpp b/layout/style/nsMediaFeatures.cpp
+index 9a65c8e..d633dd1 100644
+--- a/layout/style/nsMediaFeatures.cpp
++++ b/layout/style/nsMediaFeatures.cpp
+@@ -381,14 +381,14 @@ nsMediaFeatures::features[] = {
+         nsMediaFeature::eMinMaxAllowed,
+         nsMediaFeature::eLength,
+         { nsnull },
+-        GetDeviceWidth
++        GetWidth
+     },
+     {
+         &nsGkAtoms::deviceHeight,
+         nsMediaFeature::eMinMaxAllowed,
+         nsMediaFeature::eLength,
+         { nsnull },
+-        GetDeviceHeight
++        GetHeight
+     },
+     {
+         &nsGkAtoms::orientation,
+@@ -409,7 +409,7 @@ nsMediaFeatures::features[] = {
+         nsMediaFeature::eMinMaxAllowed,
+         nsMediaFeature::eIntRatio,
+         { nsnull },
+-        GetDeviceAspectRatio
++        GetAspectRatio
+     },
+     {
+         &nsGkAtoms::color,
+@@ -455,6 +455,7 @@ nsMediaFeatures::features[] = {
+     },
+ 
+     // Mozilla extensions
++/*
+     {
+         &nsGkAtoms::_moz_device_pixel_ratio,
+         nsMediaFeature::eMinMaxAllowed,
+@@ -467,7 +468,7 @@ nsMediaFeatures::features[] = {
+         nsMediaFeature::eMinMaxNotAllowed,
+         nsMediaFeature::eEnumerated,
+         { kOrientationKeywords },
+-        GetDeviceOrientation
++        GetOrientation
+     },
+     {
+         &nsGkAtoms::_moz_is_resource_document,
+@@ -588,6 +589,7 @@ nsMediaFeatures::features[] = {
+         { nsnull },
+         GetWindowsTheme
+     },
++*/
+     // Null-mName terminator:
+     {
+         nsnull,
+-- 
+1.7.3.4
+
