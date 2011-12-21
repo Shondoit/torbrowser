@@ -499,5 +499,4 @@ SRCNAME=$(COMPRESSED_NAME)
 SRCDEST=/tmp
 SRCDESTPATH=$(SRCDEST)/$(SRCNAME)
 srcdist:
-	git archive --format=tar --prefix=tor-browser-$(VERSION)-src/ torbrowser-$(VERSION) | gzip -9 > $(PWD)/tor-browser-$(VERSION)-src.tar.gz
-
+	cd .. && git archive --format=tar --prefix=tor-browser-$(VERSION)-src/ torbrowser-$(VERSION) | gzip -9 > $(PWD)/tor-browser-$(VERSION)-src.tar.gz
