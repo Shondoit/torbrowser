@@ -1,7 +1,7 @@
-From 7f6e76f1cbab26bcd6dead6427a9a19460877434 Mon Sep 17 00:00:00 2001
+From f29be5f0e41e9915bcd15b692685bebce9d33f91 Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@fscked.org>
 Date: Wed, 7 Dec 2011 20:05:19 -0800
-Subject: [PATCH 11/11] Provide an observer event to close persistent connections
+Subject: [PATCH 11/12] Provide an observer event to close persistent connections
 
 We need to prevent linkability across "New Identity", which includes closing
 keep-alive connections.

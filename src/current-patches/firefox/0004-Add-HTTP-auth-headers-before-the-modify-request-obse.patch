@@ -1,7 +1,7 @@
-From e03a22c70c5f68013a72bc4ca2624c6d889c22a4 Mon Sep 17 00:00:00 2001
+From f30579c50a6915314a470579da533f53200e61d8 Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@fscked.org>
 Date: Fri, 2 Sep 2011 15:33:20 -0700
-Subject: [PATCH 4/9] Add HTTP auth headers before the modify-request observer.
+Subject: [PATCH 04/12] Add HTTP auth headers before the modify-request observer.
 
 Otherwise, how are we supposed to modify them?
 
@@ -11,10 +11,10 @@ Thanks to Georg Koppen for spotting both the problem and this fix.
  1 files changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/netwerk/protocol/http/nsHttpChannel.cpp b/netwerk/protocol/http/nsHttpChannel.cpp
-index 6cc90a9..bf60bb3 100644
+index 3f9d049..945bc0d 100644
 --- a/netwerk/protocol/http/nsHttpChannel.cpp
 +++ b/netwerk/protocol/http/nsHttpChannel.cpp
-@@ -286,9 +286,6 @@ nsHttpChannel::Connect(PRBool firstTime)
+@@ -291,9 +291,6 @@ nsHttpChannel::Connect(PRBool firstTime)
          return NS_ERROR_DOCUMENT_NOT_CACHED;
      }
  
@@ -24,7 +24,7 @@ index 6cc90a9..bf60bb3 100644
      if (mLoadFlags & LOAD_NO_NETWORK_IO) {
          return NS_ERROR_DOCUMENT_NOT_CACHED;
      }
-@@ -3624,6 +3621,9 @@ nsHttpChannel::AsyncOpen(nsIStreamListener *listener, nsISupports *context)
+@@ -3665,6 +3662,9 @@ nsHttpChannel::AsyncOpen(nsIStreamListener *listener, nsISupports *context)
  
      AddCookiesToRequest();
  
@@ -34,7 +34,7 @@ index 6cc90a9..bf60bb3 100644
      // notify "http-on-modify-request" observers
      gHttpHandler->OnModifyRequest(this);
  
-@@ -4700,7 +4700,10 @@ nsHttpChannel::DoAuthRetry(nsAHttpConnection *conn)
+@@ -4741,7 +4741,10 @@ nsHttpChannel::DoAuthRetry(nsAHttpConnection *conn)
      // this authentication attempt (bug 84794).
      // TODO: save cookies from auth response and send them here (bug 572151).
      AddCookiesToRequest();
