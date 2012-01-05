@@ -36,7 +36,7 @@ include $(PWD)/versions.mk
 
 ## Architecture
 ARCH_TYPE=i386
-BUILD_NUM=3
+BUILD_NUM=4
 PLATFORM=MacOS
 
 ## Location of directory for source unpacking
