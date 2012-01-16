@@ -1,0 +1,14 @@
+[General]
+PluginPath=../../Library/Vidalia/plugins
+LanguageCode=en
+
+[Tor]
+ControlPort=9051
+TorExecutable=../../Contents/MacOS/tor
+Torrc=../../Library/Vidalia/torrc
+AutoControl=true
+DataDirectory=../../Contents/Resources/Data/Tor
+
+[TBB]
+BrowserDirectory=../../
+BrowserExecutable=firefox-bin

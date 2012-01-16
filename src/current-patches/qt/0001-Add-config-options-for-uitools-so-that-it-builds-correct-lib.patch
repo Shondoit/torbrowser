@@ -1,0 +1,24 @@
+From 56450c3fdb8a26b4fc66fbcbd699c523ab960ed3 Mon Sep 17 00:00:00 2001
+From: Erinn Clark <erinn@torproject.org>
+Date: Fri, 6 Jan 2012 13:58:22 +0100
+Subject: [PATCH] Add config options for uitools so that it builds the right
+ library for the Vidalia plugin infrastructure.
+
+---
+ qtscript_uitools.pro |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/qtscript_uitools.pro b/qtscript_uitools.pro
+index 2f48778..84e4893 100644
+--- a/qtscript_uitools.pro
++++ b/qtscript_uitools.pro
+@@ -1,5 +1,5 @@
+ TARGET = qtscript_uitools
+ include(../qtbindingsbase.pri)
+-CONFIG += uitools
++CONFIG += uitools plugin link_prl
+ SOURCES += $$GENERATEDCPP/com_trolltech_qt_uitools/plugin.cpp
+ include($$GENERATEDCPP/com_trolltech_qt_uitools/com_trolltech_qt_uitools.pri)
+-- 
+1.7.7.4
+

@@ -1,0 +1,13 @@
+[General]
+BrowserDirectory=.
+BrowserExecutable=firefox
+LanguageCode=en
+IMExecutable=./App/pidgin
+ProxyExecutable=./App/polipo
+ProxyExecutableArguments=-c Data/Polipo/polipo.conf
+RunProxyAtStart=true
+
+[Tor]
+ControlPort=9051
+TorExecutable=./App/tor
+Torrc=./Data/Tor/torrc

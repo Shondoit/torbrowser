@@ -1,0 +1,12 @@
+[General]
+BrowserDirectory=.
+BrowserExecutable=firefox
+InterfaceStyle=Cleanlooks
+LanguageCode=en
+
+[Tor]
+ControlPort=9051
+TorExecutable=./App/tor
+Torrc=./Data/Tor/torrc
+AutoControl=true
+DataDirectory=./Data/Tor
