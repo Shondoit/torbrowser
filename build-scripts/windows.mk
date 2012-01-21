@@ -117,7 +117,6 @@ patch-mozbuild:
 	cp ../src/current-patches/mozilla-build/guess-msvc-x64.bat $(MOZ_BUILD)
 	cp patch-mozilla-build.sh $(MOZ_BUILD)
 	cd $(MOZ_BUILD) && ./patch-mozilla-build.sh $(MSVC_VER)
-	cp $(CONFIG_SRC)/dot_mozconfig $(FIREFOX_DIR)/mozconfig
 
 patch-firefox-source:
 	cp ../src/current-patches/firefox/* $(FIREFOX_DIR)
@@ -125,6 +124,7 @@ patch-firefox-source:
 	cd $(FIREFOX_DIR) && ./patch-any-src.sh
 
 build-firefox:
+	cp $(CONFIG_SRC)/dot_mozconfig $(FIREFOX_DIR)/mozconfig
 	cd $(MOZ_BUILD) && cmd.exe /c "start-msvc$(MSVC_VER).bat $(FIREFOX_DIR)"
 
 copy-firefox:
