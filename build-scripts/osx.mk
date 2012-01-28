@@ -39,6 +39,17 @@ ARCH_TYPE=i386
 BUILD_NUM=7.1
 PLATFORM=MacOS
 
+## Set OSX-specific backwards compatibility options
+OSX_VERSION=10.5
+CC=CC=gcc-4.0
+# These can probably be left alone for OSX_VERSION 10.5 and up
+SDK_PATH=/Developer/SDKs/MacOSX$(OSX_VERSION).sdk
+SDK=-sdk $(SDK_PATH)
+MIN_VERSION=-mmacosx-version-min=$(OSX_VERSION)
+CF_MIN_VERSION=-isysroot $(SDK_PATH)
+LD_MIN_VERSION=-Wl,-syslibroot,$(SDK_PATH)
+BACKWARDS_COMPAT=$(MIN_VERSION) $(CF_MIN_VERSION) $(LD_MIN_VERSION)
+
 ## Location of directory for source unpacking
 FETCH_DIR=$(PWD)/build-$(ARCH_TYPE)
 ## Location of directory for prefix/destdir/compiles/etc
@@ -57,7 +68,7 @@ build-zlib:
 	cd $(ZLIB_DIR) && make install
 
 OPENSSL_DIR=$(FETCH_DIR)/openssl-$(OPENSSL_VER)
-OPENSSL_OPTS=-no-rc5 -no-md2 -no-man shared zlib -mmacosx-version-min=10.5 -isysroot /Developer/SDKs/MacOSX10.5.sdk -Wl,-syslibroot,/Developer/SDKs/MacOSX10.5.sdk --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -L$(BUILT_DIR)/lib -I$(BUILT_DIR)/include
+OPENSSL_OPTS=-no-rc5 -no-md2 -no-man shared zlib $(BACKWARDS_COMPAT) --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -L$(BUILT_DIR)/lib -I$(BUILT_DIR)/include
 build-openssl:
 	cp ../src/current-patches/openssl/*patch $(OPENSSL_DIR)
 	cp patch-any-src.sh $(OPENSSL_DIR)
@@ -73,7 +84,7 @@ endif
 
 QT_DIR=$(FETCH_DIR)/qt-everywhere-opensource-src-$(QT_VER)
 QT_BUILD_PREFS=-system-zlib -universal -confirm-license -opensource -openssl-linked -no-qt3support \
-	-fast -release -no-framework -nomake demos -nomake examples -sdk /Developer/SDKs/MacOSX10.5.sdk/
+	-fast -release -no-framework -nomake demos -nomake examples $(SDK)
 QT_OPTS=$(QT_BUILD_PREFS) -prefix $(BUILT_DIR) -I $(BUILT_DIR)/include -I $(BUILT_DIR)/include/openssl/ -L $(BUILT_DIR)/lib
 build-qt:
 	cd $(QT_DIR) && ./configure $(QT_OPTS)
@@ -84,25 +95,25 @@ VIDALIA_DIR=$(FETCH_DIR)/vidalia-$(VIDALIA_VER)
 VIDALIA_OPTS=-DCMAKE_OSX_ARCHITECTURES=$(ARCH_TYPE) -DQT_QMAKE_EXECUTABLE=/usr/bin/qmake \
 	-DCMAKE_BUILD_TYPE=debug ..
 build-vidalia:
-	export MACOSX_DEPLOYMENT_TARGET=10.5
+	export MACOSX_DEPLOYMENT_TARGET=$(OSX_VERSION)
 	-mkdir $(VIDALIA_DIR)/build
 	cd $(VIDALIA_DIR)/build && cmake $(VIDALIA_OPTS) \
 	&& make && make dist-osx-libraries
 	cd $(VIDALIA_DIR)/build && DESTDIR=$(BUILT_DIR) make install
 
 LIBEVENT_DIR=$(FETCH_DIR)/libevent-$(LIBEVENT_VER)
-LIBEVENT_CFLAGS="-O -g -arch $(ARCH_TYPE) -mmacosx-version-min=10.5 -isysroot /Developer/SDKs/MacOSX10.5.sdk -arch $(ARCH_TYPE)"
-LIBEVENT_LDFLAGS="-L$(BUILT_DIR)/lib -Wl,-syslibroot,/Developer/SDKs/MacOSX10.5.sdk"
-LIBEVENT_OPTS=--prefix=$(BUILT_DIR) --enable-static --disable-shared --disable-dependency-tracking CC="gcc-4.0"
+LIBEVENT_CFLAGS="-O -g -arch $(ARCH_TYPE) $(MIN_VERSION) $(CF_MIN_VERSION) -arch $(ARCH_TYPE)"
+LIBEVENT_LDFLAGS="-L$(BUILT_DIR)/lib $(LD_MIN_VERSION)"
+LIBEVENT_OPTS=--prefix=$(BUILT_DIR) --enable-static --disable-shared --disable-dependency-tracking $(CC)
 build-libevent:
 	cd $(LIBEVENT_DIR) && CFLAGS=$(LIBEVENT_CFLAGS) LDFLAGS=$(LIBEVENT_LDFLAGS) ./configure $(LIBEVENT_OPTS)
 	cd $(LIBEVENT_DIR) && make -j2
 	cd $(LIBEVENT_DIR) && make install
 
 TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)
-TOR_CFLAGS="-O -g -arch $(ARCH_TYPE) -I$(BUILT_DIR)/include -mmacosx-version-min=10.5 -isysroot /Developer/SDKs/MacOSX10.5.sdk"
-TOR_LDFLAGS="-L$(BUILT_DIR)/lib -Wl,-syslibroot,/Developer/SDKs/MacOSX10.5.sdk"
-TOR_OPTS=--enable-static-openssl --enable-static-libevent --with-openssl-dir=$(BUILT_DIR)/lib --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR) --disable-dependency-tracking CC="gcc-4.0"
+TOR_CFLAGS="-O -g -arch $(ARCH_TYPE) -I$(BUILT_DIR)/include $(MIN_VERSION) $(CF_MIN_VERSION)"
+TOR_LDFLAGS="-L$(BUILT_DIR)/lib $(LD_MIN_VERSION)"
+TOR_OPTS=--enable-static-openssl --enable-static-libevent --with-openssl-dir=$(BUILT_DIR)/lib --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR) --disable-dependency-tracking $(CC)
 build-tor:
 	cd $(TOR_DIR) && CFLAGS=$(TOR_CFLAGS) LDFLAGS=$(TOR_LDFLAGS) ./configure $(TOR_OPTS)
 	cd $(TOR_DIR) && make
