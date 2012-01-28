@@ -83,7 +83,7 @@ endif
 	cd $(OPENSSL_DIR) && make install
 
 QT_DIR=$(FETCH_DIR)/qt-everywhere-opensource-src-$(QT_VER)
-QT_BUILD_PREFS=-system-zlib -universal -confirm-license -opensource -openssl-linked -no-qt3support \
+QT_BUILD_PREFS=-system-zlib -confirm-license -opensource -openssl-linked -no-qt3support \
 	-fast -release -no-framework -nomake demos -nomake examples $(SDK)
 QT_OPTS=$(QT_BUILD_PREFS) -prefix $(BUILT_DIR) -I $(BUILT_DIR)/include -I $(BUILT_DIR)/include/openssl/ -L $(BUILT_DIR)/lib
 build-qt:
