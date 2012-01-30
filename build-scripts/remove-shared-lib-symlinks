@@ -34,7 +34,7 @@ if {$argc != 1 ||
 
     puts -nonewline $usage_chan $usage
 
-    if {$usage_chan eq stderr} {
+    if {$usage_chan eq "stderr"} {
         exit 2
     } else {
         exit 0
