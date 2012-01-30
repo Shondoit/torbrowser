@@ -181,14 +181,42 @@ foreach {x} $shared_lib_filenames {
 
 # Write the current list of shared library names and the list of
 # rename/delete actions to disk.
-#
-# FIXME Currently, we write these out as single Tcl lists, most likely
-# on a single line, because that is the only format that we can easily
-# emit which can also be parsed easily and unambiguously by another
-# program.  Someday that should be improved; until then, it should be
-# easy enough to write a tiny Tcl program that reads the list and
-# writes out one list element per line or a tiny Tk program that reads
-# the list and sticks it in a listbox widget.
+
+set debug_dump_common_header [string trimleft {
+
+In order to make Tor Browser Bundle for Linux run successfully when
+extracted or copied onto a filesystem which does not support symbolic
+links (such as the FAT filesystem used on most USB sticks), all shared
+library symlinks in this directory were removed, and some shared
+libraries in this directory were renamed to match the names by which
+the loader will search for them.
+
+Since the process of removing symlinks and renaming shared libraries
+loses some potentially important information about shared library
+version numbers, the remove-shared-lib-symlinks script which performs
+these operations records some information about its actions.
+
+See build-scripts/remove-shared-lib-symlinks in torbrowser.git for
+more information.
+}]
+
+set library_list_header [string trimleft {
+
+This file contains a list of the files and symlinks which the
+remove-shared-lib-symlinks script might have affected.
+}]
+
+set library_rename_action_list_header [string trimleft {
+
+This file contains a list of the rename (mv) and delete (rm) actions
+which the remove-shared-lib-symlinks script performed to remove shared
+library symlinks from this directory.
+}]
+
+proc line_list {s} {
+    split $s "\n"
+}
+
 set library_list {}
 foreach {x} $shared_lib_filenames {
     set x_type [file type $x]
@@ -202,12 +230,29 @@ foreach {x} $shared_lib_filenames {
     }
     lappend library_list [list $x $x_type $extra_info]
 }
+
 set library_list_chan [open ".shared-library-name-list" {WRONLY CREAT EXCL}]
-puts -nonewline $library_list_chan $library_list
+foreach {x} [line_list $debug_dump_common_header] {
+    puts $library_list_chan "# $x"
+}
+foreach {x} [line_list $library_list_header] {
+    puts $library_list_chan "# $x"
+}
+foreach {x} $library_list {
+    puts $library_list_chan $x
+}
 close $library_list_chan
 
 set action_list_chan [open ".shared-library-rename-action-list" {WRONLY CREAT EXCL}]
-puts -nonewline $action_list_chan $shared_lib_name_actions
+foreach {x} [line_list $debug_dump_common_header] {
+    puts $action_list_chan "# $x"
+}
+foreach {x} [line_list $library_rename_action_list_header] {
+    puts $action_list_chan "# $x"
+}
+foreach {x} $shared_lib_name_actions {
+    puts $action_list_chan $x
+}
 close $action_list_chan
 
 # Perform the rename/delete actions.
