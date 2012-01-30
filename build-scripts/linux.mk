@@ -282,7 +282,7 @@ install-binaries:
 	cp -d $(QT)/libQtNetwork.so* $(LIBSDIR)
 	cp -d $(QT)/libQtXml.so* $(LIBSDIR)
 	# zlib
-	cp -d $(ZLIB)/libz.so $(ZLIB)/libz.so.1 $(ZLIB)/libz.so.1.2.5 $(LIBSDIR)/libz
+	cp -d $(ZLIB)/libz.so $(ZLIB)/libz.so.1 $(ZLIB)/libz.so.1.2.6 $(LIBSDIR)/libz
 	# Libevent
 	cp -d $(LIBEVENT)/libevent-2.0.so.5 $(LIBEVENT)/libevent-2.0.so.5.1.4 $(LIBEVENT)/libevent_core.so \
 	   $(LIBEVENT)/libevent_core-2.0.so.5 $(LIBEVENT)/libevent_core-2.0.so.5.1.4 \
