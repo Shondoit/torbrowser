@@ -93,6 +93,10 @@ unpack-libpng:
 	-rm -rf $(FETCH_DIR)/libpng-$(LIBPNG_VER)
 	cd $(FETCH_DIR) && tar -xvjf $(LIBPNG_PACKAGE)
 
+unpack-qt:
+	-rm -rf $(FETCH_DIR/qt-$(QT_VER)
+	cd $(FETCH_DIR) && tar -xvzf $(QT_PACKAGE)
+
 unpack-openssl:
 	-rm -rf $(FETCH_DIR)/openssl-$(OPENSSL_VER)
 	cd $(FETCH_DIR) && tar -xvzf $(OPENSSL_PACKAGE)
