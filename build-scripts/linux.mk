@@ -292,6 +292,8 @@ install-binaries:
 	cp -d $(LIBPNG)/libpng14.so* $(LIBSDIR) 
 	# OpenSSL
 	cp -d $(OPENSSL)/libssl.so* $(OPENSSL)/libcrypto.so* $(LIBSDIR)
+	chmod 644 $(LIBSDIR)/libssl.so*
+	chmod 644 $(LIBSDIR)/libcrypto.so*
 	# Vidalia
 	cp $(VIDALIA) $(APPDIR)
 	cp $(TOR) $(APPDIR)
