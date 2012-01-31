@@ -1,6 +1,4 @@
 [General]
-BrowserDirectory=.
-BrowserExecutable=firefox
 InterfaceStyle=Cleanlooks
 LanguageCode=en
 
@@ -10,3 +8,7 @@ TorExecutable=./App/tor
 Torrc=./Data/Tor/torrc
 AutoControl=true
 DataDirectory=./Data/Tor
+
+[TBB]
+BrowserDirectory=.
+BrowserExecutable=firefox
