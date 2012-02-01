@@ -294,7 +294,7 @@ install-docs:
 install-firefox:
 	cp -R $(FIREFOX) $(APPDIR)
 
-## Configure Firefox, Vidalia, Polipo and Tor
+## Configure Firefox, Vidalia, and Tor
 configure-apps:
 	## Configure Firefox preferences
 	#mkdir -p $(DEST)/.mozilla/Firefox/firefox.default

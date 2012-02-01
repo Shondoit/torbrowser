@@ -103,14 +103,6 @@ build-tor: build-zlib build-openssl build-libevent $(TOR_DIR)
 	cd $(TOR_DIR) && make install
 	touch build-tor
 
-## Polipo doesn't use autoconf, so we just have to hack their Makefile
-## This probably needs to be updated if Polipo ever updates their Makefile
-POLIPO_DIR=$(FETCH_DIR)/polipo-$(POLIPO_VER)
-POLIPO_MAKEFILE=config/polipo-Makefile
-build-polipo:
-	cp $(POLIPO_MAKEFILE) $(POLIPO_DIR)/Makefile
-	cd $(POLIPO_DIR) && make && PREFIX=$(FETCH_DIR)/built/ make install.binary
-
 build-pidgin:
 	echo "We're not building pidgin yet!"
 
@@ -143,7 +135,6 @@ QT=$(COMPILED_LIBS)
 ZLIB=$(COMPILED_LIBS)
 
 ## Location of binary bundle components
-POLIPO=$(COMPILED_BINS)/polipo
 TOR=$(COMPILED_BINS)/tor
 VIDALIA=$(BUILT_DIR)/usr/local/bin/vidalia
 ## Someday, this will be our custom Firefox
@@ -322,7 +313,7 @@ ifeq ($(USE_PIDGIN),1)
 	cp -R $(PIDGIN) $(APPDIR)
 endif
 
-## Configure Firefox, Vidalia, Polipo and Tor
+## Configure Firefox, Vidalia, and Tor
 configure-apps:
 	## Configure Firefox preferences
 	mkdir -p $(DEST)/Data/profile/extensions
@@ -340,8 +331,6 @@ ifeq ($(USE_PIDGIN),1)
 else
 	cp config/vidalia.conf.ff-linux $(DEST)/Data/Vidalia/vidalia.conf
 endif
-	## Configure Polipo
-	#cp config/polipo.conf $(DEST)/Data/Polipo/polipo.conf
 	## Configure Tor
 	cp config/torrc-linux $(DEST)/Data/Tor/torrc
 	cp $(TOR_DIR)/src/config/geoip $(DEST)/Data/Tor/geoip
@@ -354,7 +343,6 @@ launcher:
 
 strip-it-stripper:
 	strip $(APPDIR)/tor
-	#strip $(APPDIR)/polipo
 	strip $(APPDIR)/vidalia
 	strip $(LIBSDIR)/*.so*
 	strip $(LIBSDIR)/libz/*.so*

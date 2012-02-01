@@ -282,7 +282,6 @@ directory-structure:
 ## Filenames extracted using Dependency Walker <http://www.dependencywalker.com/>
 install-binaries: 
 	cp $(MING)/mingwm10.dll $(APPDIR)
-	cp $(MING)/libgnurx-0.dll $(APPDIR)
 	cp $(QT_LIB)/QtCore4.dll $(QT_LIB)/QtGui4.dll $(QT_LIB)/QtNetwork4.dll $(QT_LIB)/QtXml4.dll $(QT_LIB)/libgcc_s_dw2-1.dll $(APPDIR) 
 	cp $(OPENSSL_LIB)/ssleay32.dll $(APPDIR)
 	cp $(OPENSSL_LIB)/libeay32.dll $(APPDIR)
