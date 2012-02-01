@@ -52,14 +52,12 @@ include $(PWD)/versions.mk
 source-dance: fetch-source unpack-source
 	echo "We're ready for building now."
 
-ZLIB_DIR=$(FETCH_DIR)/zlib-$(ZLIB_VER)
 ZLIB_OPTS=--shared --prefix=$(BUILT_DIR)
 build-zlib:
 	cd $(ZLIB_DIR) && ./configure $(ZLIB_OPTS)
 	cd $(ZLIB_DIR) && make -j $(NUM_CORES)
 	cd $(ZLIB_DIR) && make install
 
-OPENSSL_DIR=$(FETCH_DIR)/openssl-$(OPENSSL_VER)
 OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 shared zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -I$(BUILT_DIR)/include -L$(BUILT_DIR)/lib
 build-openssl:
 	cd $(OPENSSL_DIR) && ./config $(OPENSSL_OPTS)
@@ -67,7 +65,6 @@ build-openssl:
 	cd $(OPENSSL_DIR) && make
 	cd $(OPENSSL_DIR) && make install
 
-QT_DIR=$(FETCH_DIR)/qt-everywhere-opensource-src-$(QT_VER)
 QT_BUILD_PREFS=-system-zlib -confirm-license -opensource -openssl-linked -no-qt3support -fast -release -nomake demos -nomake examples
 QT_OPTS=$(QT_BUILD_PREFS) -prefix $(BUILT_DIR) -I $(BUILT_DIR)/include -I $(BUILT_DIR)/include/openssl/ -L$(BUILT_DIR)/lib
 build-qt:
@@ -75,28 +72,24 @@ build-qt:
 	cd $(QT_DIR) && make -j $(NUM_CORES)
 	cd $(QT_DIR) && make install
 
-VIDALIA_DIR=$(FETCH_DIR)/vidalia-$(VIDALIA_VER)
 VIDALIA_OPTS=-DOPENSSL_LIBCRYPTO=$(BUILT_DIR)/lib/libcrypto.so.1.0.0 -DOPENSSL_LIBSSL=$(BUILT_DIR)/lib/libssl.so.1.0.0 -DCMAKE_BUILD_TYPE=debug -DQT_QMAKE_EXECUTABLE=$(BUILT_DIR)/bin/qmake ..
 build-vidalia:
 	-mkdir $(VIDALIA_DIR)/build
 	cd $(VIDALIA_DIR)/build && cmake $(VIDALIA_OPTS) && make -j $(NUM_CORES)
 	cd $(VIDALIA_DIR)/build && DESTDIR=$(BUILT_DIR) make install
 
-LIBEVENT_DIR=$(FETCH_DIR)/libevent-$(LIBEVENT_VER)
 LIBEVENT_OPTS=--prefix=$(BUILT_DIR)
 build-libevent:
 	cd $(LIBEVENT_DIR) && ./configure $(LIBEVENT_OPTS)
 	cd $(LIBEVENT_DIR) && make -j $(NUM_CORES)
 	cd $(LIBEVENT_DIR) && make install
 
-LIBPNG_DIR=$(FETCH_DIR)/libpng-$(LIBPNG_VER)
 LIBPNG_OPTS=--prefix=$(BUILT_DIR)
 build-libpng:
 	cd $(LIBPNG_DIR) && ./configure $(LIBPNG_OPTS)
 	cd $(LIBPNG_DIR) && make
 	cd $(LIBPNG_DIR) && make install
 
-TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)
 TOR_OPTS=--enable-gcc-warnings --with-openssl-dir=$(BUILT_DIR) --with-zlib-dir=$(BUILT_DIR) --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR)
 build-tor:
 	cd $(TOR_DIR) && ./configure $(TOR_OPTS)
@@ -114,7 +107,6 @@ build-polipo:
 build-pidgin:
 	echo "We're not building pidgin yet!"
 
-FIREFOX_DIR=$(FETCH_DIR)/mozilla-release
 build-firefox:
 	cp $(CONFIG_SRC)/dot_mozconfig $(FIREFOX_DIR)/mozconfig
 	cd $(FIREFOX_DIR) && make -f client.mk build

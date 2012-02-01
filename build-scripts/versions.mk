@@ -60,6 +60,17 @@ tor=TOR
 firefox=FIREFOX
 pidgin=PIDGIN
 
+# The locations of the unpacked tarballs
+ZLIB_DIR=$(FETCH_DIR)/zlib-$(ZLIB_VER)
+LIBPNG_DIR=$(FETCH_DIR)/libpng-$(LIBPNG_VER)
+QT_DIR=$(FETCH_DIR)/qt-everywhere-opensource-src-$(QT_VER)
+OPENSSL_DIR=$(FETCH_DIR)/openssl-$(OPENSSL_VER)
+VIDALIA_DIR=$(FETCH_DIR)/vidalia-$(VIDALIA_VER)
+LIBEVENT_DIR=$(FETCH_DIR)/libevent-$(LIBEVENT_VER)
+TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)
+FIREFOX_DIR=$(FETCH_DIR)/firefox-$(FIREFOX_VER)
+
+
 fetch-source: $(FETCH_DIR)/$(ZLIB_PACKAGE) $(FETCH_DIR)/$(LIBPNG_PACKAGE) $(FETCH_DIR)/$(QT_PACKAGE) $(FETCH_DIR)/$(OPENSSL_PACKAGE) $(FETCH_DIR)/$(VIDALIA_PACKAGE) $(FETCH_DIR)/$(LIBEVENT_PACKAGE) $(FETCH_DIR)/$(TOR_PACKAGE) $(FETCH_DIR)/$(FIREFOX_PACKAGE) | $(FETCH_DIR) ;
 
 $(FETCH_DIR):
@@ -143,6 +154,7 @@ unpack-tor:
 unpack-firefox:
 	-rm -rf $(FETCH_DIR)/mozilla-release
 	cd $(FETCH_DIR) && tar -xvjf $(FIREFOX_PACKAGE)
+	mv $(FETCH_DIR)/mozilla-release $(FIREFOX_DIR)
 	cp ../src/current-patches/firefox/* $(FIREFOX_DIR)
 	cp patch-any-src.sh $(FIREFOX_DIR)
 	cd $(FIREFOX_DIR) && ./patch-any-src.sh

@@ -55,7 +55,6 @@ WINRAR="/c/Program Files (x86)/WinRAR/WinRAR.exe"
 CC=gcc
 
 MSVC_VER=9
-FIREFOX_DIR=/c/build/mozilla-build/mozilla-release
 MOZ_BUILD=/c/build/mozilla-build
 
 ## Build machine specific settings
@@ -74,13 +73,11 @@ include $(PWD)/versions.mk
 source-dance: fetch-source unpack-source
 	echo "We're ready for building now."
 
-ZLIB_DIR=$(FETCH_DIR)/zlib-$(ZLIB_VER)
 build-zlib:
 	cd $(ZLIB_DIR) && sed -i -e "s%prefix = /usr/local%prefix = ${BUILT_DIR}%" win32/Makefile.gcc
 	cd $(ZLIB_DIR) && LDFLAGS="-Wl,--nxcompat -Wl,--dynamicbase" make -f win32/Makefile.gcc -j $(NUM_CORES)
 	cd $(ZLIB_DIR) && BINARY_PATH="$(BUILT_DIR)/bin" INCLUDE_PATH="$(BUILT_DIR)/include" LIBRARY_PATH="$(BUILT_DIR)/lib" make -f win32/Makefile.gcc install
 
-OPENSSL_DIR=$(FETCH_DIR)/openssl-$(OPENSSL_VER)
 OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 shared zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -L$(BUILT_DIR)/lib -Wl,--nxcompat -Wl,--dynamicbase -I$(BUILT_DIR)/include
 build-openssl:
 	cd $(OPENSSL_DIR) && ./config $(OPENSSL_OPTS)
@@ -88,14 +85,12 @@ build-openssl:
 	cd $(OPENSSL_DIR) && make
 	cd $(OPENSSL_DIR) && make install
 
-VIDALIA_DIR=$(FETCH_DIR)/vidalia-$(VIDALIA_VER)
 VIDALIA_OPTS=-DCMAKE_EXE_LINKER_FLAGS="-static-libstdc++ -Wl,--nxcompat -Wl,--dynamicbase" -DWIN2K=1 -DQT_MAKE_EXECUTABLE=/c/Qt/$(QT_VER)/bin/qmake -DCMAKE_BUILD_TYPE=minsizerel -DMINGW_BINARY_DIR=$(MING) -DOPENSSL_BINARY_DIR=$(OPENSSL) -DWIX_BINARY_DIR=$(WIX_LIB)
 build-vidalia:
 	-mkdir $(VIDALIA_DIR)/build
 	cd $(VIDALIA_DIR)/build && cmake -G "MSYS Makefiles" $(VIDALIA_OPTS) ..
 	cd $(VIDALIA_DIR)/build && make -j $(NUM_CORES)
 
-LIBEVENT_DIR=$(FETCH_DIR)/libevent-$(LIBEVENT_VER)
 LIBEVENT_CFLAGS="-I$(BUILT_DIR)/include -O -g"
 LIBEVENT_LDFLAGS="-L$(BUILT_DIR)/lib -L$(BUILT_DIR)/bin -Wl,--nxcompat -Wl,--dynamicbase"
 LIBEVENT_OPTS=--prefix=$(BUILT_DIR) --enable-static --disable-shared --disable-dependency-tracking
@@ -104,7 +99,6 @@ build-libevent:
 	cd $(LIBEVENT_DIR) && make -j $(NUM_CORES)
 	cd $(LIBEVENT_DIR) && make install
 
-TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)
 TOR_CFLAGS="-O -g -I$(BUILT_DIR)/include"
 TOR_LDFLAGS="-L$(BUILT_DIR)/lib -L$(BUILT_DIR)/bin"
 TOR_OPTS=--enable-static-libevent --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR)
