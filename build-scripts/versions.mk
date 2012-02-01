@@ -48,7 +48,6 @@ PIDGIN_URL=http://sourceforge.net/projects/pidgin/files/Pidgin/$(PIDGIN_PACKAGE)
 FIREFOX_URL=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/$(FIREFOX_VER)/source/$(FIREFOX_PACKAGE)
 
 fetch-source: fetch-zlib fetch-openssl fetch-libpng fetch-qt fetch-vidalia fetch-libevent fetch-tor fetch-firefox
-fetch-source-osx: fetch-zlib fetch-openssl fetch-vidalia fetch-libevent fetch-tor fetch-firefox
 	-mkdir $(FETCH_DIR)
 
 fetch-zlib:
