@@ -2,7 +2,7 @@
 
 RELEASE_VER=2.2.35
 
-HTTPSEVERY_VER=1.2.2
+HTTPSEVERYWHERE_VER=1.2.2
 FIREFOX_VER=10.0.2
 LIBEVENT_VER=2.0.17-stable
 LIBPNG_VER=1.5.9
@@ -19,11 +19,6 @@ ZLIB_VER=1.2.6
 ## Extension IDs
 FF_VENDOR_ID:=\{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
 
-## Extensions
-TORBUTTON=https://www.torproject.org/dist/torbutton/torbutton-$(TORBUTTON_VER).xpi
-NOSCRIPT=https://addons.mozilla.org/firefox/downloads/latest/722/addon-722-latest.xpi
-HTTPSEVERYWHERE=https://eff.org/files/https-everywhere-$(HTTPSEVERY_VER).xpi
-
 ## File names for the source packages
 ZLIB_PACKAGE=zlib-$(ZLIB_VER).tar.gz
 OPENSSL_PACKAGE=openssl-$(OPENSSL_VER).tar.gz
@@ -34,6 +29,9 @@ LIBEVENT_PACKAGE=libevent-$(LIBEVENT_VER).tar.gz
 TOR_PACKAGE=tor-$(TOR_VER).tar.gz
 PIDGIN_PACKAGE=pidgin-$(PIDGIN_VER).tar.bz2
 FIREFOX_PACKAGE=firefox-$(FIREFOX_VER).source.tar.bz2
+TORBUTTON_PACKAGE=torbutton-$(TORBUTTON_VER).xpi
+NOSCRIPT_PACKAGE=addon-722-latest.xpi
+HTTPSEVERYWHERE_PACKAGE=https-everywhere-$(HTTPSEVERYWHERE_VER).xpi
 
 ## Location of files for download
 ZLIB_URL=http://www.zlib.net/$(ZLIB_PACKAGE)
@@ -45,6 +43,9 @@ LIBEVENT_URL=https://github.com/downloads/libevent/libevent/$(LIBEVENT_PACKAGE)
 TOR_URL=http://www.torproject.org/dist/$(TOR_PACKAGE)
 PIDGIN_URL=http://sourceforge.net/projects/pidgin/files/Pidgin/$(PIDGIN_PACKAGE)
 FIREFOX_URL=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/$(FIREFOX_VER)/source/$(FIREFOX_PACKAGE)
+TORBUTTON_URL=https://www.torproject.org/dist/torbutton/$(TORBUTTON_PACKAGE)
+NOSCRIPT_URL=https://addons.mozilla.org/firefox/downloads/latest/722/$(NOSCRIPT_PACKAGE)
+HTTPSEVERYWHERE_URL=https://eff.org/files/$(HTTPSEVERYWHERE_PACKAGE)
 
 # Provide some mappings between lower and upper case, which means we don't need
 # to rely on shell shenanigans when we need the upper case version. This is
@@ -59,66 +60,61 @@ tor=TOR
 firefox=FIREFOX
 pidgin=PIDGIN
 
-fetch-source: fetch-zlib fetch-openssl fetch-libpng fetch-qt fetch-vidalia fetch-libevent fetch-tor fetch-firefox
-	-mkdir $(FETCH_DIR)
+fetch-source: $(FETCH_DIR)/$(ZLIB_PACKAGE) $(FETCH_DIR)/$(LIBPNG_PACKAGE) $(FETCH_DIR)/$(QT_PACKAGE) $(FETCH_DIR)/$(OPENSSL_PACKAGE) $(FETCH_DIR)/$(VIDALIA_PACKAGE) $(FETCH_DIR)/$(LIBEVENT_PACKAGE) $(FETCH_DIR)/$(TOR_PACKAGE) $(FETCH_DIR)/$(FIREFOX_PACKAGE) | $(FETCH_DIR) ;
 
-fetch-zlib:
-	-rm -f $(FETCH_DIR)/$(ZLIB_PACKAGE)
+$(FETCH_DIR):
+	mkdir -p $(FETCH_DIR)
+
+# XXX
+# If we can, we should definitely add some stuff here to check signatures -
+# at least for those packages that support it.
+
+$(FETCH_DIR)/$(ZLIB_PACKAGE): | $(FETCH_DIR)
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(ZLIB_URL)
 
-fetch-libpng:
-	-rm -f $(FETCH_DIR)/$(LIBPNG_PACKAGE)
+$(FETCH_DIR)/$(LIBPNG_PACKAGE): | $(FETCH_DIR)
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(LIBPNG_URL)
 
-fetch-qt:
-	-rm -f $(FETCH_DIR)/$(QT_PACKAGE)
+$(FETCH_DIR)/$(QT_PACKAGE): | $(FETCH_DIR)
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(QT_URL)
 
-fetch-openssl:
-	-rm -f $(FETCH_DIR)/$(OPENSSL_PACKAGE)
+$(FETCH_DIR)/$(OPENSSL_PACKAGE): | $(FETCH_DIR)
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(OPENSSL_URL)
 
-fetch-vidalia:
-	-rm -f $(FETCH_DIR)/$(VIDALIA_PACKAGE)
+$(FETCH_DIR)/$(VIDALIA_PACKAGE): | $(FETCH_DIR)
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(VIDALIA_URL)
 
-fetch-libevent:
-	-rm -f $(FETCH_DIR)/$(LIBEVENT_PACKAGE)
+$(FETCH_DIR)/$(LIBEVENT_PACKAGE): | $(FETCH_DIR)
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(LIBEVENT_URL)
 
-fetch-tor:
-	-rm -f $(FETCH_DIR)/$(TOR_PACKAGE)
+$(FETCH_DIR)/$(TOR_PACKAGE): | $(FETCH_DIR)
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(TOR_URL)
 
-fetch-firefox:
-	-rm -f $(FETCH_DIR)/$(FIREFOX_PACKAGE)
+$(FETCH_DIR)/$(FIREFOX_PACKAGE): | $(FETCH_DIR)
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(FIREFOX_URL)
 
-## Torbutton development version
 torbutton.xpi:
-	$(WGET) -O $@ $(TORBUTTON)
+	$(WGET) --no-check-certificate -O $@ $(TORBUTTON_URL)
 
-## NoScript development version
 noscript.xpi:
-	$(WGET) -O $@ $(NOSCRIPT)
+	$(WGET) --no-check-certificate -O $@ $(NOSCRIPT_URL)
 
-## HTTPS Everywhere
 httpseverywhere.xpi:
-	$(WGET) -O $@ --no-check-certificate $(HTTPSEVERYWHERE)
+	$(WGET) --no-check-certificate -O $@ $(HTTPSEVERYWHERE_URL)
 
 ## Generic language pack rule, needs OS-specific MOZILLA_LANGUAGE
 langpack_%.xpi:
-	$(WGET) -O $@ $(MOZILLA_LANGUAGE)/$*.xpi
+	$(WGET) --no-check-certificate -O $@ $(MOZILLA_LANGUAGE)/$*.xpi
 
 ## English comes as default, so nothing to do here for the language packe
 langpack_en-US.xpi:
 	touch $@
 
-unpack-source: unpack-zlib unpack-openssl unpack-libpng unpack-qt unpack-vidalia unpack-libevent unpack-tor unpack-firefox
+unpack-source: $(ZLIB_DIR) $(OPENSSL_DIR) $(LIBPNG_DIR $(QT_DIR) $(VIDALIA_DIR) $(LIBEVENT_DIR) $(TOR_DIR) $(FIREFOX_DIR)
 
-unpack-zlib:
-	-rm -rf $(FETCH_DIR)/zlib-$(ZLIB_VER)
-	cd $(FETCH_DIR) && tar -xvzf $(ZLIB_PACKAGE)
+$(ZLIB_DIR): $(FETCH_DIR)/$(ZLIB_PACKAGE)
+	rm -rf $(ZLIB_DIR)
+	cd $(FETCH_DIR) && tar -xmf $(ZLIB_PACKAGE)
 
 unpack-libpng:
 	-rm -rf $(FETCH_DIR)/libpng-$(LIBPNG_VER)
@@ -150,3 +146,10 @@ unpack-firefox:
 	cp ../src/current-patches/firefox/* $(FIREFOX_DIR)
 	cp patch-any-src.sh $(FIREFOX_DIR)
 	cd $(FIREFOX_DIR) && ./patch-any-src.sh
+
+clean-fetch-%:
+	rm -rf $(FETCH_DIR)/$($($*)_PACKAGE)
+
+clean-fetch: clean-fetch-zlib clean-fetch-libpng clean-fetch-qt clean-fetch-openssl clean-fetch-vidalia clean-fetch-libevent clean-fetch-tor clean-fetch-firefox
+
+.PHONY: clean-fetch
