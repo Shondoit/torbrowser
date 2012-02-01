@@ -46,6 +46,19 @@ TOR_URL=http://www.torproject.org/dist/$(TOR_PACKAGE)
 PIDGIN_URL=http://sourceforge.net/projects/pidgin/files/Pidgin/$(PIDGIN_PACKAGE)
 FIREFOX_URL=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/$(FIREFOX_VER)/source/$(FIREFOX_PACKAGE)
 
+# Provide some mappings between lower and upper case, which means we don't need
+# to rely on shell shenanigans when we need the upper case version. This is
+# necessary because our targets are lowercase, and our variables uppercase.
+zlib=ZLIB
+libpng=LIBPNG
+qt=QT
+openssl=OPENSSL
+vidalia=VIDALIA
+libevent=LIBEVENT
+tor=TOR
+firefox=FIREFOX
+pidgin=PIDGIN
+
 fetch-source: fetch-zlib fetch-openssl fetch-libpng fetch-qt fetch-vidalia fetch-libevent fetch-tor fetch-firefox
 	-mkdir $(FETCH_DIR)
 
