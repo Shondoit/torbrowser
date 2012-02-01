@@ -73,40 +73,46 @@ include $(PWD)/versions.mk
 source-dance: fetch-source unpack-source
 	echo "We're ready for building now."
 
-build-zlib:
+build-zlib: $(ZLIB_DIR)
 	cd $(ZLIB_DIR) && sed -i -e "s%prefix = /usr/local%prefix = ${BUILT_DIR}%" win32/Makefile.gcc
 	cd $(ZLIB_DIR) && LDFLAGS="-Wl,--nxcompat -Wl,--dynamicbase" make -f win32/Makefile.gcc -j $(NUM_CORES)
 	cd $(ZLIB_DIR) && BINARY_PATH="$(BUILT_DIR)/bin" INCLUDE_PATH="$(BUILT_DIR)/include" LIBRARY_PATH="$(BUILT_DIR)/lib" make -f win32/Makefile.gcc install
+	touch build-zlib
 
 OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 shared zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -L$(BUILT_DIR)/lib -Wl,--nxcompat -Wl,--dynamicbase -I$(BUILT_DIR)/include
-build-openssl:
+build-openssl: build-zlib $(OPENSSL_DIR)
 	cd $(OPENSSL_DIR) && ./config $(OPENSSL_OPTS)
 	cd $(OPENSSL_DIR) && make depend
 	cd $(OPENSSL_DIR) && make
 	cd $(OPENSSL_DIR) && make install
+	touch build-openssl
 
 VIDALIA_OPTS=-DCMAKE_EXE_LINKER_FLAGS="-static-libstdc++ -Wl,--nxcompat -Wl,--dynamicbase" -DWIN2K=1 -DQT_MAKE_EXECUTABLE=/c/Qt/$(QT_VER)/bin/qmake -DCMAKE_BUILD_TYPE=minsizerel -DMINGW_BINARY_DIR=$(MING) -DOPENSSL_BINARY_DIR=$(OPENSSL) -DWIX_BINARY_DIR=$(WIX_LIB)
-build-vidalia:
+# XXX Once we build qt on windows, we'll want to add build-qt here
+build-vidalia: build-openssl $(VIDALIA_DIR)
 	-mkdir $(VIDALIA_DIR)/build
 	cd $(VIDALIA_DIR)/build && cmake -G "MSYS Makefiles" $(VIDALIA_OPTS) ..
 	cd $(VIDALIA_DIR)/build && make -j $(NUM_CORES)
+	touch build-vidalia
 
 LIBEVENT_CFLAGS="-I$(BUILT_DIR)/include -O -g"
 LIBEVENT_LDFLAGS="-L$(BUILT_DIR)/lib -L$(BUILT_DIR)/bin -Wl,--nxcompat -Wl,--dynamicbase"
 LIBEVENT_OPTS=--prefix=$(BUILT_DIR) --enable-static --disable-shared --disable-dependency-tracking
-build-libevent:
+build-libevent: build-zlib build-openssl $(LIBEVENT_DIR)
 	cd $(LIBEVENT_DIR) && CFLAGS=$(LIBEVENT_CFLAGS) LDFLAGS=$(LIBEVENT_LDFLAGS) ./configure $(LIBEVENT_OPTS)
 	cd $(LIBEVENT_DIR) && make -j $(NUM_CORES)
 	cd $(LIBEVENT_DIR) && make install
+	touch build-libevent
 
 TOR_CFLAGS="-O -g -I$(BUILT_DIR)/include"
 TOR_LDFLAGS="-L$(BUILT_DIR)/lib -L$(BUILT_DIR)/bin"
 TOR_OPTS=--enable-static-libevent --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR)
 build-tor:PATH+=:$(BUILT_DIR)/bin
-build-tor:
+build-tor: build-zlib build-openssl build-libevent $(TOR_DIR)
 	cd $(TOR_DIR) && CFLAGS=$(TOR_CFLAGS) LDFLAGS=$(TOR_LDFLAGS) ./configure $(TOR_OPTS)
 	cd $(TOR_DIR) && make -j $(NUM_CORES)
 	cd $(TOR_DIR) && make install
+	touch build-tor
 
 patch-mozbuild:
 	cp ../src/current-patches/mozilla-build/start-msvc.patch $(MOZ_BUILD)
@@ -114,9 +120,10 @@ patch-mozbuild:
 	cp patch-mozilla-build.sh $(MOZ_BUILD)
 	cd $(MOZ_BUILD) && ./patch-mozilla-build.sh $(MSVC_VER)
 
-build-firefox:
+build-firefox: $(FIREFOX_DIR) $(CONFIG_SRC)/dot_mozconfig $(MOZ_BUILD) $(MOZ_BUILD)/start-msvc$(MSVC_VER).bat
 	cp $(CONFIG_SRC)/dot_mozconfig $(FIREFOX_DIR)/mozconfig
 	cd $(MOZ_BUILD) && cmd.exe /c "start-msvc$(MSVC_VER).bat $(FIREFOX_DIR)"
+	touch build-firefox
 
 copy-firefox:
 	-rm -rf $(FIREFOX)

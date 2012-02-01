@@ -66,13 +66,14 @@ source-dance: fetch-source unpack-source
 
 ZLIB_OPTS=--prefix=$(BUILT_DIR)
 ZLIB_CFLAGS="-arch $(ARCH_TYPE)"
-build-zlib:
+build-zlib: $(ZLIB_DIR)
 	cd $(ZLIB_DIR) && CFLAGS=$(ZLIB_CFLAGS) ./configure $(ZLIB_OPTS)
 	cd $(ZLIB_DIR) && make -j $(NUM_CORES)
 	cd $(ZLIB_DIR) && make install
+	touch build-zlib
 
 OPENSSL_OPTS=-no-rc5 -no-md2 -no-man shared zlib $(BACKWARDS_COMPAT) --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -L$(BUILT_DIR)/lib -I$(BUILT_DIR)/include
-build-openssl:
+build-openssl: build-zlib $(OPENSSL_DIR)
 	cp ../src/current-patches/openssl/*patch $(OPENSSL_DIR)
 	cp patch-any-src.sh $(OPENSSL_DIR)
 	cd $(OPENSSL_DIR) && ./patch-any-src.sh
@@ -85,44 +86,50 @@ endif
 # Do not use -j for the following make call, random build errors might happen.
 	cd $(OPENSSL_DIR) && make
 	cd $(OPENSSL_DIR) && make install
+	touch build-openssl
 
 
 QT_BUILD_PREFS=-system-zlib -confirm-license -opensource -openssl-linked -no-qt3support \
 	-fast -release -no-framework -nomake demos -nomake examples $(SDK)
 QT_OPTS=$(QT_BUILD_PREFS) -prefix $(BUILT_DIR) -I $(BUILT_DIR)/include -I $(BUILT_DIR)/include/openssl/ -L $(BUILT_DIR)/lib
-build-qt:
+build-qt: build-zlib build-openssl $(QT_DIR)
 	cd $(QT_DIR) && ./configure $(QT_OPTS)
 	cd $(QT_DIR) && make -j $(NUM_CORES)
 	cd $(QT_DIR) && make install
+	touch build-qt
 
 VIDALIA_OPTS=-DCMAKE_OSX_ARCHITECTURES=$(ARCH_TYPE) -DQT_QMAKE_EXECUTABLE=/usr/bin/qmake \
 	-DCMAKE_BUILD_TYPE=debug ..
-build-vidalia:
+build-vidalia: build-openssl build-qt $(VIDALIA_DIR)
 	export MACOSX_DEPLOYMENT_TARGET=$(OSX_VERSION)
 	-mkdir $(VIDALIA_DIR)/build
 	cd $(VIDALIA_DIR)/build && cmake $(VIDALIA_OPTS) \
 	&& make -j $(NUM_CORES) && make dist-osx-libraries
 	cd $(VIDALIA_DIR)/build && DESTDIR=$(BUILT_DIR) make install
+	touch build-vidalia
 
 LIBEVENT_CFLAGS="-O -g -arch $(ARCH_TYPE) $(MIN_VERSION) $(CF_MIN_VERSION) -arch $(ARCH_TYPE)"
 LIBEVENT_LDFLAGS="-L$(BUILT_DIR)/lib $(LD_MIN_VERSION)"
 LIBEVENT_OPTS=--prefix=$(BUILT_DIR) --enable-static --disable-shared --disable-dependency-tracking $(CC)
-build-libevent:
+build-libevent: build-zlib build-openssl $(LIBEVENT_DIR)
 	cd $(LIBEVENT_DIR) && CFLAGS=$(LIBEVENT_CFLAGS) LDFLAGS=$(LIBEVENT_LDFLAGS) ./configure $(LIBEVENT_OPTS)
 	cd $(LIBEVENT_DIR) && make -j $(NUM_CORES)
 	cd $(LIBEVENT_DIR) && make install
+	touch build-libevent
 
 TOR_CFLAGS="-O -g -arch $(ARCH_TYPE) -I$(BUILT_DIR)/include $(MIN_VERSION) $(CF_MIN_VERSION)"
 TOR_LDFLAGS="-L$(BUILT_DIR)/lib $(LD_MIN_VERSION)"
 TOR_OPTS=--enable-static-openssl --enable-static-libevent --with-openssl-dir=$(BUILT_DIR)/lib --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR) --disable-dependency-tracking $(CC)
-build-tor:
+build-tor: build-zlib build-openssl build-libevent $(TOR_DIR)
 	cd $(TOR_DIR) && CFLAGS=$(TOR_CFLAGS) LDFLAGS=$(TOR_LDFLAGS) ./configure $(TOR_OPTS)
 	cd $(TOR_DIR) && make -j $(NUM_CORES)
 	cd $(TOR_DIR) && make install
+	touch build-tor
 
-build-firefox:
+build-firefox: $(FIREFOX_DIR) $(CONFIG_SRC)/mozconfig-osx-$(ARCH_TYPE)
 	cp $(CONFIG_SRC)/mozconfig-osx-$(ARCH_TYPE) $(FIREFOX_DIR)/mozconfig
 	cd $(FIREFOX_DIR) && make -f client.mk build
+	touch build-firefox
 
 copy-firefox:
 	-rm -rf $(FETCH_DIR)/Firefox.app

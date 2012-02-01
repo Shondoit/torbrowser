@@ -53,48 +53,55 @@ source-dance: fetch-source unpack-source
 	echo "We're ready for building now."
 
 ZLIB_OPTS=--shared --prefix=$(BUILT_DIR)
-build-zlib:
+build-zlib: $(ZLIB_DIR)
 	cd $(ZLIB_DIR) && ./configure $(ZLIB_OPTS)
 	cd $(ZLIB_DIR) && make -j $(NUM_CORES)
 	cd $(ZLIB_DIR) && make install
+	touch build-zlib
+
+LIBPNG_OPTS=--prefix=$(BUILT_DIR)
+build-libpng: $(LIBPNG_DIR)
+	cd $(LIBPNG_DIR) && ./configure $(LIBPNG_OPTS)
+	cd $(LIBPNG_DIR) && make
+	cd $(LIBPNG_DIR) && make install
+	touch build-libpng
 
 OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 shared zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -I$(BUILT_DIR)/include -L$(BUILT_DIR)/lib
-build-openssl:
+build-openssl: build-zlib $(OPENSSL_DIR)
 	cd $(OPENSSL_DIR) && ./config $(OPENSSL_OPTS)
 	cd $(OPENSSL_DIR) && make depend
 	cd $(OPENSSL_DIR) && make
 	cd $(OPENSSL_DIR) && make install
+	touch build-openssl
 
 QT_BUILD_PREFS=-system-zlib -confirm-license -opensource -openssl-linked -no-qt3support -fast -release -nomake demos -nomake examples
 QT_OPTS=$(QT_BUILD_PREFS) -prefix $(BUILT_DIR) -I $(BUILT_DIR)/include -I $(BUILT_DIR)/include/openssl/ -L$(BUILT_DIR)/lib
-build-qt:
+build-qt: build-zlib build-openssl $(QT_DIR)
 	cd $(QT_DIR) && ./configure $(QT_OPTS)
 	cd $(QT_DIR) && make -j $(NUM_CORES)
 	cd $(QT_DIR) && make install
+	touch build-qt
 
 VIDALIA_OPTS=-DOPENSSL_LIBCRYPTO=$(BUILT_DIR)/lib/libcrypto.so.1.0.0 -DOPENSSL_LIBSSL=$(BUILT_DIR)/lib/libssl.so.1.0.0 -DCMAKE_BUILD_TYPE=debug -DQT_QMAKE_EXECUTABLE=$(BUILT_DIR)/bin/qmake ..
-build-vidalia:
+build-vidalia: build-openssl build-qt $(VIDALIA_DIR)
 	-mkdir $(VIDALIA_DIR)/build
 	cd $(VIDALIA_DIR)/build && cmake $(VIDALIA_OPTS) && make -j $(NUM_CORES)
 	cd $(VIDALIA_DIR)/build && DESTDIR=$(BUILT_DIR) make install
+	touch build-vidalia
 
 LIBEVENT_OPTS=--prefix=$(BUILT_DIR)
-build-libevent:
+build-libevent: build-zlib build-openssl $(LIBEVENT_DIR)
 	cd $(LIBEVENT_DIR) && ./configure $(LIBEVENT_OPTS)
 	cd $(LIBEVENT_DIR) && make -j $(NUM_CORES)
 	cd $(LIBEVENT_DIR) && make install
-
-LIBPNG_OPTS=--prefix=$(BUILT_DIR)
-build-libpng:
-	cd $(LIBPNG_DIR) && ./configure $(LIBPNG_OPTS)
-	cd $(LIBPNG_DIR) && make
-	cd $(LIBPNG_DIR) && make install
+	touch build-libevent
 
 TOR_OPTS=--enable-gcc-warnings --with-openssl-dir=$(BUILT_DIR) --with-zlib-dir=$(BUILT_DIR) --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR)
-build-tor:
+build-tor: build-zlib build-openssl build-libevent $(TOR_DIR)
 	cd $(TOR_DIR) && ./configure $(TOR_OPTS)
 	cd $(TOR_DIR) && make -j $(NUM_CORES)
 	cd $(TOR_DIR) && make install
+	touch build-tor
 
 ## Polipo doesn't use autoconf, so we just have to hack their Makefile
 ## This probably needs to be updated if Polipo ever updates their Makefile
@@ -107,9 +114,10 @@ build-polipo:
 build-pidgin:
 	echo "We're not building pidgin yet!"
 
-build-firefox:
+build-firefox: $(CONFIG_SRC)/dot_mozconfig $(FIREFOX_DIR)
 	cp $(CONFIG_SRC)/dot_mozconfig $(FIREFOX_DIR)/mozconfig
 	cd $(FIREFOX_DIR) && make -f client.mk build
+	touch build-firefox
 
 copy-firefox:
 	-rm -rf $(FETCH_DIR)/Firefox

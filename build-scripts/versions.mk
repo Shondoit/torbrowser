@@ -171,4 +171,11 @@ clean-unpack-%:
 
 clean-unpack: clean-unpack-zlib clean-unpack-libpng clean-unpack-qt clean-unpack-openssl clean-unpack-vidalia clean-unpack-libevent clean-unpack-tor clean-unpack-firefox
 
-.PHONY: clean-fetch clean-unpack
+clean-build-%:
+	rm -rf $($($*)_DIR)
+	rm -rf build-$*
+
+clean-build: clean-build-zlib clean-build-libpng clean-build-qt clean-build-openssl clean-build-vidalia clean-build-libevent clean-build-tor clean-build-firefox
+
+.PHONY: clean-fetch clean-unpack clean-build
+
