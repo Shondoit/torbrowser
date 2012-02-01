@@ -1,6 +1,6 @@
 #!/usr/bin/make
 
-RELEASE_VER=2.3.10-alpha
+RELEASE_VER=2.3.11-alpha
 
 HTTPSEVERY_VER=2.0development.4
 FIREFOX_VER=9.0.1
@@ -11,7 +11,7 @@ OPENSSL_VER=1.0.1-beta1
 OTR_VER=3.2.0
 PIDGIN_VER=2.6.4
 QT_VER=4.7.4
-TOR_VER=0.2.3.10-alpha
+TOR_VER=0.2.3.11-alpha
 TORBUTTON_VER=1.4.5.1
 VIDALIA_VER=0.3.1-alpha
 ZLIB_VER=1.2.5
