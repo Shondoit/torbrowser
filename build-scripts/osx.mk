@@ -31,8 +31,6 @@
 ### Configuration ###
 #####################
 
-## Include versions
-include $(PWD)/versions.mk
 
 ## Architecture
 ARCH_TYPE=i386
@@ -59,6 +57,9 @@ FETCH_DIR=$(PWD)/build-$(ARCH_TYPE)
 ## Location of directory for prefix/destdir/compiles/etc
 BUILT_DIR=$(FETCH_DIR)/built
 TBB_FINAL=$(BUILT_DIR)/tbbosx-dist
+
+## Include versions (must happen after variable definitions above
+include $(PWD)/versions.mk
 
 source-dance: fetch-source unpack-source
 	echo "We're ready for building now."

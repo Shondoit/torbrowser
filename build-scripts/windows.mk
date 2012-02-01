@@ -29,8 +29,6 @@
 ### Configuration ###
 #####################
 
-## Include versions
-include $(PWD)/versions.mk
 BUILD_NUM=7.1
 PLATFORM=Windows
 
@@ -69,6 +67,9 @@ FETCH_DIR=$(PWD)/build-alpha-windows
 ## Location of directory for prefix/destdir/compiles/etc
 BUILT_DIR=$(FETCH_DIR)/built
 TBB_FINAL=$(BUILT_DIR)/tbbwin-alpha-dist
+
+## Include versions (must happen after variable definitions above
+include $(PWD)/versions.mk
 
 source-dance: fetch-source unpack-source
 	echo "We're ready for building now."

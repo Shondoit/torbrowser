@@ -31,9 +31,6 @@
 ### Configuration ###
 #####################
 
-## Include versions
-include $(PWD)/versions.mk
-
 ## Architecture
 ARCH_TYPE=$(shell uname -m)
 BUILD_NUM=7.2
@@ -48,6 +45,9 @@ FETCH_DIR=/srv/build-trees/build-alpha-$(ARCH_TYPE)
 ## Location of directory for prefix/destdir/compiles/etc
 BUILT_DIR=$(FETCH_DIR)/built
 TBB_FINAL=$(BUILT_DIR)/TBBL
+
+## Include versions (must happen after variable definitions above
+include $(PWD)/versions.mk
 
 source-dance: fetch-source unpack-source
 	echo "We're ready for building now."
