@@ -63,7 +63,7 @@ pidgin=PIDGIN
 # The locations of the unpacked tarballs
 ZLIB_DIR=$(FETCH_DIR)/zlib-$(ZLIB_VER)
 LIBPNG_DIR=$(FETCH_DIR)/libpng-$(LIBPNG_VER)
-QT_DIR=$(FETCH_DIR)/qt-everywhere-opensource-src-$(QT_VER)
+QT_DIR=$(FETCH_DIR)/qt-$(QT_VER)
 OPENSSL_DIR=$(FETCH_DIR)/openssl-$(OPENSSL_VER)
 VIDALIA_DIR=$(FETCH_DIR)/vidalia-$(VIDALIA_VER)
 LIBEVENT_DIR=$(FETCH_DIR)/libevent-$(LIBEVENT_VER)
@@ -127,33 +127,35 @@ $(ZLIB_DIR): $(FETCH_DIR)/$(ZLIB_PACKAGE)
 	rm -rf $(ZLIB_DIR)
 	cd $(FETCH_DIR) && tar -xmf $(ZLIB_PACKAGE)
 
-unpack-libpng:
-	-rm -rf $(FETCH_DIR)/libpng-$(LIBPNG_VER)
-	cd $(FETCH_DIR) && tar -xvjf $(LIBPNG_PACKAGE)
+$(LIBPNG_DIR): $(FETCH_DIR)/$(LIBPNG_PACKAGE)
+	rm -rf $(LIBPNG_DIR)
+	cd $(FETCH_DIR) && tar -xmf $(LIBPNG_PACKAGE)
 
-unpack-qt:
-	-rm -rf $(FETCH_DIR/qt-$(QT_VER)
-	cd $(FETCH_DIR) && tar -xvzf $(QT_PACKAGE)
 
-unpack-openssl:
-	-rm -rf $(FETCH_DIR)/openssl-$(OPENSSL_VER)
-	cd $(FETCH_DIR) && tar -xvzf $(OPENSSL_PACKAGE)
+$(QT_DIR): $(FETCH_DIR)/$(QT_PACKAGE)
+	rm -rf $(QT_DIR) $(FETCH_DIR)/qt-everywhere-opensource-src-$(QT_VER)
+	cd $(FETCH_DIR) && tar -xmf $(QT_PACKAGE)
+	mv $(FETCH_DIR)/qt-everywhere-opensource-src-$(QT_VER) $(QT_DIR)
 
-unpack-vidalia:
-	-rm -rf $(FETCH_DIR)/vidalia-$(VIDALIA_VER)
-	cd $(FETCH_DIR) && tar -xvzf $(VIDALIA_PACKAGE)
+$(OPENSSL_DIR): $(FETCH_DIR)/$(OPENSSL_PACKAGE)
+	rm -rf $(OPENSSL_DIR)
+	cd $(FETCH_DIR) && tar -xmf $(OPENSSL_PACKAGE)
 
-unpack-libevent:
-	-rm -rf $(FETCH_DIR)/libevent-$(LIBEVENT_VER)
-	cd $(FETCH_DIR) && tar -xvzf $(LIBEVENT_PACKAGE)
+$(VIDALIA_DIR): $(FETCH_DIR)/$(VIDALIA_PACKAGE)
+	rm -rf $(VIDALIA_DIR)
+	cd $(FETCH_DIR) && tar -xmf $(VIDALIA_PACKAGE)
 
-unpack-tor:
-	-rm -rf $(FETCH_DIR)/tor-$(TOR_VER)
-	cd $(FETCH_DIR) && tar -xvzf $(TOR_PACKAGE)
+$(LIBEVENT_DIR): $(FETCH_DIR)/$(LIBEVENT_PACKAGE)
+	rm -rf $(LIBEVENT_DIR)
+	cd $(FETCH_DIR) && tar -xmf $(LIBEVENT_PACKAGE)
 
-unpack-firefox:
-	-rm -rf $(FETCH_DIR)/mozilla-release
-	cd $(FETCH_DIR) && tar -xvjf $(FIREFOX_PACKAGE)
+$(TOR_DIR): $(FETCH_DIR)/$(TOR_PACKAGE)
+	rm -rf $(TOR_DIR)
+	cd $(FETCH_DIR) && tar -xmf $(TOR_PACKAGE)
+
+$(FIREFOX_DIR): $(FETCH_DIR)/$(FIREFOX_PACKAGE) ../src/current-patches/firefox/*
+	rm -rf $(FIREFOX_DIR) $(FETCH_DIR)/mozilla-release
+	cd $(FETCH_DIR) && tar -xmf $(FIREFOX_PACKAGE)
 	mv $(FETCH_DIR)/mozilla-release $(FIREFOX_DIR)
 	cp ../src/current-patches/firefox/* $(FIREFOX_DIR)
 	cp patch-any-src.sh $(FIREFOX_DIR)
@@ -164,4 +166,9 @@ clean-fetch-%:
 
 clean-fetch: clean-fetch-zlib clean-fetch-libpng clean-fetch-qt clean-fetch-openssl clean-fetch-vidalia clean-fetch-libevent clean-fetch-tor clean-fetch-firefox
 
-.PHONY: clean-fetch
+clean-unpack-%:
+	rm -rf $($($*)_DIR)
+
+clean-unpack: clean-unpack-zlib clean-unpack-libpng clean-unpack-qt clean-unpack-openssl clean-unpack-vidalia clean-unpack-libevent clean-unpack-tor clean-unpack-firefox
+
+.PHONY: clean-fetch clean-unpack
