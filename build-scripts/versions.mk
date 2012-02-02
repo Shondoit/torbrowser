@@ -106,7 +106,7 @@ unpack-libevent:
 	cd $(FETCH_DIR) && tar -xvzf $(LIBEVENT_PACKAGE)
 
 unpack-tor:
-	-rm -rf $(FETCH_DIR)/tor-$(TOR-VER)
+	-rm -rf $(FETCH_DIR)/tor-$(TOR_VER)
 	cd $(FETCH_DIR) && tar -xvzf $(TOR_PACKAGE)
 
 unpack-firefox:

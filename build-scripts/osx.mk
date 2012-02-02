@@ -20,7 +20,7 @@
 ### make -f osx.mk build-all-binaries
 ### make -f osx.mk all-compressed-bundles
 ### ...
-### Look in tbbosx-alpha-dist/ for your files.
+### Look in tbbosx-dist/ for your files.
 ###
 ### See LICENSE for licensing information
 ###
@@ -36,14 +36,14 @@ include $(PWD)/versions.mk
 
 ## Architecture
 ARCH_TYPE=i386
-BUILD_NUM=4
+BUILD_NUM=5
 PLATFORM=MacOS
 
 ## Location of directory for source unpacking
-FETCH_DIR=$(PWD)/build-alpha-$(ARCH_TYPE)
+FETCH_DIR=$(PWD)/build-$(ARCH_TYPE)
 ## Location of directory for prefix/destdir/compiles/etc
 BUILT_DIR=$(FETCH_DIR)/built
-TBB_FINAL=$(BUILT_DIR)/tbbosx-alpha-dist
+TBB_FINAL=$(BUILT_DIR)/tbbosx-dist
 
 source-dance: fetch-source unpack-source
 	echo "We're ready for building now."
@@ -154,7 +154,7 @@ DEST=generic-bundle
 NAME=TorBrowser
 
 ## Where shall we put the finished files for distribution?
-DISTDIR=tbbosx-alpha-dist
+DISTDIR=tbbosx-dist
 
 ## Version and name of the compressed bundle (also used for source)
 VERSION=$(RELEASE_VER)-$(BUILD_NUM)-dev
