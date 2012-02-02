@@ -1,0 +1,35 @@
+From e966e8ee358c4dff1aa25a71af72c215ec3f2d4a Mon Sep 17 00:00:00 2001
+From: Erinn Clark <erinn@torproject.org>
+Date: Fri, 6 Jan 2012 16:06:55 +0100
+Subject: [PATCH] Make it possible to build OpenSSL on OS X with a 10.5 SDK
+
+---
+ Configure |    5 ++++-
+ 1 files changed, 4 insertions(+), 1 deletions(-)
+
+diff --git a/Configure b/Configure
+index 7941c93..d70b6eb 100755
+--- a/Configure
++++ b/Configure
+@@ -816,7 +816,7 @@ PROCESS_ARGS:
+ 			}
+ 		elsif (/^[-+]/)
+ 			{
+-			if (/^-[lL](.*)$/ or /^-Wl,/)
++			if (/^-[lL](.*)$/ or /^-Wl,/ or /^-isysroot/)
+ 				{
+ 				$libs.=$_." ";
+ 				}
+@@ -867,6 +867,9 @@ PROCESS_ARGS:
+ 			eval "\$table{\$1} = \"$2\""; # allow $xxx constructs in the string
+ 			$target=$1;
+ 			}
++		elsif (/^\//) {
++		    $libs .= $_." ";
++		}
+ 		else
+ 			{
+ 			die "target already defined - $target (offending arg: $_)\n" if ($target ne "");
+-- 
+1.7.7.4
+

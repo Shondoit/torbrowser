@@ -59,6 +59,9 @@ build-zlib:
 OPENSSL_DIR=$(FETCH_DIR)/openssl-$(OPENSSL_VER)
 OPENSSL_OPTS=-no-rc5 -no-md2 -no-man shared zlib -mmacosx-version-min=10.5 -isysroot /Developer/SDKs/MacOSX10.5.sdk -Wl,-syslibroot,/Developer/SDKs/MacOSX10.5.sdk --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -L$(BUILT_DIR)/lib -I$(BUILT_DIR)/include
 build-openssl:
+	cp ../src/current-patches/openssl/*patch $(OPENSSL_DIR)
+	cp patch-any-src.sh $(OPENSSL_DIR)
+	cd $(OPENSSL_DIR) && ./patch-any-src.sh
 ifeq (x86_64,$(ARCH_TYPE))
 	cd $(OPENSSL_DIR) && ./Configure darwin64-x86_64-cc $(OPENSSL_OPTS)
 else
