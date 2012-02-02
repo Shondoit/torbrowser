@@ -1,7 +1,7 @@
-From 658f53653a37767802d9cd992b8dd58d7503ea1b Mon Sep 17 00:00:00 2001
-From: Mike Perry <mikeperry-git@fscked.org>
-Date: Mon, 20 Jun 2011 17:07:41 -0700
-Subject: [PATCH 01/12] Block Components.interfaces,lookupMethod from content
+From 67b86f0c22070cbf86112174ae1e2ce6d6a36dee Mon Sep 17 00:00:00 2001
+From: Mike Perry <mikeperry-git@torproject.org>
+Date: Wed, 1 Feb 2012 15:40:40 -0800
+Subject: [PATCH 01/13] Block Components.interfaces,lookupMethod from content
 
 This patch removes the ability of content script to access
 Components.interfaces.* as well as call or access Components.lookupMethod.
@@ -16,14 +16,14 @@ https://bugzilla.mozilla.org/show_bug.cgi?id=429070
 https://trac.torproject.org/projects/tor/ticket/2873
 https://trac.torproject.org/projects/tor/ticket/2874
 ---
- js/src/xpconnect/src/xpccomponents.cpp |    8 ++++++--
+ js/xpconnect/src/XPCComponents.cpp |    8 ++++++--
  1 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/js/src/xpconnect/src/xpccomponents.cpp b/js/src/xpconnect/src/xpccomponents.cpp
-index ca38e47..34175a5 100644
---- a/js/src/xpconnect/src/xpccomponents.cpp
-+++ b/js/src/xpconnect/src/xpccomponents.cpp
-@@ -4431,7 +4431,9 @@ nsXPCComponents::CanCreateWrapper(const nsIID * iid, char **_retval)
+diff --git a/js/xpconnect/src/XPCComponents.cpp b/js/xpconnect/src/XPCComponents.cpp
+index 3bcbf91..d5c020a 100644
+--- a/js/xpconnect/src/XPCComponents.cpp
++++ b/js/xpconnect/src/XPCComponents.cpp
+@@ -4456,7 +4456,9 @@ nsXPCComponents::CanCreateWrapper(const nsIID * iid, char **_retval)
  NS_IMETHODIMP
  nsXPCComponents::CanCallMethod(const nsIID * iid, const PRUnichar *methodName, char **_retval)
  {
@@ -34,7 +34,7 @@ index ca38e47..34175a5 100644
      *_retval = xpc_CheckAccessList(methodName, allowed);
      return NS_OK;
  }
-@@ -4440,7 +4442,9 @@ nsXPCComponents::CanCallMethod(const nsIID * iid, const PRUnichar *methodName, c
+@@ -4465,7 +4467,9 @@ nsXPCComponents::CanCallMethod(const nsIID * iid, const PRUnichar *methodName, c
  NS_IMETHODIMP
  nsXPCComponents::CanGetProperty(const nsIID * iid, const PRUnichar *propertyName, char **_retval)
  {
@@ -46,5 +46,5 @@ index ca38e47..34175a5 100644
      return NS_OK;
  }
 -- 
-1.7.3.4
+1.7.5.4
 

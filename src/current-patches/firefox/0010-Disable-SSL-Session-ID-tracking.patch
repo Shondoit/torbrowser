@@ -1,7 +1,7 @@
-From 5e8424690ef1d9f5c38dbf87811f82fa92e29eb5 Mon Sep 17 00:00:00 2001
+From 8bfcf12fe59b7b9940830446bf331729f5c86b3d Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@fscked.org>
 Date: Wed, 7 Dec 2011 19:36:38 -0800
-Subject: [PATCH 10/12] Disable SSL Session ID tracking.
+Subject: [PATCH 10/13] Disable SSL Session ID tracking.
 
 We can't easily bind SSL Session ID tracking to url bar domain,
 so we have to disable them to satisfy
@@ -24,5 +24,5 @@ index 2e6f9ed..c8a993b 100644
      PR_FALSE,	/* v2CompatibleHello  */ /* now defaults to off in NSS 3.13 */
      PR_TRUE,	/* detectRollBack     */
 -- 
-1.7.3.4
+1.7.5.4
 

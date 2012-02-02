@@ -1,7 +1,7 @@
-From b390a17593f20c837facf0b9da1ee4696697f1b6 Mon Sep 17 00:00:00 2001
-From: Mike Perry <mikeperry-git@fscked.org>
-Date: Mon, 20 Jun 2011 17:07:56 -0700
-Subject: [PATCH 02/12] Make Permissions Manager memory-only
+From 193c50c03aa61eef5415d0476467c22941022a11 Mon Sep 17 00:00:00 2001
+From: Mike Perry <mikeperry-git@torproject.org>
+Date: Wed, 1 Feb 2012 15:45:16 -0800
+Subject: [PATCH 02/13] Make Permissions Manager memory-only
 
 This patch exposes a pref 'permissions.memory_only' that properly isolates the
 permissions manager to memory, which is responsible for all user specified
@@ -16,7 +16,7 @@ https://trac.torproject.org/projects/tor/ticket/2950
  1 files changed, 31 insertions(+), 3 deletions(-)
 
 diff --git a/extensions/cookie/nsPermissionManager.cpp b/extensions/cookie/nsPermissionManager.cpp
-index d72b794..b89887e 100644
+index 67eb216..12cc7cf 100644
 --- a/extensions/cookie/nsPermissionManager.cpp
 +++ b/extensions/cookie/nsPermissionManager.cpp
 @@ -58,6 +58,10 @@
@@ -31,7 +31,7 @@ index d72b794..b89887e 100644
  static nsPermissionManager *gPermissionManager = nsnull;
  
 @@ -203,6 +207,11 @@ nsPermissionManager::Init()
-     mObserverService->AddObserver(this, "profile-do-change", PR_TRUE);
+     mObserverService->AddObserver(this, "profile-do-change", true);
    }
  
 +  nsCOMPtr<nsIPrefBranch2> pbi = do_GetService(NS_PREFSERVICE_CONTRACTID);
@@ -42,11 +42,11 @@ index d72b794..b89887e 100644
    if (IsChildProcess()) {
      // Get the permissions from the parent process
      InfallibleTArray<IPC::Permission> perms;
-@@ -251,8 +260,18 @@ nsPermissionManager::InitDB(PRBool aRemoveFile)
+@@ -251,8 +260,18 @@ nsPermissionManager::InitDB(bool aRemoveFile)
    if (!storage)
      return NS_ERROR_UNEXPECTED;
  
-+  PRBool memory_db = false;
++  bool memory_db = false;
 +  nsCOMPtr<nsIPrefBranch> prefs = do_GetService(NS_PREFSERVICE_CONTRACTID);
 +  if (prefs) {
 +    prefs->GetBoolPref("permissions.memory_only", &memory_db); 
@@ -61,9 +61,9 @@ index d72b794..b89887e 100644
 +  }
    NS_ENSURE_SUCCESS(rv, rv);
  
-   PRBool ready;
-@@ -262,7 +281,11 @@ nsPermissionManager::InitDB(PRBool aRemoveFile)
-     rv = permissionsFile->Remove(PR_FALSE);
+   bool ready;
+@@ -262,7 +281,11 @@ nsPermissionManager::InitDB(bool aRemoveFile)
+     rv = permissionsFile->Remove(false);
      NS_ENSURE_SUCCESS(rv, rv);
  
 -    rv = storage->OpenDatabase(permissionsFile, getter_AddRefs(mDBConn));
@@ -90,5 +90,5 @@ index d72b794..b89887e 100644
      // or is going away because the application is shutting down.
      if (!nsCRT::strcmp(someData, NS_LITERAL_STRING("shutdown-cleanse").get())) {
 -- 
-1.7.3.4
+1.7.5.4
 

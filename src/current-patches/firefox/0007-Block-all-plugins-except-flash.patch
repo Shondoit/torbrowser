@@ -1,7 +1,7 @@
-From 2954118c9ab70d2e1c4d983a8f101b3a237461bb Mon Sep 17 00:00:00 2001
-From: Mike Perry <mikeperry-git@fscked.org>
-Date: Wed, 28 Sep 2011 13:24:20 -0700
-Subject: [PATCH 07/12] Block all plugins except flash.
+From 7d6e270e1a05e1fe57d069b9859c9b51904db33e Mon Sep 17 00:00:00 2001
+From: Mike Perry <mikeperry-git@torproject.org>
+Date: Wed, 1 Feb 2012 15:50:15 -0800
+Subject: [PATCH 07/13] Block all plugins except flash.
 
 We cannot use the @mozilla.org/extensions/blocklist;1 service, because we
 actually want to stop plugins from ever entering the browser's process space
@@ -17,11 +17,11 @@ on a better way. Until then, it is delta-darwinism for us.
  2 files changed, 35 insertions(+), 0 deletions(-)
 
 diff --git a/dom/plugins/base/nsPluginHost.cpp b/dom/plugins/base/nsPluginHost.cpp
-index 8578d56..3fbae53 100644
+index 729c9ef..1f4652d 100644
 --- a/dom/plugins/base/nsPluginHost.cpp
 +++ b/dom/plugins/base/nsPluginHost.cpp
-@@ -1964,6 +1964,35 @@ PRBool nsPluginHost::IsDuplicatePlugin(nsPluginTag * aPluginTag)
-   return PR_FALSE;
+@@ -1965,6 +1965,35 @@ bool nsPluginHost::IsDuplicatePlugin(nsPluginTag * aPluginTag)
+   return false;
  }
  
 +PRBool nsPluginHost::GhettoBlacklist(nsIFile *pluginFile)
@@ -56,7 +56,7 @@ index 8578d56..3fbae53 100644
  typedef NS_NPAPIPLUGIN_CALLBACK(char *, NP_GETMIMEDESCRIPTION)(void);
  
  nsresult nsPluginHost::ScanPluginsDirectory(nsIFile *pluginsDir,
-@@ -2085,6 +2114,10 @@ nsresult nsPluginHost::ScanPluginsDirectory(nsIFile *pluginsDir,
+@@ -2086,6 +2115,10 @@ nsresult nsPluginHost::ScanPluginsDirectory(nsIFile *pluginsDir,
        continue;
      }
  
@@ -68,7 +68,7 @@ index 8578d56..3fbae53 100644
      if (!pluginTag) {
        nsPluginFile pluginFile(localfile);
 diff --git a/dom/plugins/base/nsPluginHost.h b/dom/plugins/base/nsPluginHost.h
-index 1cfd59b..7d83c20 100644
+index 39a8891..c262abf 100644
 --- a/dom/plugins/base/nsPluginHost.h
 +++ b/dom/plugins/base/nsPluginHost.h
 @@ -278,6 +278,8 @@ private:
@@ -81,5 +81,5 @@ index 1cfd59b..7d83c20 100644
    // and removes it from the cache.
    void RemoveCachedPluginsInfo(const char *filePath,
 -- 
-1.7.3.4
+1.7.5.4
 
