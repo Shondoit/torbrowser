@@ -21,9 +21,7 @@ src: Source code
   |                 termination behaviour (see included README for
   |                 build instructions)
   |___ current-patches: Patches to other applications currently in
-  |                     testing
-  |___ archived-patches: Patches to other applications which have
-                         either been applied upstream or abandoned 
+                        testing
 
 Status
 ------
