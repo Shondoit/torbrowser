@@ -50,6 +50,10 @@ CF_MIN_VERSION=-isysroot $(SDK_PATH)
 LD_MIN_VERSION=-Wl,-syslibroot,$(SDK_PATH)
 BACKWARDS_COMPAT=$(MIN_VERSION) $(CF_MIN_VERSION) $(LD_MIN_VERSION)
 
+## Build machine specific settings
+# Number of cpu cores used to build in parallel
+NUM_CORES=2
+
 ## Location of directory for source unpacking
 FETCH_DIR=$(PWD)/build-$(ARCH_TYPE)
 ## Location of directory for prefix/destdir/compiles/etc
@@ -64,7 +68,7 @@ ZLIB_OPTS=--prefix=$(BUILT_DIR)
 ZLIB_CFLAGS="-arch $(ARCH_TYPE)"
 build-zlib:
 	cd $(ZLIB_DIR) && CFLAGS=$(ZLIB_CFLAGS) ./configure $(ZLIB_OPTS)
-	cd $(ZLIB_DIR) && make
+	cd $(ZLIB_DIR) && make -j $(NUM_CORES)
 	cd $(ZLIB_DIR) && make install
 
 OPENSSL_DIR=$(FETCH_DIR)/openssl-$(OPENSSL_VER)
@@ -79,6 +83,7 @@ else
 	cd $(OPENSSL_DIR) && ./Configure darwin-i386-cc $(OPENSSL_OPTS)
 endif
 	cd $(OPENSSL_DIR) && make depend
+# Do not use -j for the following make call, random build errors might happen.
 	cd $(OPENSSL_DIR) && make
 	cd $(OPENSSL_DIR) && make install
 
@@ -88,7 +93,7 @@ QT_BUILD_PREFS=-system-zlib -confirm-license -opensource -openssl-linked -no-qt3
 QT_OPTS=$(QT_BUILD_PREFS) -prefix $(BUILT_DIR) -I $(BUILT_DIR)/include -I $(BUILT_DIR)/include/openssl/ -L $(BUILT_DIR)/lib
 build-qt:
 	cd $(QT_DIR) && ./configure $(QT_OPTS)
-	cd $(QT_DIR) && make -j2
+	cd $(QT_DIR) && make -j $(NUM_CORES)
 	cd $(QT_DIR) && make install
 
 VIDALIA_DIR=$(FETCH_DIR)/vidalia-$(VIDALIA_VER)
@@ -98,7 +103,7 @@ build-vidalia:
 	export MACOSX_DEPLOYMENT_TARGET=$(OSX_VERSION)
 	-mkdir $(VIDALIA_DIR)/build
 	cd $(VIDALIA_DIR)/build && cmake $(VIDALIA_OPTS) \
-	&& make && make dist-osx-libraries
+	&& make -j $(NUM_CORES) && make dist-osx-libraries
 	cd $(VIDALIA_DIR)/build && DESTDIR=$(BUILT_DIR) make install
 
 LIBEVENT_DIR=$(FETCH_DIR)/libevent-$(LIBEVENT_VER)
@@ -107,7 +112,7 @@ LIBEVENT_LDFLAGS="-L$(BUILT_DIR)/lib $(LD_MIN_VERSION)"
 LIBEVENT_OPTS=--prefix=$(BUILT_DIR) --enable-static --disable-shared --disable-dependency-tracking $(CC)
 build-libevent:
 	cd $(LIBEVENT_DIR) && CFLAGS=$(LIBEVENT_CFLAGS) LDFLAGS=$(LIBEVENT_LDFLAGS) ./configure $(LIBEVENT_OPTS)
-	cd $(LIBEVENT_DIR) && make -j2
+	cd $(LIBEVENT_DIR) && make -j $(NUM_CORES)
 	cd $(LIBEVENT_DIR) && make install
 
 TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)
@@ -116,7 +121,7 @@ TOR_LDFLAGS="-L$(BUILT_DIR)/lib $(LD_MIN_VERSION)"
 TOR_OPTS=--enable-static-openssl --enable-static-libevent --with-openssl-dir=$(BUILT_DIR)/lib --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR) --disable-dependency-tracking $(CC)
 build-tor:
 	cd $(TOR_DIR) && CFLAGS=$(TOR_CFLAGS) LDFLAGS=$(TOR_LDFLAGS) ./configure $(TOR_OPTS)
-	cd $(TOR_DIR) && make
+	cd $(TOR_DIR) && make -j $(NUM_CORES)
 	cd $(TOR_DIR) && make install
 
 FIREFOX_DIR=$(FETCH_DIR)/mozilla-release
