@@ -97,7 +97,7 @@ LIBEVENT_OPTS=--prefix=$(BUILT_DIR) --enable-static --disable-shared --disable-d
 build-libevent:
 	cd $(LIBEVENT_DIR) && CFLAGS=$(LIBEVENT_CFLAGS) LDFLAGS=$(LIBEVENT_LDFLAGS) ./configure $(LIBEVENT_OPTS)
 	cd $(LIBEVENT_DIR) && make -j2
-	cd $(LIBEVENT_DIR) && sudo make install
+	cd $(LIBEVENT_DIR) && make install
 
 TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)
 TOR_CFLAGS="-O -g -arch $(ARCH_TYPE) -I$(BUILT_DIR)/include -mmacosx-version-min=10.5 -isysroot /Developer/SDKs/MacOSX10.5.sdk"
