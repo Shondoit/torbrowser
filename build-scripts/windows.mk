@@ -71,12 +71,9 @@ source-dance: fetch-source unpack-source
 
 ZLIB_DIR=$(FETCH_DIR)/zlib-$(ZLIB_VER)
 build-zlib:
-	cp ../src/current-patches/zlib/* $(ZLIB_DIR)
-	cp patch-any-src.sh $(ZLIB_DIR)
-	cd $(ZLIB_DIR) && ./patch-any-src.sh
 	cd $(ZLIB_DIR) && sed -i -e "s%prefix = /usr/local%prefix = ${BUILT_DIR}%" win32/Makefile.gcc
-	cd $(ZLIB_DIR) && make -f win32/Makefile.gcc
-	cd $(ZLIB_DIR) && make -f win32/Makefile.gcc install
+	cd $(ZLIB_DIR) && LDFLAGS="-Wl,--nxcompat -Wl,--dynamicbase" make -f win32/Makefile.gcc
+	cd $(ZLIB_DIR) && BINARY_PATH="$(BUILT_DIR)/bin" INCLUDE_PATH="$(BUILT_DIR)/include" LIBRARY_PATH="$(BUILT_DIR)/lib" make -f win32/Makefile.gcc install
 
 OPENSSL_DIR=$(FETCH_DIR)/openssl-$(OPENSSL_VER)
 OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 shared zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -L$(BUILT_DIR)/lib -Wl,--nxcompat -Wl,--dynamicbase -I$(BUILT_DIR)/include
