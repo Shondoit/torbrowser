@@ -98,7 +98,7 @@ build-qt: build-zlib build-openssl $(QT_DIR)
 	cd $(QT_DIR) && make install
 	touch build-qt
 
-VIDALIA_OPTS=-DCMAKE_OSX_ARCHITECTURES=$(ARCH_TYPE) -DQT_QMAKE_EXECUTABLE=/usr/bin/qmake \
+VIDALIA_OPTS=-DCMAKE_OSX_ARCHITECTURES=$(ARCH_TYPE) -DQT_QMAKE_EXECUTABLE=$(BUILT_DIR)/bin/qmake \
 	-DCMAKE_BUILD_TYPE=debug ..
 build-vidalia: build-openssl build-qt $(VIDALIA_DIR)
 	export MACOSX_DEPLOYMENT_TARGET=$(OSX_VERSION)
