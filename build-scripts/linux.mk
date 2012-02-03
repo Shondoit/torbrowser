@@ -281,7 +281,6 @@ install-binaries:
 	cp -d $(QT)/libQtGui.so* $(LIBSDIR)
 	cp -d $(QT)/libQtNetwork.so* $(LIBSDIR)
 	cp -d $(QT)/libQtXml.so* $(LIBSDIR)
-	rm $(LIBSDIR)/libQt*.so*.debug
 	# zlib
 	cp -d $(ZLIB)/libz.so $(ZLIB)/libz.so.1 $(ZLIB)/libz.so.1.2.5 $(LIBSDIR)/libz
 	# Libevent
