@@ -1,8 +1,4 @@
-CPU=`sysctl -a hw 2>&1 | grep 'hw.availcpu' | sed 's|hw.availcpu = *||'`
-let J=$CPU*4
-
 # Options for client.mk.
-mk_add_options MOZ_MAKE_FLAGS=-j${J}
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-@CONFIG_GUESS@
 mk_add_options AUTOCONF=autoconf213
 
