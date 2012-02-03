@@ -404,7 +404,7 @@ compressed-bundle_%:
 
 bundle-localized_%.stamp:
 	make -f linux.mk copy-files_$* install-extensions install-lang-extensions patch-vidalia-language patch-firefox-language \
-	patch-pidgin-language update-extension-pref write-tbb-version
+	patch-pidgin-language write-tbb-version
 	touch bundle-localized_$*.stamp
 
 bundle-localized: bundle-localized_$(LANGCODE).stamp
@@ -479,11 +479,6 @@ patch-firefox-language:
 	cp $(CONFIG_SRC)/no-polipo-4.0.js $(BUNDLE)/Data/profile/prefs.js
 	./patch-firefox-language.sh $(BUNDLE)/App/Firefox/defaults/profile/prefs.js $(LANGCODE) -e
 	./patch-firefox-language.sh $(BUNDLE)/Data/profile/prefs.js $(LANGCODE) -e
-
-## Fix prefs.js since extensions.checkCompatibility, false doesn't work
-update-extension-pref:
-	sed -i -e "s/SHPONKA/$(LANGCODE)/g" $(BUNDLE)/Data/profile/prefs.js
-	sed -i -e "s/SHPONKA/$(LANGCODE)/g" $(BUNDLE)/App/Firefox/defaults/profile/prefs.js
 
 print-version:
 	@echo $(RELEASE_VER)-$(BUILD_NUM)

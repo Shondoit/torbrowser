@@ -470,8 +470,6 @@ patch-firefox-language:
 	## Patch Firefox prefs.js
 	./patch-firefox-language.sh $(BUNDLE)/FirefoxPortable/App/DefaultData/profile/prefs.js $(LANGCODE)
 	./patch-firefox-language.sh $(BUNDLE)/FirefoxPortable/Data/profile/prefs.js $(LANGCODE)
-	sed -i -e "s/SHPONKA/$(LANGCODE)/g" $(BUNDLE)/FirefoxPortable/Data/profile/prefs.js
-	sed -i -e "s/SHPONKA/$(LANGCODE)/g" $(BUNDLE)/FirefoxPortable/App/DefaultData/profile/prefs.js
 
 ###
 ### Utilities

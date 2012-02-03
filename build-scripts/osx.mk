@@ -353,7 +353,7 @@ bundle_%:
 compressed-bundle_%:
 	LANGCODE=$* make -f osx.mk compressed-bundle-localized
 bundle-localized_%.stamp:
-	make -f osx.mk copy-files_$* install-extensions install-httpseverywhere install-noscript install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language update-extension-pref write-tbb-version final
+	make -f osx.mk copy-files_$* install-extensions install-httpseverywhere install-noscript install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language write-tbb-version final
 	touch bundle-localized_$*.stamp
 
 bundle-localized: bundle-localized_$(LANGCODE).stamp
@@ -435,11 +435,7 @@ patch-firefox-language:
 	cp $(CONFIG_SRC)/no-polipo-4.0.js $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
 	cp $(CONFIG_SRC)/bookmarks.html $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile
 	./patch-firefox-language.sh $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js $(LANGCODE) -e
-
-## Fix prefs.js since extensions.checkCompatibility, false doesn't work
-update-extension-pref:
-	sed -i -e "s/SHPONKA/$(LANGCODE)/g" $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
-	sed -i -e "s/SHPONKA/$(LANGCODE)/g" $(BUNDLE)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/prefs.js
+	./patch-firefox-language.sh $(BUNDLE)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/prefs.js $(LANGCODE) -e
 
 print-version:
 	@echo $(RELEASE_VER)-$(BUILD_NUM)
