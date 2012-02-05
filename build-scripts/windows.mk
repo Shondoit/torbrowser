@@ -84,7 +84,7 @@ build-openssl: build-zlib $(OPENSSL_DIR)
 	cd $(OPENSSL_DIR) && ./config $(OPENSSL_OPTS)
 	cd $(OPENSSL_DIR) && make depend
 	cd $(OPENSSL_DIR) && make
-	cd $(OPENSSL_DIR) && make install
+	cd $(OPENSSL_DIR) && make install_sw
 	touch build-openssl
 
 VIDALIA_OPTS=-DCMAKE_EXE_LINKER_FLAGS="-static-libstdc++ -Wl,--nxcompat -Wl,--dynamicbase" -DWIN2K=1 -DQT_MAKE_EXECUTABLE=/c/Qt/$(QT_VER)/bin/qmake -DCMAKE_BUILD_TYPE=minsizerel -DMINGW_BINARY_DIR=$(MING) -DOPENSSL_BINARY_DIR=$(OPENSSL) -DWIX_BINARY_DIR=$(WIX_LIB)

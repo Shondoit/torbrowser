@@ -85,7 +85,7 @@ endif
 	cd $(OPENSSL_DIR) && make depend
 # Do not use -j for the following make call, random build errors might happen.
 	cd $(OPENSSL_DIR) && make
-	cd $(OPENSSL_DIR) && make install
+	cd $(OPENSSL_DIR) && make install_sw
 	touch build-openssl
 
 
