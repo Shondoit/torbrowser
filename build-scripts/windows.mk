@@ -48,7 +48,7 @@ PIDGIN=$(FETCH_DIR)/PidginPortable-$(PIDGIN_VER)
 
 ## Location of utility applications
 PWD:=$(shell pwd)
-PYTHON=/c/Python26/python.exe
+PYTHON=/c/Python27/python.exe
 SEVENZIP="/c/Program Files/7-Zip/7z.exe"
 PYGET=$(PYTHON) $(PWD)/pyget.py
 WGET=wget
@@ -56,9 +56,9 @@ VIRUSSCAN=$(PYTHON) $(PWD)/virus-scan.py
 WINRAR="/c/Program Files (x86)/WinRAR/WinRAR.exe"
 CC=gcc
 
-MSVC_VER=9
-FIREFOX_DIR=/c/build/mozilla-build/mozilla-release
-MOZ_BUILD=/c/build/mozilla-build
+MSVC_VER=10
+FIREFOX_DIR=/c/mozilla-build/mozilla-release
+MOZ_BUILD=/c/mozilla-build
 
 ## Location of directory for source unpacking
 FETCH_DIR=$(PWD)/build-alpha-windows
