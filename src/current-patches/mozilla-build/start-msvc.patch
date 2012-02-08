@@ -1,6 +1,6 @@
---- start-msvcx.bat.org	2010-08-17 23:01:48 +0200
-+++ start-msvcx.bat	2011-11-04 15:28:02 +0100
-@@ -7,7 +7,7 @@
+--- start-msvc10.bat.orig	2011-11-23 12:58:42 +0100
++++ start-msvc10.bat	2012-02-08 11:03:39 +0100
+@@ -8,7 +8,7 @@
  echo "Mozilla tools directory: %MOZBUILDDIR%"
  
  REM Get MSVC paths
@@ -9,13 +9,12 @@
  
  REM Use the "new" moztools-static
  set MOZ_TOOLS=%MOZBUILDDIR%moztools
-@@ -84,4 +84,8 @@
-     )
- )
+@@ -85,4 +85,8 @@
  
--start /d "%USERPROFILE%" "" "%MOZILLABUILD%"\msys\bin\bash --login -i
+ cd "%USERPROFILE%"
+ 
 +if "%1"=="" (
-+	start /d "%USERPROFILE%" "" "%MOZILLABUILD%"\msys\bin\bash --login -i"
+ "%MOZILLABUILD%\msys\bin\bash" --login -i
 +) else (
-+	cd "%USERPROFILE%" && "%MOZILLABUILD%"\msys\bin\bash --login -i -c "cd "%1" && make -f client.mk"
++"%MOZILLABUILD%\msys\bin\bash" --login -i -c "cd "%1" && make -f client.mk"
 +)
