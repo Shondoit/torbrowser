@@ -15,6 +15,7 @@ TOR_VER=0.2.2.35
 TORBUTTON_VER=1.4.5.1
 VIDALIA_VER=0.2.17
 ZLIB_VER=1.2.6
+MOZBUILD_VER=1.5.1
 
 ## Extension IDs
 FF_VENDOR_ID:=\{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
@@ -29,9 +30,11 @@ LIBEVENT_PACKAGE=libevent-$(LIBEVENT_VER).tar.gz
 TOR_PACKAGE=tor-$(TOR_VER).tar.gz
 PIDGIN_PACKAGE=pidgin-$(PIDGIN_VER).tar.bz2
 FIREFOX_PACKAGE=firefox-$(FIREFOX_VER).source.tar.bz2
+MOZBUILD_PACKAGE=MozillaBuildSetup-$(MOZBUILD_VER).exe
 TORBUTTON_PACKAGE=torbutton-$(TORBUTTON_VER).xpi
 NOSCRIPT_PACKAGE=addon-722-latest.xpi
 HTTPSEVERYWHERE_PACKAGE=https-everywhere-$(HTTPSEVERYWHERE_VER).xpi
+
 
 ## Location of files for download
 ZLIB_URL=http://www.zlib.net/$(ZLIB_PACKAGE)
@@ -43,6 +46,7 @@ LIBEVENT_URL=https://github.com/downloads/libevent/libevent/$(LIBEVENT_PACKAGE)
 TOR_URL=http://www.torproject.org/dist/$(TOR_PACKAGE)
 PIDGIN_URL=http://sourceforge.net/projects/pidgin/files/Pidgin/$(PIDGIN_PACKAGE)
 FIREFOX_URL=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/$(FIREFOX_VER)/source/$(FIREFOX_PACKAGE)
+MOZBUILD_URL=https://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/$(MOZBUILD_PACKAGE)
 TORBUTTON_URL=https://www.torproject.org/dist/torbutton/$(TORBUTTON_PACKAGE)
 NOSCRIPT_URL=https://addons.mozilla.org/firefox/downloads/latest/722/$(NOSCRIPT_PACKAGE)
 HTTPSEVERYWHERE_URL=https://eff.org/files/$(HTTPSEVERYWHERE_PACKAGE)
@@ -59,6 +63,7 @@ libevent=LIBEVENT
 tor=TOR
 firefox=FIREFOX
 pidgin=PIDGIN
+mozbuild=MOZBUILD
 
 # The locations of the unpacked tarballs
 ZLIB_DIR=$(FETCH_DIR)/zlib-$(ZLIB_VER)
@@ -69,6 +74,7 @@ VIDALIA_DIR=$(FETCH_DIR)/vidalia-$(VIDALIA_VER)
 LIBEVENT_DIR=$(FETCH_DIR)/libevent-$(LIBEVENT_VER)
 TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)
 FIREFOX_DIR=$(FETCH_DIR)/firefox-$(FIREFOX_VER)
+MOZBUILD_DIR=$(FETCH_DIR)/mozilla-build
 
 
 fetch-source: $(FETCH_DIR)/$(ZLIB_PACKAGE) $(FETCH_DIR)/$(LIBPNG_PACKAGE) $(FETCH_DIR)/$(QT_PACKAGE) $(FETCH_DIR)/$(OPENSSL_PACKAGE) $(FETCH_DIR)/$(VIDALIA_PACKAGE) $(FETCH_DIR)/$(LIBEVENT_PACKAGE) $(FETCH_DIR)/$(TOR_PACKAGE) $(FETCH_DIR)/$(FIREFOX_PACKAGE) | $(FETCH_DIR) ;
@@ -104,6 +110,9 @@ $(FETCH_DIR)/$(TOR_PACKAGE): | $(FETCH_DIR)
 $(FETCH_DIR)/$(FIREFOX_PACKAGE): | $(FETCH_DIR)
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(FIREFOX_URL)
 
+$(FETCH_DIR)/$(MOZBUILD_PACKAGE): | $(FETCH_DIR)
+	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(MOZBUILD_URL)
+
 torbutton.xpi:
 	$(WGET) --no-check-certificate -O $@ $(TORBUTTON_URL)
 
@@ -122,6 +131,7 @@ langpack_en-US.xpi:
 	touch $@
 
 unpack-source: $(ZLIB_DIR) $(OPENSSL_DIR) $(LIBPNG_DIR $(QT_DIR) $(VIDALIA_DIR) $(LIBEVENT_DIR) $(TOR_DIR) $(FIREFOX_DIR)
+
 
 $(ZLIB_DIR): $(FETCH_DIR)/$(ZLIB_PACKAGE)
 	rm -rf $(ZLIB_DIR)
@@ -160,6 +170,13 @@ $(FIREFOX_DIR): $(FETCH_DIR)/$(FIREFOX_PACKAGE) ../src/current-patches/firefox/*
 	cp ../src/current-patches/firefox/* $(FIREFOX_DIR)
 	cp patch-any-src.sh $(FIREFOX_DIR)
 	cd $(FIREFOX_DIR) && ./patch-any-src.sh
+
+$(MOZBUILD_DIR): $(FETCH_DIR)/$(MOZBUILD_PACKAGE)
+	rm -rf $(MOZBUILD_DIR) /c/mozilla-build
+# We could try passing a /D argument here, but then we'd need to convert
+# mingw paths into windows paths. We'll just go with the default here.
+	cd $(FETCH_DIR) && cmd.exe /c "$(MOZBUILD_PACKAGE) /S"
+	mv /c/mozilla-build $(MOZBUILD_DIR)
 
 clean-fetch-%:
 	rm -rf $(FETCH_DIR)/$($($*)_PACKAGE)

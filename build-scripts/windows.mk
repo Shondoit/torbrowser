@@ -55,7 +55,6 @@ WINRAR="/c/Program Files (x86)/WinRAR/WinRAR.exe"
 CC=gcc
 
 MSVC_VER=9
-MOZ_BUILD=/c/build/mozilla-build
 
 ## Build machine specific settings
 # Number of cpu cores used to build in parallel
@@ -114,11 +113,12 @@ build-tor: build-zlib build-openssl build-libevent $(TOR_DIR)
 	cd $(TOR_DIR) && make install
 	touch build-tor
 
-patch-mozbuild:
-	cp ../src/current-patches/mozilla-build/start-msvc.patch $(MOZ_BUILD)
-	cp ../src/current-patches/mozilla-build/guess-msvc-x64.bat $(MOZ_BUILD)
-	cp patch-mozilla-build.sh $(MOZ_BUILD)
-	cd $(MOZ_BUILD) && ./patch-mozilla-build.sh $(MSVC_VER)
+patch-mozbuild: $(MOZBUILD_DIR)
+	cp ../src/current-patches/mozilla-build/start-msvc.patch $(MOZBUILD_DIR)
+	cp ../src/current-patches/mozilla-build/guess-msvc-x64.bat $(MOZBUILD_DIR)
+	cp patch-mozilla-build.sh $(MOZBUILD_DIR)
+	cd $(MOZBUILD_DIR) && ./patch-mozilla-build.sh $(MSVC_VER)
+	touch patch-mozbuild
 
 build-firefox: $(FIREFOX_DIR) config/dot_mozconfig $(MOZBUILD) $(MOZ_BUILD)/start-msvc$(MSVC_VER).bat
 	cp config/dot_mozconfig $(FIREFOX_DIR)/mozconfig
