@@ -16,6 +16,7 @@ TORBUTTON_VER=1.4.5.1
 VIDALIA_VER=0.2.17
 ZLIB_VER=1.2.6
 MOZBUILD_VER=1.5.1
+PYMAKE_VER=87d436cd8974
 
 ## Extension IDs
 FF_VENDOR_ID:=\{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
@@ -31,6 +32,7 @@ TOR_PACKAGE=tor-$(TOR_VER).tar.gz
 PIDGIN_PACKAGE=pidgin-$(PIDGIN_VER).tar.bz2
 FIREFOX_PACKAGE=firefox-$(FIREFOX_VER).source.tar.bz2
 MOZBUILD_PACKAGE=MozillaBuildSetup-$(MOZBUILD_VER).exe
+PYMAKE_PACKAGE=$(PYMAKE_VER).tar.bz2
 TORBUTTON_PACKAGE=torbutton-$(TORBUTTON_VER).xpi
 NOSCRIPT_PACKAGE=addon-722-latest.xpi
 HTTPSEVERYWHERE_PACKAGE=https-everywhere-$(HTTPSEVERYWHERE_VER).xpi
@@ -47,6 +49,7 @@ TOR_URL=http://www.torproject.org/dist/$(TOR_PACKAGE)
 PIDGIN_URL=http://sourceforge.net/projects/pidgin/files/Pidgin/$(PIDGIN_PACKAGE)
 FIREFOX_URL=http://releases.mozilla.org/pub/mozilla.org/firefox/releases/$(FIREFOX_VER)/source/$(FIREFOX_PACKAGE)
 MOZBUILD_URL=https://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/$(MOZBUILD_PACKAGE)
+PYMAKE_URL=https://hg.mozilla.org/users/bsmedberg_mozilla.com/pymake/archive/$(PYMAKE_PACKAGE)
 TORBUTTON_URL=https://www.torproject.org/dist/torbutton/$(TORBUTTON_PACKAGE)
 NOSCRIPT_URL=https://addons.mozilla.org/firefox/downloads/latest/722/$(NOSCRIPT_PACKAGE)
 HTTPSEVERYWHERE_URL=https://eff.org/files/$(HTTPSEVERYWHERE_PACKAGE)
@@ -64,6 +67,7 @@ tor=TOR
 firefox=FIREFOX
 pidgin=PIDGIN
 mozbuild=MOZBUILD
+pymake=PYMAKE
 
 # The locations of the unpacked tarballs
 ZLIB_DIR=$(FETCH_DIR)/zlib-$(ZLIB_VER)
@@ -75,6 +79,7 @@ LIBEVENT_DIR=$(FETCH_DIR)/libevent-$(LIBEVENT_VER)
 TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)
 FIREFOX_DIR=$(FETCH_DIR)/firefox-$(FIREFOX_VER)
 MOZBUILD_DIR=$(FETCH_DIR)/mozilla-build
+PYMAKE_DIR=$(FETCH_DIR)/pymake-$(PYMAKE_VER)
 
 
 fetch-source: $(FETCH_DIR)/$(ZLIB_PACKAGE) $(FETCH_DIR)/$(LIBPNG_PACKAGE) $(FETCH_DIR)/$(QT_PACKAGE) $(FETCH_DIR)/$(OPENSSL_PACKAGE) $(FETCH_DIR)/$(VIDALIA_PACKAGE) $(FETCH_DIR)/$(LIBEVENT_PACKAGE) $(FETCH_DIR)/$(TOR_PACKAGE) $(FETCH_DIR)/$(FIREFOX_PACKAGE) | $(FETCH_DIR) ;
@@ -112,6 +117,9 @@ $(FETCH_DIR)/$(FIREFOX_PACKAGE): | $(FETCH_DIR)
 
 $(FETCH_DIR)/$(MOZBUILD_PACKAGE): | $(FETCH_DIR)
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(MOZBUILD_URL)
+
+$(FETCH_DIR)/$(PYMAKE_PACKAGE): | $(FETCH_DIR)
+	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(PYMAKE_URL)
 
 torbutton.xpi:
 	$(WGET) --no-check-certificate -O $@ $(TORBUTTON_URL)
@@ -182,6 +190,10 @@ $(MOZBUILD_DIR): $(FETCH_DIR)/$(MOZBUILD_PACKAGE) ../src/current-patches/mozilla
 	cp ../src/current-patches/mozilla-build/guess-msvc-x64.bat $(MOZBUILD_DIR)
 	cp patch-mozilla-build.sh $(MOZBUILD_DIR)
 	cd $(MOZBUILD_DIR) && ./patch-mozilla-build.sh $(MSVC_VER)
+
+$(PYMAKE_DIR): $(FETCH_DIR)/$(PYMAKE_PACKAGE)
+	rm -rf $(PYMAKE_DIR)
+	cd $(FETCH_DIR) && tar -xmf $(PYMAKE_PACKAGE)
 
 
 clean-fetch-%:

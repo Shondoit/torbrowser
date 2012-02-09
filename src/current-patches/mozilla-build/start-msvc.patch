@@ -17,5 +17,5 @@
 +if "%1"=="" (
 +	start /d "%USERPROFILE%" "" "%MOZILLABUILD%"\msys\bin\bash --login -i"
 +) else (
-+	cd "%USERPROFILE%" && "%MOZILLABUILD%"\msys\bin\bash --login -i -c "cd "%1" && make -f client.mk"
++	cd "%USERPROFILE%" && "%MOZILLABUILD%"\msys\bin\bash --login -i -c "cd "%1" && "%2" "%3" -f client.mk"
 +)

@@ -47,6 +47,7 @@ PIDGIN=$(FETCH_DIR)/PidginPortable-$(PIDGIN_VER)
 ## Location of utility applications
 PWD:=$(shell pwd)
 PYTHON=$(MOZBUILD_DIR)/python/python.exe
+PYMAKE=$(PYMAKE_DIR)/make.py
 SEVENZIP="/c/Program Files/7-Zip/7z.exe"
 PYGET=$(PYTHON) $(PWD)/pyget.py
 WGET=wget
@@ -113,9 +114,9 @@ build-tor: build-zlib build-openssl build-libevent $(TOR_DIR)
 	cd $(TOR_DIR) && make install
 	touch build-tor
 
-build-firefox: $(FIREFOX_DIR) config/dot_mozconfig $(MOZBUILD_DIR) $(MOZBUILD_DIR)/start-msvc$(MSVC_VER).bat
+build-firefox: $(FIREFOX_DIR) config/dot_mozconfig $(MOZBUILD_DIR) $(MOZBUILD_DIR)/start-msvc$(MSVC_VER).bat | $(PYTHON) $(PYMAKE_DIR)
 	cp config/dot_mozconfig $(FIREFOX_DIR)/mozconfig
-	cd $(MOZBUILD_DIR) && cmd.exe /c "start-msvc$(MSVC_VER).bat $(FIREFOX_DIR)"
+	cd $(MOZBUILD_DIR) && cmd.exe /c "start-msvc$(MSVC_VER).bat $(FIREFOX_DIR) $(PYTHON) $(PYMAKE)"
 	touch build-firefox
 
 copy-firefox:
