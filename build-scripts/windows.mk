@@ -46,7 +46,7 @@ PIDGIN=$(FETCH_DIR)/PidginPortable-$(PIDGIN_VER)
 
 ## Location of utility applications
 PWD:=$(shell pwd)
-PYTHON=/c/Python26/python.exe
+PYTHON=$(MOZBUILD_DIR)/python/python.exe
 SEVENZIP="/c/Program Files/7-Zip/7z.exe"
 PYGET=$(PYTHON) $(PWD)/pyget.py
 WGET=wget
@@ -245,7 +245,7 @@ reallyclean: clean
 ## Scan .exe files against VirusTotal to check for false positives
 ##
 
-virus-scan:
+virus-scan: | $(PYTHON)
 	$(VIRUSSCAN) $(VIDALIA)/build/src/vidalia/vidalia.exe
 	$(VIRUSSCAN) $(TOR)/src/or/tor.exe 
 	$(VIRUSSCAN) $(TOR)/src/tools/tor-resolve.exe
@@ -448,3 +448,5 @@ SRCDEST=/tmp
 SRCDESTPATH=$(SRCDEST)/$(SRCNAME)
 srcdist:
 	cd .. && git archive --format=tar --prefix=tor-browser-$(VERSION)-src/ torbrowser-$(VERSION) | gzip -9 > $(PWD)/tor-browser-$(VERSION)-src.tar.gz
+
+$(PYTHON): | $(MOZBUILD_DIR) ;
