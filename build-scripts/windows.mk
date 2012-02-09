@@ -113,16 +113,9 @@ build-tor: build-zlib build-openssl build-libevent $(TOR_DIR)
 	cd $(TOR_DIR) && make install
 	touch build-tor
 
-patch-mozbuild: $(MOZBUILD_DIR)
-	cp ../src/current-patches/mozilla-build/start-msvc.patch $(MOZBUILD_DIR)
-	cp ../src/current-patches/mozilla-build/guess-msvc-x64.bat $(MOZBUILD_DIR)
-	cp patch-mozilla-build.sh $(MOZBUILD_DIR)
-	cd $(MOZBUILD_DIR) && ./patch-mozilla-build.sh $(MSVC_VER)
-	touch patch-mozbuild
-
-build-firefox: $(FIREFOX_DIR) config/dot_mozconfig $(MOZBUILD) $(MOZ_BUILD)/start-msvc$(MSVC_VER).bat
+build-firefox: $(FIREFOX_DIR) config/dot_mozconfig $(MOZBUILD_DIR) $(MOZBUILD_DIR)/start-msvc$(MSVC_VER).bat
 	cp config/dot_mozconfig $(FIREFOX_DIR)/mozconfig
-	cd $(MOZ_BUILD) && cmd.exe /c "start-msvc$(MSVC_VER).bat $(FIREFOX_DIR)"
+	cd $(MOZBUILD_DIR) && cmd.exe /c "start-msvc$(MSVC_VER).bat $(FIREFOX_DIR)"
 	touch build-firefox
 
 copy-firefox:
