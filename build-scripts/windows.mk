@@ -49,7 +49,6 @@ PWD:=$(shell pwd)
 PYTHON=$(MOZBUILD_DIR)/python/python.exe
 PYMAKE=$(PYMAKE_DIR)/make.py
 SEVENZIP="/c/Program Files/7-Zip/7z.exe"
-PYGET=$(PYTHON) $(PWD)/pyget.py
 WGET=wget
 VIRUSSCAN=$(PYTHON) $(PWD)/virus-scan.py
 WINRAR="/c/Program Files (x86)/WinRAR/WinRAR.exe"

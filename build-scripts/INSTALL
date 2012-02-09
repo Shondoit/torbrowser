@@ -94,22 +94,6 @@ The suggested version is "7-Zip 4.57":
 
     http://downloads.sourceforge.net/sevenzip/7z457.exe
 
-Installing Python
-=================
-
-Either Python or wget is required to download Firefox extensions. Python is the
-suggested method.  To use Python, you'll need to download Python and install
-it. The suggested method is a pre-built Windows build.
-Download and install the following msi installer:
-
-    http://python.org/ftp/python/2.5.2/python-2.5.2.msi
-
-Download and verify the signature:
-
-    http://www.python.org/download/releases/2.5.2/python-2.5.2.msi.asc
-
-When prompted for a directory, install it into: C:\Python25\
-
 Installing MinGW
 (MinGW - Minimalist GNU for Windows)
 ====================================
@@ -556,8 +540,7 @@ Customization
 
 The locations of Qt, MinGW32, the Vidalia/Tor build directory, 7zip,
 FirefoxPortable can be altered in Makefile. The WGET variable should
-be either set to the location of a wget binary, or a command line for
-executing pyget.py under the installed Python interpreter.
+be set to the location of a wget binary.
 
 Building the Tor Browser Bundle
 ===============================
