@@ -86,6 +86,14 @@ build-openssl: build-zlib $(OPENSSL_DIR)
 	cd $(OPENSSL_DIR) && make install_sw
 	touch build-openssl
 
+QT_BUILD_PREFS=-system-zlib -confirm-license -opensource -openssl-linked -no-qt3support -fast -release -nomake demos -nomake examples
+QT_OPTS=$(QT_BUILD_PREFS) -prefix $(BUILT_DIR) -I $(BUILT_DIR)/include -I $(BUILT_DIR)/include/openssl/ -L$(BUILT_DIR)/lib
+build-qt: build-zlib build-openssl $(QT_DIR)
+	cd $(QT_DIR) && ./configure $(QT_OPTS)
+	cd $(QT_DIR) && make -j $(NUM_CORES)
+	cd $(QT_DIR) && make install
+	touch build-qt
+
 VIDALIA_OPTS=-DCMAKE_EXE_LINKER_FLAGS="-static-libstdc++ -Wl,--nxcompat -Wl,--dynamicbase" -DWIN2K=1 -DQT_MAKE_EXECUTABLE=/c/Qt/$(QT_VER)/bin/qmake -DCMAKE_BUILD_TYPE=minsizerel -DMINGW_BINARY_DIR=$(MING) -DOPENSSL_BINARY_DIR=$(OPENSSL) -DWIX_BINARY_DIR=$(WIX_LIB)
 # XXX Once we build qt on windows, we'll want to add build-qt here
 build-vidalia: build-openssl $(VIDALIA_DIR)
