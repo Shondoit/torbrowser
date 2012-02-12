@@ -291,7 +291,7 @@ configure-apps:
 	cp $(CONFIG_SRC)/no-polipo-4.0.js $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/prefs.js
 	cp $(CONFIG_SRC)/Info.plist $(DEST)/Contents
 	cp $(CONFIG_SRC)/PkgInfo $(DEST)/Contents
-	cp $(CONFIG_SRC)/qt.conf $(DEST)/Contents/Resources
+	cp $(CONFIG_SRC)/qt.conf $(DEST)/Contents/MacOS/Vidalia.app/Contents/Resources
 	cp $(CONFIG_SRC)/vidalia.icns $(DEST)/Contents/Resources
 
 	## Configure Vidalia
