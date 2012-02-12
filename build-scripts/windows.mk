@@ -324,7 +324,7 @@ configure-apps:
 
 	## Set up alternate launcher
 	mv $(DEST)/FirefoxPortable/App/Firefox/firefox.exe $(DEST)/FirefoxPortable/App/Firefox/tbb-firefox.exe
-	
+
 	## Configure FirefoxPortable
 	cp config/FirefoxPortable.ini $(DEST)/FirefoxPortable
 	cp config/FirefoxPortableSettings.ini $(DEST)/FirefoxPortable/Data/settings
