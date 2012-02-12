@@ -36,7 +36,7 @@ include $(PWD)/versions.mk
 
 ## Architecture
 ARCH_TYPE=$(shell uname -m)
-BUILD_NUM=5
+BUILD_NUM=6
 PLATFORM=Linux
 
 ## Location of directory for source unpacking
