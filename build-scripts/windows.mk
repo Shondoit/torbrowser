@@ -1,5 +1,5 @@
 ###
-### Makefile for building Tor USB bundle on Mac OS X
+### Makefile for building Tor USB bundle on Windows
 ###
 ### Copyright 2007 Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217/>
 ### Copyright 2009, 2010 Jacob Appelbaum <jacob@appelbaum.net>
