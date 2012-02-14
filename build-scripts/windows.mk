@@ -76,7 +76,7 @@ build-zlib: $(ZLIB_DIR)
 	cd $(ZLIB_DIR) && sed -i -e "s%prefix = /usr/local%prefix = ${BUILT_DIR}%" win32/Makefile.gcc
 	cd $(ZLIB_DIR) && LDFLAGS="-Wl,--nxcompat -Wl,--dynamicbase" make -f win32/Makefile.gcc -j $(NUM_CORES)
 	cd $(ZLIB_DIR) && BINARY_PATH="$(BUILT_DIR)/bin" INCLUDE_PATH="$(BUILT_DIR)/include" LIBRARY_PATH="$(BUILT_DIR)/lib" make -f win32/Makefile.gcc install
-	touch build-zlib
+	touch $(STAMP_DIR)/build-zlib
 
 OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 shared zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -L$(BUILT_DIR)/lib -Wl,--nxcompat -Wl,--dynamicbase -I$(BUILT_DIR)/include
 build-openssl: build-zlib $(OPENSSL_DIR)
@@ -84,7 +84,7 @@ build-openssl: build-zlib $(OPENSSL_DIR)
 	cd $(OPENSSL_DIR) && make depend
 	cd $(OPENSSL_DIR) && make
 	cd $(OPENSSL_DIR) && make install_sw
-	touch build-openssl
+	touch $(STAMP_DIR)/build-openssl
 
 QT_BUILD_PREFS=-system-zlib -confirm-license -opensource -openssl-linked -no-qt3support -fast -release -nomake demos -nomake examples
 QT_OPTS=$(QT_BUILD_PREFS) -prefix $(BUILT_DIR) -I $(BUILT_DIR)/include -I $(BUILT_DIR)/include/openssl/ -L$(BUILT_DIR)/lib
@@ -92,7 +92,7 @@ build-qt: build-zlib build-openssl $(QT_DIR)
 	cd $(QT_DIR) && ./configure $(QT_OPTS)
 	cd $(QT_DIR) && make -j $(NUM_CORES)
 	cd $(QT_DIR) && make install
-	touch build-qt
+	touch $(STAMP_DIR)/build-qt
 
 VIDALIA_OPTS=-DCMAKE_EXE_LINKER_FLAGS="-static-libstdc++ -Wl,--nxcompat -Wl,--dynamicbase" -DWIN2K=1 -DQT_MAKE_EXECUTABLE=/c/Qt/$(QT_VER)/bin/qmake -DCMAKE_BUILD_TYPE=minsizerel -DMINGW_BINARY_DIR=$(MING) -DOPENSSL_BINARY_DIR=$(OPENSSL) -DWIX_BINARY_DIR=$(WIX_LIB)
 # XXX Once we build qt on windows, we'll want to add build-qt here
@@ -100,7 +100,7 @@ build-vidalia: build-openssl $(VIDALIA_DIR)
 	-mkdir $(VIDALIA_DIR)/build
 	cd $(VIDALIA_DIR)/build && cmake -G "MSYS Makefiles" $(VIDALIA_OPTS) ..
 	cd $(VIDALIA_DIR)/build && make -j $(NUM_CORES)
-	touch build-vidalia
+	touch $(STAMP_DIR)/build-vidalia
 
 LIBEVENT_CFLAGS="-I$(BUILT_DIR)/include -O -g"
 LIBEVENT_LDFLAGS="-L$(BUILT_DIR)/lib -L$(BUILT_DIR)/bin -Wl,--nxcompat -Wl,--dynamicbase"
@@ -109,7 +109,7 @@ build-libevent: build-zlib build-openssl $(LIBEVENT_DIR)
 	cd $(LIBEVENT_DIR) && CFLAGS=$(LIBEVENT_CFLAGS) LDFLAGS=$(LIBEVENT_LDFLAGS) ./configure $(LIBEVENT_OPTS)
 	cd $(LIBEVENT_DIR) && make -j $(NUM_CORES)
 	cd $(LIBEVENT_DIR) && make install
-	touch build-libevent
+	touch $(STAMP_DIR)/build-libevent
 
 TOR_CFLAGS="-O -g -I$(BUILT_DIR)/include"
 TOR_LDFLAGS="-L$(BUILT_DIR)/lib -L$(BUILT_DIR)/bin"
@@ -119,12 +119,12 @@ build-tor: build-zlib build-openssl build-libevent $(TOR_DIR)
 	cd $(TOR_DIR) && CFLAGS=$(TOR_CFLAGS) LDFLAGS=$(TOR_LDFLAGS) ./configure $(TOR_OPTS)
 	cd $(TOR_DIR) && make -j $(NUM_CORES)
 	cd $(TOR_DIR) && make install
-	touch build-tor
+	touch $(STAMP_DIR)/build-tor
 
 build-firefox: $(FIREFOX_DIR) config/dot_mozconfig $(MOZBUILD_DIR) $(MOZBUILD_DIR)/start-msvc$(MSVC_VER).bat | $(PYTHON) $(PYMAKE_DIR)
 	cp config/dot_mozconfig $(FIREFOX_DIR)/mozconfig
 	cd $(MOZBUILD_DIR) && cmd.exe /c "start-msvc$(MSVC_VER).bat $(FIREFOX_DIR) $(PYTHON) $(PYMAKE)"
-	touch build-firefox
+	touch $(STAMP_DIR)/build-firefox
 
 copy-firefox:
 	-rm -rf $(FIREFOX)
@@ -266,7 +266,7 @@ virus-scan: | $(PYTHON)
 generic-bundle.stamp:
 	make -f windows.mk generic-bundle
 generic-bundle: directory-structure install-binaries install-docs install-firefoxportable install-pidginportable configure-apps launcher
-	touch generic-bundle.stamp
+	touch $(STAMP_DIR)/generic-bundle.stamp
 
 APPDIR=$(DEST)/App
 DOCSDIR=$(DEST)/Docs
@@ -364,7 +364,7 @@ split-bundle_%:
 bundle-localized_%.stamp:
 	make -f windows.mk copy-files_$* install-extensions install-torbutton install-httpseverywhere install-noscript \
 	patch-vidalia-language patch-firefox-language patch-pidgin-language write-tbb-version
-	touch bundle-localized_$*.stamp
+	touch $(STAMP_DIR)/bundle-localized_$*.stamp
 
 bundle-localized: bundle-localized_$(LANGCODE).stamp
 

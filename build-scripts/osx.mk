@@ -70,7 +70,7 @@ build-zlib: $(ZLIB_DIR)
 	cd $(ZLIB_DIR) && CFLAGS=$(ZLIB_CFLAGS) ./configure $(ZLIB_OPTS)
 	cd $(ZLIB_DIR) && make -j $(NUM_CORES)
 	cd $(ZLIB_DIR) && make install
-	touch build-zlib
+	touch $(STAMP_DIR)/build-zlib
 
 OPENSSL_OPTS=-no-rc5 -no-md2 -no-man shared zlib $(BACKWARDS_COMPAT) --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -L$(BUILT_DIR)/lib -I$(BUILT_DIR)/include
 build-openssl: build-zlib $(OPENSSL_DIR)
@@ -86,7 +86,7 @@ endif
 # Do not use -j for the following make call, random build errors might happen.
 	cd $(OPENSSL_DIR) && make
 	cd $(OPENSSL_DIR) && make install_sw
-	touch build-openssl
+	touch $(STAMP_DIR)/build-openssl
 
 
 QT_BUILD_PREFS=-system-zlib -confirm-license -opensource -openssl-linked -no-qt3support \
@@ -96,7 +96,7 @@ build-qt: build-zlib build-openssl $(QT_DIR)
 	cd $(QT_DIR) && ./configure $(QT_OPTS)
 	cd $(QT_DIR) && make -j $(NUM_CORES)
 	cd $(QT_DIR) && make install
-	touch build-qt
+	touch $(STAMP_DIR)/build-qt
 
 VIDALIA_OPTS=-DCMAKE_OSX_ARCHITECTURES=$(ARCH_TYPE) -DQT_QMAKE_EXECUTABLE=$(BUILT_DIR)/bin/qmake \
 	-DCMAKE_BUILD_TYPE=debug ..
@@ -106,7 +106,7 @@ build-vidalia: build-openssl build-qt $(VIDALIA_DIR)
 	cd $(VIDALIA_DIR)/build && cmake $(VIDALIA_OPTS) \
 	&& make -j $(NUM_CORES) && make dist-osx-libraries
 	cd $(VIDALIA_DIR)/build && DESTDIR=$(BUILT_DIR) make install
-	touch build-vidalia
+	touch $(STAMP_DIR)/build-vidalia
 
 LIBEVENT_CFLAGS="-O -g -arch $(ARCH_TYPE) $(MIN_VERSION) $(CF_MIN_VERSION) -arch $(ARCH_TYPE)"
 LIBEVENT_LDFLAGS="-L$(BUILT_DIR)/lib $(LD_MIN_VERSION)"
@@ -115,7 +115,7 @@ build-libevent: build-zlib build-openssl $(LIBEVENT_DIR)
 	cd $(LIBEVENT_DIR) && CFLAGS=$(LIBEVENT_CFLAGS) LDFLAGS=$(LIBEVENT_LDFLAGS) ./configure $(LIBEVENT_OPTS)
 	cd $(LIBEVENT_DIR) && make -j $(NUM_CORES)
 	cd $(LIBEVENT_DIR) && make install
-	touch build-libevent
+	touch $(STAMP_DIR)/build-libevent
 
 TOR_CFLAGS="-O -g -arch $(ARCH_TYPE) -I$(BUILT_DIR)/include $(MIN_VERSION) $(CF_MIN_VERSION)"
 TOR_LDFLAGS="-L$(BUILT_DIR)/lib $(LD_MIN_VERSION)"
@@ -124,12 +124,12 @@ build-tor: build-zlib build-openssl build-libevent $(TOR_DIR)
 	cd $(TOR_DIR) && CFLAGS=$(TOR_CFLAGS) LDFLAGS=$(TOR_LDFLAGS) ./configure $(TOR_OPTS)
 	cd $(TOR_DIR) && make -j $(NUM_CORES)
 	cd $(TOR_DIR) && make install
-	touch build-tor
+	touch $(STAMP_DIR)/build-tor
 
 build-firefox: $(FIREFOX_DIR) config/mozconfig-osx-$(ARCH_TYPE)
 	cp config/mozconfig-osx-$(ARCH_TYPE) $(FIREFOX_DIR)/mozconfig
 	cd $(FIREFOX_DIR) && make -f client.mk build
-	touch build-firefox
+	touch $(STAMP_DIR)/build-firefox
 
 copy-firefox:
 	-rm -rf $(FETCH_DIR)/Firefox.app
@@ -251,7 +251,7 @@ clean:
 generic-bundle.stamp:
 	make -f osx.mk generic-bundle
 generic-bundle: directory-structure install-binaries install-docs install-firefox configure-apps launcher strip-it-stripper
-	touch generic-bundle.stamp
+	touch $(STAMP_DIR)/generic-bundle.stamp
 
 APPDIR=$(DEST)/Contents/MacOS
 DOCSDIR=$(DEST)/Contents/Resources/Docs
@@ -338,7 +338,7 @@ compressed-bundle_%:
 	LANGCODE=$* make -f osx.mk compressed-bundle-localized
 bundle-localized_%.stamp:
 	make -f osx.mk copy-files_$* install-extensions install-httpseverywhere install-noscript install-lang-extensions patch-vidalia-language patch-firefox-language patch-pidgin-language update-extension-pref write-tbb-version final
-	touch bundle-localized_$*.stamp
+	touch $(STAMP_DIR)/bundle-localized_$*.stamp
 
 bundle-localized: bundle-localized_$(LANGCODE).stamp
 

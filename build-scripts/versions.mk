@@ -81,6 +81,17 @@ FIREFOX_DIR=$(FETCH_DIR)/firefox-$(FIREFOX_VER)
 MOZBUILD_DIR=$(FETCH_DIR)/mozilla-build
 PYMAKE_DIR=$(FETCH_DIR)/pymake-$(PYMAKE_VER)
 
+# Empty targets are written in arch-dependent $(FETCH_DIR). Usual
+# VPATH issues documented below should be avoided as the paths of
+# these targes are never used in dependents recipes. We only make use
+# of targets existence.
+#
+#   http://mad-scientist.net/make/vpath.html
+#
+STAMP_DIR=$(FETCH_DIR)
+vpath build-% $(STAMP_DIR)
+vpath patch-% $(STAMP_DIR)
+vpath %.stamp $(STAMP_DIR)
 
 fetch-source: $(FETCH_DIR)/$(ZLIB_PACKAGE) $(FETCH_DIR)/$(LIBPNG_PACKAGE) $(FETCH_DIR)/$(QT_PACKAGE) $(FETCH_DIR)/$(OPENSSL_PACKAGE) $(FETCH_DIR)/$(VIDALIA_PACKAGE) $(FETCH_DIR)/$(LIBEVENT_PACKAGE) $(FETCH_DIR)/$(TOR_PACKAGE) $(FETCH_DIR)/$(FIREFOX_PACKAGE) | $(FETCH_DIR) ;
 
