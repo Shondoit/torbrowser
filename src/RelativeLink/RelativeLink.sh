@@ -195,6 +195,7 @@ if [ "${debug}" ]; then
 	./App/vidalia --loglevel debug --logfile vidalia-debug-log \
 	--datadir Data/Vidalia/ -style Cleanlooks
 	printf "\nVidalia exited with the following return code: $?\n"
+	exit
 fi
 
 # not in debug mode, run proceed normally
