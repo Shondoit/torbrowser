@@ -5,25 +5,9 @@
 ### Copyright 2009, 2010 Jacob Appelbaum <jacob@appelbaum.net>
 ### Copyright 2010 Erinn Clark <erinn@torproject.org>
 ###
-### You want to do the following currently supported activities:
-# This downloads and compiles everything
-### make -f windows.mk build-all-binaries
-# This makes a generic bundle
-### make -f windows.mk generic-bundle
-# This makes the English bundle
-### make -f windows.mk bundle_en-US
-# This makes the German bundle
-### make -f windows.mk bundle_de
-# This makes the German compressed bundle
-### make -f windows.mk compressed-bundle_de 
-# It's possible you may also want to do:
-### make -f windows.mk build-all-binaries
-### make -f windows.mk all-compressed-bundles
-### ...
-### Look in tbbwin-alpha-dist/ for your files.
-###
 ### See LICENSE for licensing information
 ###
+
 
 #####################
 ### Configuration ###

@@ -5,26 +5,7 @@
 ### Copyright 2009, 2010 Jacob Appelbaum <jacob@appelbaum.net>
 ### Copyright 2010 Erinn Clark <erinn@torproject.org>
 ###
-### You want to do the following currently supported activities:
-# This downloads and compiles everything
-### make -f osx.mk build-all-binaries
-# This makes a generic bundle
-### make -f osx.mk generic-bundle
-# This makes the English bundle
-### make -f osx.mk bundle_en-US
-# This makes the German bundle
-### make -f osx.mk bundle_de
-# This makes the German compressed bundle
-### make -f osx.mk compressed-bundle_de 
-# It's possible you may also want to do:
-### make -f osx.mk build-all-binaries
-### make -f osx.mk all-compressed-bundles
-### ...
-### Look in tbbosx-dist/ for your files.
-###
 ### See LICENSE for licensing information
-###
-### $Id: Makefile 19973 2009-07-12 02:26:03Z phobos $
 ###
 
 #####################
