@@ -337,10 +337,6 @@ strip-it-stripper:
 torbutton.xpi:
 	$(WGET) --no-check-certificate -O $@ $(TORBUTTON)
 
-## BetterPrivacy
-betterprivacy.xpi:
-	$(WGET) --no-check-certificate -O $@ $(BETTERPRIVACY)
-
 ## NoScript development version
 noscript.xpi: 
 	$(WGET) --no-check-certificate -O $@ $(NOSCRIPT)
@@ -413,16 +409,11 @@ ifneq ($(LANGCODE), en-US)
 	cp langpack_$(LANGCODE).xpi $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/langpack-$(LANGCODE)@firefox.mozilla.org.xpi
 endif
 
-install-betterprivacy: betterprivacy.xpi
-	mkdir -p $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\}
-	cp betterprivacy.xpi $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\}/betterprivacy.zip
-	(cd $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\} && unzip *.zip && rm *.zip)
-	
 install-httpseverywhere: httpseverywhere.xpi
 	mkdir -p $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/https-everywhere@eff.org
 	cp httpseverywhere.xpi $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/https-everywhere@eff.org/httpseverywhere.zip
 	(cd $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/https-everywhere@eff.org && unzip *.zip && rm *.zip)
-	
+
 install-noscript: noscript.xpi
 	mkdir -p $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/\{73a6fe31-595d-460b-a920-fcc0f8843232\}
 	cp noscript.xpi $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/\{73a6fe31-595d-460b-a920-fcc0f8843232\}/noscript.zip

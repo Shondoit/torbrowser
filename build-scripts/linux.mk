@@ -378,10 +378,6 @@ torbutton.xpi:
 noscript.xpi: 
 	$(WGET) -O $@ $(NOSCRIPT)
 
-## BetterPrivacy
-betterprivacy.xpi:
-	$(WGET) -O $@ $(BETTERPRIVACY)
-
 ## HTTPS Everywhere
 httpseverywhere.xpi:
 	$(WGET) -O $@ --no-check-certificate $(HTTPSEVERYWHERE)
@@ -435,12 +431,6 @@ install-extensions: $(DEFAULT_EXTENSIONS)
 			cp $$extension $(BUNDLE)/Data/profile/extensions/$$ext_id/$$extension.zip; \
 			(cd $(BUNDLE)/Data/profile/extensions/$$ext_id/ && unzip *.zip && rm *.zip); \
 		done
-
-install-betterprivacy: betterprivacy.xpi
-	mkdir -p $(BUNDLE)/Data/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\}
-	cp betterprivacy.xpi $(BUNDLE)/Data/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\}/betterprivacy.zip
-	(cd $(BUNDLE)/Data/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\}/ && unzip *.zip && rm *.zip);
-
 
 ## Language extensions need to be handled differently from other extensions
 fix-install-rdf: $(filter-out langpack_en-US.xpi,langpack_$(LANGCODE).xpi)

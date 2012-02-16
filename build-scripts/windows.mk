@@ -363,10 +363,6 @@ torbutton.xpi:
 langpack_en-US.xpi:
 	touch $@
 
-## BetterPrivacy
-betterprivacy.xpi:
-	$(PYGET) -O $@ $(BETTERPRIVACY)
-
 ## NoScript development version
 noscript.xpi: 
 	$(PYGET) -O $@ $(NOSCRIPT)
@@ -439,11 +435,6 @@ install-httpseverywhere: httpseverywhere.xpi
 	mkdir -p $(BUNDLE)/FirefoxPortable/Data/profile/extensions/https-everywhere@eff.org
 	cp httpseverywhere.xpi $(BUNDLE)/FirefoxPortable/Data/profile/extensions/https-everywhere@eff.org/httpseverywhere.zip
 	(cd $(BUNDLE)/FirefoxPortable/Data/profile/extensions/https-everywhere@eff.org && $(SEVENZIP) x *.zip && rm *.zip)
-
-install-betterprivacy: betterprivacy.xpi
-	mkdir -p $(BUNDLE)/FirefoxPortable/Data/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\}
-	cp betterprivacy.xpi $(BUNDLE)/FirefoxPortable/Data/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\}/betterprivacy.zip
-	(cd $(BUNDLE)/FirefoxPortable/Data/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\} && $(SEVENZIP) x *.zip && rm *.zip)
 
 install-noscript: noscript.xpi
 	mkdir -p $(BUNDLE)/FirefoxPortable/Data/profile/extensions/\{73a6fe31-595d-460b-a920-fcc0f8843232\}
