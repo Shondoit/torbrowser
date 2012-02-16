@@ -367,30 +367,6 @@ remove-bundle-shared-lib-symlinks:
 	./remove-shared-lib-symlinks $(LIBSDIR)/libz
 
 ##
-## How to create required extensions
-##
-
-## Torbutton development version
-torbutton.xpi:
-	$(WGET) -O $@ $(TORBUTTON)
-
-## NoScript development version
-noscript.xpi: 
-	$(WGET) -O $@ $(NOSCRIPT)
-
-## HTTPS Everywhere
-httpseverywhere.xpi:
-	$(WGET) -O $@ --no-check-certificate $(HTTPSEVERYWHERE)
-
-## Generic language pack rule
-langpack_%.xpi:
-	$(WGET) -O $@ $(MOZILLA_LANGUAGE)/$*.xpi
-
-## English comes as default
-#langpack_en-US.xpi:
-#	touch $@
-
-##
 ## Customize the bundle
 ##
 

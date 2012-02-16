@@ -81,6 +81,26 @@ fetch-firefox:
 	-rm -f $(FETCH_DIR)/$(FIREFOX_PACKAGE)
 	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(FIREFOX_URL)
 
+## Torbutton development version
+torbutton.xpi:
+	$(WGET) -O $@ $(TORBUTTON)
+
+## NoScript development version
+noscript.xpi:
+	$(WGET) -O $@ $(NOSCRIPT)
+
+## HTTPS Everywhere
+httpseverywhere.xpi:
+	$(WGET) -O $@ --no-check-certificate $(HTTPSEVERYWHERE)
+
+## Generic language pack rule, needs OS-specific MOZILLA_LANGUAGE
+langpack_%.xpi:
+	$(WGET) -O $@ $(MOZILLA_LANGUAGE)/$*.xpi
+
+## English comes as default, so nothing to do here for the language packe
+langpack_en-US.xpi:
+	touch $@
+
 unpack-source: unpack-zlib unpack-openssl unpack-libpng unpack-qt unpack-vidalia unpack-libevent unpack-tor unpack-firefox
 
 unpack-zlib:

@@ -352,30 +352,6 @@ launcher:
 	cp ../src/RelativeLink/StartTorBrowserBundle.exe $(DEST)/"Start Tor Browser.exe"
 
 ##
-## How to create required extensions
-##
-
-## Torbutton development version
-torbutton.xpi:
-	$(PYGET) -O $@ $(TORBUTTON)
-
-## English comes as default
-langpack_en-US.xpi:
-	touch $@
-
-## NoScript development version
-noscript.xpi: 
-	$(PYGET) -O $@ $(NOSCRIPT)
-
-## HTTPS Everywhere
-httpseverywhere.xpi:
-	$(PYGET) -O $@ $(HTTPSEVERYWHERE)
-
-## Generic language pack rule
-langpack_%.xpi:
-	$(PYGET) -O $@ $(MOZILLA_LANGUAGE)/$*.xpi
-
-##
 ## Customize the bundle
 ##
 

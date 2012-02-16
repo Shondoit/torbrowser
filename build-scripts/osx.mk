@@ -330,30 +330,6 @@ strip-it-stripper:
 	strip $(APPDIR)/Vidalia.app/Contents/MacOS/Vidalia
 
 ##
-## How to create required extensions
-##
-
-## Torbutton development version
-torbutton.xpi:
-	$(WGET) --no-check-certificate -O $@ $(TORBUTTON)
-
-## NoScript development version
-noscript.xpi: 
-	$(WGET) --no-check-certificate -O $@ $(NOSCRIPT)
-
-## HTTPS Everywhere
-httpseverywhere.xpi:
-	$(WGET) --no-check-certificate -O $@ $(HTTPSEVERYWHERE)
-
-## Generic language pack rule
-langpack_%.xpi:
-	$(WGET) --no-check-certificate -O $@ $(MOZILLA_LANGUAGE)/$*.xpi
-
-## English comes as default
-#langpack_en-US.xpi:
-#	touch $@
-
-##
 ## Customize the bundle
 ##
 
