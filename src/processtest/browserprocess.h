@@ -24,7 +24,6 @@
 /**
  ** Test invoking Firefox from Qt
  ** Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217/>
- ** $Id$
  **/
 
 #ifndef _BROWSERPROCESS_H

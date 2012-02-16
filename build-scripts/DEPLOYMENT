@@ -4,8 +4,6 @@
 ### Copyright 2008 Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217/>
 ### See LICENSE for licensing information
 ###
-### $Id: INSTALL 14826 2008-05-29 14:03:31Z sjm217 $
-###
 
 This document describes how the official Tor Browser Bundle is
 deployed. It is probably not of interest outside of the Tor Project.

@@ -3,8 +3,6 @@
 ###
 ### Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217/>
 ###
-### $Id$
-###
 
 Filesystem modifications
 ========================
