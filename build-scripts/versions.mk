@@ -70,18 +70,18 @@ mozbuild=MOZBUILD
 pymake=PYMAKE
 
 # The locations of the unpacked tarballs
-ZLIB_DIR=$(FETCH_DIR)/zlib-$(ZLIB_VER)
-LIBPNG_DIR=$(FETCH_DIR)/libpng-$(LIBPNG_VER)
-QT_DIR=$(FETCH_DIR)/qt-$(QT_VER)
-OPENSSL_DIR=$(FETCH_DIR)/openssl-$(OPENSSL_VER)
-VIDALIA_DIR=$(FETCH_DIR)/vidalia-$(VIDALIA_VER)
-LIBEVENT_DIR=$(FETCH_DIR)/libevent-$(LIBEVENT_VER)
-TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)
-FIREFOX_DIR=$(FETCH_DIR)/firefox-$(FIREFOX_VER)
-MOZBUILD_DIR=$(FETCH_DIR)/mozilla-build
-PYMAKE_DIR=$(FETCH_DIR)/pymake-$(PYMAKE_VER)
+ZLIB_DIR=$(BUILD_DIR)/zlib-$(ZLIB_VER)
+LIBPNG_DIR=$(BUILD_DIR)/libpng-$(LIBPNG_VER)
+QT_DIR=$(BUILD_DIR)/qt-$(QT_VER)
+OPENSSL_DIR=$(BUILD_DIR)/openssl-$(OPENSSL_VER)
+VIDALIA_DIR=$(BUILD_DIR)/vidalia-$(VIDALIA_VER)
+LIBEVENT_DIR=$(BUILD_DIR)/libevent-$(LIBEVENT_VER)
+TOR_DIR=$(BUILD_DIR)/tor-$(TOR_VER)
+FIREFOX_DIR=$(BUILD_DIR)/firefox-$(FIREFOX_VER)
+MOZBUILD_DIR=$(BUILD_DIR)/mozilla-build
+PYMAKE_DIR=$(BUILD_DIR)/pymake-$(PYMAKE_VER)
 
-# Empty targets are written in arch-dependent $(FETCH_DIR). Usual
+# Empty targets are written in arch-dependent $(BUILD_DIR). Usual
 # VPATH issues documented below should be avoided as the paths of
 # these targes are never used in dependents recipes. We only make use
 # of targets existence.
@@ -97,6 +97,9 @@ fetch-source: $(FETCH_DIR)/$(ZLIB_PACKAGE) $(FETCH_DIR)/$(LIBPNG_PACKAGE) $(FETC
 
 $(FETCH_DIR):
 	mkdir -p $(FETCH_DIR)
+
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
 
 # XXX
 # If we can, we should definitely add some stuff here to check signatures -
@@ -152,45 +155,44 @@ langpack_en-US.xpi:
 unpack-source: $(ZLIB_DIR) $(OPENSSL_DIR) $(LIBPNG_DIR $(QT_DIR) $(VIDALIA_DIR) $(LIBEVENT_DIR) $(TOR_DIR) $(FIREFOX_DIR)
 
 
-$(ZLIB_DIR): $(FETCH_DIR)/$(ZLIB_PACKAGE)
+$(ZLIB_DIR): $(FETCH_DIR)/$(ZLIB_PACKAGE) | $(BUILD_DIR)
 	rm -rf $(ZLIB_DIR)
-	cd $(FETCH_DIR) && tar -xmf $(ZLIB_PACKAGE)
+	cd $(FETCH_DIR) && tar -xmf $(ZLIB_PACKAGE) -C $(BUILD_DIR)/
 
 $(LIBPNG_DIR): $(FETCH_DIR)/$(LIBPNG_PACKAGE)
 	rm -rf $(LIBPNG_DIR)
-	cd $(FETCH_DIR) && tar -xmf $(LIBPNG_PACKAGE)
+	cd $(FETCH_DIR) && tar -xmf $(LIBPNG_PACKAGE) -C $(BUILD_DIR)/
 
-
-$(QT_DIR): $(FETCH_DIR)/$(QT_PACKAGE)
+$(QT_DIR): $(FETCH_DIR)/$(QT_PACKAGE) | $(BUILD_DIR)
 	rm -rf $(QT_DIR) $(FETCH_DIR)/qt-everywhere-opensource-src-$(QT_VER)
-	cd $(FETCH_DIR) && tar -xmf $(QT_PACKAGE)
-	mv $(FETCH_DIR)/qt-everywhere-opensource-src-$(QT_VER) $(QT_DIR)
+	cd $(FETCH_DIR) && tar -xmf $(QT_PACKAGE) -C $(BUILD_DIR)/
+	mv $(BUILD_DIR)/qt-everywhere-opensource-src-$(QT_VER) $(QT_DIR)
 
-$(OPENSSL_DIR): $(FETCH_DIR)/$(OPENSSL_PACKAGE)
+$(OPENSSL_DIR): $(FETCH_DIR)/$(OPENSSL_PACKAGE) | $(BUILD_DIR)
 	rm -rf $(OPENSSL_DIR)
-	cd $(FETCH_DIR) && tar -xmf $(OPENSSL_PACKAGE)
+	cd $(FETCH_DIR) && tar -xmf $(OPENSSL_PACKAGE) -C $(BUILD_DIR)/
 
-$(VIDALIA_DIR): $(FETCH_DIR)/$(VIDALIA_PACKAGE)
+$(VIDALIA_DIR): $(FETCH_DIR)/$(VIDALIA_PACKAGE) | $(BUILD_DIR)
 	rm -rf $(VIDALIA_DIR)
-	cd $(FETCH_DIR) && tar -xmf $(VIDALIA_PACKAGE)
+	cd $(FETCH_DIR) && tar -xmf $(VIDALIA_PACKAGE) -C $(BUILD_DIR)/
 
-$(LIBEVENT_DIR): $(FETCH_DIR)/$(LIBEVENT_PACKAGE)
+$(LIBEVENT_DIR): $(FETCH_DIR)/$(LIBEVENT_PACKAGE) | $(BUILD_DIR)
 	rm -rf $(LIBEVENT_DIR)
-	cd $(FETCH_DIR) && tar -xmf $(LIBEVENT_PACKAGE)
+	cd $(FETCH_DIR) && tar -xmf $(LIBEVENT_PACKAGE) -C $(BUILD_DIR)/
 
-$(TOR_DIR): $(FETCH_DIR)/$(TOR_PACKAGE)
+$(TOR_DIR): $(FETCH_DIR)/$(TOR_PACKAGE) | $(BUILD_DIR)
 	rm -rf $(TOR_DIR)
-	cd $(FETCH_DIR) && tar -xmf $(TOR_PACKAGE)
+	cd $(FETCH_DIR) && tar -xmf $(TOR_PACKAGE) -C $(BUILD_DIR)/
 
-$(FIREFOX_DIR): $(FETCH_DIR)/$(FIREFOX_PACKAGE) ../src/current-patches/firefox/*
+$(FIREFOX_DIR): $(FETCH_DIR)/$(FIREFOX_PACKAGE) ../src/current-patches/firefox/* | $(BUILD_DIR)
 	rm -rf $(FIREFOX_DIR) $(FETCH_DIR)/mozilla-release
-	cd $(FETCH_DIR) && tar -xmf $(FIREFOX_PACKAGE)
-	mv $(FETCH_DIR)/mozilla-release $(FIREFOX_DIR)
+	cd $(FETCH_DIR) && tar -xmf $(FIREFOX_PACKAGE) -C $(BUILD_DIR)/
+	mv $(BUILD_DIR)/mozilla-release $(FIREFOX_DIR)
 	cp ../src/current-patches/firefox/* $(FIREFOX_DIR)
 	cp patch-any-src.sh $(FIREFOX_DIR)
 	cd $(FIREFOX_DIR) && ./patch-any-src.sh
 
-$(MOZBUILD_DIR): $(FETCH_DIR)/$(MOZBUILD_PACKAGE) ../src/current-patches/mozilla-build/start-msvc.patch ../src/current-patches/mozilla-build/guess-msvc-x64.bat patch-mozilla-build.sh
+$(MOZBUILD_DIR): $(FETCH_DIR)/$(MOZBUILD_PACKAGE) ../src/current-patches/mozilla-build/start-msvc.patch ../src/current-patches/mozilla-build/guess-msvc-x64.bat patch-mozilla-build.sh | $(BUILD_DIR)
 	rm -rf $(MOZBUILD_DIR) /c/mozilla-build
 # We could try passing a /D argument here, but then we'd need to convert
 # mingw paths into windows paths. We'll just go with the default here.
@@ -202,9 +204,9 @@ $(MOZBUILD_DIR): $(FETCH_DIR)/$(MOZBUILD_PACKAGE) ../src/current-patches/mozilla
 	cp patch-mozilla-build.sh $(MOZBUILD_DIR)
 	cd $(MOZBUILD_DIR) && ./patch-mozilla-build.sh $(MSVC_VER)
 
-$(PYMAKE_DIR): $(FETCH_DIR)/$(PYMAKE_PACKAGE)
+$(PYMAKE_DIR): $(FETCH_DIR)/$(PYMAKE_PACKAGE) | $(BUILD_DIR)
 	rm -rf $(PYMAKE_DIR)
-	cd $(FETCH_DIR) && tar -xmf $(PYMAKE_PACKAGE)
+	cd $(FETCH_DIR) && tar -xmf $(PYMAKE_PACKAGE) -C $(BUILD_DIR)/
 
 
 clean-fetch-%:

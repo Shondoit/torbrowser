@@ -22,10 +22,12 @@ PLATFORM=Linux
 # Number of cpu cores used to build in parallel
 NUM_CORES=2
 
-## Location of directory for source unpacking
-FETCH_DIR=/srv/build-trees/build-alpha-$(ARCH_TYPE)
+## Location of directory for source downloading
+FETCH_DIR=/srv/build-trees/build-alpha
+## Location of directory for source unpacking/building
+BUILD_DIR=$(FETCH_DIR)/$(ARCH_TYPE)
 ## Location of directory for prefix/destdir/compiles/etc
-BUILT_DIR=$(FETCH_DIR)/built
+BUILT_DIR=$(BUILD_DIR)/built
 TBB_FINAL=$(BUILT_DIR)/TBBL
 
 ## Include versions (must happen after variable definitions above
@@ -94,11 +96,11 @@ build-firefox: config/dot_mozconfig $(FIREFOX_DIR)
 	touch $(STAMP_DIR)/build-firefox
 
 copy-firefox:
-	-rm -rf $(FETCH_DIR)/Firefox
+	-rm -rf $(BUILD_DIR)/Firefox
 	## This is so ugly. Update it to use cool tar --transform soon.
 	cd $(FIREFOX_DIR) && make -C obj-$(ARCH_TYPE)-*/ package
-	cp $(FIREFOX_DIR)/obj-$(ARCH_TYPE)-*/dist/*bz2 $(FETCH_DIR)
-	cd $(FETCH_DIR) && tar -xvjf firefox-$(FIREFOX_VER).en-US.linux-$(ARCH_TYPE).tar.bz2 && mv firefox Firefox
+	cp $(FIREFOX_DIR)/obj-$(ARCH_TYPE)-*/dist/*bz2 $(BUILD_DIR)
+	cd $(BUILD_DIR) && tar -xvjf firefox-$(FIREFOX_VER).en-US.linux-$(ARCH_TYPE).tar.bz2 && mv firefox Firefox
 
 # source-dance unpack-source
 build-all-binaries: source-dance build-zlib build-openssl build-libpng build-qt build-vidalia build-libevent build-tor build-firefox
@@ -120,7 +122,7 @@ ZLIB=$(COMPILED_LIBS)
 TOR=$(COMPILED_BINS)/tor
 VIDALIA=$(BUILT_DIR)/usr/local/bin/vidalia
 ## Someday, this will be our custom Firefox
-FIREFOX=$(FETCH_DIR)/Firefox
+FIREFOX=$(BUILD_DIR)/Firefox
 PIDGIN=$(COMPILED_BINS)/pidgin
 
 ## Location of utility applications

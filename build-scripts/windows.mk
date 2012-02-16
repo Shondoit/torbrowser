@@ -23,10 +23,10 @@ OPENSSL_LIB=$(COMPILED_BINS)
 WIX_LIB="/c/Program Files (x86)/Windows Installer XML v3.5/bin"
 
 ## Location of bundle components
-VIDALIA=$(FETCH_DIR)/vidalia-$(VIDALIA_VER)
-TOR=$(FETCH_DIR)/tor-$(TOR_VER)
-FIREFOX=$(FETCH_DIR)/FirefoxPortable-$(FIREFOX_VER)
-PIDGIN=$(FETCH_DIR)/PidginPortable-$(PIDGIN_VER)
+VIDALIA=$(BUILD_DIR)/vidalia-$(VIDALIA_VER)
+TOR=$(BUILD_DIR)/tor-$(TOR_VER)
+FIREFOX=$(BUILD_DIR)/FirefoxPortable-$(FIREFOX_VER)
+PIDGIN=$(BUILD_DIR)/PidginPortable-$(PIDGIN_VER)
 
 ## Location of utility applications
 PWD:=$(shell pwd)
@@ -46,8 +46,11 @@ NUM_CORES=2
 
 ## Location of directory for source unpacking
 FETCH_DIR=$(PWD)/build-alpha-windows
+## Location of directory for source unpacking/building
+## This must be different from FETCH_DIR
+BUILD_DIR=$(FETCH_DIR)/build
 ## Location of directory for prefix/destdir/compiles/etc
-BUILT_DIR=$(FETCH_DIR)/built
+BUILT_DIR=$(BUILD_DIR)/built
 TBB_FINAL=$(BUILT_DIR)/tbbwin-alpha-dist
 
 ## Include versions (must happen after variable definitions above

@@ -33,10 +33,12 @@ BACKWARDS_COMPAT=$(MIN_VERSION) $(CF_MIN_VERSION) $(LD_MIN_VERSION)
 # Number of cpu cores used to build in parallel
 NUM_CORES=2
 
-## Location of directory for source unpacking
-FETCH_DIR=$(PWD)/build-$(ARCH_TYPE)
+## Location of directory for source fetching
+FETCH_DIR=$(PWD)/build
+## Location of directory for source unpacking/building
+BUILD_DIR=$(FETCH_DIR)/$(ARCH_TYPE)
 ## Location of directory for prefix/destdir/compiles/etc
-BUILT_DIR=$(FETCH_DIR)/built
+BUILT_DIR=$(BUILD_DIR)/built
 TBB_FINAL=$(BUILT_DIR)/tbbosx-dist
 
 ## Include versions (must happen after variable definitions above
@@ -113,8 +115,8 @@ build-firefox: $(FIREFOX_DIR) config/mozconfig-osx-$(ARCH_TYPE)
 	touch $(STAMP_DIR)/build-firefox
 
 copy-firefox:
-	-rm -rf $(FETCH_DIR)/Firefox.app
-	cp -r $(FIREFOX_DIR)/obj*/dist/*.app $(FETCH_DIR)/Firefox.app
+	-rm -rf $(BUILD_DIR)/Firefox.app
+	cp -r $(FIREFOX_DIR)/obj*/dist/*.app $(BUILD_DIR)/Firefox.app
 
 build-all-binaries: build-zlib build-openssl build-vidalia build-libevent build-tor build-firefox
 	echo "If we're here, we've done something right."
@@ -134,7 +136,7 @@ LIBEVENT=$(COMPILED_LIBS)
 VIDALIA=$(BUILT_DIR)/usr/local/bin/Vidalia.app/
 TOR=$(COMPILED_BINS)/tor
 ## Someday, this will be our custom Firefox
-FIREFOX=$(FETCH_DIR)/Firefox.app
+FIREFOX=$(BUILD_DIR)/Firefox.app
 PIDGIN=$(COMPILED_BINS)/pidgin
 
 ## Location of utility applications
