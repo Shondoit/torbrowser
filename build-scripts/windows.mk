@@ -410,13 +410,6 @@ copy-files_%: generic-bundle.stamp
 BUNDLE=$(NAME)_$(LANGCODE)/$(NAME)
 DUMMYPROFILE=$(BUNDLE)/FirefoxPortable/App/DummyProfile
 
-fix-install-rdf: $(filter-out langpack_en-US.xpi,langpack_$(LANGCODE).xpi)
-ifneq ($(LANGCODE), en-US)
-	rm -fr xx
-	mkdir xx
-	(cd xx && unzip ../langpack_$(LANGCODE).xpi && sed -i -e "s/em:maxVersion>6.0.1/em:maxVersion>6.0.*/" install.rdf && zip  -r ../langpack_$(LANGCODE).xpi .)
-endif
-
 install-extensions: $(filter-out langpack_en-US.xpi,langpack_$(LANGCODE).xpi)
 	## Make a dummy profile to stop Firefox creating some large files
 	cp -r $(BUNDLE)/FirefoxPortable/App/DefaultData $(DUMMYPROFILE)
