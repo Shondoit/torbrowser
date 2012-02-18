@@ -289,7 +289,7 @@ install-binaries:
 	   $(LIBEVENT)/libevent_extra-2.0.so.5 $(LIBEVENT)/libevent_extra-2.0.so.5.1.5 \
 	   $(LIBEVENT)/libevent_extra.so $(LIBEVENT)/libevent.so $(LIBSDIR)
 	# libpng
-	cp -d $(LIBPNG)/libpng14.so* $(LIBSDIR) 
+	cp -d $(LIBPNG)/libpng15.so* $(LIBSDIR)
 	# OpenSSL
 	cp -d $(OPENSSL)/libssl.so* $(OPENSSL)/libcrypto.so* $(LIBSDIR)
 	chmod 644 $(LIBSDIR)/libssl.so*
