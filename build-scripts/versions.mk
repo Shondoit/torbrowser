@@ -168,9 +168,12 @@ $(QT_DIR): $(FETCH_DIR)/$(QT_PACKAGE) | $(BUILD_DIR)
 	cd $(FETCH_DIR) && tar -xmf $(QT_PACKAGE) -C $(BUILD_DIR)/
 	mv $(BUILD_DIR)/qt-everywhere-opensource-src-$(QT_VER) $(QT_DIR)
 
-$(OPENSSL_DIR): $(FETCH_DIR)/$(OPENSSL_PACKAGE) | $(BUILD_DIR)
+$(OPENSSL_DIR): $(FETCH_DIR)/$(OPENSSL_PACKAGE) ../src/current-patches/openssl/*patch | $(BUILD_DIR)
 	rm -rf $(OPENSSL_DIR)
 	cd $(FETCH_DIR) && tar -xmf $(OPENSSL_PACKAGE) -C $(BUILD_DIR)/
+	cp ../src/current-patches/openssl/*patch $(OPENSSL_DIR)
+	cp patch-any-src.sh $(OPENSSL_DIR)
+	cd $(OPENSSL_DIR) && ./patch-any-src.sh
 
 $(VIDALIA_DIR): $(FETCH_DIR)/$(VIDALIA_PACKAGE) | $(BUILD_DIR)
 	rm -rf $(VIDALIA_DIR)

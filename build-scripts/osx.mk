@@ -57,9 +57,6 @@ build-zlib: $(ZLIB_DIR)
 
 OPENSSL_OPTS=-no-rc5 -no-md2 -no-man shared zlib $(BACKWARDS_COMPAT) --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -L$(BUILT_DIR)/lib -I$(BUILT_DIR)/include
 build-openssl: build-zlib $(OPENSSL_DIR)
-	cp ../src/current-patches/openssl/*patch $(OPENSSL_DIR)
-	cp patch-any-src.sh $(OPENSSL_DIR)
-	cd $(OPENSSL_DIR) && ./patch-any-src.sh
 ifeq (x86_64,$(ARCH_TYPE))
 	cd $(OPENSSL_DIR) && ./Configure darwin64-x86_64-cc $(OPENSSL_OPTS)
 else
