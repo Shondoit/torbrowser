@@ -56,9 +56,6 @@ TBB_FINAL=$(BUILT_DIR)/tbbwin-alpha-dist
 ## Include versions (must happen after variable definitions above
 include $(PWD)/versions.mk
 
-source-dance: fetch-source unpack-source
-	echo "We're ready for building now."
-
 build-zlib: $(ZLIB_DIR)
 	cd $(ZLIB_DIR) && sed -i -e "s%prefix = /usr/local%prefix = ${BUILT_DIR}%" win32/Makefile.gcc
 	cd $(ZLIB_DIR) && LDFLAGS="-Wl,--nxcompat -Wl,--dynamicbase" make -f win32/Makefile.gcc -j $(NUM_CORES)

@@ -95,6 +95,8 @@ vpath %.stamp $(STAMP_DIR)
 
 fetch-source: $(FETCH_DIR)/$(ZLIB_PACKAGE) $(FETCH_DIR)/$(LIBPNG_PACKAGE) $(FETCH_DIR)/$(QT_PACKAGE) $(FETCH_DIR)/$(OPENSSL_PACKAGE) $(FETCH_DIR)/$(VIDALIA_PACKAGE) $(FETCH_DIR)/$(LIBEVENT_PACKAGE) $(FETCH_DIR)/$(TOR_PACKAGE) $(FETCH_DIR)/$(FIREFOX_PACKAGE) | $(FETCH_DIR) ;
 
+source-dance: fetch-source unpack-source ;
+
 $(FETCH_DIR):
 	mkdir -p $(FETCH_DIR)
 

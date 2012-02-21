@@ -44,9 +44,6 @@ TBB_FINAL=$(BUILT_DIR)/tbbosx-dist
 ## Include versions (must happen after variable definitions above
 include $(PWD)/versions.mk
 
-source-dance: fetch-source unpack-source
-	echo "We're ready for building now."
-
 ZLIB_OPTS=--prefix=$(BUILT_DIR)
 ZLIB_CFLAGS="-arch $(ARCH_TYPE)"
 build-zlib: $(ZLIB_DIR)

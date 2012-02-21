@@ -33,9 +33,6 @@ TBB_FINAL=$(BUILT_DIR)/TBBL
 ## Include versions (must happen after variable definitions above
 include $(PWD)/versions.mk
 
-source-dance: fetch-source unpack-source
-	echo "We're ready for building now."
-
 ZLIB_OPTS=--shared --prefix=$(BUILT_DIR)
 build-zlib: $(ZLIB_DIR)
 	cd $(ZLIB_DIR) && ./configure $(ZLIB_OPTS)
@@ -102,7 +99,6 @@ copy-firefox:
 	cp $(FIREFOX_DIR)/obj-$(ARCH_TYPE)-*/dist/*bz2 $(BUILD_DIR)
 	cd $(BUILD_DIR) && tar -xvjf firefox-$(FIREFOX_VER).en-US.linux-$(ARCH_TYPE).tar.bz2 && mv firefox Firefox
 
-# source-dance unpack-source
 build-all-binaries: source-dance build-zlib build-openssl build-libpng build-qt build-vidalia build-libevent build-tor build-firefox
 	echo "If we're here, we've done something right."
 
