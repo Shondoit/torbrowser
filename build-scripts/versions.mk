@@ -116,3 +116,6 @@ unpack-tor:
 unpack-firefox:
 	-rm -rf $(FETCH_DIR)/mozilla-release
 	cd $(FETCH_DIR) && tar -xvjf $(FIREFOX_PACKAGE)
+	cp ../src/current-patches/firefox/* $(FIREFOX_DIR)
+	cp patch-any-src.sh $(FIREFOX_DIR)
+	cd $(FIREFOX_DIR) && ./patch-any-src.sh

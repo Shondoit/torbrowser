@@ -115,13 +115,8 @@ build-pidgin:
 	echo "We're not building pidgin yet!"
 
 FIREFOX_DIR=$(FETCH_DIR)/mozilla-release
-patch-firefox-source:
-	cp ../src/current-patches/firefox/* $(FIREFOX_DIR)
-	cp patch-any-src.sh $(FIREFOX_DIR)
-	cp $(CONFIG_SRC)/dot_mozconfig $(FIREFOX_DIR)/mozconfig
-	cd $(FIREFOX_DIR) && ./patch-any-src.sh
-
 build-firefox:
+	cp $(CONFIG_SRC)/dot_mozconfig $(FIREFOX_DIR)/mozconfig
 	cd $(FIREFOX_DIR) && make -f client.mk build
 
 copy-firefox:

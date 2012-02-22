@@ -119,11 +119,6 @@ patch-mozbuild:
 	cp patch-mozilla-build.sh $(MOZ_BUILD)
 	cd $(MOZ_BUILD) && ./patch-mozilla-build.sh $(MSVC_VER)
 
-patch-firefox-source:
-	cp ../src/current-patches/firefox/* $(FIREFOX_DIR)
-	cp patch-any-src.sh $(FIREFOX_DIR)
-	cd $(FIREFOX_DIR) && ./patch-any-src.sh
-
 build-firefox:
 	cp $(CONFIG_SRC)/dot_mozconfig $(FIREFOX_DIR)/mozconfig
 	cd $(MOZ_BUILD) && cmd.exe /c "start-msvc$(MSVC_VER).bat $(FIREFOX_DIR)"
