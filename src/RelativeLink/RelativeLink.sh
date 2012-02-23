@@ -193,7 +193,7 @@ if [ "${debug}" ]; then
 	# XXX Someday we should pass whatever command-line arguments we got
 	# (probably filenames or URLs) to Firefox.
 	./App/vidalia --loglevel debug --logfile vidalia-debug-log \
-	--datadir Data/Vidalia/
+	--datadir Data/Vidalia/ -style Cleanlooks
 	printf "\nVidalia exited with the following return code: $?\n"
 fi
 
@@ -202,7 +202,7 @@ printf "\nLaunching Tor Browser Bundle for Linux in ${HOME}\n"
 cd "${HOME}"
 # XXX Someday we should pass whatever command-line arguments we got
 # (probably filenames or URLs) to Firefox.
-./App/vidalia --datadir Data/Vidalia/
+./App/vidalia --datadir Data/Vidalia/ -style Cleanlooks
 exitcode="$?"
 if [ "$exitcode" -ne 0 ]; then
 	complain "Vidalia exited abnormally.  Exit code: $exitcode"
