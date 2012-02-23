@@ -126,8 +126,8 @@ build-tor: build-zlib build-openssl build-libevent $(TOR_DIR)
 	cd $(TOR_DIR) && make install
 	touch build-tor
 
-build-firefox: $(FIREFOX_DIR) $(CONFIG_SRC)/mozconfig-osx-$(ARCH_TYPE)
-	cp $(CONFIG_SRC)/mozconfig-osx-$(ARCH_TYPE) $(FIREFOX_DIR)/mozconfig
+build-firefox: $(FIREFOX_DIR) config/mozconfig-osx-$(ARCH_TYPE)
+	cp config/mozconfig-osx-$(ARCH_TYPE) $(FIREFOX_DIR)/mozconfig
 	cd $(FIREFOX_DIR) && make -f client.mk build
 	touch build-firefox
 
@@ -161,9 +161,6 @@ WGET:=$(shell which wget)
 
 ## Size of split archive volumes for WinRAR
 SPLITSIZE=1440k
-
-## Location of config files
-CONFIG_SRC=config
 
 ## Destination for the generic bundle
 DEST=generic-bundle
@@ -301,24 +298,24 @@ install-firefox:
 configure-apps:
 	## Configure Firefox preferences
 	#mkdir -p $(DEST)/.mozilla/Firefox/firefox.default
-	cp -R $(CONFIG_SRC)/firefox-profiles.ini $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profiles.ini
-	cp $(CONFIG_SRC)/bookmarks.html $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile
-	cp $(CONFIG_SRC)/no-polipo-4.0.js $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/prefs.js
-	cp $(CONFIG_SRC)/Info.plist $(DEST)/Contents
-	cp $(CONFIG_SRC)/PkgInfo $(DEST)/Contents
-	cp $(CONFIG_SRC)/qt.conf $(DEST)/Contents/MacOS/Vidalia.app/Contents/Resources
-	cp $(CONFIG_SRC)/vidalia.icns $(DEST)/Contents/Resources
+	cp -R config/firefox-profiles.ini $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profiles.ini
+	cp config/bookmarks.html $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile
+	cp config/no-polipo-4.0.js $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/prefs.js
+	cp config/Info.plist $(DEST)/Contents
+	cp config/PkgInfo $(DEST)/Contents
+	cp config/qt.conf $(DEST)/Contents/MacOS/Vidalia.app/Contents/Resources
+	cp config/vidalia.icns $(DEST)/Contents/Resources
 
 	## Configure Vidalia
 	mkdir -p $(DEST)/Library/Vidalia
 ifeq ($(USE_SANDBOX),1)
-	cp $(CONFIG_SRC)/vidalia.conf.ff-osx-sandbox $(DEST)/Library/Vidalia/vidalia.conf
+	cp config/vidalia.conf.ff-osx-sandbox $(DEST)/Library/Vidalia/vidalia.conf
 else
-	cp $(CONFIG_SRC)/vidalia.conf.ff-osx $(DEST)/Library/Vidalia/vidalia.conf
+	cp config/vidalia.conf.ff-osx $(DEST)/Library/Vidalia/vidalia.conf
 endif
 
 	## Configure Tor
-	cp $(CONFIG_SRC)/torrc-osx $(DEST)/Library/Vidalia/torrc
+	cp config/torrc-osx $(DEST)/Library/Vidalia/torrc
 	cp $(TOR_DIR)/src/config/geoip $(DEST)/Contents/Resources/Data/Tor/geoip
 	chmod 700 $(DATADIR)/Tor
 
@@ -407,8 +404,8 @@ endif
 patch-firefox-language:
 	## Patch the default Firefox prefs.js
 	## Don't use {} because they aren't always interpreted correctly. Thanks, sh. 
-	cp $(CONFIG_SRC)/no-polipo-4.0.js $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
-	cp $(CONFIG_SRC)/bookmarks.html $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile
+	cp config/no-polipo-4.0.js $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
+	cp config/bookmarks.html $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile
 	./patch-firefox-language.sh $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js $(LANGCODE) -e
 
 ## Fix prefs.js since extensions.checkCompatibility, false doesn't work

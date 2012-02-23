@@ -120,8 +120,8 @@ patch-mozbuild:
 	cp patch-mozilla-build.sh $(MOZ_BUILD)
 	cd $(MOZ_BUILD) && ./patch-mozilla-build.sh $(MSVC_VER)
 
-build-firefox: $(FIREFOX_DIR) $(CONFIG_SRC)/dot_mozconfig $(MOZ_BUILD) $(MOZ_BUILD)/start-msvc$(MSVC_VER).bat
-	cp $(CONFIG_SRC)/dot_mozconfig $(FIREFOX_DIR)/mozconfig
+build-firefox: $(FIREFOX_DIR) config/dot_mozconfig $(MOZBUILD) $(MOZ_BUILD)/start-msvc$(MSVC_VER).bat
+	cp config/dot_mozconfig $(FIREFOX_DIR)/mozconfig
 	cd $(MOZ_BUILD) && cmd.exe /c "start-msvc$(MSVC_VER).bat $(FIREFOX_DIR)"
 	touch build-firefox
 
@@ -149,9 +149,6 @@ LIBEVENT=$(COMPILED_LIBS)
 
 ## Size of split archive volumes for WinRAR
 SPLITSIZE=1440k
-
-## Location of config files
-CONFIG_SRC=config
 
 ## Destination for the generic bundle
 DEST="Generic Bundle"
@@ -321,32 +318,32 @@ configure-apps:
 
 	mkdir -p $(DEST)/FirefoxPortable/Data/profile
 	## Configure Firefox preferences
-	cp $(CONFIG_SRC)/windows-4.0.js $(DEST)/FirefoxPortable/App/DefaultData/profile/prefs.js
-	cp $(CONFIG_SRC)/windows-4.0.js $(DEST)/FirefoxPortable/Data/profile/prefs.js
-	cp $(CONFIG_SRC)/bookmarks.html $(DEST)/FirefoxPortable/App/DefaultData/profile/
+	cp config/windows-4.0.js $(DEST)/FirefoxPortable/App/DefaultData/profile/prefs.js
+	cp config/windows-4.0.js $(DEST)/FirefoxPortable/Data/profile/prefs.js
+	cp config/bookmarks.html $(DEST)/FirefoxPortable/App/DefaultData/profile/
 
 	## Set up alternate launcher
 	mv $(DEST)/FirefoxPortable/App/Firefox/firefox.exe $(DEST)/FirefoxPortable/App/Firefox/tbb-firefox.exe
 	
 	## Configure FirefoxPortable
-	cp $(CONFIG_SRC)/FirefoxPortable.ini $(DEST)/FirefoxPortable
-	cp $(CONFIG_SRC)/FirefoxPortableSettings.ini $(DEST)/FirefoxPortable/Data/settings
+	cp config/FirefoxPortable.ini $(DEST)/FirefoxPortable
+	cp config/FirefoxPortableSettings.ini $(DEST)/FirefoxPortable/Data/settings
 	
 	## Configure PidginPortable
 ifeq ($(USE_PIDGIN),1)
-	cp $(CONFIG_SRC)/PidginPortable.ini $(DEST)/PidginPortable
+	cp config/PidginPortable.ini $(DEST)/PidginPortable
 	mkdir -p $(DEST)/PidginPortable/Data/settings/.purple
-	cp $(CONFIG_SRC)/prefs.xml $(DEST)/PidginPortable/Data/settings/.purple
-	cp $(CONFIG_SRC)/PidginPortableSettings.ini $(DEST)/PidginPortable/Data/settings
+	cp config/prefs.xml $(DEST)/PidginPortable/Data/settings/.purple
+	cp config/PidginPortableSettings.ini $(DEST)/PidginPortable/Data/settings
 endif
 	## Configure Vidalia
 ifeq ($(USE_PIDGIN),1)
-	cp $(CONFIG_SRC)/vidalia.conf.ff+pidgin $(DEST)/Data/Vidalia/vidalia.conf
+	cp config/vidalia.conf.ff+pidgin $(DEST)/Data/Vidalia/vidalia.conf
 else
-	cp $(CONFIG_SRC)/vidalia.conf.ff $(DEST)/Data/Vidalia/vidalia.conf
+	cp config/vidalia.conf.ff $(DEST)/Data/Vidalia/vidalia.conf
 endif
 	## Configure Tor
-	cp $(CONFIG_SRC)/torrc $(DEST)/Data/Tor
+	cp config/torrc $(DEST)/Data/Tor
 	cp $(TOR)/src/config/geoip $(DEST)/Data/Tor
 
 launcher:
@@ -440,7 +437,7 @@ patch-firefox-language:
 
 ## Copy Firefox preferences from a run of FirefoxPortable to be the default
 apply-prefs:
-	cp $(DEST)/FirefoxPortable/Data/profile/prefs.js $(CONFIG_SRC)
+	cp $(DEST)/FirefoxPortable/Data/profile/prefs.js config
 
 print-version:
 	@echo $(RELEASE_VER)-$(BUILD_NUM)

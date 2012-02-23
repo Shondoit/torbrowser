@@ -106,7 +106,7 @@ build-tor: build-zlib build-openssl build-libevent $(TOR_DIR)
 ## Polipo doesn't use autoconf, so we just have to hack their Makefile
 ## This probably needs to be updated if Polipo ever updates their Makefile
 POLIPO_DIR=$(FETCH_DIR)/polipo-$(POLIPO_VER)
-POLIPO_MAKEFILE=$(CONFIG_SRC)/polipo-Makefile
+POLIPO_MAKEFILE=config/polipo-Makefile
 build-polipo:
 	cp $(POLIPO_MAKEFILE) $(POLIPO_DIR)/Makefile
 	cd $(POLIPO_DIR) && make && PREFIX=$(FETCH_DIR)/built/ make install.binary
@@ -114,8 +114,8 @@ build-polipo:
 build-pidgin:
 	echo "We're not building pidgin yet!"
 
-build-firefox: $(CONFIG_SRC)/dot_mozconfig $(FIREFOX_DIR)
-	cp $(CONFIG_SRC)/dot_mozconfig $(FIREFOX_DIR)/mozconfig
+build-firefox: config/dot_mozconfig $(FIREFOX_DIR)
+	cp config/dot_mozconfig $(FIREFOX_DIR)/mozconfig
 	cd $(FIREFOX_DIR) && make -f client.mk build
 	touch build-firefox
 
@@ -155,9 +155,6 @@ WGET:=$(shell which wget)
 
 ## Size of split archive volumes for WinRAR
 SPLITSIZE=1440k
-
-## Location of config files
-CONFIG_SRC=config
 
 ## Destination for the generic bundle
 DEST=generic-bundle
@@ -329,24 +326,24 @@ endif
 configure-apps:
 	## Configure Firefox preferences
 	mkdir -p $(DEST)/Data/profile/extensions
-	cp -R $(CONFIG_SRC)/firefox-profiles.ini $(DEST)/Data/profiles.ini
-	cp $(CONFIG_SRC)/bookmarks.html $(DEST)/Data/profile
-	cp $(CONFIG_SRC)/no-polipo-4.0.js $(DEST)/Data/profile/prefs.js
+	cp -R config/firefox-profiles.ini $(DEST)/Data/profiles.ini
+	cp config/bookmarks.html $(DEST)/Data/profile
+	cp config/no-polipo-4.0.js $(DEST)/Data/profile/prefs.js
 	## Configure Pidgin
 ifeq ($(USE_PIDGIN),1)
 	mkdir -p $(DEST)/PidginPortable/Data/settings/.purple
-	cp $(CONFIG_SRC)/prefs.xml $(DEST)/PidginPortable/Data/settings/.purple
+	cp config/prefs.xml $(DEST)/PidginPortable/Data/settings/.purple
 endif
 	## Configure Vidalia
 ifeq ($(USE_PIDGIN),1)
-	cp $(CONFIG_SRC)/vidalia.conf.ff+pidgin-linux $(DEST)/Data/Vidalia/vidalia.conf
+	cp config/vidalia.conf.ff+pidgin-linux $(DEST)/Data/Vidalia/vidalia.conf
 else
-	cp $(CONFIG_SRC)/vidalia.conf.ff-linux $(DEST)/Data/Vidalia/vidalia.conf
+	cp config/vidalia.conf.ff-linux $(DEST)/Data/Vidalia/vidalia.conf
 endif
 	## Configure Polipo
-	#cp $(CONFIG_SRC)/polipo.conf $(DEST)/Data/Polipo/polipo.conf
+	#cp config/polipo.conf $(DEST)/Data/Polipo/polipo.conf
 	## Configure Tor
-	cp $(CONFIG_SRC)/torrc-linux $(DEST)/Data/Tor/torrc
+	cp config/torrc-linux $(DEST)/Data/Tor/torrc
 	cp $(TOR_DIR)/src/config/geoip $(DEST)/Data/Tor/geoip
 	chmod 700 $(DEST)/Data/Tor
 
@@ -433,10 +430,10 @@ patch-firefox-language:
 	## Patch the default Firefox prefs.js
 	## Don't use {} because they aren't always interpreted correctly. Thanks, sh. 
 	mkdir -p $(BUNDLE)/App/Firefox/defaults/profile/
-	cp $(CONFIG_SRC)/bookmarks.html $(BUNDLE)/App/Firefox/defaults/profile/
-	cp $(CONFIG_SRC)/no-polipo-4.0.js $(BUNDLE)/App/Firefox/defaults/profile/prefs.js
-	cp $(CONFIG_SRC)/bookmarks.html $(BUNDLE)/Data/profile
-	cp $(CONFIG_SRC)/no-polipo-4.0.js $(BUNDLE)/Data/profile/prefs.js
+	cp config/bookmarks.html $(BUNDLE)/App/Firefox/defaults/profile/
+	cp config/no-polipo-4.0.js $(BUNDLE)/App/Firefox/defaults/profile/prefs.js
+	cp config/bookmarks.html $(BUNDLE)/Data/profile
+	cp config/no-polipo-4.0.js $(BUNDLE)/Data/profile/prefs.js
 	./patch-firefox-language.sh $(BUNDLE)/App/Firefox/defaults/profile/prefs.js $(LANGCODE) -e
 	./patch-firefox-language.sh $(BUNDLE)/Data/profile/prefs.js $(LANGCODE) -e
 
