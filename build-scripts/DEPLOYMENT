@@ -32,14 +32,14 @@ Edit the Makefile:
 
 Run:
  $ make reallyclean
- $ USE_PIDGIN=1 make compressed-bundle_de split-bundle_de
+ $ USE_PIDGIN=1 make compressed-bundle_de
 
 This will take around 10 minutes
 
 Initial check
 =============
 
-Try out tor-browser-..._de.exe and tor-browser-..._de_split.part01.exe
+Try out tor-browser-..._de.exe
 
 Make sure that Firefox, Pidgin and Torbutton work and are in the right
 language
@@ -108,9 +108,6 @@ Copy the files from Windows to the machine with your OpenPGP keys
 
 Sign them all using the "gpg -ab" command:
  find . -type f -exec gpg --use-agent -ab {} \;
-
-Move the split signatures to a directory:
- for i in *_split; do mkdir $i/signatures; mv $i/*.asc $i/signatures;done
 
 Upload to www.torproject.org
 ============================

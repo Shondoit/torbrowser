@@ -206,16 +206,6 @@ Run msysDTK-1.0.1.exe and install it into C:\msys\1.0
 
 This will give you Perl, which is necessary for the OpenSSL build
 
-Installing WinRAR
-=================
-
-To produce self extracting split bundles, we use WinRAR.
-
-Download a trial copy from the WinRAR website:
-http://www.rarlab.com/rar/wrar380.exe
-
-Install it into C:\Program Files\WinRAR
-
 Installing autoconf update
 ==========================
 

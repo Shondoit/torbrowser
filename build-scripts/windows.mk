@@ -132,9 +132,6 @@ ZLIB=$(COMPILED_LIBS)
 LIBEVENT=$(COMPILED_LIBS)
 
 
-## Size of split archive volumes for WinRAR
-SPLITSIZE=1440k
-
 ## Destination for the generic bundle
 DEST="Generic Bundle"
 
@@ -185,7 +182,7 @@ all-bundles-both:
 	USE_PIDGIN=0 make -f windows.mk all-bundles
 	make -f windows.mk clean
 
-all-bundles: all-compressed-bundles all-split-bundles
+all-bundles: all-compressed-bundles
 
 all-compressed-bundles: compressed-bundle_ar \
 	compressed-bundle_de \
@@ -199,19 +196,6 @@ all-compressed-bundles: compressed-bundle_ar \
 	compressed-bundle_ru \
 	compressed-bundle_zh-CN \
 	compressed-bundle_it
-
-all-split-bundles: split-bundle_ar \
-	split-bundle_de \
-	split-bundle_en-US \
-	split-bundle_es-ES \
-	split-bundle_fa \
-	split-bundle_fr \
-	split-bundle_nl \
-	split-bundle_pl \
-	split-bundle_pt-PT \
-	split-bundle_ru \
-	split-bundle_zh-CN \
-	split-bundle_it
 
 ##
 ## Cleanup
@@ -228,10 +212,8 @@ clean:
 reallyclean: clean
 	rm -fr $(IM_COMPRESSED_BASENAME)*_*.exe
 	rm -fr $(IM_COMPRESSED_BASENAME)*_*.rar 
-	rm -fr $(IM_COMPRESSED_BASENAME)*_*_split
 	rm -fr $(DEFAULT_COMPRESSED_BASENAME)*_*.exe
 	rm -fr $(DEFAULT_COMPRESSED_BASENAME)*_*.rar
-	rm -fr $(DEFAULT_COMPRESSED_BASENAME)*_*_split
 
 ##
 ## Scan .exe files against VirusTotal to check for false positives
@@ -342,8 +324,6 @@ bundle_%:
 	LANGCODE=$* make -f windows.mk bundle-localized
 compressed-bundle_%:
 	LANGCODE=$* make -f windows.mk compressed-bundle-localized
-split-bundle_%:
-	LANGCODE=$* make -f windows.mk split-bundle-localized
 
 bundle-localized_%.stamp:
 	make -f windows.mk copy-files_$* install-extensions install-torbutton install-httpseverywhere install-noscript \
@@ -355,11 +335,6 @@ bundle-localized: bundle-localized_$(LANGCODE).stamp
 compressed-bundle-localized: bundle-localized_$(LANGCODE).stamp
 	rm -f $(COMPRESSED_NAME)_$(LANGCODE).exe
 	cd $(NAME)_$(LANGCODE); $(SEVENZIP) a -mx9 -sfx7z.sfx ../$(COMPRESSED_NAME)_$(LANGCODE).exe $(NAME)
-
-split-bundle-localized: bundle-localized_$(LANGCODE).stamp
-	rm -fr $(COMPRESSED_NAME)_$(LANGCODE)_split; mkdir $(COMPRESSED_NAME)_$(LANGCODE)_split
-	cd $(NAME)_$(LANGCODE); $(WINRAR) a -r -s -ibck -sfx -v$(SPLITSIZE) \
-	    ../$(COMPRESSED_NAME)_$(LANGCODE)_split/$(COMPRESSED_NAME)_$(LANGCODE)_split.exe $(NAME)
 
 copy-files_%: generic-bundle.stamp
 	rm -fr $(NAME)_$*

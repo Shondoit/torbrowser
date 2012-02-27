@@ -124,9 +124,6 @@ PIDGIN=$(COMPILED_BINS)/pidgin
 ## Location of utility applications
 WGET:=$(shell which wget)
 
-## Size of split archive volumes for WinRAR
-SPLITSIZE=1440k
-
 ## Destination for the generic bundle
 DEST=generic-bundle
 
