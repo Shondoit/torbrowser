@@ -423,17 +423,6 @@ Then run:
  > cmake -G "MinGW Makefiles" .
  > mingw32-make
 
-Patches for possible future inclusion
-=====================================
-
-A patch to close the Browser when Vidalia exits is in:
- ../src/current-patches/vidalia-killbrowser.patch
-
-This is not yet useful, since killing FirefoxPortable does not cause
-Firefox to exit. This patch has not yet been applied to Vidalia.
-
-Currently this is not being used by the Torbrowser.
-
 Further information
 ===================
 
