@@ -1,6 +1,7 @@
 [General]
 InterfaceStyle=Cleanlooks
 LanguageCode=en
+PluginPath=./Data/Vidalia/plugins
 
 [Tor]
 ControlPort=9051
