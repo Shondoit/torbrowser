@@ -15,7 +15,7 @@
 # This makes the German bundle
 ### make -f linux-alpha.mk bundle_de
 # This makes the German compressed bundle
-### make -f linux-alpha.mk compressed-bundle_de 
+### make -f linux-alpha.mk compressed-bundle_de
 # It's possible you may also want to do:
 ### make -f linux-alpha.mk build-all-binaries
 ### make -f linux-alpha.mk all-compressed-bundles
@@ -36,7 +36,7 @@ include $(PWD)/versions-alpha.mk
 
 ## Architecture
 ARCH_TYPE=$(shell uname -m)
-BUILD_NUM=4
+BUILD_NUM=1
 PLATFORM=Linux
 
 ## Location of directory for source unpacking
@@ -281,7 +281,7 @@ DATADIR=$(DEST)/Data
 TB_TMPDIR=$(DEST)/tmp
 
 ## Build directory structure
-directory-structure: 
+directory-structure:
 	rm -fr $(DEST)
 	mkdir -p $(APPDIR)
 	mkdir -p $(LIBSDIR)
@@ -303,14 +303,14 @@ install-binaries:
 	cp -d $(QT)/libQtScript.so* $(LIBSDIR)
 	#rm $(LIBSDIR)/libQt*.so*.debug
 	# zlib
-	cp -d $(ZLIB)/libz.so $(ZLIB)/libz.so.1 $(ZLIB)/libz.so.1.2.5 $(LIBSDIR)/libz
+	cp -d $(ZLIB)/libz.so $(ZLIB)/libz.so.1 $(ZLIB)/libz.so.1.2.6 $(LIBSDIR)/libz
 	# Libevent
-	cp -d $(LIBEVENT)/libevent-2.0.so.5 $(LIBEVENT)/libevent-2.0.so.5.1.4 $(LIBEVENT)/libevent_core.so \
-	   $(LIBEVENT)/libevent_core-2.0.so.5 $(LIBEVENT)/libevent_core-2.0.so.5.1.4 \
-	   $(LIBEVENT)/libevent_extra-2.0.so.5 $(LIBEVENT)/libevent_extra-2.0.so.5.1.4 \
+	cp -d $(LIBEVENT)/libevent-2.0.so.5 $(LIBEVENT)/libevent-2.0.so.5.1.5 $(LIBEVENT)/libevent_core.so \
+	   $(LIBEVENT)/libevent_core-2.0.so.5 $(LIBEVENT)/libevent_core-2.0.so.5.1.5 \
+	   $(LIBEVENT)/libevent_extra-2.0.so.5 $(LIBEVENT)/libevent_extra-2.0.so.5.1.5 \
 	   $(LIBEVENT)/libevent_extra.so $(LIBEVENT)/libevent.so $(LIBSDIR)
 	# libpng
-	cp -d $(LIBPNG)/libpng14.so* $(LIBSDIR) 
+	cp -d $(LIBPNG)/libpng15.so* $(LIBSDIR)
 	# OpenSSL
 	cp -d $(OPENSSL)/libssl.so* $(OPENSSL)/libcrypto.so* $(LIBSDIR)
 	# Vidalia
@@ -326,9 +326,9 @@ install-docs:
 	cp $(VIDALIA_DIR)/LICENSE* $(VIDALIA_DIR)/CREDITS $(DOCSDIR)/Vidalia
 	cp $(TOR_DIR)/LICENSE $(TOR_DIR)/README $(DOCSDIR)/Tor
 	cp $(QT_DIR)/LICENSE.GPL* $(QT_DIR)/LICENSE.LGPL $(DOCSDIR)/Qt
-	cp ../changelog.linux-2.2 $(DOCSDIR)/changelog
+	cp ../changelog.linux-2.3 $(DOCSDIR)/changelog
 	# This should be updated to be more generic (version-wise) and more Linux specific
-	cp ../README.LINUX-2.2 $(DOCSDIR)/README-TorBrowserBundle
+	cp ../README.LINUX-2.3 $(DOCSDIR)/README-TorBrowserBundle
 
 ## Copy over Firefox
 install-firefox:
@@ -398,7 +398,7 @@ torbutton.xpi:
 	$(WGET) -O $@ $(TORBUTTON)
 
 ## NoScript development version
-noscript.xpi: 
+noscript.xpi:
 	$(WGET) -O $@ $(NOSCRIPT)
 
 ## BetterPrivacy
@@ -495,7 +495,7 @@ endif
 
 patch-firefox-language:
 	## Patch the default Firefox prefs.js
-	## Don't use {} because they aren't always interpreted correctly. Thanks, sh. 
+	## Don't use {} because they aren't always interpreted correctly. Thanks, sh.
 	mkdir -p $(BUNDLE)/App/Firefox/defaults/profile/
 	cp $(CONFIG_SRC)/bookmarks.html $(BUNDLE)/App/Firefox/defaults/profile/
 	cp $(CONFIG_SRC)/no-polipo-4.0.js $(BUNDLE)/App/Firefox/defaults/profile/prefs.js

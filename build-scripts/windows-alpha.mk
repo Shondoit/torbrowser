@@ -15,7 +15,7 @@
 # This makes the German bundle
 ### make -f windows-alpha.mk bundle_de
 # This makes the German compressed bundle
-### make -f windows-alpha.mk compressed-bundle_de 
+### make -f windows-alpha.mk compressed-bundle_de
 # It's possible you may also want to do:
 ### make -f windows-alpha.mk build-all-binaries
 ### make -f windows-alpha.mk all-compressed-bundles
@@ -31,7 +31,7 @@
 
 ## Include versions
 include $(PWD)/versions-alpha.mk
-BUILD_NUM=4
+BUILD_NUM=1
 PLATFORM=Windows
 
 ## Location of required libraries
@@ -263,7 +263,7 @@ clean:
 ## Also remove the output files
 reallyclean: clean
 	rm -fr $(IM_COMPRESSED_BASENAME)*_*.exe
-	rm -fr $(IM_COMPRESSED_BASENAME)*_*.rar 
+	rm -fr $(IM_COMPRESSED_BASENAME)*_*.rar
 	rm -fr $(IM_COMPRESSED_BASENAME)*_*_split
 	rm -fr $(DEFAULT_COMPRESSED_BASENAME)*_*.exe
 	rm -fr $(DEFAULT_COMPRESSED_BASENAME)*_*.rar
@@ -275,7 +275,7 @@ reallyclean: clean
 
 virus-scan:
 	$(VIRUSSCAN) $(VIDALIA)/build/src/vidalia/vidalia.exe
-	$(VIRUSSCAN) $(TOR)/src/or/tor.exe 
+	$(VIRUSSCAN) $(TOR)/src/or/tor.exe
 	$(VIRUSSCAN) $(TOR)/src/tools/tor-resolve.exe
 
 ##
@@ -292,7 +292,7 @@ APPDIR=$(DEST)/App
 DOCSDIR=$(DEST)/Docs
 DATADIR=$(DEST)/Data
 
-directory-structure: 
+directory-structure:
 	rm -fr $(DEST)
 	mkdir -p $(APPDIR)
 	mkdir -p $(DATADIR)/Tor
@@ -301,7 +301,7 @@ directory-structure:
 
 ## Package up all the Vidalia and Tor pre-requisites
 ## Filenames extracted using Dependency Walker <http://www.dependencywalker.com/>
-install-binaries: 
+install-binaries:
 	cp $(MING)/mingwm10.dll $(APPDIR)
 	cp $(MING)/libgnurx-0.dll $(APPDIR)
 	cp $(QT_LIB)/QtScript4.dll $(QT_LIB)/QtCore4.dll $(QT_LIB)/QtGui4.dll $(QT_LIB)/QtNetwork4.dll $(QT_LIB)/QtXml4.dll $(QT_LIB)/libgcc_s_dw2-1.dll $(APPDIR) 
@@ -321,8 +321,8 @@ install-docs:
 	cp $(TOR)/LICENSE $(TOR)/README $(DOCSDIR)/Tor
 	cp $(QT_LIB)/../LICENSE.GPL* $(QT_LIB)/../LICENSE.LGPL $(DOCSDIR)/Qt
 	cp $(MING)/../msys/1.0/share/doc/MSYS/COPYING $(DOCSDIR)/MinGW
-	cp ../changelog.windows-2.2 $(DOCSDIR)/changelog
-	cp ../README.WIN-2.2 $(DOCSDIR)/README-TorBrowserBundle
+	cp ../changelog.windows-2.3 $(DOCSDIR)/changelog
+	cp ../README.WIN-2.3 $(DOCSDIR)/README-TorBrowserBundle
 
 ## Copy over FirefoxPortable
 install-firefoxportable:
@@ -345,11 +345,11 @@ configure-apps:
 
 	## Set up alternate launcher
 	mv $(DEST)/FirefoxPortable/App/Firefox/firefox.exe $(DEST)/FirefoxPortable/App/Firefox/tbb-firefox.exe
-	
+
 	## Configure FirefoxPortable
 	cp $(CONFIG_SRC)/FirefoxPortable.ini $(DEST)/FirefoxPortable
 	cp $(CONFIG_SRC)/FirefoxPortableSettings.ini $(DEST)/FirefoxPortable/Data/settings
-	
+
 	## Configure PidginPortable
 ifeq ($(USE_PIDGIN),1)
 	cp $(CONFIG_SRC)/PidginPortable.ini $(DEST)/PidginPortable
@@ -392,7 +392,7 @@ betterprivacy.xpi:
 	$(PYGET) -O $@ $(BETTERPRIVACY)
 
 ## NoScript development version
-noscript.xpi: 
+noscript.xpi:
 	$(PYGET) -O $@ $(NOSCRIPT)
 
 ## HTTPS Everywhere

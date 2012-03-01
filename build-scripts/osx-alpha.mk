@@ -15,7 +15,7 @@
 # This makes the German bundle
 ### make -f osx-alpha.mk bundle_de
 # This makes the German compressed bundle
-### make -f osx-alpha.mk compressed-bundle_de 
+### make -f osx-alpha.mk compressed-bundle_de
 # It's possible you may also want to do:
 ### make -f osx-alpha.mk build-all-binaries
 ### make -f osx-alpha.mk all-compressed-bundles
@@ -261,7 +261,7 @@ DATADIR=$(DEST)/Contents/Resources/Data
 TB_TMPDIR=$(DEST)/Contents/SharedSupport
 
 ## Build directory structure
-directory-structure: 
+directory-structure:
 	rm -fr $(DEST)
 	mkdir -p $(APPDIR)
 	mkdir -p $(APPDIR)/Firefox.app/Contents/MacOS/Data/profile
@@ -273,7 +273,7 @@ directory-structure:
 
 ## Package up all the Vidalia and Tor pre-requisites
 ## Firefox and Pidgin are installed in their own targets
-install-binaries: 
+install-binaries:
 	# Vidalia
 	cp -R $(VIDALIA) $(APPDIR)/Vidalia.app
 	# Tor (perhaps we want tor-resolve too?)
@@ -288,9 +288,9 @@ install-docs:
 	cp $(VIDALIA_DIR)/LICENSE* $(VIDALIA_DIR)/CREDITS $(DOCSDIR)/Vidalia
 	cp $(TOR_DIR)/LICENSE $(TOR_DIR)/README $(DOCSDIR)/Tor
 	#cp $(QT_DIR)/LICENSE.GPL* $(QT_DIR)/LICENSE.LGPL $(DOCSDIR)/Qt
-	cp ../changelog.osx-2.2 $(DOCSDIR)/changelog
+	cp ../changelog.osx-2.3 $(DOCSDIR)/changelog
 	cp ../LICENSE $(DEST)
-	cp ../README.OSX-2.2 $(DEST)/README-TorBrowserBundle
+	cp ../README.OSX-2.3 $(DEST)/README-TorBrowserBundle
 
 ## Copy over Firefox
 install-firefox:
@@ -344,7 +344,7 @@ betterprivacy.xpi:
 	$(WGET) --no-check-certificate -O $@ $(BETTERPRIVACY)
 
 ## NoScript development version
-noscript.xpi: 
+noscript.xpi:
 	$(WGET) --no-check-certificate -O $@ $(NOSCRIPT)
 
 ## HTTPS Everywhere
@@ -419,12 +419,12 @@ install-betterprivacy: betterprivacy.xpi
 	mkdir -p $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\}
 	cp betterprivacy.xpi $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\}/betterprivacy.zip
 	(cd $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\} && unzip *.zip && rm *.zip)
-	
+
 install-httpseverywhere: httpseverywhere.xpi
 	mkdir -p $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/https-everywhere@eff.org
 	cp httpseverywhere.xpi $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/https-everywhere@eff.org/httpseverywhere.zip
 	(cd $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/https-everywhere@eff.org && unzip *.zip && rm *.zip)
-	
+
 install-noscript: noscript.xpi
 	mkdir -p $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/\{73a6fe31-595d-460b-a920-fcc0f8843232\}
 	cp noscript.xpi $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/extensions/\{73a6fe31-595d-460b-a920-fcc0f8843232\}/noscript.zip
@@ -462,5 +462,5 @@ print-version:
 write-tbb-version:
 	printf 'user_pref("torbrowser.version", "%s");\n' "$(RELEASE_VER)-$(BUILD_NUM)-$(PLATFORM)-$(ARCH_TYPE)" >> $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
 
-final: 
+final:
 	mv $(BUNDLE) $(BUNDLE).app

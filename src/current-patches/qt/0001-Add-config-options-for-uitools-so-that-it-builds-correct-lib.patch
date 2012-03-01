@@ -19,6 +19,6 @@ index 2f48778..84e4893 100644
 +CONFIG += uitools plugin link_prl
  SOURCES += $$GENERATEDCPP/com_trolltech_qt_uitools/plugin.cpp
  include($$GENERATEDCPP/com_trolltech_qt_uitools/com_trolltech_qt_uitools.pri)
--- 
+--
 1.7.7.4
 
