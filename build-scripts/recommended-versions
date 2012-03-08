@@ -3,5 +3,9 @@
 "2.2.35-7.1-MacOS-x86_64",
 "2.2.35-7.1-Windows",
 "2.2.35-7.2-Linux-i686",
-"2.2.35-7.2-Linux-x86_64"
+"2.2.35-7.2-Linux-x86_64",
+"2.3.12-alpha-1-MacOS-i386",
+"2.3.12-alpha-1-Windows",
+"2.3.12-alpha-1-Linux-i386",
+"2.3.12-alpha-1-Linux-x86_64"
 ]
