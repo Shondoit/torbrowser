@@ -5,8 +5,6 @@
 ### Copyright 2008 The Tor Project <https://www.torproject.org/>
 ### See LICENSE for licensing information
 ###
-### $Id$
-###
 
 Contents
 ========
@@ -21,7 +19,6 @@ Contents
 - Install Qt
 - Install msysDTK
 - Install WinRAR
-- Building Polipo
 - Building zlib
 - Building OpenSSL
 - Building libevent
@@ -38,11 +35,10 @@ An Introduction to Building Tor Browser Bundle
 To build Tor Browser Bundle, you need to have built:
  Vidalia (in /c/build/vidalia-<version> by default)
  Tor (in /c/build/tor-<version> by default)
- Polipo (in /c/build/polipo-<version> by default)
 and have uncompressed Firefox Portable or produce a custom build Firefox
  FirefoxPortable (in /c/build/FirefoxPortable by default)
 
-Instructions for building Vidalia, Polipo and Tor are included below.
+Instructions for building Vidalia, and Tor are included below.
 
 As a prerequisite for all builds, we'll need a build directory:
 
@@ -95,22 +91,6 @@ and future releases:
 The suggested version is "7-Zip 4.57":
 
     http://downloads.sourceforge.net/sevenzip/7z457.exe
-
-Installing Python
-=================
-
-Either Python or wget is required to download Firefox extensions. Python is the
-suggested method.  To use Python, you'll need to download Python and install
-it. The suggested method is a pre-built Windows build.
-Download and install the following msi installer:
-
-    http://python.org/ftp/python/2.5.2/python-2.5.2.msi
-
-Download and verify the signature:
-
-    http://www.python.org/download/releases/2.5.2/python-2.5.2.msi.asc
-
-When prompted for a directory, install it into: C:\Python25\
 
 Installing MinGW
 (MinGW - Minimalist GNU for Windows)
@@ -226,16 +206,6 @@ Run msysDTK-1.0.1.exe and install it into C:\msys\1.0
 
 This will give you Perl, which is necessary for the OpenSSL build
 
-Installing WinRAR
-=================
-
-To produce self extracting split bundles, we use WinRAR.
-
-Download a trial copy from the WinRAR website:
-http://www.rarlab.com/rar/wrar380.exe
-
-Install it into C:\Program Files\WinRAR
-
 Installing autoconf update
 ==========================
 
@@ -246,49 +216,6 @@ Now you'll download download the mingw autoconf-2.59 update:
 Extract the .tar.gz like so in your MSYS console:
 
     tar -C / -xvjf /c/Documents\ and\ Settings/Administrator/Desktop/msys-autoconf-2.59.tar.bz2
-
-Building Polipo
-===============
-
-In order to enable the forbiddenFile functionality, the GNU Regex
-library is required. Download the -bin and -dev tarballs from:
-
-    http://sourceforge.net/project/showfiles.php?group_id=2435&package_id=73286&release_id=140957
-
-Extract them both into you MinGW directory, e.g.
-
-    tar -C /c/MinGW/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/mingw-libgnurx-2.5.1-bin.tar.gz
-    tar -C /c/MinGW/ -xvzf /c/Documents\ and\ Settings/Administrator/Desktop/mingw-libgnurx-2.5.1-dev.tar.gz
-
-Download Polipo sources:
-
-    http://www.pps.jussieu.fr/~jch/software/files/polipo/polipo-1.0.4.1.tar.gz
-    http://www.pps.jussieu.fr/~jch/software/files/polipo/polipo-1.0.4.1.tar.gz.asc
-
-Verify the PGP signature of the above files by following the developer directions:
-
-    http://www.pps.jussieu.fr/~jch/software/pgp-validating.html
-
-Unpack the Polipo source code into /c/build/polipo-1.0.4.1/ :
-
-    cd /c/build/
-    tar -C . -vxzf /c/Documents\ and\ Settings/Administrator/Desktop/polipo-1.0.4.1.tar.gz
-
-Download a Tor contributed Polipo specific Makefile:
-
-    https://svn.torproject.org/svn/tor/trunk/contrib/polipo/Makefile.mingw
-
-Replace the stock Polipo Makefile with the one above:
-
-    mv Makefile Makefile-dist-unused
-    mv /c/Documents\ and\ Settings/Administrator/Desktop/Makefile.mingw Makefile
-
-Now build Polipo:
-
-    make
-
-You should have a working binary. If you don't have gcc, it means your path is
-broken. Ensure you applied the aforementioned /etc/fstab suggestion.
 
 Building zlib
 =============
@@ -496,17 +423,6 @@ Then run:
  > cmake -G "MinGW Makefiles" .
  > mingw32-make
 
-Patches for possible future inclusion
-=====================================
-
-A patch to close the Browser when Vidalia exits is in:
- ../src/current-patches/vidalia-killbrowser.patch
-
-This is not yet useful, since killing FirefoxPortable does not cause
-Firefox to exit. This patch has not yet been applied to Vidalia.
-
-Currently this is not being used by the Torbrowser.
-
 Further information
 ===================
 
@@ -601,8 +517,7 @@ Customization
 
 The locations of Qt, MinGW32, the Vidalia/Tor build directory, 7zip,
 FirefoxPortable can be altered in Makefile. The WGET variable should
-be either set to the location of a wget binary, or a command line for
-executing pyget.py under the installed Python interpreter.
+be set to the location of a wget binary.
 
 Building the Tor Browser Bundle
 ===============================

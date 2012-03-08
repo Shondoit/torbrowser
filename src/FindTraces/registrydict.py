@@ -3,7 +3,6 @@
 ### Last Updated: 2008/03/11
 ### Version no: 1.0
 ### URL: http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/551761
-### $Id$
 ###
 ### Requires pywin32 (http://python.net/crew/mhammond/win32/Downloads.html)
 

@@ -6,8 +6,6 @@
 ### Copyright 2007-2008 Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217/>
 ### See LICENSE for licensing information
 ###
-### $Id$
-###
 
 ## Parse command line
 FILENAME=$1

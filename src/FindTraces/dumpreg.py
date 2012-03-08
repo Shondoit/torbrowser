@@ -7,8 +7,6 @@
 ### Copyright 2007 Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217/>
 ### See LICENSE for licensing information
 ###
-### $Id$
-###
 
 import win32con
 from registrydict import RegistryDict

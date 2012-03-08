@@ -6,8 +6,6 @@
 ### Copyright 2008 Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217/>
 ### See LICENSE for licensing information
 ###
-### $Id: patch-vidalia-language.sh 13521 2008-02-15 12:37:49Z sjm217 $
-###
 
 ## Parse command line
 FILENAME=$1

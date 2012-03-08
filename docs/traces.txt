@@ -3,8 +3,6 @@
 ###
 ### Steven J. Murdoch <http://www.cl.cam.ac.uk/users/sjm217/>
 ###
-### $Id$
-###
 
 Filesystem modifications
 ========================
@@ -62,7 +60,7 @@ modified by Tor Browser Bundle.
 
 On a Windows XP installation, with Firefox installed, only one registry key is
 modified: HKLM\Software\Microsoft\Cryptography\RNG\Seed (by vidalia.exe,
-tor.exe, FirefoxPortable.exe, firefox.exe, polipo.exe)
+tor.exe, FirefoxPortable.exe, firefox.exe)
 
 Without Firefox installed, there appears to be no difference, although
 it is difficult to be certain since Windows makes changes to a large

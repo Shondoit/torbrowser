@@ -5,127 +5,100 @@
 ### Copyright 2009 Jacob Appelbaum <jacob@appelbaum.net>
 ### Copyright 2010 Erinn Clark <erinn@torproject.org>
 ###
-### You want to do the following currently supported activities:
-# This downloads and compiles everything
-### make -f linux.mk build-all-binaries
-# This makes a generic bundle
-### make -f linux.mk generic-bundle
-# This makes the English bundle
-### make -f linux.mk bundle_en-US
-# This makes the German bundle
-### make -f linux.mk bundle_de
-# This makes the German compressed bundle
-### make -f linux.mk compressed-bundle_de 
-# It's possible you may also want to do:
-### make -f linux.mk build-all-binaries
-### make -f linux.mk all-compressed-bundles
-### ...
-### Look in tbbl-dist/ for your files.
 ###
 ### See LICENSE for licensing information
-###
-### $Id: Makefile 19973 2009-07-12 02:26:03Z phobos $
 ###
 
 #####################
 ### Configuration ###
 #####################
 
-## Include versions
-include $(PWD)/versions.mk
-
 ## Architecture
 ARCH_TYPE=$(shell uname -m)
 BUILD_NUM=7.2
 PLATFORM=Linux
 
-## Location of directory for source unpacking
-FETCH_DIR=/srv/build-trees/build-alpha-$(ARCH_TYPE)
+## Build machine specific settings
+# Number of cpu cores used to build in parallel
+NUM_CORES=2
+
+## Location of directory for source downloading
+FETCH_DIR=/srv/build-trees/build-alpha
+## Location of directory for source unpacking/building
+BUILD_DIR=$(FETCH_DIR)/$(ARCH_TYPE)
 ## Location of directory for prefix/destdir/compiles/etc
-BUILT_DIR=$(FETCH_DIR)/built
+BUILT_DIR=$(BUILD_DIR)/built
 TBB_FINAL=$(BUILT_DIR)/TBBL
 
-source-dance: fetch-source unpack-source
-	echo "We're ready for building now."
+## Include versions (must happen after variable definitions above
+include $(PWD)/versions.mk
 
-ZLIB_DIR=$(FETCH_DIR)/zlib-$(ZLIB_VER)
 ZLIB_OPTS=--shared --prefix=$(BUILT_DIR)
-build-zlib:
+build-zlib: $(ZLIB_DIR)
 	cd $(ZLIB_DIR) && ./configure $(ZLIB_OPTS)
-	cd $(ZLIB_DIR) && make
+	cd $(ZLIB_DIR) && make -j $(NUM_CORES)
 	cd $(ZLIB_DIR) && make install
+	touch $(STAMP_DIR)/build-zlib
 
-OPENSSL_DIR=$(FETCH_DIR)/openssl-$(OPENSSL_VER)
-OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 shared zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -I$(BUILT_DIR)/include -L$(BUILT_DIR)/lib
-build-openssl:
-	cd $(OPENSSL_DIR) && ./config $(OPENSSL_OPTS)
-	cd $(OPENSSL_DIR) && make depend
-	cd $(OPENSSL_DIR) && make
-	cd $(OPENSSL_DIR) && make install
-
-QT_DIR=$(FETCH_DIR)/qt-everywhere-opensource-src-$(QT_VER)
-QT_BUILD_PREFS=-system-zlib -confirm-license -opensource -openssl-linked -no-qt3support -fast -release -nomake demos -nomake examples
-QT_OPTS=$(QT_BUILD_PREFS) -prefix $(BUILT_DIR) -I $(BUILT_DIR)/include -I $(BUILT_DIR)/include/openssl/ -L$(BUILT_DIR)/lib
-build-qt:
-	cd $(QT_DIR) && ./configure $(QT_OPTS)
-	cd $(QT_DIR) && make
-	cd $(QT_DIR) && make install
-
-VIDALIA_DIR=$(FETCH_DIR)/vidalia-$(VIDALIA_VER)
-VIDALIA_OPTS=-DOPENSSL_LIBCRYPTO=$(BUILT_DIR)/lib/libcrypto.so.1.0.0 -DOPENSSL_LIBSSL=$(BUILT_DIR)/lib/libssl.so.1.0.0 -DCMAKE_BUILD_TYPE=debug -DQT_QMAKE_EXECUTABLE=$(BUILT_DIR)/bin/qmake ..
-build-vidalia:
-	-mkdir $(VIDALIA_DIR)/build
-	cd $(VIDALIA_DIR)/build && cmake $(VIDALIA_OPTS) && make
-	cd $(VIDALIA_DIR)/build && DESTDIR=$(BUILT_DIR) make install
-
-LIBEVENT_DIR=$(FETCH_DIR)/libevent-$(LIBEVENT_VER)
-LIBEVENT_OPTS=--prefix=$(BUILT_DIR)
-build-libevent:
-	cd $(LIBEVENT_DIR) && ./configure $(LIBEVENT_OPTS)
-	cd $(LIBEVENT_DIR) && make -j2
-	cd $(LIBEVENT_DIR) && make install
-
-LIBPNG_DIR=$(FETCH_DIR)/libpng-$(LIBPNG_VER)
 LIBPNG_OPTS=--prefix=$(BUILT_DIR)
-build-libpng:
+build-libpng: $(LIBPNG_DIR)
 	cd $(LIBPNG_DIR) && ./configure $(LIBPNG_OPTS)
 	cd $(LIBPNG_DIR) && make
 	cd $(LIBPNG_DIR) && make install
+	touch $(STAMP_DIR)/build-libpng
 
-TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)
+OPENSSL_OPTS=-no-idea -no-rc5 -no-md2 shared zlib --prefix=$(BUILT_DIR) --openssldir=$(BUILT_DIR) -I$(BUILT_DIR)/include -L$(BUILT_DIR)/lib
+build-openssl: build-zlib $(OPENSSL_DIR)
+	cd $(OPENSSL_DIR) && ./config $(OPENSSL_OPTS)
+	cd $(OPENSSL_DIR) && make depend
+	cd $(OPENSSL_DIR) && make
+	cd $(OPENSSL_DIR) && make install_sw
+	touch $(STAMP_DIR)/build-openssl
+
+QT_BUILD_PREFS=-system-zlib -confirm-license -opensource -openssl-linked -no-qt3support -fast -release -nomake demos -nomake examples
+QT_OPTS=$(QT_BUILD_PREFS) -prefix $(BUILT_DIR) -I $(BUILT_DIR)/include -I $(BUILT_DIR)/include/openssl/ -L$(BUILT_DIR)/lib
+build-qt: build-zlib build-openssl $(QT_DIR)
+	cd $(QT_DIR) && ./configure $(QT_OPTS)
+	cd $(QT_DIR) && make -j $(NUM_CORES)
+	cd $(QT_DIR) && make install
+	touch $(STAMP_DIR)/build-qt
+
+VIDALIA_OPTS=-DOPENSSL_LIBCRYPTO=$(BUILT_DIR)/lib/libcrypto.so.1.0.0 -DOPENSSL_LIBSSL=$(BUILT_DIR)/lib/libssl.so.1.0.0 -DCMAKE_BUILD_TYPE=debug -DQT_QMAKE_EXECUTABLE=$(BUILT_DIR)/bin/qmake ..
+build-vidalia: build-openssl build-qt $(VIDALIA_DIR)
+	-mkdir $(VIDALIA_DIR)/build
+	cd $(VIDALIA_DIR)/build && cmake $(VIDALIA_OPTS) && make -j $(NUM_CORES)
+	cd $(VIDALIA_DIR)/build && DESTDIR=$(BUILT_DIR) make install
+	touch $(STAMP_DIR)/build-vidalia
+
+LIBEVENT_OPTS=--prefix=$(BUILT_DIR)
+build-libevent: build-zlib build-openssl $(LIBEVENT_DIR)
+	cd $(LIBEVENT_DIR) && ./configure $(LIBEVENT_OPTS)
+	cd $(LIBEVENT_DIR) && make -j $(NUM_CORES)
+	cd $(LIBEVENT_DIR) && make install
+	touch $(STAMP_DIR)/build-libevent
+
 TOR_OPTS=--enable-gcc-warnings --with-openssl-dir=$(BUILT_DIR) --with-zlib-dir=$(BUILT_DIR) --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR)
-build-tor:
+build-tor: build-zlib build-openssl build-libevent $(TOR_DIR)
 	cd $(TOR_DIR) && ./configure $(TOR_OPTS)
-	cd $(TOR_DIR) && make -j2
+	cd $(TOR_DIR) && make -j $(NUM_CORES)
 	cd $(TOR_DIR) && make install
-
-## Polipo doesn't use autoconf, so we just have to hack their Makefile
-## This probably needs to be updated if Polipo ever updates their Makefile
-POLIPO_DIR=$(FETCH_DIR)/polipo-$(POLIPO_VER)
-POLIPO_MAKEFILE=$(CONFIG_SRC)/polipo-Makefile
-build-polipo:
-	cp $(POLIPO_MAKEFILE) $(POLIPO_DIR)/Makefile
-	cd $(POLIPO_DIR) && make && PREFIX=$(FETCH_DIR)/built/ make install.binary
+	touch $(STAMP_DIR)/build-tor
 
 build-pidgin:
 	echo "We're not building pidgin yet!"
 
-FIREFOX_DIR=$(FETCH_DIR)/mozilla-release
-build-firefox:
-	cp ../src/current-patches/firefox/* $(FIREFOX_DIR)
-	cp patch-any-src.sh $(FIREFOX_DIR)
-	cp $(CONFIG_SRC)/dot_mozconfig $(FIREFOX_DIR)/mozconfig
-	cd $(FIREFOX_DIR) && ./patch-any-src.sh
+build-firefox: config/dot_mozconfig $(FIREFOX_DIR)
+	cp config/dot_mozconfig $(FIREFOX_DIR)/mozconfig
 	cd $(FIREFOX_DIR) && make -f client.mk build
+	touch $(STAMP_DIR)/build-firefox
 
 copy-firefox:
-	-rm -rf $(FETCH_DIR)/Firefox
+	-rm -rf $(BUILD_DIR)/Firefox
 	## This is so ugly. Update it to use cool tar --transform soon.
 	cd $(FIREFOX_DIR) && make -C obj-$(ARCH_TYPE)-*/ package
-	cp $(FIREFOX_DIR)/obj-$(ARCH_TYPE)-*/dist/*bz2 $(FETCH_DIR)
-	cd $(FETCH_DIR) && tar -xvjf firefox-$(FIREFOX_VER).en-US.linux-$(ARCH_TYPE).tar.bz2 && mv firefox Firefox
+	cp $(FIREFOX_DIR)/obj-$(ARCH_TYPE)-*/dist/*bz2 $(BUILD_DIR)
+	cd $(BUILD_DIR) && tar -xvjf firefox-$(FIREFOX_VER).en-US.linux-$(ARCH_TYPE).tar.bz2 && mv firefox Firefox
 
-# source-dance unpack-source
 build-all-binaries: source-dance build-zlib build-openssl build-libpng build-qt build-vidalia build-libevent build-tor build-firefox
 	echo "If we're here, we've done something right."
 
@@ -142,21 +115,14 @@ QT=$(COMPILED_LIBS)
 ZLIB=$(COMPILED_LIBS)
 
 ## Location of binary bundle components
-POLIPO=$(COMPILED_BINS)/polipo
 TOR=$(COMPILED_BINS)/tor
 VIDALIA=$(BUILT_DIR)/usr/local/bin/vidalia
 ## Someday, this will be our custom Firefox
-FIREFOX=$(FETCH_DIR)/Firefox
+FIREFOX=$(BUILD_DIR)/Firefox
 PIDGIN=$(COMPILED_BINS)/pidgin
 
 ## Location of utility applications
 WGET:=$(shell which wget)
-
-## Size of split archive volumes for WinRAR
-SPLITSIZE=1440k
-
-## Location of config files
-CONFIG_SRC=config
 
 ## Destination for the generic bundle
 DEST=generic-bundle
@@ -253,7 +219,7 @@ generic-bundle: directory-structure \
 		launcher \
 		strip-it-stripper \
 		remove-bundle-shared-lib-symlinks
-	touch generic-bundle.stamp
+	touch $(STAMP_DIR)/generic-bundle.stamp
 
 APPDIR=$(DEST)/App
 LIBSDIR=$(DEST)/Lib
@@ -324,28 +290,26 @@ ifeq ($(USE_PIDGIN),1)
 	cp -R $(PIDGIN) $(APPDIR)
 endif
 
-## Configure Firefox, Vidalia, Polipo and Tor
+## Configure Firefox, Vidalia, and Tor
 configure-apps:
 	## Configure Firefox preferences
 	mkdir -p $(DEST)/Data/profile/extensions
-	cp -R $(CONFIG_SRC)/firefox-profiles.ini $(DEST)/Data/profiles.ini
-	cp $(CONFIG_SRC)/bookmarks.html $(DEST)/Data/profile
-	cp $(CONFIG_SRC)/no-polipo-4.0.js $(DEST)/Data/profile/prefs.js
+	cp -R config/firefox-profiles.ini $(DEST)/Data/profiles.ini
+	cp config/bookmarks.html $(DEST)/Data/profile
+	cp config/no-polipo-4.0.js $(DEST)/Data/profile/prefs.js
 	## Configure Pidgin
 ifeq ($(USE_PIDGIN),1)
 	mkdir -p $(DEST)/PidginPortable/Data/settings/.purple
-	cp $(CONFIG_SRC)/prefs.xml $(DEST)/PidginPortable/Data/settings/.purple
+	cp config/prefs.xml $(DEST)/PidginPortable/Data/settings/.purple
 endif
 	## Configure Vidalia
 ifeq ($(USE_PIDGIN),1)
-	cp $(CONFIG_SRC)/vidalia.conf.ff+pidgin-linux $(DEST)/Data/Vidalia/vidalia.conf
+	cp config/vidalia.conf.ff+pidgin-linux $(DEST)/Data/Vidalia/vidalia.conf
 else
-	cp $(CONFIG_SRC)/vidalia.conf.ff-linux $(DEST)/Data/Vidalia/vidalia.conf
+	cp config/vidalia.conf.ff-linux $(DEST)/Data/Vidalia/vidalia.conf
 endif
-	## Configure Polipo
-	#cp $(CONFIG_SRC)/polipo.conf $(DEST)/Data/Polipo/polipo.conf
 	## Configure Tor
-	cp $(CONFIG_SRC)/torrc-linux $(DEST)/Data/Tor/torrc
+	cp config/torrc-linux $(DEST)/Data/Tor/torrc
 	cp $(TOR_DIR)/src/config/geoip $(DEST)/Data/Tor/geoip
 	chmod 700 $(DEST)/Data/Tor
 
@@ -356,7 +320,6 @@ launcher:
 
 strip-it-stripper:
 	strip $(APPDIR)/tor
-	#strip $(APPDIR)/polipo
 	strip $(APPDIR)/vidalia
 	strip $(LIBSDIR)/*.so*
 	strip $(LIBSDIR)/libz/*.so*
@@ -364,34 +327,6 @@ strip-it-stripper:
 remove-bundle-shared-lib-symlinks:
 	./remove-shared-lib-symlinks $(LIBSDIR)
 	./remove-shared-lib-symlinks $(LIBSDIR)/libz
-
-##
-## How to create required extensions
-##
-
-## Torbutton development version
-torbutton.xpi:
-	$(WGET) -O $@ $(TORBUTTON)
-
-## NoScript development version
-noscript.xpi: 
-	$(WGET) -O $@ $(NOSCRIPT)
-
-## BetterPrivacy
-betterprivacy.xpi:
-	$(WGET) -O $@ $(BETTERPRIVACY)
-
-## HTTPS Everywhere
-httpseverywhere.xpi:
-	$(WGET) -O $@ --no-check-certificate $(HTTPSEVERYWHERE)
-
-## Generic language pack rule
-langpack_%.xpi:
-	$(WGET) -O $@ $(MOZILLA_LANGUAGE)/$*.xpi
-
-## English comes as default
-#langpack_en-US.xpi:
-#	touch $@
 
 ##
 ## Customize the bundle
@@ -405,7 +340,7 @@ compressed-bundle_%:
 bundle-localized_%.stamp:
 	make -f linux.mk copy-files_$* install-extensions install-lang-extensions patch-vidalia-language patch-firefox-language \
 	patch-pidgin-language update-extension-pref write-tbb-version
-	touch bundle-localized_$*.stamp
+	touch $(STAMP_DIR)/bundle-localized_$*.stamp
 
 bundle-localized: bundle-localized_$(LANGCODE).stamp
 
@@ -435,20 +370,7 @@ install-extensions: $(DEFAULT_EXTENSIONS)
 			(cd $(BUNDLE)/Data/profile/extensions/$$ext_id/ && unzip *.zip && rm *.zip); \
 		done
 
-install-betterprivacy: betterprivacy.xpi
-	mkdir -p $(BUNDLE)/Data/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\}
-	cp betterprivacy.xpi $(BUNDLE)/Data/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\}/betterprivacy.zip
-	(cd $(BUNDLE)/Data/profile/extensions/\{d40f5e7b-d2cf-4856-b441-cc613eeffbe3\}/ && unzip *.zip && rm *.zip);
-
-
 ## Language extensions need to be handled differently from other extensions
-fix-install-rdf: $(filter-out langpack_en-US.xpi,langpack_$(LANGCODE).xpi)
-ifneq ($(LANGCODE), en-US)
-	rm -fr xx
-	mkdir xx
-	(cd xx && unzip ../langpack_$(LANGCODE).xpi && sed -i -e "s/em:maxVersion>6.0.1/em:maxVersion>6.0.*/" install.rdf && zip  -r ../langpack_$(LANGCODE).xpi .)
-endif
-
 install-lang-extensions: $(filter-out langpack_en-US.xpi,langpack_$(LANGCODE).xpi)
 ifneq ($(LANGCODE), en-US)
 	mkdir -p $(BUNDLE)/Data/profile/extensions
@@ -473,10 +395,10 @@ patch-firefox-language:
 	## Patch the default Firefox prefs.js
 	## Don't use {} because they aren't always interpreted correctly. Thanks, sh. 
 	mkdir -p $(BUNDLE)/App/Firefox/defaults/profile/
-	cp $(CONFIG_SRC)/bookmarks.html $(BUNDLE)/App/Firefox/defaults/profile/
-	cp $(CONFIG_SRC)/no-polipo-4.0.js $(BUNDLE)/App/Firefox/defaults/profile/prefs.js
-	cp $(CONFIG_SRC)/bookmarks.html $(BUNDLE)/Data/profile
-	cp $(CONFIG_SRC)/no-polipo-4.0.js $(BUNDLE)/Data/profile/prefs.js
+	cp config/bookmarks.html $(BUNDLE)/App/Firefox/defaults/profile/
+	cp config/no-polipo-4.0.js $(BUNDLE)/App/Firefox/defaults/profile/prefs.js
+	cp config/bookmarks.html $(BUNDLE)/Data/profile
+	cp config/no-polipo-4.0.js $(BUNDLE)/Data/profile/prefs.js
 	./patch-firefox-language.sh $(BUNDLE)/App/Firefox/defaults/profile/prefs.js $(LANGCODE) -e
 	./patch-firefox-language.sh $(BUNDLE)/Data/profile/prefs.js $(LANGCODE) -e
 

@@ -42,6 +42,6 @@ if [ "$DEBUG_TBB" -eq 1 ]; then
 fi
 
 # not in debug mode, run proceed normally
-printf "\nLaunching Tor Browser Bundle for Linux in ${HOME}\n"
+printf "\nLaunching Tor Browser Bundle for OS X in ${HOME}\n"
 cd "${HOME}"
 open "$HOME/Contents/MacOS/Vidalia.app"
