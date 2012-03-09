@@ -113,6 +113,7 @@ if [ "`id -u`" -eq 0 ]; then
 	exit 1
 fi
 
+debug=0
 usage_message="usage: $0 [--debug]"
 if [ "$#" -eq 1 -a \( "x$1" = "x--debug" -o "x$1" = "x-debug" \) ]; then
 	debug=1
