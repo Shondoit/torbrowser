@@ -19,6 +19,24 @@ if [ "x$1" = "x--debug" -o "x$1" = "x-debug" ]; then
 	printf "\nDebug enabled.\n\n"
 fi
 
+# If the user hasn't requested 'debug mode', close whichever of stdout
+# and stderr are not ttys, to keep Vidalia and the stuff loaded by/for
+# it (including the system's shared-library loader) from printing
+# messages to be logged in /var/log/system.log .  (Users wouldn't have
+# seen messages there anyway.)
+#
+# If the user has requested 'debug mode', don't muck with the FDs.
+if [ "$DEBUG_TBB" -ne 1 ]; then
+  if [ '!' -t 1 ]; then
+    # stdout is not a tty
+    exec >/dev/null
+  fi
+  if [ '!' -t 2 ]; then
+    # stderr is not a tty
+    exec 2>/dev/null
+  fi
+fi
+
 HOME="${0%%Contents/MacOS/TorBrowserBundle}"
 export HOME
 
