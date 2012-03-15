@@ -113,6 +113,7 @@ if [ "`id -u`" -eq 0 ]; then
 	exit 1
 fi
 
+debug=0
 usage_message="usage: $0 [--debug]"
 if [ "$#" -eq 1 -a \( "x$1" = "x--debug" -o "x$1" = "x-debug" \) ]; then
 	debug=1
@@ -120,6 +121,24 @@ if [ "$#" -eq 1 -a \( "x$1" = "x--debug" -o "x$1" = "x-debug" \) ]; then
 elif [ "$#" -eq 1 -a \( "x$1" = "x--help" -o "x$1" = "x-help" \) ]; then
 	echo "$usage_message"
 	exit 0
+fi
+
+# If the user hasn't requested 'debug mode', close whichever of stdout
+# and stderr are not ttys, to keep Vidalia and the stuff loaded by/for
+# it (including the system's shared-library loader) from printing
+# messages to $HOME/.xsession-errors .  (Users wouldn't have seen
+# messages there anyway.)
+#
+# If the user has requested 'debug mode', don't muck with the FDs.
+if [ "$debug" -ne 1 ]; then
+  if [ '!' -t 1 ]; then
+    # stdout is not a tty
+    exec >/dev/null
+  fi
+  if [ '!' -t 2 ]; then
+    # stderr is not a tty
+    exec 2>/dev/null
+  fi
 fi
 
 # If XAUTHORITY is unset, set it to its default value of $HOME/.Xauthority
