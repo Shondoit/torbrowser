@@ -97,7 +97,7 @@ build-libevent: build-zlib build-openssl $(LIBEVENT_DIR)
 
 TOR_CFLAGS="-O -g -I$(BUILT_DIR)/include"
 TOR_LDFLAGS="-L$(BUILT_DIR)/lib -L$(BUILT_DIR)/bin"
-TOR_OPTS=--enable-static-libevent --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR)
+TOR_OPTS=--enable-gcc-warnings --enable-static-libevent --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR)
 build-tor:PATH+=:$(BUILT_DIR)/bin
 build-tor: build-zlib build-openssl build-libevent $(TOR_DIR)
 	cd $(TOR_DIR) && CFLAGS=$(TOR_CFLAGS) LDFLAGS=$(TOR_LDFLAGS) ./configure $(TOR_OPTS)
