@@ -1,4 +1,4 @@
-From 23a09d0a6def1e2f7190177a875ab5a85c5da7b7 Mon Sep 17 00:00:00 2001
+From 9a406718f9cb98f57de4649def8ef501ddbb9775 Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@fscked.org>
 Date: Thu, 8 Sep 2011 08:40:17 -0700
 Subject: [PATCH 08/13] Make content pref service memory-only + clearable
@@ -11,10 +11,10 @@ other site prefs?).
  1 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/toolkit/components/contentprefs/nsContentPrefService.js b/toolkit/components/contentprefs/nsContentPrefService.js
-index adfb650..1619d5f 100644
+index 17cac93..1f12609 100644
 --- a/toolkit/components/contentprefs/nsContentPrefService.js
 +++ b/toolkit/components/contentprefs/nsContentPrefService.js
-@@ -1240,7 +1240,7 @@ ContentPrefService.prototype = {
+@@ -1242,7 +1242,7 @@ ContentPrefService.prototype = {
  
      var dbConnection;
  
@@ -23,7 +23,7 @@ index adfb650..1619d5f 100644
        dbConnection = this._dbCreate(dbService, dbFile);
      else {
        try {
-@@ -1288,7 +1288,7 @@ ContentPrefService.prototype = {
+@@ -1290,7 +1290,7 @@ ContentPrefService.prototype = {
    },
  
    _dbCreate: function ContentPrefService__dbCreate(aDBService, aDBFile) {

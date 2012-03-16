@@ -1,4 +1,4 @@
-From b5c42aa7668ac12b034cc1806ae1dc48732fa9b5 Mon Sep 17 00:00:00 2001
+From 10f26d027ba5413d7e26aaccd92cbc1c12b42d86 Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@fscked.org>
 Date: Tue, 20 Dec 2011 21:02:49 -0800
 Subject: [PATCH 12/13] Provide client values only to CSS Media Queries
