@@ -1,4 +1,4 @@
-From 193c50c03aa61eef5415d0476467c22941022a11 Mon Sep 17 00:00:00 2001
+From 4640f62becabf5adefd190ae119c93e486be9aed Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@torproject.org>
 Date: Wed, 1 Feb 2012 15:45:16 -0800
 Subject: [PATCH 02/13] Make Permissions Manager memory-only
