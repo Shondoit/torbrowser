@@ -13,7 +13,7 @@
 ### Configuration ###
 #####################
 
-BUILD_NUM=7.1
+BUILD_NUM=8
 PLATFORM=Windows
 
 ## Location of required libraries
