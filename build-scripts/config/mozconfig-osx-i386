@@ -1,6 +1,8 @@
 # Options for client.mk.
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-@CONFIG_GUESS@
 mk_add_options AUTOCONF=autoconf213
+mk_add_options MOZILLA_OFFICIAL=1
+mk_add_options BUILD_OFFICIAL=1
 
 # Options for cross-compilation on Snow Leopard.
 HOST_CC="gcc-4.2 -arch i386"
@@ -19,6 +21,7 @@ ac_add_options --target=i386-apple-darwin$DARWIN_VERSION
 ac_add_options --with-macos-sdk=/Developer/SDKs/MacOSX10.5.sdk
 ac_add_options --enable-macos-target=10.5
 ac_add_options --enable-application=browser
+ac_add_options --enable-official-branding
 ac_add_options --enable-optimize
 ac_add_options --enable-strip
 ac_add_options --disable-debug
