@@ -67,6 +67,7 @@ user_pref("extensions.enabledAddons", "https-everywhere@eff.org:0.9.9.developmen
 user_pref("extensions.enabledItems", "langpack-en-US@firefox.mozilla.org:,{73a6fe31-595d-460b-a920-fcc0f8843232}:1.9.9.57,{e0204bd5-9d31-402b-a99d-a6aa8ffebdca}:1.2.4,{972ce4c6-7e08-4474-a285-3208198ce6fd}:3.5.8");
 user_pref("extensions.enabledScopes", 1);
 user_pref("extensions.pendingOperations", false);
+user_pref("extensions.https_everywhere._observatory.popup_shown", true);
 user_pref("extensions.torbutton.fresh_install", false);
 user_pref("extensions.torbutton.locked_mode", true);
 user_pref("extensions.torbutton.proxies_applied", true);

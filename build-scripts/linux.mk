@@ -15,7 +15,7 @@
 
 ## Architecture
 ARCH_TYPE=$(shell uname -m)
-BUILD_NUM=7.2
+BUILD_NUM=8
 PLATFORM=Linux
 
 ## Build machine specific settings
@@ -201,6 +201,7 @@ clean:
 	rm -f *~
 	rm -fr *.xpi *.jar *.zip
 	rm -fr $(NAME)_*
+	rm $(STAMP_DIR)/*stamp
 	cd ../src/RelativeLink/ && $(MAKE) clean
 
 ##

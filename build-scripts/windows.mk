@@ -13,7 +13,7 @@
 ### Configuration ###
 #####################
 
-BUILD_NUM=7.1
+BUILD_NUM=8
 PLATFORM=Windows
 
 ## Location of required libraries
@@ -206,6 +206,7 @@ clean:
 	rm -f *~
 	rm -fr *.xpi *.jar *.zip
 	rm -fr $(NAME)_*
+	rm $(STAMP_DIR)/*stamp
 	cd ../src/RelativeLink/ && $(MAKE) clean
 
 ## Also remove the output files
