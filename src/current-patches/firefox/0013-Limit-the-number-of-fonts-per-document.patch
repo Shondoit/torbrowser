@@ -1,4 +1,4 @@
-From 4ed1e1c2372216cfcf377b369a9d44bb9f60ee14 Mon Sep 17 00:00:00 2001
+From 215f7088f53e25309ec5037c05a25ed9048a625b Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@torproject.org>
 Date: Wed, 1 Feb 2012 16:01:21 -0800
 Subject: [PATCH 13/13] Limit the number of fonts per document.
@@ -23,7 +23,7 @@ https://www.torproject.org/projects/torbrowser/design/#fingerprinting-linkabilit
  3 files changed, 119 insertions(+), 3 deletions(-)
 
 diff --git a/layout/base/nsPresContext.cpp b/layout/base/nsPresContext.cpp
-index e1587db..9690d9c 100644
+index c7ad359..ac12dff 100644
 --- a/layout/base/nsPresContext.cpp
 +++ b/layout/base/nsPresContext.cpp
 @@ -98,6 +98,8 @@
@@ -35,7 +35,7 @@ index e1587db..9690d9c 100644
  
  #ifdef IBMBIDI
  #include "nsBidiPresUtils.h"
-@@ -706,6 +708,10 @@ nsPresContext::GetUserPreferences()
+@@ -731,6 +733,10 @@ nsPresContext::GetUserPreferences()
    // * use fonts?
    mUseDocumentFonts =
      Preferences::GetInt("browser.display.use_document_fonts") != 0;
@@ -46,7 +46,7 @@ index e1587db..9690d9c 100644
  
    // * replace backslashes with Yen signs? (bug 245770)
    mEnableJapaneseTransform =
-@@ -1300,6 +1306,100 @@ nsPresContext::GetDefaultFont(PRUint8 aFontID) const
+@@ -1332,6 +1338,100 @@ nsPresContext::GetDefaultFont(PRUint8 aFontID) const
    return font;
  }
  
@@ -148,7 +148,7 @@ index e1587db..9690d9c 100644
  nsPresContext::SetFullZoom(float aZoom)
  {
 diff --git a/layout/base/nsPresContext.h b/layout/base/nsPresContext.h
-index ecd01d8..552a69a 100644
+index 39f5b4a..a72d12e 100644
 --- a/layout/base/nsPresContext.h
 +++ b/layout/base/nsPresContext.h
 @@ -548,6 +548,13 @@ public:
@@ -165,7 +165,7 @@ index ecd01d8..552a69a 100644
    PRInt32 MinFontSize() const {
      return NS_MAX(mMinFontSize, mMinimumFontSizePref);
    }
-@@ -1117,6 +1124,8 @@ protected:
+@@ -1125,6 +1132,8 @@ protected:
    PRUint32              mInterruptChecksToSkip;
  
    mozilla::TimeStamp    mReflowStartTime;
@@ -175,7 +175,7 @@ index ecd01d8..552a69a 100644
    unsigned              mHasPendingInterrupt : 1;
    unsigned              mInterruptsEnabled : 1;
 diff --git a/layout/style/nsRuleNode.cpp b/layout/style/nsRuleNode.cpp
-index 27336bf..827585a 100644
+index 2918a54..5870693 100644
 --- a/layout/style/nsRuleNode.cpp
 +++ b/layout/style/nsRuleNode.cpp
 @@ -3091,6 +3091,7 @@ nsRuleNode::ComputeFontData(void* aStartStruct,
