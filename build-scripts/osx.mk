@@ -248,7 +248,6 @@ directory-structure:
 install-binaries: 
 	# Vidalia
 	cp -R $(VIDALIA) $(APPDIR)/Vidalia.app
-	# Tor (perhaps we want tor-resolve too?)
 	cp $(TOR) $(APPDIR)
 
 ## Fixup
