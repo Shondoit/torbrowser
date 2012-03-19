@@ -276,7 +276,6 @@ reallyclean: clean
 virus-scan:
 	$(VIRUSSCAN) $(VIDALIA)/build/src/vidalia/vidalia.exe
 	$(VIRUSSCAN) $(TOR)/src/or/tor.exe
-	$(VIRUSSCAN) $(TOR)/src/tools/tor-resolve.exe
 
 ##
 ## Generate a non-localized bundle and put in $(DEST)
@@ -308,7 +307,7 @@ install-binaries:
 	cp $(OPENSSL_LIB)/ssleay32.dll $(APPDIR)
 	cp $(OPENSSL_LIB)/libeay32.dll $(APPDIR)
 	cp $(VIDALIA)/build/src/vidalia/vidalia.exe $(APPDIR)
-	cp $(TOR)/src/or/tor.exe $(TOR)/src/tools/tor-resolve.exe $(APPDIR)
+	cp $(TOR)/src/or/tor.exe $(APPDIR)
 
 ## Fixup
 ## Collect up license files
