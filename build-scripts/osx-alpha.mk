@@ -116,7 +116,7 @@ build-libevent:
 TOR_DIR=$(FETCH_DIR)/tor-$(TOR_VER)
 TOR_CFLAGS="-O -g -arch $(ARCH_TYPE) -I$(BUILT_DIR)/include -mmacosx-version-min=10.5 -isysroot /Developer/SDKs/MacOSX10.5.sdk"
 TOR_LDFLAGS="-L$(BUILT_DIR)/lib -Wl,-syslibroot,/Developer/SDKs/MacOSX10.5.sdk"
-TOR_OPTS=--enable-static-openssl --enable-static-libevent --with-openssl-dir=$(BUILT_DIR)/lib --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR) --disable-dependency-tracking CC="gcc-4.0"
+TOR_OPTS=--enable-gcc-warnings --enable-static-openssl --enable-static-libevent --with-openssl-dir=$(BUILT_DIR)/lib --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR) --disable-dependency-tracking CC="gcc-4.0"
 build-tor:
 	cd $(TOR_DIR) && CFLAGS=$(TOR_CFLAGS) LDFLAGS=$(TOR_LDFLAGS) ./configure $(TOR_OPTS)
 	cd $(TOR_DIR) && make
