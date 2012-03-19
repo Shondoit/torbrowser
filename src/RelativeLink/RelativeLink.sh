@@ -205,7 +205,7 @@ LDPATH="${HOME}/Lib/"
 export LDPATH
 export LD_LIBRARY_PATH
 
-if [ "${debug}" ]; then
+if [ "$debug" -eq 1 ]; then
 	printf "\nStarting Vidalia now\n"
 	cd "${HOME}"
 	printf "\nLaunching Vidalia from: `pwd`\n"
