@@ -31,7 +31,7 @@
 
 ## Include versions
 include $(PWD)/versions-alpha.mk
-BUILD_NUM=1
+BUILD_NUM=2
 PLATFORM=Windows
 
 ## Location of required libraries
