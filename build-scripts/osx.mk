@@ -14,15 +14,15 @@
 
 
 ## Architecture
-ARCH_TYPE=x86_64
+ARCH_TYPE=i386
 BUILD_NUM=8
 PLATFORM=MacOS
 
 ## Set OSX-specific backwards compatibility options
 OSX_VERSION=10.5
-CC=CC=gcc-4.0
+CC=
 # These can probably be left alone for OSX_VERSION 10.5 and up
-SDK_PATH=/Developer/SDKs/MacOSX$(OSX_VERSION).sdk
+SDK_PATH=/Developer/SDKs/MacOSX10.6.sdk
 SDK=-sdk $(SDK_PATH)
 MIN_VERSION=-mmacosx-version-min=$(OSX_VERSION)
 CF_MIN_VERSION=-isysroot $(SDK_PATH)
@@ -31,7 +31,7 @@ BACKWARDS_COMPAT=$(MIN_VERSION) $(CF_MIN_VERSION) $(LD_MIN_VERSION)
 
 ## Build machine specific settings
 # Number of cpu cores used to build in parallel
-NUM_CORES=2
+NUM_CORES=4
 
 ## Location of directory for source fetching
 FETCH_DIR=$(PWD)/build

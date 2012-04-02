@@ -3,12 +3,13 @@ mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-@CONFIG_GUESS@
 mk_add_options AUTOCONF=autoconf213
 mk_add_options MOZILLA_OFFICIAL=1
 mk_add_options BUILD_OFFICIAL=1
+mk_add_options MOZ_MAKE_FLAGS="-s --no-print-directory -j8"
 
 # Options for cross-compilation on Snow Leopard.
-HOST_CC="gcc-4.2 -arch i386"
-HOST_CXX="g++-4.2 -arch i386"
-CC="gcc-4.2 -arch i386"
-CXX="g++-4.2 -arch i386"
+HOST_CC="gcc -arch i386"
+HOST_CXX="g++ -arch i386"
+CC="gcc -arch i386"
+CXX="g++ -arch i386"
 RANLIB=ranlib
 AR=ar
 AS=$CC
@@ -18,7 +19,7 @@ CROSS_COMPILE=1
 ac_add_options --target=i386-apple-darwin$DARWIN_VERSION
 
 # Options for 'configure' (same as command-line options).
-ac_add_options --with-macos-sdk=/Developer/SDKs/MacOSX10.5.sdk
+ac_add_options --with-macos-sdk=/Developer/SDKs/MacOSX10.6.sdk
 ac_add_options --enable-macos-target=10.5
 ac_add_options --enable-application=browser
 ac_add_options --enable-official-branding
