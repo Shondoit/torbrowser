@@ -53,7 +53,7 @@ if [ "$DEBUG_TBB" -eq 1 ]; then
 	printf "\nStarting Vidalia now\n"
 	cd "${HOME}"
 	printf "\nLaunching Vidalia from: `pwd`\n"
-	./Contents/MacOS/Vidalia --loglevel debug --logfile vidalia-debug-log \
+	./Contents/MacOS/Vidalia.app/Contents/MacOS/Vidalia --loglevel debug --logfile vidalia-debug-log \
 	--datadir ./Contents/Resources/Data/Vidalia/
 	printf "\nVidalia exited with the following return code: $?\n"
 	exit
