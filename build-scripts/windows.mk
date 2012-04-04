@@ -190,12 +190,14 @@ all-compressed-bundles: compressed-bundle_ar \
 	compressed-bundle_es-ES \
 	compressed-bundle_fa \
 	compressed-bundle_fr \
+	compressed-bundle_it \
+	compressed-bundle_ko \
 	compressed-bundle_nl \
 	compressed-bundle_pl \
 	compressed-bundle_pt-PT \
 	compressed-bundle_ru \
-	compressed-bundle_zh-CN \
-	compressed-bundle_it
+	compressed-bundle_vi \
+	compressed-bundle_zh-CN
 
 ##
 ## Cleanup
