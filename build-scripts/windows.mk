@@ -208,7 +208,7 @@ clean:
 	rm -f *~
 	rm -fr *.xpi *.jar *.zip
 	rm -fr $(NAME)_*
-	rm $(STAMP_DIR)/*stamp
+	rm -f $(STAMP_DIR)/*.stamp
 	cd ../src/RelativeLink/ && $(MAKE) clean
 
 ## Also remove the output files
