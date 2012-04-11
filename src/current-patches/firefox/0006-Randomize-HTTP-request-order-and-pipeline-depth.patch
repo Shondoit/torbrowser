@@ -1,20 +1,23 @@
-From 39a9dab25c4ed3acc95009c0f44f4f6f2f1c5086 Mon Sep 17 00:00:00 2001
+From 8e8833ea22369c7597f5844139de37212deb1cd7 Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@torproject.org>
 Date: Thu, 15 Mar 2012 20:05:07 -0700
-Subject: [PATCH 06/13] Randomize HTTP pipeline order and depth.
+Subject: [PATCH 12/12] Randomize HTTP request order and pipeline depth.
 
 This is an experimental defense against
 http://lorre.uni.lu/~andriy/papers/acmccs-wpes11-fingerprinting.pdf
 
-See also:
+See:
 https://blog.torproject.org/blog/experimental-defense-website-traffic-fingerprinting
+
+This defense has been improved since that blog post to additionally randomize
+the order and concurrency of non-pipelined HTTP requests.
 ---
- netwerk/protocol/http/nsHttpConnectionMgr.cpp |   79 ++++++++++++++++++++++++-
- netwerk/protocol/http/nsHttpConnectionMgr.h   |    4 +
- 2 files changed, 82 insertions(+), 1 deletions(-)
+ netwerk/protocol/http/nsHttpConnectionMgr.cpp |  133 ++++++++++++++++++++++++-
+ netwerk/protocol/http/nsHttpConnectionMgr.h   |    5 +
+ 2 files changed, 133 insertions(+), 5 deletions(-)
 
 diff --git a/netwerk/protocol/http/nsHttpConnectionMgr.cpp b/netwerk/protocol/http/nsHttpConnectionMgr.cpp
-index 17d897f..3200638 100644
+index 17d897f..8f50bf6 100644
 --- a/netwerk/protocol/http/nsHttpConnectionMgr.cpp
 +++ b/netwerk/protocol/http/nsHttpConnectionMgr.cpp
 @@ -99,6 +99,12 @@ nsHttpConnectionMgr::nsHttpConnectionMgr()
@@ -30,7 +33,62 @@ index 17d897f..3200638 100644
  }
  
  nsHttpConnectionMgr::~nsHttpConnectionMgr()
-@@ -1227,7 +1233,7 @@ nsHttpConnectionMgr::DispatchTransaction(nsConnectionEntry *ent,
+@@ -353,8 +359,12 @@ nsHttpConnectionMgr::AddTransactionToPipeline(nsHttpPipeline *pipeline)
+         nsConnectionEntry *ent = mCT.Get(ci->HashKey());
+         if (ent) {
+             // search for another request to pipeline...
+-            PRInt32 i, count = ent->mPendingQ.Length();
+-            for (i=0; i<count; ++i) {
++            PRInt32 i, h, count = ent->mPendingQ.Length();
++            PRInt32 ind[count];
++            ShuffleRequestOrder((PRUint32*)ind, (PRUint32)count);
++       
++            for (h=0; h<count; ++h) {
++                i = ind[h]; // random request sequence
+                 nsHttpTransaction *trans = ent->mPendingQ[i];
+                 if (trans->Caps() & NS_HTTP_ALLOW_PIPELINING) {
+                     pipeline->AddTransaction(trans);
+@@ -895,12 +905,17 @@ nsHttpConnectionMgr::ProcessPendingQForEntry(nsConnectionEntry *ent)
+     if (gHttpHandler->IsSpdyEnabled())
+         ProcessSpdyPendingQ(ent);
+ 
+-    PRUint32 i, count = ent->mPendingQ.Length();
++    PRUint32 h, i = 0, count = ent->mPendingQ.Length();
+     if (count > 0) {
+         LOG(("  pending-count=%u\n", count));
+         nsHttpTransaction *trans = nsnull;
+         nsHttpConnection *conn = nsnull;
+-        for (i = 0; i < count; ++i) {
++
++        PRUint32 ind[count];
++        ShuffleRequestOrder(ind, count);
++       
++        for (h=0; h<count; ++h) {
++            i = ind[h]; // random request sequence
+             trans = ent->mPendingQ[i];
+ 
+             // When this transaction has already established a half-open
+@@ -1011,6 +1026,19 @@ nsHttpConnectionMgr::AtActiveConnectionLimit(nsConnectionEntry *ent, PRUint8 cap
+         maxPersistConns = mMaxPersistConnsPerHost;
+     }
+ 
++    // Fuzz maxConns for website fingerprinting attack
++    // We create a range of maxConns/5 up to 6*maxConns/5 
++    // because this function is called repeatedly, and we'll
++    // end up converging on a the high side of concurrent connections
++    // after a short while. 
++    PRUint8 *bytes = nsnull;
++    nsresult rv = mRandomGenerator->GenerateRandomBytes(1, &bytes);
++    NS_ENSURE_SUCCESS(rv, rv);
++
++    bytes[0] = bytes[0] % (maxConns + 1);
++    maxConns = (maxConns/5) + bytes[0];
++    NS_Free(bytes);
++
+     // use >= just to be safe
+     return (totalCount >= maxConns) || ( (caps & NS_HTTP_ALLOW_KEEPALIVE) &&
+                                          (persistCount >= maxPersistConns) );
+@@ -1227,7 +1255,7 @@ nsHttpConnectionMgr::DispatchTransaction(nsConnectionEntry *ent,
  
      if (conn->SupportsPipelining() && (caps & NS_HTTP_ALLOW_PIPELINING)) {
          LOG(("  looking to build pipeline...\n"));
@@ -39,10 +97,34 @@ index 17d897f..3200638 100644
              trans = pipeline;
      }
  
-@@ -1300,6 +1306,77 @@ nsHttpConnectionMgr::BuildPipeline(nsConnectionEntry *ent,
+@@ -1300,6 +1328,101 @@ nsHttpConnectionMgr::BuildPipeline(nsConnectionEntry *ent,
      return true;
  }
  
++
++// Generate a shuffled request ordering sequence 
++void
++nsHttpConnectionMgr::ShuffleRequestOrder(PRUint32 *ind, PRUint32 count)
++{
++   PRUint32 i;
++   PRUint32 *rints;
++
++   for (i=0; i<count; ++i) {
++       ind[i] = i;
++   }
++   nsresult rv = mRandomGenerator->GenerateRandomBytes(sizeof(PRUint32)*count,
++                                                       (PRUint8**)&rints);
++   if (NS_FAILED(rv))
++       return; // Leave unshuffled if error
++
++   for (i=0; i < count; ++i) {
++       PRInt32 temp = ind[i];
++       ind[i] = ind[rints[i]%count]; 
++       ind[rints[i]%count] = temp;
++   }
++   NS_Free(rints);
++}
++
 +bool
 +nsHttpConnectionMgr::BuildRandomizedPipeline(nsConnectionEntry *ent,
 +                                   nsAHttpTransaction *firstTrans,
@@ -118,7 +200,7 @@ index 17d897f..3200638 100644
  nsHttpConnectionMgr::ProcessNewTransaction(nsHttpTransaction *trans)
  {
 diff --git a/netwerk/protocol/http/nsHttpConnectionMgr.h b/netwerk/protocol/http/nsHttpConnectionMgr.h
-index bb605a1..47d01f6 100644
+index bb605a1..e372096 100644
 --- a/netwerk/protocol/http/nsHttpConnectionMgr.h
 +++ b/netwerk/protocol/http/nsHttpConnectionMgr.h
 @@ -54,6 +54,7 @@
@@ -129,15 +211,16 @@ index bb605a1..47d01f6 100644
  
  class nsHttpPipeline;
  
-@@ -312,6 +313,7 @@ private:
+@@ -312,6 +313,8 @@ private:
      nsresult DispatchTransaction(nsConnectionEntry *, nsHttpTransaction *,
                                   PRUint8 caps, nsHttpConnection *);
      bool     BuildPipeline(nsConnectionEntry *, nsAHttpTransaction *, nsHttpPipeline **);
 +    bool     BuildRandomizedPipeline(nsConnectionEntry *, nsAHttpTransaction *, nsHttpPipeline **);
++    void     ShuffleRequestOrder(PRUint32 *, PRUint32);
      nsresult ProcessNewTransaction(nsHttpTransaction *);
      nsresult EnsureSocketThreadTargetIfOnline();
      void     ClosePersistentConnections(nsConnectionEntry *ent);
-@@ -405,6 +407,8 @@ private:
+@@ -405,6 +408,8 @@ private:
      PRUint64 mTimeOfNextWakeUp;
      // Timer for next pruning of dead connections.
      nsCOMPtr<nsITimer> mTimer;
