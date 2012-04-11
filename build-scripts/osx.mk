@@ -85,7 +85,7 @@ build-vidalia: build-openssl build-qt $(VIDALIA_DIR)
 	cd $(VIDALIA_DIR)/build && DESTDIR=$(BUILT_DIR) make install
 	touch $(STAMP_DIR)/build-vidalia
 
-LIBEVENT_CFLAGS="-O -g -arch $(ARCH_TYPE) $(MIN_VERSION) $(CF_MIN_VERSION) -arch $(ARCH_TYPE)"
+LIBEVENT_CFLAGS="-arch $(ARCH_TYPE) $(MIN_VERSION) $(CF_MIN_VERSION) -arch $(ARCH_TYPE)"
 LIBEVENT_LDFLAGS="-L$(BUILT_DIR)/lib $(LD_MIN_VERSION)"
 LIBEVENT_OPTS=--prefix=$(BUILT_DIR) --enable-static --disable-shared --disable-dependency-tracking $(CC)
 build-libevent: build-zlib build-openssl $(LIBEVENT_DIR)
@@ -94,7 +94,7 @@ build-libevent: build-zlib build-openssl $(LIBEVENT_DIR)
 	cd $(LIBEVENT_DIR) && make install
 	touch $(STAMP_DIR)/build-libevent
 
-TOR_CFLAGS="-O -g -arch $(ARCH_TYPE) -I$(BUILT_DIR)/include $(MIN_VERSION) $(CF_MIN_VERSION)"
+TOR_CFLAGS="-arch $(ARCH_TYPE) -I$(BUILT_DIR)/include $(MIN_VERSION) $(CF_MIN_VERSION)"
 TOR_LDFLAGS="-L$(BUILT_DIR)/lib $(LD_MIN_VERSION)"
 TOR_OPTS=--enable-gcc-warnings-advisory --enable-static-openssl --enable-static-libevent --with-openssl-dir=$(BUILT_DIR)/lib --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR) --disable-dependency-tracking $(CC)
 build-tor: build-zlib build-openssl build-libevent $(TOR_DIR)
