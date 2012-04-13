@@ -211,10 +211,7 @@ $(FIREFOX_DIR): $(FETCH_DIR)/$(FIREFOX_PACKAGE) ../src/current-patches/firefox/*
 
 $(MOZBUILD_DIR): $(FETCH_DIR)/$(MOZBUILD_PACKAGE) ../src/current-patches/mozilla-build/start-msvc.patch ../src/current-patches/mozilla-build/guess-msvc-x64.bat patch-mozilla-build.sh | $(BUILD_DIR)
 	rm -rf $(MOZBUILD_DIR) /c/mozilla-build
-# We could try passing a /D argument here, but then we'd need to convert
-# mingw paths into windows paths. We'll just go with the default here.
-	cd $(FETCH_DIR) && cmd.exe /c "$(MOZBUILD_PACKAGE) /S"
-	mv /c/mozilla-build $(MOZBUILD_DIR)
+	cmd.exe //c "$(PWD)/install-mozbuild.bat" "$(abspath $(FETCH_DIR)/$(MOZBUILD_PACKAGE))" "$(abspath $(MOZBUILD_DIR))"
 # We have to patch mozillabuild
 	cp ../src/current-patches/mozilla-build/start-msvc.patch $(MOZBUILD_DIR)
 	cp ../src/current-patches/mozilla-build/guess-msvc-x64.bat $(MOZBUILD_DIR)
