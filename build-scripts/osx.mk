@@ -83,6 +83,7 @@ build-vidalia: build-openssl build-qt $(VIDALIA_DIR)
 	cd $(VIDALIA_DIR)/build && cmake $(VIDALIA_OPTS) \
 	&& make -j $(NUM_CORES) && make dist-osx-libraries
 	cd $(VIDALIA_DIR)/build && DESTDIR=$(BUILT_DIR) make install
+	cp -r $(QT_DIR)/src/gui/mac/qt_menu.nib $(VIDALIA)/Contents/Resources/
 	touch $(STAMP_DIR)/build-vidalia
 
 LIBEVENT_CFLAGS="-arch $(ARCH_TYPE) $(MIN_VERSION) $(CF_MIN_VERSION) -arch $(ARCH_TYPE)"
