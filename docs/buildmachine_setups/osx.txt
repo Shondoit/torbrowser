@@ -1,0 +1,37 @@
+Documentation for the setup of macx86.torproject.org
+
+Install Mac OS X Lion 10.7, get all updates.
+
+Download XCode 4.2.1 from
+https://developer.apple.com/downloads/index.action, install. This puts
+an Install Xcode.app into your applications, manually run the contained
+installer script (don't just run the .app). It is in
+Contents/MacOS/Install Xcode.
+
+Fetch macports from http://www.macports.org/install.php - choose the
+Lion installer, install. This will change your PATH variable via your
+~/.profile file. Run sudo port selfupdate.
+
+First off, we need a bit of software, so install it:
+
+	sudo port install git-core wget cmake autoconf213 yasm
+
+This will probably prompt you to install java stuff, do it.
+
+Create a new limited (non-admin) "macx86builder" User to do the builds.
+
+Create a new directory, /builds, and chown it to macx86builder.
+
+sudo to macx86builder
+
+	"sudo -u macx86builder -i"
+
+Then run these:
+
+	cd /builds/
+	git clone https://git.torproject.org/torbrowser
+	cd torbrowser
+	git checkout maint-2.2
+	cd build-scripts
+	make -f osx.mk build-all-binaries copy-firefox bundle
+
