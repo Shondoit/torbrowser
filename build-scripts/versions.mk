@@ -187,6 +187,11 @@ $(OPENSSL_DIR): $(FETCH_DIR)/$(OPENSSL_PACKAGE) ../src/current-patches/openssl/*
 $(VIDALIA_DIR): $(FETCH_DIR)/$(VIDALIA_PACKAGE) | $(BUILD_DIR)
 	rm -rf $(VIDALIA_DIR)
 	cd $(FETCH_DIR) && tar -xmf $(VIDALIA_PACKAGE) -C $(BUILD_DIR)/
+ifeq (MacOS,$(PLATFORM))
+	cp ../src/current-patches/vidalia/*patch $(VIDALIA_DIR)
+	cp patch-any-src.sh $(VIDALIA_DIR)
+	cd $(VIDALIA_DIR) && ./patch-any-src.sh
+endif
 
 $(LIBEVENT_DIR): $(FETCH_DIR)/$(LIBEVENT_PACKAGE) | $(BUILD_DIR)
 	rm -rf $(LIBEVENT_DIR)
