@@ -249,7 +249,10 @@ directory-structure:
 
 ## Package up all the Vidalia and Tor pre-requisites
 ## Firefox and Pidgin are installed in their own targets
-install-binaries: 
+install-binaries:
+	chmod 644 $(BUILT_DIR)/lib/libssl.*
+	chmod 644 $(BUILT_DIR)/lib/libcrypto.*
+	$(BUILT_DIR)/bin/macdeployqt $(VIDALIA) -no-plugins
 	# Vidalia
 	cp -R $(VIDALIA) $(APPDIR)/Vidalia.app
 	cp $(TOR) $(APPDIR)
