@@ -78,9 +78,9 @@ build-qt: build-zlib build-openssl $(QT_DIR)
 VIDALIA_OPTS=-DCMAKE_OSX_ARCHITECTURES=$(ARCH_TYPE) -DQT_QMAKE_EXECUTABLE=$(BUILT_DIR)/bin/qmake \
 	-DCMAKE_BUILD_TYPE=debug ..
 build-vidalia: build-openssl build-qt $(VIDALIA_DIR)
-	export MACOSX_DEPLOYMENT_TARGET=$(OSX_VERSION)
 	-mkdir $(VIDALIA_DIR)/build
-	cd $(VIDALIA_DIR)/build && cmake $(VIDALIA_OPTS) \
+	cd $(VIDALIA_DIR)/build && \
+	MACOSX_DEPLOYMENT_TARGET=$(OSX_VERSION) cmake $(VIDALIA_OPTS) \
 	&& make -j $(NUM_CORES) && make dist-osx-libraries
 	cd $(VIDALIA_DIR)/build && DESTDIR=$(BUILT_DIR) make install
 	cp -r $(QT_DIR)/src/gui/mac/qt_menu.nib $(VIDALIA)/Contents/Resources/
