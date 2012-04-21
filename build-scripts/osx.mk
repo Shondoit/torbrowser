@@ -67,7 +67,7 @@ endif
 
 
 QT_BUILD_PREFS=-system-zlib -confirm-license -opensource -openssl-linked -no-qt3support \
-	-fast -release -no-framework -nomake demos -nomake examples $(SDK) -arch $(ARCH_TYPE)
+	-fast -release -no-webkit -no-framework -nomake demos -nomake examples $(SDK) -arch $(ARCH_TYPE)
 QT_OPTS=$(QT_BUILD_PREFS) -prefix $(BUILT_DIR) -I $(BUILT_DIR)/include -I $(BUILT_DIR)/include/openssl/ -L $(BUILT_DIR)/lib
 build-qt: build-zlib build-openssl $(QT_DIR)
 	cd $(QT_DIR) && ./configure $(QT_OPTS)
