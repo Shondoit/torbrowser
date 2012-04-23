@@ -3,9 +3,9 @@
 RELEASE_VER=2.2.35
 
 ZLIB_VER=1.2.6
-OPENSSL_VER=1.0.0h
-LIBPNG_VER=1.5.9
-QT_VER=4.7.4
+OPENSSL_VER=1.0.1a
+LIBPNG_VER=1.5.10
+QT_VER=4.8.1
 VIDALIA_VER=0.2.17
 LIBEVENT_VER=2.0.17-stable
 TOR_VER=0.2.2.35
@@ -17,6 +17,7 @@ TORBUTTON_VER=1.4.5.1
 NOSCRIPT_VER=2.3.4
 HTTPSEVERYWHERE_VER=2.0.1
 OTR_VER=3.2.0
+OBFSPROXY_VER=0.1.1
 
 ## Extension IDs
 FF_VENDOR_ID:=\{ec8030f7-c20a-464f-9b0e-13a3a9e97384\}
@@ -36,7 +37,7 @@ PYMAKE_PACKAGE=$(PYMAKE_VER).tar.bz2
 TORBUTTON_PACKAGE=torbutton-$(TORBUTTON_VER).xpi
 NOSCRIPT_PACKAGE=addon-722-latest.xpi
 HTTPSEVERYWHERE_PACKAGE=https-everywhere-$(HTTPSEVERYWHERE_VER).xpi
-
+OBFSPROXY_PACKAGE=obfsproxy-$(OBFSPROXY_VER).tar.gz
 
 ## Location of files for download
 ZLIB_URL=http://www.zlib.net/$(ZLIB_PACKAGE)
@@ -53,6 +54,7 @@ PYMAKE_URL=https://hg.mozilla.org/users/bsmedberg_mozilla.com/pymake/archive/$(P
 TORBUTTON_URL=https://www.torproject.org/dist/torbutton/$(TORBUTTON_PACKAGE)
 NOSCRIPT_URL=https://addons.mozilla.org/firefox/downloads/latest/722/$(NOSCRIPT_PACKAGE)
 HTTPSEVERYWHERE_URL=https://eff.org/files/$(HTTPSEVERYWHERE_PACKAGE)
+OBFSPROXY_URL=https://www.torproject.org/dist/obfsproxy/$(OBFSPROXY_PACKAGE)
 
 # Provide some mappings between lower and upper case, which means we don't need
 # to rely on shell shenanigans when we need the upper case version. This is
@@ -68,6 +70,7 @@ firefox=FIREFOX
 pidgin=PIDGIN
 mozbuild=MOZBUILD
 pymake=PYMAKE
+obfsproxy=OBFSPROXY
 
 # The locations of the unpacked tarballs
 ZLIB_DIR=$(BUILD_DIR)/zlib-$(ZLIB_VER)
@@ -80,6 +83,7 @@ TOR_DIR=$(BUILD_DIR)/tor-$(TOR_VER)
 FIREFOX_DIR=$(BUILD_DIR)/firefox-$(FIREFOX_VER)
 MOZBUILD_DIR=$(BUILD_DIR)/mozilla-build
 PYMAKE_DIR=$(BUILD_DIR)/pymake-$(PYMAKE_VER)
+OBFSPROXY_DIR=$(BUILD_DIR)/obfsproxy-$(OBFSPROXY_VER)
 
 # Empty targets are written in arch-dependent $(BUILD_DIR). Usual
 # VPATH issues documented below should be avoided as the paths of
@@ -93,7 +97,7 @@ vpath build-% $(STAMP_DIR)
 vpath patch-% $(STAMP_DIR)
 vpath %.stamp $(STAMP_DIR)
 
-fetch-source: $(FETCH_DIR)/$(ZLIB_PACKAGE) $(FETCH_DIR)/$(LIBPNG_PACKAGE) $(FETCH_DIR)/$(QT_PACKAGE) $(FETCH_DIR)/$(OPENSSL_PACKAGE) $(FETCH_DIR)/$(VIDALIA_PACKAGE) $(FETCH_DIR)/$(LIBEVENT_PACKAGE) $(FETCH_DIR)/$(TOR_PACKAGE) $(FETCH_DIR)/$(FIREFOX_PACKAGE) | $(FETCH_DIR) ;
+fetch-source: $(FETCH_DIR)/$(ZLIB_PACKAGE) $(FETCH_DIR)/$(LIBPNG_PACKAGE) $(FETCH_DIR)/$(QT_PACKAGE) $(FETCH_DIR)/$(OPENSSL_PACKAGE) $(FETCH_DIR)/$(VIDALIA_PACKAGE) $(FETCH_DIR)/$(LIBEVENT_PACKAGE) $(FETCH_DIR)/$(TOR_PACKAGE) $(FETCH_DIR)/$(FIREFOX_PACKAGE) $(FETCH_DIR)/$(OBFSPROXY_PACKAGE) | $(FETCH_DIR) ;
 
 source-dance: fetch-source unpack-source ;
 
@@ -154,7 +158,10 @@ langpack_%.xpi:
 langpack_en-US.xpi:
 	touch $@
 
-unpack-source: $(ZLIB_DIR) $(OPENSSL_DIR) $(LIBPNG_DIR $(QT_DIR) $(VIDALIA_DIR) $(LIBEVENT_DIR) $(TOR_DIR) $(FIREFOX_DIR)
+$(FETCH_DIR)/$(OBFSPROXY_PACKAGE): | $(FETCH_DIR)
+	$(WGET) --no-check-certificate --directory-prefix=$(FETCH_DIR) $(OBFSPROXY_URL)
+
+unpack-source: $(ZLIB_DIR) $(OPENSSL_DIR) $(LIBPNG_DIR $(QT_DIR) $(VIDALIA_DIR) $(LIBEVENT_DIR) $(TOR_DIR) $(FIREFOX_DIR) $(OBFSPROXY_DIR)
 
 
 $(ZLIB_DIR): $(FETCH_DIR)/$(ZLIB_PACKAGE) | $(BUILD_DIR)
@@ -180,6 +187,11 @@ $(OPENSSL_DIR): $(FETCH_DIR)/$(OPENSSL_PACKAGE) ../src/current-patches/openssl/*
 $(VIDALIA_DIR): $(FETCH_DIR)/$(VIDALIA_PACKAGE) | $(BUILD_DIR)
 	rm -rf $(VIDALIA_DIR)
 	cd $(FETCH_DIR) && tar -xmf $(VIDALIA_PACKAGE) -C $(BUILD_DIR)/
+ifeq (MacOS,$(PLATFORM))
+	cp ../src/current-patches/vidalia/*patch $(VIDALIA_DIR)
+	cp patch-any-src.sh $(VIDALIA_DIR)
+	cd $(VIDALIA_DIR) && ./patch-any-src.sh
+endif
 
 $(LIBEVENT_DIR): $(FETCH_DIR)/$(LIBEVENT_PACKAGE) | $(BUILD_DIR)
 	rm -rf $(LIBEVENT_DIR)
@@ -213,22 +225,26 @@ $(PYMAKE_DIR): $(FETCH_DIR)/$(PYMAKE_PACKAGE) | $(BUILD_DIR)
 	rm -rf $(PYMAKE_DIR)
 	cd $(FETCH_DIR) && tar -xmf $(PYMAKE_PACKAGE) -C $(BUILD_DIR)/
 
+$(OBFSPROXY_DIR): $(FETCH_DIR)/$(OBFSPROXY_PACKAGE) | $(BUILD_DIR)
+	rm -rf $(OBFSPROXY_DIR)
+	cd $(FETCH_DIR) && tar -xmf $(OBFSPROXY_PACKAGE) -C $(BUILD_DIR)/
+
 
 clean-fetch-%:
 	rm -rf $(FETCH_DIR)/$($($*)_PACKAGE)
 
-clean-fetch: clean-fetch-zlib clean-fetch-libpng clean-fetch-qt clean-fetch-openssl clean-fetch-vidalia clean-fetch-libevent clean-fetch-tor clean-fetch-firefox
+clean-fetch: clean-fetch-zlib clean-fetch-libpng clean-fetch-qt clean-fetch-openssl clean-fetch-vidalia clean-fetch-libevent clean-fetch-tor clean-fetch-firefox clean-fetch-obfsproxy
 
 clean-unpack-%:
 	rm -rf $($($*)_DIR)
 
-clean-unpack: clean-unpack-zlib clean-unpack-libpng clean-unpack-qt clean-unpack-openssl clean-unpack-vidalia clean-unpack-libevent clean-unpack-tor clean-unpack-firefox
+clean-unpack: clean-unpack-zlib clean-unpack-libpng clean-unpack-qt clean-unpack-openssl clean-unpack-vidalia clean-unpack-libevent clean-unpack-tor clean-unpack-firefox clean-unpack-obfsproxy
 
 clean-build-%:
 	rm -rf $($($*)_DIR)
 	rm -rf build-$*
 
-clean-build: clean-build-zlib clean-build-libpng clean-build-qt clean-build-openssl clean-build-vidalia clean-build-libevent clean-build-tor clean-build-firefox
+clean-build: clean-build-zlib clean-build-libpng clean-build-qt clean-build-openssl clean-build-vidalia clean-build-libevent clean-build-tor clean-build-firefox clean-build-obfsproxy
 
 .PHONY: clean-fetch clean-unpack clean-build
 

@@ -1,0 +1,61 @@
+From c06d989faabadfa643dfd4a34abae549f4eef213 Mon Sep 17 00:00:00 2001
+From: Sebastian Hahn <sebastian@torproject.org>
+Date: Wed, 18 Apr 2012 02:01:36 +0200
+Subject: [PATCH] Adapt paths etc for OS X TBB
+
+---
+ src/vidalia/MainWindow.cpp |   21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
+
+diff --git a/src/vidalia/MainWindow.cpp b/src/vidalia/MainWindow.cpp
+index d170d47..6835b1e 100644
+--- a/src/vidalia/MainWindow.cpp
++++ b/src/vidalia/MainWindow.cpp
+@@ -619,24 +619,27 @@ MainWindow::launchBrowserFromDirectory()
+ 
+   /* The browser is in <browserDirectory>/App/Firefox/<browserDirectoryFilename> */
+   QString browserExecutable =
+-    QDir::toNativeSeparators(browserDirectory + "/App/Firefox/" + browserDirectoryFilename);
++    QDir::toNativeSeparators(browserDirectory + "/Contents/MacOS/Firefox.app/Contents/MacOS/" + browserDirectoryFilename);
+   /* The profile is in <browserDirectory>/Data/profile */
+   QString profileDir =
+-    QDir::toNativeSeparators(browserDirectory + "/Data/profile");
++    QDir::toNativeSeparators(browserDirectory + "/Library/Application Support/Firefox/Profiles/profile");
+ 
+   /* Copy the profile directory if it's not already there */
+   QDir browserDirObj = QDir(browserDirectory);
+ 
+   /* Copy the profile directory if it's not already there */
+-  if (!browserDirObj.exists("Data/profile")) {
+-    browserDirObj.mkdir("Data/profile");
+-    copy_dir(browserDirectory + "/App/DefaultData/profile", browserDirectory + "/Data/profile");
++  if (!browserDirObj.exists("Library/Application Support/Firefox/Profiles/profile")) {
++     browserDirObj.mkdir("Library/Application Support/Firefox/Profiles/profile");
++     QString src = browserDirectory + "/Contents/MacOS/Firefox.app/Contents/MacOS/defaults/profile";
++     QString dst = profileDir;
++     vNotice("Copying '%1' to '%2'").arg(src).arg(dst);
++     copy_dir(src, dst);
+   }
+ 
+   /* Copy the plugins directory if it's not already there */
+-  if (!browserDirObj.exists("Data/plugins")) {
+-    browserDirObj.mkdir("Data/plugins");
+-    copy_dir(browserDirectory + "/App/DefaultData/plugins", browserDirectory + "/Data/plugins");
++  if (!browserDirObj.exists("MacOS/Data/plugins")) {
++    browserDirObj.mkdir("MacOS/Data/plugins");
++    copy_dir(browserDirectory + "/MacOS/Data/plugins", browserDirectory + "/MacOS/Data/plugins");
+   }
+ 
+   /* Build the command line arguments */
+@@ -644,7 +647,7 @@ MainWindow::launchBrowserFromDirectory()
+   // Is this better or worse than MOZ_NO_REMOTE?
+   commandLine << "-no-remote";
+   commandLine << "-profile";
+-  commandLine << profileDir;
++  commandLine << QDir::currentPath () + "/" +  profileDir;
+ 
+   /* Launch the browser */
+   if(!_browserProcess->state() != QProcess::NotRunning)
+-- 
+1.7.9.6
+

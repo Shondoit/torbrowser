@@ -86,7 +86,7 @@ build-vidalia: build-openssl $(VIDALIA_DIR)
 	cd $(VIDALIA_DIR)/build && make -j $(NUM_CORES)
 	touch $(STAMP_DIR)/build-vidalia
 
-LIBEVENT_CFLAGS="-I$(BUILT_DIR)/include -O -g"
+LIBEVENT_CFLAGS="-I$(BUILT_DIR)/include"
 LIBEVENT_LDFLAGS="-L$(BUILT_DIR)/lib -L$(BUILT_DIR)/bin -Wl,--nxcompat -Wl,--dynamicbase"
 LIBEVENT_OPTS=--prefix=$(BUILT_DIR) --enable-static --disable-shared --disable-dependency-tracking
 build-libevent: build-zlib build-openssl $(LIBEVENT_DIR)
@@ -95,7 +95,7 @@ build-libevent: build-zlib build-openssl $(LIBEVENT_DIR)
 	cd $(LIBEVENT_DIR) && make install
 	touch $(STAMP_DIR)/build-libevent
 
-TOR_CFLAGS="-O -g -I$(BUILT_DIR)/include"
+TOR_CFLAGS="-I$(BUILT_DIR)/include"
 TOR_LDFLAGS="-L$(BUILT_DIR)/lib -L$(BUILT_DIR)/bin"
 TOR_OPTS=--enable-gcc-warnings --enable-static-libevent --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR)
 build-tor:PATH+=:$(BUILT_DIR)/bin
@@ -208,7 +208,7 @@ clean:
 	rm -f *~
 	rm -fr *.xpi *.jar *.zip
 	rm -fr $(NAME)_*
-	rm $(STAMP_DIR)/*stamp
+	rm -f $(STAMP_DIR)/*.stamp
 	cd ../src/RelativeLink/ && $(MAKE) clean
 
 ## Also remove the output files

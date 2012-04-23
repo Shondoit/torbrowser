@@ -14,15 +14,15 @@
 
 
 ## Architecture
-ARCH_TYPE=x86_64
+ARCH_TYPE=i386
 BUILD_NUM=8
 PLATFORM=MacOS
 
 ## Set OSX-specific backwards compatibility options
 OSX_VERSION=10.5
-CC=CC=gcc-4.0
+CC=
 # These can probably be left alone for OSX_VERSION 10.5 and up
-SDK_PATH=/Developer/SDKs/MacOSX$(OSX_VERSION).sdk
+SDK_PATH=/Developer/SDKs/MacOSX10.6.sdk
 SDK=-sdk $(SDK_PATH)
 MIN_VERSION=-mmacosx-version-min=$(OSX_VERSION)
 CF_MIN_VERSION=-isysroot $(SDK_PATH)
@@ -31,7 +31,7 @@ BACKWARDS_COMPAT=$(MIN_VERSION) $(CF_MIN_VERSION) $(LD_MIN_VERSION)
 
 ## Build machine specific settings
 # Number of cpu cores used to build in parallel
-NUM_CORES=2
+NUM_CORES=4
 
 ## Location of directory for source fetching
 FETCH_DIR=$(PWD)/build
@@ -67,7 +67,7 @@ endif
 
 
 QT_BUILD_PREFS=-system-zlib -confirm-license -opensource -openssl-linked -no-qt3support \
-	-fast -release -no-framework -nomake demos -nomake examples $(SDK) -arch $(ARCH_TYPE)
+	-fast -release -no-webkit -no-framework -nomake demos -nomake examples $(SDK) -arch $(ARCH_TYPE)
 QT_OPTS=$(QT_BUILD_PREFS) -prefix $(BUILT_DIR) -I $(BUILT_DIR)/include -I $(BUILT_DIR)/include/openssl/ -L $(BUILT_DIR)/lib
 build-qt: build-zlib build-openssl $(QT_DIR)
 	cd $(QT_DIR) && ./configure $(QT_OPTS)
@@ -78,14 +78,15 @@ build-qt: build-zlib build-openssl $(QT_DIR)
 VIDALIA_OPTS=-DCMAKE_OSX_ARCHITECTURES=$(ARCH_TYPE) -DQT_QMAKE_EXECUTABLE=$(BUILT_DIR)/bin/qmake \
 	-DCMAKE_BUILD_TYPE=debug ..
 build-vidalia: build-openssl build-qt $(VIDALIA_DIR)
-	export MACOSX_DEPLOYMENT_TARGET=$(OSX_VERSION)
 	-mkdir $(VIDALIA_DIR)/build
-	cd $(VIDALIA_DIR)/build && cmake $(VIDALIA_OPTS) \
+	cd $(VIDALIA_DIR)/build && \
+	MACOSX_DEPLOYMENT_TARGET=$(OSX_VERSION) cmake $(VIDALIA_OPTS) \
 	&& make -j $(NUM_CORES) && make dist-osx-libraries
 	cd $(VIDALIA_DIR)/build && DESTDIR=$(BUILT_DIR) make install
+	cp -r $(QT_DIR)/src/gui/mac/qt_menu.nib $(VIDALIA)/Contents/Resources/
 	touch $(STAMP_DIR)/build-vidalia
 
-LIBEVENT_CFLAGS="-O -g -arch $(ARCH_TYPE) $(MIN_VERSION) $(CF_MIN_VERSION) -arch $(ARCH_TYPE)"
+LIBEVENT_CFLAGS="-arch $(ARCH_TYPE) $(MIN_VERSION) $(CF_MIN_VERSION) -arch $(ARCH_TYPE)"
 LIBEVENT_LDFLAGS="-L$(BUILT_DIR)/lib $(LD_MIN_VERSION)"
 LIBEVENT_OPTS=--prefix=$(BUILT_DIR) --enable-static --disable-shared --disable-dependency-tracking $(CC)
 build-libevent: build-zlib build-openssl $(LIBEVENT_DIR)
@@ -94,7 +95,7 @@ build-libevent: build-zlib build-openssl $(LIBEVENT_DIR)
 	cd $(LIBEVENT_DIR) && make install
 	touch $(STAMP_DIR)/build-libevent
 
-TOR_CFLAGS="-O -g -arch $(ARCH_TYPE) -I$(BUILT_DIR)/include $(MIN_VERSION) $(CF_MIN_VERSION)"
+TOR_CFLAGS="-arch $(ARCH_TYPE) -I$(BUILT_DIR)/include $(MIN_VERSION) $(CF_MIN_VERSION)"
 TOR_LDFLAGS="-L$(BUILT_DIR)/lib $(LD_MIN_VERSION)"
 TOR_OPTS=--enable-gcc-warnings-advisory --enable-static-openssl --enable-static-libevent --with-openssl-dir=$(BUILT_DIR)/lib --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR) --disable-dependency-tracking $(CC)
 build-tor: build-zlib build-openssl build-libevent $(TOR_DIR)
@@ -217,7 +218,7 @@ clean:
 	rm -f *~
 	rm -fr *.xpi *.jar *.zip
 	rm -fr $(NAME)_*
-	rm $(STAMP_DIR)/*stamp
+	rm -f $(STAMP_DIR)/*.stamp
 	cd ../src/RelativeLink/ && $(MAKE) clean
 
 ##
@@ -248,7 +249,10 @@ directory-structure:
 
 ## Package up all the Vidalia and Tor pre-requisites
 ## Firefox and Pidgin are installed in their own targets
-install-binaries: 
+install-binaries:
+	chmod 644 $(BUILT_DIR)/lib/libssl.*
+	chmod 644 $(BUILT_DIR)/lib/libcrypto.*
+	$(BUILT_DIR)/bin/macdeployqt $(VIDALIA) -no-plugins
 	# Vidalia
 	cp -R $(VIDALIA) $(APPDIR)/Vidalia.app
 	cp $(TOR) $(APPDIR)
