@@ -98,12 +98,7 @@ build-libevent: build-zlib build-openssl $(LIBEVENT_DIR)
 TOR_CFLAGS="-I$(BUILT_DIR)/include"
 TOR_LDFLAGS="-L$(BUILT_DIR)/lib -L$(BUILT_DIR)/bin"
 TOR_OPTS=--enable-gcc-warnings --enable-static-libevent --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR)
-build-tor:PATH+=:$(BUILT_DIR)/bin
-build-tor: build-zlib build-openssl build-libevent $(TOR_DIR)
-	cd $(TOR_DIR) && CFLAGS=$(TOR_CFLAGS) LDFLAGS=$(TOR_LDFLAGS) ./configure $(TOR_OPTS)
-	cd $(TOR_DIR) && make -j $(NUM_CORES)
-	cd $(TOR_DIR) && make install
-	touch $(STAMP_DIR)/build-tor
+build-tor:PATH+=:$(BUILT_DIR)/bin 
 
 build-firefox: $(FIREFOX_DIR) config/dot_mozconfig $(MOZBUILD_DIR) $(MOZBUILD_DIR)/start-msvc$(MSVC_VER).bat | $(PYTHON) $(PYMAKE_DIR)
 	cp config/dot_mozconfig $(FIREFOX_DIR)/mozconfig

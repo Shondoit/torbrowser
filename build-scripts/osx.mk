@@ -98,11 +98,6 @@ build-libevent: build-zlib build-openssl $(LIBEVENT_DIR)
 TOR_CFLAGS="-arch $(ARCH_TYPE) -I$(BUILT_DIR)/include $(MIN_VERSION) $(CF_MIN_VERSION)"
 TOR_LDFLAGS="-L$(BUILT_DIR)/lib $(LD_MIN_VERSION)"
 TOR_OPTS=--enable-gcc-warnings-advisory --enable-static-openssl --enable-static-libevent --with-openssl-dir=$(BUILT_DIR)/lib --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR) --disable-dependency-tracking $(CC)
-build-tor: build-zlib build-openssl build-libevent $(TOR_DIR)
-	cd $(TOR_DIR) && CFLAGS=$(TOR_CFLAGS) LDFLAGS=$(TOR_LDFLAGS) ./configure $(TOR_OPTS)
-	cd $(TOR_DIR) && make -j $(NUM_CORES)
-	cd $(TOR_DIR) && make install
-	touch $(STAMP_DIR)/build-tor
 
 build-firefox: $(FIREFOX_DIR) config/mozconfig-osx-$(ARCH_TYPE)
 	cp config/mozconfig-osx-$(ARCH_TYPE) $(FIREFOX_DIR)/mozconfig
