@@ -106,6 +106,7 @@ build-tor: build-zlib build-openssl build-libevent $(TOR_DIR)
 
 build-firefox: $(FIREFOX_DIR) config/mozconfig-osx-$(ARCH_TYPE)
 	cp config/mozconfig-osx-$(ARCH_TYPE) $(FIREFOX_DIR)/mozconfig
+	cp branding/* $(FIREFOX_DIR)/branding
 	cd $(FIREFOX_DIR) && make -f client.mk build
 	touch $(STAMP_DIR)/build-firefox
 
