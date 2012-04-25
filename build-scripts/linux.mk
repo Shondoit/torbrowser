@@ -89,7 +89,7 @@ build-pidgin:
 
 build-firefox: config/dot_mozconfig $(FIREFOX_DIR)
 	cp config/dot_mozconfig $(FIREFOX_DIR)/mozconfig
-	cp branding/* $(FIREFOX_DIR)/branding
+	cp branding/* $(FIREFOX_DIR)/browser/branding/official
 	cd $(FIREFOX_DIR) && make -f client.mk build
 	touch $(STAMP_DIR)/build-firefox
 
