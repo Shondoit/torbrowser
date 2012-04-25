@@ -1,7 +1,7 @@
 From 6147cea4de151dade922b3c2787016f70c222458 Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@torproject.org>
 Date: Tue, 24 Apr 2012 17:21:45 -0700
-Subject: [PATCH 12/12] Randomize HTTP request order and pipeline depth.
+Subject: [PATCH 12/16] Randomize HTTP request order and pipeline depth.
 
 This is an experimental defense against
 http://lorre.uni.lu/~andriy/papers/acmccs-wpes11-fingerprinting.pdf

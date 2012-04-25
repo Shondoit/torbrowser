@@ -1,0 +1,28 @@
+From 74be7d742204d48fbb51a90275781378948ba749 Mon Sep 17 00:00:00 2001
+From: Mike Perry <mikeperry-git@torproject.org>
+Date: Wed, 25 Apr 2012 13:42:52 -0700
+Subject: [PATCH 15/16] Undo some Mozilla braindamage.
+
+https://bugzilla.mozilla.org/show_bug.cgi?id=715885#c33
+
+Seriously guys?
+---
+ widget/nsIDragService.idl |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/widget/nsIDragService.idl b/widget/nsIDragService.idl
+index e42c578..6863a88 100644
+--- a/widget/nsIDragService.idl
++++ b/widget/nsIDragService.idl
+@@ -48,7 +48,7 @@ interface nsIDOMDragEvent;
+ interface nsIDOMDataTransfer;
+ interface nsISelection;
+ 
+-[scriptable, uuid(82B58ADA-F490-4C3D-B737-1057C4F1D052), builtinclass]
++[scriptable, uuid(82B58ADA-F490-4C3D-B737-1057C4F1D052)]
+ interface nsIDragService : nsISupports
+ {
+   const long DRAGDROP_ACTION_NONE = 0;
+-- 
+1.7.5.4
+

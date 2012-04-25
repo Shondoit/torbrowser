@@ -1,7 +1,7 @@
 From 878aa170944f7d44a76f0eb09214d46b6028c549 Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@torproject.org>
 Date: Wed, 1 Feb 2012 15:40:40 -0800
-Subject: [PATCH 01/12] Block Components.interfaces,lookupMethod from content
+Subject: [PATCH 01/16] Block Components.interfaces,lookupMethod from content
 
 This patch removes the ability of content script to access
 Components.interfaces.* as well as call or access Components.lookupMethod.
