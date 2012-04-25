@@ -107,7 +107,7 @@ build-tor: build-zlib build-openssl build-libevent $(TOR_DIR)
 
 build-firefox: $(FIREFOX_DIR) config/dot_mozconfig $(MOZBUILD_DIR) $(MOZBUILD_DIR)/start-msvc$(MSVC_VER).bat | $(PYTHON) $(PYMAKE_DIR)
 	cp config/dot_mozconfig $(FIREFOX_DIR)/mozconfig
-	cp branding/* $(FIREFOX_DIR)/branding
+	cp branding/* $(FIREFOX_DIR)/browser/branding/official
 	cd $(MOZBUILD_DIR) && cmd.exe /c "start-msvc$(MSVC_VER).bat $(FIREFOX_DIR) $(PYTHON) $(PYMAKE)"
 	touch $(STAMP_DIR)/build-firefox
 
