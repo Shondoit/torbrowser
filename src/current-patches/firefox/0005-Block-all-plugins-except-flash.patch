@@ -1,7 +1,7 @@
-From 10873c626d038b520853539d45a170919d6d0361 Mon Sep 17 00:00:00 2001
+From 89d6deddce94c720793a33a1c9fc812ad65116a9 Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@torproject.org>
 Date: Wed, 1 Feb 2012 15:50:15 -0800
-Subject: [PATCH 07/13] Block all plugins except flash.
+Subject: [PATCH 05/12] Block all plugins except flash.
 
 We cannot use the @mozilla.org/extensions/blocklist;1 service, because we
 actually want to stop plugins from ever entering the browser's process space
@@ -17,10 +17,10 @@ on a better way. Until then, it is delta-darwinism for us.
  2 files changed, 35 insertions(+), 0 deletions(-)
 
 diff --git a/dom/plugins/base/nsPluginHost.cpp b/dom/plugins/base/nsPluginHost.cpp
-index 7fe18b2..d76c4ca 100644
+index ed081fc..7384bcc 100644
 --- a/dom/plugins/base/nsPluginHost.cpp
 +++ b/dom/plugins/base/nsPluginHost.cpp
-@@ -1982,6 +1982,35 @@ bool nsPluginHost::IsDuplicatePlugin(nsPluginTag * aPluginTag)
+@@ -1985,6 +1985,35 @@ bool nsPluginHost::IsDuplicatePlugin(nsPluginTag * aPluginTag)
    return false;
  }
  
@@ -56,7 +56,7 @@ index 7fe18b2..d76c4ca 100644
  typedef NS_NPAPIPLUGIN_CALLBACK(char *, NP_GETMIMEDESCRIPTION)(void);
  
  nsresult nsPluginHost::ScanPluginsDirectory(nsIFile *pluginsDir,
-@@ -2103,6 +2132,10 @@ nsresult nsPluginHost::ScanPluginsDirectory(nsIFile *pluginsDir,
+@@ -2118,6 +2147,10 @@ nsresult nsPluginHost::ScanPluginsDirectory(nsIFile *pluginsDir,
        continue;
      }
  

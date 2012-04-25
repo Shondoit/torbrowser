@@ -1,7 +1,7 @@
-From 10f26d027ba5413d7e26aaccd92cbc1c12b42d86 Mon Sep 17 00:00:00 2001
+From a27dcd387d8c3c1f1e150dcdd3c8aa1872ad14b5 Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@fscked.org>
 Date: Tue, 20 Dec 2011 21:02:49 -0800
-Subject: [PATCH 12/13] Provide client values only to CSS Media Queries
+Subject: [PATCH 10/12] Provide client values only to CSS Media Queries
 
 Also disable a bunch of Mozilla extensions that smell like they are
 fingerprintable.

@@ -1,6 +1,6 @@
-From 8e8833ea22369c7597f5844139de37212deb1cd7 Mon Sep 17 00:00:00 2001
+From 6147cea4de151dade922b3c2787016f70c222458 Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@torproject.org>
-Date: Thu, 15 Mar 2012 20:05:07 -0700
+Date: Tue, 24 Apr 2012 17:21:45 -0700
 Subject: [PATCH 12/12] Randomize HTTP request order and pipeline depth.
 
 This is an experimental defense against
@@ -17,13 +17,13 @@ the order and concurrency of non-pipelined HTTP requests.
  2 files changed, 133 insertions(+), 5 deletions(-)
 
 diff --git a/netwerk/protocol/http/nsHttpConnectionMgr.cpp b/netwerk/protocol/http/nsHttpConnectionMgr.cpp
-index 17d897f..8f50bf6 100644
+index 6e1099d..3eec5b3 100644
 --- a/netwerk/protocol/http/nsHttpConnectionMgr.cpp
 +++ b/netwerk/protocol/http/nsHttpConnectionMgr.cpp
-@@ -99,6 +99,12 @@ nsHttpConnectionMgr::nsHttpConnectionMgr()
-     LOG(("Creating nsHttpConnectionMgr @%x\n", this));
+@@ -100,6 +100,12 @@ nsHttpConnectionMgr::nsHttpConnectionMgr()
      mCT.Init();
      mAlternateProtocolHash.Init(16);
+     mSpdyPreferredHash.Init();
 +
 +    nsresult rv;
 +    mRandomGenerator = do_GetService("@mozilla.org/security/random-generator;1", &rv);
@@ -48,9 +48,9 @@ index 17d897f..8f50bf6 100644
                  nsHttpTransaction *trans = ent->mPendingQ[i];
                  if (trans->Caps() & NS_HTTP_ALLOW_PIPELINING) {
                      pipeline->AddTransaction(trans);
-@@ -895,12 +905,17 @@ nsHttpConnectionMgr::ProcessPendingQForEntry(nsConnectionEntry *ent)
-     if (gHttpHandler->IsSpdyEnabled())
-         ProcessSpdyPendingQ(ent);
+@@ -898,12 +908,17 @@ nsHttpConnectionMgr::ProcessPendingQForEntry(nsConnectionEntry *ent)
+ 
+     ProcessSpdyPendingQ(ent);
  
 -    PRUint32 i, count = ent->mPendingQ.Length();
 +    PRUint32 h, i = 0, count = ent->mPendingQ.Length();
@@ -200,7 +200,7 @@ index 17d897f..8f50bf6 100644
  nsHttpConnectionMgr::ProcessNewTransaction(nsHttpTransaction *trans)
  {
 diff --git a/netwerk/protocol/http/nsHttpConnectionMgr.h b/netwerk/protocol/http/nsHttpConnectionMgr.h
-index bb605a1..e372096 100644
+index a13da0f..59ee9b9 100644
 --- a/netwerk/protocol/http/nsHttpConnectionMgr.h
 +++ b/netwerk/protocol/http/nsHttpConnectionMgr.h
 @@ -54,6 +54,7 @@
@@ -211,7 +211,7 @@ index bb605a1..e372096 100644
  
  class nsHttpPipeline;
  
-@@ -312,6 +313,8 @@ private:
+@@ -317,6 +318,8 @@ private:
      nsresult DispatchTransaction(nsConnectionEntry *, nsHttpTransaction *,
                                   PRUint8 caps, nsHttpConnection *);
      bool     BuildPipeline(nsConnectionEntry *, nsAHttpTransaction *, nsHttpPipeline **);
@@ -220,7 +220,7 @@ index bb605a1..e372096 100644
      nsresult ProcessNewTransaction(nsHttpTransaction *);
      nsresult EnsureSocketThreadTargetIfOnline();
      void     ClosePersistentConnections(nsConnectionEntry *ent);
-@@ -405,6 +408,8 @@ private:
+@@ -409,6 +412,8 @@ private:
      PRUint64 mTimeOfNextWakeUp;
      // Timer for next pruning of dead connections.
      nsCOMPtr<nsITimer> mTimer;
