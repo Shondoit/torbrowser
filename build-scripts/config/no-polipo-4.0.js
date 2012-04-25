@@ -166,3 +166,12 @@ user_pref("urlclassifier.tableversion.goog-white-url", "1.371");
 user_pref("xpinstall.whitelist.add", "");
 user_pref("xpinstall.whitelist.add.36", "");
 user_pref("security.ssl.enable_false_start", true);
+user_pref("dom.battery.enabled", false); // fingerpriting due to differing OS implementations
+user_pref("dom.network.enabled",false); // fingerprinting due to differing OS implementations
+user_pref("browser.display.max_font_attempts",10);
+user_pref("browser.display.max_font_count",5);
+user_pref("browser.sessionstore.resume_from_crash",false);
+user_pref("browser.search.order.1", "Startpage");
+user_pref("browser.search.order.2", "DuckDuckGo");
+user_pref("browser.search.order.3", "Google");
+user_pref("browser.search.selectedEngine", "Startpage"); // bam
