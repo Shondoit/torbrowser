@@ -1,9 +1,9 @@
 . $topsrcdir/browser/config/mozconfig
 
-CC="gcc-4.2 -arch x86_64"
-CXX="g++-4.2 -arch x86_64"
-HOST_CC="gcc-4.2"
-HOST_CXX="g++-4.2"
+CC="gcc -arch x86_64"
+CXX="g++ -arch x86_64"
+HOST_CC="gcc"
+HOST_CXX="g++"
 RANLIB=ranlib
 AR=ar
 AS=$CC
@@ -11,6 +11,7 @@ LD=ld
 STRIP="strip -x -S"
 CROSS_COMPILE=1
 
+mk_add_options MOZ_MAKE_FLAGS="-s --no-print-directory -j8"
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-@CONFIG_GUESS@
 mk_add_options MOZ_APP_DISPLAYNAME=TorBrowser
 mk_add_options PROFILE_GEN_SCRIPT='$(PYTHON) $(MOZ_OBJDIR)/_profile/pgo/profileserver.py'
