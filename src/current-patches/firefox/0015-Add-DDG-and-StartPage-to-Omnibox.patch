@@ -1,7 +1,7 @@
-From 67552486c7e0a1b8797e0cb562bddf771aa2015b Mon Sep 17 00:00:00 2001
+From db055738d6431057670e8f219616170ed3644a9e Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@torproject.org>
 Date: Wed, 25 Apr 2012 15:03:46 -0700
-Subject: [PATCH 16/16] Add DDG and StartPage to Omnibox.
+Subject: [PATCH 15/16] Add DDG and StartPage to Omnibox.
 
 You mean there are search engines that don't require captchas if you don't
 have a cookie? Holy crap. Get those in there now.
