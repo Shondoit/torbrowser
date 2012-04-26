@@ -31,7 +31,7 @@ BACKWARDS_COMPAT=$(MIN_VERSION) $(CF_MIN_VERSION) $(LD_MIN_VERSION)
 
 ## Build machine specific settings
 # Number of cpu cores used to build in parallel
-NUM_CORES=4
+NUM_CORES=8
 
 ## Location of directory for source fetching
 FETCH_DIR=$(PWD)/build
@@ -76,7 +76,7 @@ build-qt: build-zlib build-openssl $(QT_DIR)
 	touch $(STAMP_DIR)/build-qt
 
 VIDALIA_OPTS=-DCMAKE_OSX_ARCHITECTURES=$(ARCH_TYPE) -DQT_QMAKE_EXECUTABLE=$(BUILT_DIR)/bin/qmake \
-	-DCMAKE_BUILD_TYPE=debug ..
+	-DCMAKE_BUILD_TYPE=debug -DCMAKE_OSX_SYSROOT=${SDK_PATH} ..
 build-vidalia: build-openssl build-qt $(VIDALIA_DIR)
 	-mkdir $(VIDALIA_DIR)/build
 	cd $(VIDALIA_DIR)/build && \
@@ -98,11 +98,6 @@ build-libevent: build-zlib build-openssl $(LIBEVENT_DIR)
 TOR_CFLAGS="-arch $(ARCH_TYPE) -I$(BUILT_DIR)/include $(MIN_VERSION) $(CF_MIN_VERSION)"
 TOR_LDFLAGS="-L$(BUILT_DIR)/lib $(LD_MIN_VERSION)"
 TOR_OPTS=--enable-gcc-warnings-advisory --enable-static-openssl --enable-static-libevent --with-openssl-dir=$(BUILT_DIR)/lib --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR) --disable-dependency-tracking $(CC)
-build-tor: build-zlib build-openssl build-libevent $(TOR_DIR)
-	cd $(TOR_DIR) && CFLAGS=$(TOR_CFLAGS) LDFLAGS=$(TOR_LDFLAGS) ./configure $(TOR_OPTS)
-	cd $(TOR_DIR) && make -j $(NUM_CORES)
-	cd $(TOR_DIR) && make install
-	touch $(STAMP_DIR)/build-tor
 
 build-firefox: $(FIREFOX_DIR) config/mozconfig-osx-$(ARCH_TYPE)
 	cp config/mozconfig-osx-$(ARCH_TYPE) $(FIREFOX_DIR)/mozconfig

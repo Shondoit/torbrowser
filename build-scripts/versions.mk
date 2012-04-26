@@ -3,7 +3,7 @@
 RELEASE_VER=2.2.35
 
 ZLIB_VER=1.2.6
-OPENSSL_VER=1.0.1a
+OPENSSL_VER=1.0.1b
 LIBPNG_VER=1.5.10
 QT_VER=4.8.1
 VIDALIA_VER=0.2.17
@@ -229,6 +229,13 @@ $(OBFSPROXY_DIR): $(FETCH_DIR)/$(OBFSPROXY_PACKAGE) | $(BUILD_DIR)
 	rm -rf $(OBFSPROXY_DIR)
 	cd $(FETCH_DIR) && tar -xmf $(OBFSPROXY_PACKAGE) -C $(BUILD_DIR)/
 
+
+# Common build functionality. Modified by variables set in OS-specific makefiles
+build-tor: build-zlib build-openssl build-libevent $(TOR_DIR)
+	cd $(TOR_DIR) && CFLAGS=$(TOR_CFLAGS) LDFLAGS=$(TOR_LDFLAGS) ./configure $(TOR_OPTS)
+	cd $(TOR_DIR) && make -j $(NUM_CORES)
+	cd $(TOR_DIR) && make install
+	touch $(STAMP_DIR)/build-tor
 
 clean-fetch-%:
 	rm -rf $(FETCH_DIR)/$($($*)_PACKAGE)

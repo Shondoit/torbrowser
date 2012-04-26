@@ -78,11 +78,6 @@ build-libevent: build-zlib build-openssl $(LIBEVENT_DIR)
 	touch $(STAMP_DIR)/build-libevent
 
 TOR_OPTS=--enable-gcc-warnings --with-openssl-dir=$(BUILT_DIR) --with-zlib-dir=$(BUILT_DIR) --with-libevent-dir=$(BUILT_DIR)/lib --prefix=$(BUILT_DIR)
-build-tor: build-zlib build-openssl build-libevent $(TOR_DIR)
-	cd $(TOR_DIR) && ./configure $(TOR_OPTS)
-	cd $(TOR_DIR) && make -j $(NUM_CORES)
-	cd $(TOR_DIR) && make install
-	touch $(STAMP_DIR)/build-tor
 
 build-pidgin:
 	echo "We're not building pidgin yet!"
