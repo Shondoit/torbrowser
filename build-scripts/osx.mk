@@ -31,7 +31,7 @@ BACKWARDS_COMPAT=$(MIN_VERSION) $(CF_MIN_VERSION) $(LD_MIN_VERSION)
 
 ## Build machine specific settings
 # Number of cpu cores used to build in parallel
-NUM_CORES=8
+NUM_CORES=4
 
 ## Location of directory for source fetching
 FETCH_DIR=$(PWD)/build
@@ -76,7 +76,7 @@ build-qt: build-zlib build-openssl $(QT_DIR)
 	touch $(STAMP_DIR)/build-qt
 
 VIDALIA_OPTS=-DCMAKE_OSX_ARCHITECTURES=$(ARCH_TYPE) -DQT_QMAKE_EXECUTABLE=$(BUILT_DIR)/bin/qmake \
-	-DCMAKE_BUILD_TYPE=debug -DCMAKE_OSX_SYSROOT=${SDK_PATH} ..
+	-DCMAKE_BUILD_TYPE=debug ..
 build-vidalia: build-openssl build-qt $(VIDALIA_DIR)
 	-mkdir $(VIDALIA_DIR)/build
 	cd $(VIDALIA_DIR)/build && \
