@@ -281,7 +281,7 @@ configure-apps:
 	#mkdir -p $(DEST)/.mozilla/Firefox/firefox.default
 	cp -R config/firefox-profiles.ini $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profiles.ini
 	cp config/bookmarks.html $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile
-	cp config/no-polipo-4.0.js $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/prefs.js
+	cp config/prefs.js $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/prefs.js
 	cp config/Info.plist $(DEST)/Contents
 	cp config/PkgInfo $(DEST)/Contents
 	cp config/qt.conf $(DEST)/Contents/MacOS/Vidalia.app/Contents/Resources
@@ -385,7 +385,7 @@ endif
 patch-firefox-language:
 	## Patch the default Firefox prefs.js
 	## Don't use {} because they aren't always interpreted correctly. Thanks, sh. 
-	cp config/no-polipo-4.0.js $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
+	cp config/prefs.js $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
 	cp config/bookmarks.html $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile
 	./patch-firefox-language.sh $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js $(LANGCODE) -e
 

@@ -286,9 +286,10 @@ endif
 configure-apps:
 
 	mkdir -p $(DEST)/FirefoxPortable/Data/profile
+	mkdir -p $(DEST)/FirefoxPortable/App/DefaultData/profile
 	## Configure Firefox preferences
-	cp config/windows-4.0.js $(DEST)/FirefoxPortable/App/DefaultData/profile/prefs.js
-	cp config/windows-4.0.js $(DEST)/FirefoxPortable/Data/profile/prefs.js
+	cp config/prefs.js $(DEST)/FirefoxPortable/App/DefaultData/profile/prefs.js
+	cp config/prefs.js $(DEST)/FirefoxPortable/Data/profile/prefs.js
 	cp config/bookmarks.html $(DEST)/FirefoxPortable/App/DefaultData/profile/
 
 	## Set up alternate launcher

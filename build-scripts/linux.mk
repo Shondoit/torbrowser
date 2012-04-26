@@ -299,7 +299,7 @@ configure-apps:
 	mkdir -p $(DEST)/Data/profile/extensions
 	cp -R config/firefox-profiles.ini $(DEST)/Data/profiles.ini
 	cp config/bookmarks.html $(DEST)/Data/profile
-	cp config/no-polipo-4.0.js $(DEST)/Data/profile/prefs.js
+	cp config/prefs.js $(DEST)/Data/profile/prefs.js
 	## Configure Pidgin
 ifeq ($(USE_PIDGIN),1)
 	mkdir -p $(DEST)/PidginPortable/Data/settings/.purple
@@ -399,9 +399,9 @@ patch-firefox-language:
 	## Don't use {} because they aren't always interpreted correctly. Thanks, sh. 
 	mkdir -p $(BUNDLE)/App/Firefox/defaults/profile/
 	cp config/bookmarks.html $(BUNDLE)/App/Firefox/defaults/profile/
-	cp config/no-polipo-4.0.js $(BUNDLE)/App/Firefox/defaults/profile/prefs.js
+	cp config/prefs.js $(BUNDLE)/App/Firefox/defaults/profile/prefs.js
 	cp config/bookmarks.html $(BUNDLE)/Data/profile
-	cp config/no-polipo-4.0.js $(BUNDLE)/Data/profile/prefs.js
+	cp config/prefs.js $(BUNDLE)/Data/profile/prefs.js
 	./patch-firefox-language.sh $(BUNDLE)/App/Firefox/defaults/profile/prefs.js $(LANGCODE) -e
 	./patch-firefox-language.sh $(BUNDLE)/Data/profile/prefs.js $(LANGCODE) -e
 
