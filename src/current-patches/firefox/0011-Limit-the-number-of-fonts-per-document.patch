@@ -1,7 +1,7 @@
 From c4d1c23872e2be83f33f2b9bfc5c49d2b98c73a6 Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@torproject.org>
 Date: Wed, 1 Feb 2012 16:01:21 -0800
-Subject: [PATCH 11/12] Limit the number of fonts per document.
+Subject: [PATCH 11/16] Limit the number of fonts per document.
 
 We create two prefs:
 browser.display.max_font_count and browser.display.max_font_attempts.

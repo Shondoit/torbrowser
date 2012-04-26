@@ -1,7 +1,7 @@
 From 5f47c5bdf95633e28b6e338ba8794243b429aefb Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@torproject.org>
 Date: Wed, 1 Feb 2012 15:45:16 -0800
-Subject: [PATCH 02/12] Make Permissions Manager memory-only
+Subject: [PATCH 02/16] Make Permissions Manager memory-only
 
 This patch exposes a pref 'permissions.memory_only' that properly isolates the
 permissions manager to memory, which is responsible for all user specified

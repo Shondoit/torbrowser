@@ -1,7 +1,7 @@
 From 57e5abfa15950713acfb5d9a94f636579dde4d12 Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@fscked.org>
 Date: Sun, 9 Oct 2011 22:50:07 -0700
-Subject: [PATCH 07/12] Make Tor Browser exit when not launched from Vidalia
+Subject: [PATCH 07/16] Make Tor Browser exit when not launched from Vidalia
 
 Turns out the Windows 7 UI encourages users to "dock" their Tor Browser app
 for easy relaunch. If they manage to do this, we should fail closed rather

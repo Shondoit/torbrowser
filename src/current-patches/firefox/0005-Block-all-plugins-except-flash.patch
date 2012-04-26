@@ -1,7 +1,7 @@
 From 89d6deddce94c720793a33a1c9fc812ad65116a9 Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@torproject.org>
 Date: Wed, 1 Feb 2012 15:50:15 -0800
-Subject: [PATCH 05/12] Block all plugins except flash.
+Subject: [PATCH 05/16] Block all plugins except flash.
 
 We cannot use the @mozilla.org/extensions/blocklist;1 service, because we
 actually want to stop plugins from ever entering the browser's process space

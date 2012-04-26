@@ -1,7 +1,7 @@
 From 8cb78993225793692fe0560d25db4af55e0553bd Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@fscked.org>
 Date: Fri, 19 Aug 2011 17:58:23 -0700
-Subject: [PATCH 03/12] Make Intermediate Cert Store memory-only.
+Subject: [PATCH 03/16] Make Intermediate Cert Store memory-only.
 
 This patch makes the intermediate SSL cert store exist in memory only.
 
