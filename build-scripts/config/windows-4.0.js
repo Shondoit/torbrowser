@@ -175,3 +175,4 @@ user_pref("browser.search.order.1", "Startpage");
 user_pref("browser.search.order.2", "DuckDuckGo");
 user_pref("browser.search.order.3", "Google");
 user_pref("browser.search.selectedEngine", "Startpage"); // bam
+user_pref("dom.indexedDB.enabled", false);
