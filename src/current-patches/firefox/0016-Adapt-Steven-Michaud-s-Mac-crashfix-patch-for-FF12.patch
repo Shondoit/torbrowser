@@ -1,14 +1,15 @@
-From d56b1a845aa9a9528eb1f9db8ce8a67d85683b28 Mon Sep 17 00:00:00 2001
+From 262403fb627ca452bfbcaf06fd6ad965f156ed18 Mon Sep 17 00:00:00 2001
 From: Mike Perry <mikeperry-git@torproject.org>
 Date: Thu, 26 Apr 2012 10:54:24 -0700
 Subject: [PATCH 16/16] Adapt Steven Michaud's Mac crashfix patch for FF12.
 
 Source is: https://bugzilla.mozilla.org/show_bug.cgi?id=715885#c35
 
-Some minor tweaks were needed to get it to apply to FF12.
+Some minor tweaks were needed to get it to apply to FF12 and to compile on
+MacOS.
 ---
  widget/Makefile.in                        |    1 +
- widget/cocoa/nsChildView.mm               |   31 +++++++++++--------
+ widget/cocoa/nsChildView.mm               |   35 +++++++++++++--------
  widget/gtk2/nsDragService.cpp             |    2 +-
  widget/gtk2/nsWindow.cpp                  |    2 +-
  widget/nsIDragService.idl                 |    4 +--
@@ -22,7 +23,7 @@ Some minor tweaks were needed to get it to apply to FF12.
  widget/windows/nsPIDragServiceWindows.idl |   46 +++++++++++++++++++++++++++
  widget/xpwidgets/nsBaseDragService.cpp    |   16 +++++++++-
  widget/xpwidgets/nsBaseDragService.h      |    9 ++---
- 15 files changed, 176 insertions(+), 49 deletions(-)
+ 15 files changed, 180 insertions(+), 49 deletions(-)
  create mode 100644 widget/nsPIDragService.idl
  create mode 100644 widget/windows/nsPIDragServiceWindows.idl
 
@@ -39,7 +40,7 @@ index 4a3405b..4c105a4 100644
  		nsIFormatConverter.idl \
  		nsIClipboard.idl \
 diff --git a/widget/cocoa/nsChildView.mm b/widget/cocoa/nsChildView.mm
-index 7f738a1..189b9ef 100644
+index 7f738a1..0149ab1 100644
 --- a/widget/cocoa/nsChildView.mm
 +++ b/widget/cocoa/nsChildView.mm
 @@ -4566,11 +4566,12 @@ NSEvent* gLastDragMouseDownEvent = nil;
@@ -75,7 +76,7 @@ index 7f738a1..189b9ef 100644
  
      // XXX: dropEffect should be updated per |operation|. 
      // As things stand though, |operation| isn't well handled within "our"
-@@ -4606,13 +4609,15 @@ NSEvent* gLastDragMouseDownEvent = nil;
+@@ -4606,13 +4609,19 @@ NSEvent* gLastDragMouseDownEvent = nil;
      // value for NSDragOperationGeneric that is passed by other applications.
      // All that said, NSDragOperationNone is still reliable.
      if (operation == NSDragOperationNone) {
@@ -92,7 +93,11 @@ index 7f738a1..189b9ef 100644
 +        nsCOMPtr<nsIDOMDataTransfer> dataTransfer;
 +        dragSession->GetDataTransfer(getter_AddRefs(dataTransfer));
 +        if (dataTransfer) {
-+          dataTransfer->SetDropEffectInt(nsIDragService::DRAGDROP_ACTION_NONE);
++          nsCOMPtr<nsIDOMNSDataTransfer> dataTransferNS =
++                do_QueryInterface(dataTransfer);
++          if (dataTransferNS) {
++            dataTransferNS->SetDropEffectInt(nsIDragService::DRAGDROP_ACTION_NONE);
++          }
 +        }
 +      }
      }
