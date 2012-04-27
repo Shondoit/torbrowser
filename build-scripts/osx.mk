@@ -106,8 +106,8 @@ build-firefox: $(FIREFOX_DIR) config/mozconfig-osx-$(ARCH_TYPE)
 	touch $(STAMP_DIR)/build-firefox
 
 copy-firefox:
-	-rm -rf $(BUILD_DIR)/Firefox.app
-	cp -r $(FIREFOX_DIR)/obj*/dist/*.app $(BUILD_DIR)/Firefox.app
+	-rm -rf $(BUILD_DIR)/TorBrowser.app
+	cp -r $(FIREFOX_DIR)/obj*/dist/*.app $(BUILD_DIR)/TorBrowser.app
 
 build-all-binaries: build-zlib build-openssl build-vidalia build-libevent build-tor build-firefox
 	echo "If we're here, we've done something right."
@@ -127,7 +127,7 @@ LIBEVENT=$(COMPILED_LIBS)
 VIDALIA=$(BUILT_DIR)/usr/local/bin/Vidalia.app/
 TOR=$(COMPILED_BINS)/tor
 ## Someday, this will be our custom Firefox
-FIREFOX=$(BUILD_DIR)/Firefox.app
+FIREFOX=$(BUILD_DIR)/TorBrowser.app
 PIDGIN=$(COMPILED_BINS)/pidgin
 
 ## Location of utility applications
@@ -236,8 +236,8 @@ TB_TMPDIR=$(DEST)/Contents/SharedSupport
 directory-structure: 
 	rm -fr $(DEST)
 	mkdir -p $(APPDIR)
-	mkdir -p $(APPDIR)/Firefox.app/Contents/MacOS/Data/profile
-	mkdir -p $(APPDIR)/Firefox.app/Contents/MacOS/Data/plugins
+	mkdir -p $(APPDIR)/TorBrowser.app/Contents/MacOS/Data/profile
+	mkdir -p $(APPDIR)/TorBrowser.app/Contents/MacOS/Data/plugins
 	mkdir -p $(DATADIR)/Tor
 	mkdir -p $(DATADIR)/Vidalia
 	mkdir -p $(DOCSDIR)
@@ -274,9 +274,9 @@ install-firefox:
 configure-apps:
 	## Configure Firefox preferences
 	#mkdir -p $(DEST)/.mozilla/Firefox/firefox.default
-	cp -R config/firefox-profiles.ini $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profiles.ini
-	cp config/bookmarks.html $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile
-	cp config/prefs.js $(DEST)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/prefs.js
+	cp -R config/firefox-profiles.ini $(DEST)/Contents/MacOS/TorBrowser.app/Contents/MacOS/Data/profiles.ini
+	cp config/bookmarks.html $(DEST)/Contents/MacOS/TorBrowser.app/Contents/MacOS/Data/profile
+	cp config/prefs.js $(DEST)/Contents/MacOS/TorBrowser.app/Contents/MacOS/Data/profile/prefs.js
 	cp config/Info.plist $(DEST)/Contents
 	cp config/PkgInfo $(DEST)/Contents
 	cp config/qt.conf $(DEST)/Contents/MacOS/Vidalia.app/Contents/Resources
@@ -387,7 +387,7 @@ patch-firefox-language:
 ## Fix prefs.js since extensions.checkCompatibility, false doesn't work
 update-extension-pref:
 	sed -i -e "s/SHPONKA/$(LANGCODE)/g" $(BUNDLE)/Library/Application\ Support/Firefox/Profiles/profile/prefs.js
-	sed -i -e "s/SHPONKA/$(LANGCODE)/g" $(BUNDLE)/Contents/MacOS/Firefox.app/Contents/MacOS/Data/profile/prefs.js
+	sed -i -e "s/SHPONKA/$(LANGCODE)/g" $(BUNDLE)/Contents/MacOS/TorBrowser.app/Contents/MacOS/Data/profile/prefs.js
 
 print-version:
 	@echo $(RELEASE_VER)-$(BUILD_NUM)

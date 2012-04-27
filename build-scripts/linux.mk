@@ -55,7 +55,7 @@ build-openssl: build-zlib $(OPENSSL_DIR)
 	cd $(OPENSSL_DIR) && make install_sw
 	touch $(STAMP_DIR)/build-openssl
 
-QT_BUILD_PREFS=-system-zlib -confirm-license -opensource -openssl-linked -no-qt3support -fast -release -nomake demos -nomake examples
+QT_BUILD_PREFS=-system-zlib -confirm-license -opensource -openssl-linked -no-webkit -no-qt3support -fast -release -nomake demos -nomake examples
 QT_OPTS=$(QT_BUILD_PREFS) -prefix $(BUILT_DIR) -I $(BUILT_DIR)/include -I $(BUILT_DIR)/include/openssl/ -L$(BUILT_DIR)/lib
 build-qt: build-zlib build-openssl $(QT_DIR)
 	cd $(QT_DIR) && ./configure $(QT_OPTS)
