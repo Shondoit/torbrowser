@@ -69,7 +69,7 @@ index 6e1099d..3eec5b3 100644
          nsHttpConnection *conn = nsnull;
 -        for (i = 0; i < count; ++i) {
 +
-+        PRUInt32* ind = new PRUInt32[count];
++        PRUint32* ind = new PRUint32[count];
 +        ShuffleRequestOrder(ind, count);
 +       
 +        for (h=0; h<count; ++h) {
