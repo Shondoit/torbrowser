@@ -232,7 +232,7 @@ $(OBFSPROXY_DIR): $(FETCH_DIR)/$(OBFSPROXY_PACKAGE) | $(BUILD_DIR)
 
 # Common build functionality. Modified by variables set in OS-specific makefiles
 build-tor: build-zlib build-openssl build-libevent $(TOR_DIR)
-	cd $(TOR_DIR) && CFLAGS=$(TOR_CFLAGS) LDFLAGS=$(TOR_LDFLAGS) ./configure $(TOR_OPTS)
+	cd $(TOR_DIR) && CFLAGS=$(TOR_CFLAGS) LDFLAGS=$(TOR_LDFLAGS) ./configure $(TOR_OPTS) --enable-gcc-warnings-advisory
 	cd $(TOR_DIR) && make -j $(NUM_CORES)
 	cd $(TOR_DIR) && make install
 	touch $(STAMP_DIR)/build-tor
