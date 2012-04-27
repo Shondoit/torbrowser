@@ -40,7 +40,7 @@ index 6e1099d..3eec5b3 100644
 -            PRInt32 i, count = ent->mPendingQ.Length();
 -            for (i=0; i<count; ++i) {
 +            PRInt32 i, h, count = ent->mPendingQ.Length();
-+            PRInt32 ind[count];
++            PRInt32* ind = new PRInt32[count];
 +            ShuffleRequestOrder((PRUint32*)ind, (PRUint32)count);
 +       
 +            for (h=0; h<count; ++h) {
@@ -48,6 +48,15 @@ index 6e1099d..3eec5b3 100644
                  nsHttpTransaction *trans = ent->mPendingQ[i];
                  if (trans->Caps() & NS_HTTP_ALLOW_PIPELINING) {
                      pipeline->AddTransaction(trans);
+@@ -365,6 +375,8 @@
+                     break;
+                 }
+             }
++
++            delete [] ind;
+         }
+     }
+ }
 @@ -898,12 +908,17 @@ nsHttpConnectionMgr::ProcessPendingQForEntry(nsConnectionEntry *ent)
  
      ProcessSpdyPendingQ(ent);
@@ -60,7 +69,7 @@ index 6e1099d..3eec5b3 100644
          nsHttpConnection *conn = nsnull;
 -        for (i = 0; i < count; ++i) {
 +
-+        PRUint32 ind[count];
++        PRUInt32* ind = new PRUInt32[count];
 +        ShuffleRequestOrder(ind, count);
 +       
 +        for (h=0; h<count; ++h) {
@@ -68,6 +77,14 @@ index 6e1099d..3eec5b3 100644
              trans = ent->mPendingQ[i];
  
              // When this transaction has already established a half-open
+@@ -927,6 +944,7 @@
+                               "something mutated pending queue from "
+                               "GetConnection()");
+         }
++        delete [] ind;
+         if (conn) {
+             LOG(("  dispatching pending transaction...\n"));
+ 
 @@ -1011,6 +1026,19 @@ nsHttpConnectionMgr::AtActiveConnectionLimit(nsConnectionEntry *ent, PRUint8 cap
          maxPersistConns = mMaxPersistConnsPerHost;
      }
