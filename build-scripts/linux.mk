@@ -15,7 +15,7 @@
 
 ## Architecture
 ARCH_TYPE=$(shell uname -m)
-BUILD_NUM=9
+BUILD_NUM=10
 PLATFORM=Linux
 
 ## Build machine specific settings
