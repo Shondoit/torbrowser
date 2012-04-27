@@ -16,7 +16,7 @@ index d170d47..6835b1e 100644
    /* The browser is in <browserDirectory>/App/Firefox/<browserDirectoryFilename> */
    QString browserExecutable =
 -    QDir::toNativeSeparators(browserDirectory + "/App/Firefox/" + browserDirectoryFilename);
-+    QDir::toNativeSeparators(browserDirectory + "/Contents/MacOS/Firefox.app/Contents/MacOS/" + browserDirectoryFilename);
++    QDir::toNativeSeparators(browserDirectory + "/Contents/MacOS/TorBrowser.app/Contents/MacOS/" + browserDirectoryFilename);
    /* The profile is in <browserDirectory>/Data/profile */
    QString profileDir =
 -    QDir::toNativeSeparators(browserDirectory + "/Data/profile");
@@ -31,7 +31,7 @@ index d170d47..6835b1e 100644
 -    copy_dir(browserDirectory + "/App/DefaultData/profile", browserDirectory + "/Data/profile");
 +  if (!browserDirObj.exists("Library/Application Support/Firefox/Profiles/profile")) {
 +     browserDirObj.mkdir("Library/Application Support/Firefox/Profiles/profile");
-+     QString src = browserDirectory + "/Contents/MacOS/Firefox.app/Contents/MacOS/defaults/profile";
++     QString src = browserDirectory + "/Contents/MacOS/TorBrowser.app/Contents/MacOS/defaults/profile";
 +     QString dst = profileDir;
 +     vNotice("Copying '%1' to '%2'").arg(src).arg(dst);
 +     copy_dir(src, dst);
