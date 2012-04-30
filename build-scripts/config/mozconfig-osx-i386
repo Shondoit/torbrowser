@@ -6,8 +6,8 @@ mk_add_options BUILD_OFFICIAL=1
 mk_add_options MOZ_MAKE_FLAGS="-s --no-print-directory -j8"
 
 # Options for cross-compilation on Snow Leopard.
-HOST_CC="gcc -arch i386"
-HOST_CXX="g++ -arch i386"
+HOST_CC="clang -arch i386"
+HOST_CXX="clang++ -arch i386"
 CC="gcc -arch i386"
 CXX="g++ -arch i386"
 RANLIB=ranlib
@@ -28,3 +28,6 @@ ac_add_options --enable-strip
 ac_add_options --disable-debug
 ac_add_options --disable-tests
 ac_add_options --disable-crashreporter
+
+export CFLAGS="-Wno-return-type"
+export CXXFLAGS="-Wno-return-type"
