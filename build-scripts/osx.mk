@@ -15,7 +15,7 @@
 
 ## Architecture
 ARCH_TYPE=x86_64
-BUILD_NUM=9.1
+BUILD_NUM=10
 PLATFORM=MacOS
 
 ## Set OSX-specific backwards compatibility options
