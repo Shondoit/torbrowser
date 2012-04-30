@@ -1,7 +1,7 @@
 . $topsrcdir/browser/config/mozconfig
 
-CC="gcc -arch x86_64"
-CXX="g++ -arch x86_64"
+CC="clang -arch x86_64"
+CXX="clang++ -arch x86_64"
 HOST_CC="gcc"
 HOST_CXX="g++"
 RANLIB=ranlib
@@ -19,7 +19,7 @@ mk_add_options MOZILLA_OFFICIAL=1
 mk_add_options BUILD_OFFICIAL=1
 
 ac_add_options --with-macos-sdk=/Developer/SDKs/MacOSX10.6.sdk
-ac_add_options --target=x86_64-apple-darwin10.7.0
+ac_add_options --target=x86_64-apple-darwin10.6.0
 ac_add_options --enable-macos-target=10.6
 # bug 491774. crashreporter won't build in cross compile
 ac_add_options --disable-crashreporter
@@ -30,3 +30,6 @@ ac_add_options --enable-optimize
 ac_add_options --enable-strip
 ac_add_options --disable-tests
 ac_add_options --disable-debug
+
+export CFLAGS="-Wno-return-type"
+export CXXFLAGS="-Wno-return-type"
